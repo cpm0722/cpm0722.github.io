@@ -430,19 +430,19 @@
 
 <p>\(h_\theta\left(x_{z&lt;t}\right)\)는 기존 Transformer의 hidden state와 동일한 구조이다. 현재 시점(\(t\))의 정보까지 포함해 입력으로 받는다. 이를 Content Representation이라고 하고, Key, Value에 사용하게 된다.</p>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-18.49.21.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-18.49.21.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/01.jpg" alt="01.jpg" /></p>
 
 <h3 id="query-representation">Query Representation</h3>
 
 <p>\(g_\theta\left(x_{z_{&lt;t}},z_t\right)\)는 현재 시점(\(t\))의 정보는 제외하고 입력으로 받는다. 대신 현재 시점(\(t\))의 위치 정보(\(z_t\))는 입력으로 받는다. 이를 Query Representation이라고 하고, Query에 사용하게 된다.</p>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-18.49.27.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-18.49.27.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/02.jpg" alt="02.jpg" /></p>
 
 <h3 id="permutation-language-modeling-with-two-stream-attention">Permutation Language Modeling with Two-Stream Attention</h3>
 
 <p>전체적인 Two-Stream Attention의 구조는 아래와 같다.</p>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-18.52.01.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-18.52.01.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/03.jpg" alt="03.jpg" /></p>
 
 <p>Query의 초기값은 weight \(w\), Key와 Value의 초기 값은 embedding된 input 값 \(e\left(x_i\right)\)이다. 이후 아래와 같이 갱신된다.</p>
 
@@ -486,27 +486,27 @@
 
 <h2 id="fair-comparison-with-bert">Fair Comparison with BERT</h2>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.01.26.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.01.26.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/04.jpg" alt="04.jpg" /></p>
 
 <p>XLNet-Large는 모든 task에서 BERT-Large보다 좋은 성능을 보였다.</p>
 
 <h2 id="comparison-with-roberta-scailing-up">Comparison with RoBERTa: Scailing Up</h2>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.01.38.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.01.38.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/05.jpg" alt="05.jpg" /></p>
 
 <p>XLNet은 RACE task에서도 BERT, GPT, RoBERTa 등의 model들보다 좋은 성능을 보였다.</p>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.05.19.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.05.19.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/06.jpg" alt="06.jpg" /></p>
 
 <p>XLNet은 SQuAD2.0 task에서도 BERT, RoBERTa보다 좋은 성능을 보였다.</p>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.06.47.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.06.47.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/07.jpg" alt="07.jpg" /></p>
 
 <p>XLNet은 GLUE task에서도 BERT, RoBERTa보다 좋은 성능을 보였다.</p>
 
 <h2 id="ablation-study">Ablation Study</h2>
 
-<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.12.45.jpg" alt="XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.12.45.jpg" /></p>
+<p><img src="/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08.jpg" alt="08.jpg" /></p>
 
 <p>1~4를 살펴보면 XLNet-Base가 BERT나 Transformer-XL보다 좋은 성능을 보인다. 이를 통해 permutation language modeling objective가 효과적이었다는 것을 알 수 있다.</p>
 

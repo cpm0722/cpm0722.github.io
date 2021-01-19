@@ -38,7 +38,7 @@ BERT 계열의 model들은 지금까지 매우 뛰어난 성능을 보여왔다.
 
 BERT에 대한 overview
 
-BERT Review 참고 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://www.notion.so/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding-685492e6b895410381c261b24f3f0d9e)
+BERT Review 참고 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/)
 
 # Experimental Setup
 
@@ -70,11 +70,11 @@ BERT-style의 pretraining 방식은 data의 양에 따라 성능이 결정된다
 
 1. GLUE
 
-    BERT Review 참고 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://www.notion.so/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding-685492e6b895410381c261b24f3f0d9e)
+    BERT Review 참고 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/)
 
 2. SQuAD
 
-    BERT Review 참고 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://www.notion.so/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding-685492e6b895410381c261b24f3f0d9e)
+    BERT Review 참고 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/)
 
 3. RACE
 

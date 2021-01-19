@@ -1,6 +1,6 @@
 ---
 
-t10-03-2020-19.17.57itle: "[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks"
+title: "[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks"
 subtitle: Korean Tokenizing
 category: Paper Review
 tags: NLP Korean
@@ -33,7 +33,7 @@ MeCab은 Conditional Random Fields(CRFs)를 기반으로 하는 Japanese 형태�
 
 BPE는 data에서의 등장 빈도를 기반으로 묶는 data-driven statistical alogirhtm이다.
 
-[Neural Machine Translation of Rare Words with Subword Units](https://www.notion.so/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units-795fb47eb52a42bab59906f90da61e90)
+[Neural Machine Translation of Rare Words with Subword Units](https://cpm0722.github.io/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/)
 
 # Related Work
 

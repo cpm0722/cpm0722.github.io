@@ -354,7 +354,7 @@
   <li>
     <p>example: “what will the fat cat sit on”, \(N=4\)</p>
 
-    <p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/Untitled.png" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/Untitled.png" /></p>
+    <p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/01.jpg" alt="01.jpg" /></p>
 
     <p>출처: <a href="https://wikidocs.net/45609">https://wikidocs.net/45609</a></p>
   </li>
@@ -400,11 +400,11 @@
 
 <p>computational complexity를 줄이기 위해 2가지 단계를 제안한다.  continuous bag-of-words model(CBOW)을 사용하는 단계와 continuous skip-gram model(Skip-gram)을 사용하는 단계이다.</p>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-16.47.44.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-16.47.44.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/02.jpg" alt="02.jpg" /></p>
 
 <h2 id="continuous-bag-of-words-model">Continuous Bag-of-Words Model</h2>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/Untitled%201.png" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/Untitled%201.png" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/03.jpg" alt="03.jpg" /></p>
 
 <p>출처: <a href="https://wikidocs.net/22660">https://wikidocs.net/22660</a></p>
 
@@ -418,7 +418,7 @@
 
 <h2 id="continuous-skip-gram-model">Continuous Skip-gram Model</h2>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/Untitled%202.png" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/Untitled%202.png" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/04.jpg" alt="04.jpg" /></p>
 
 <p>출처: <a href="https://wikidocs.net/22660">https://wikidocs.net/22660</a></p>
 
@@ -438,37 +438,37 @@
 
 <h2 id="task-description">Task Description</h2>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-17.48.17.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-17.48.17.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/05.jpg" alt="05.jpg" /></p>
 
 <p>위와 같은 semantic, syntax 관계들을 목록화시켰다. 각 관계들에 대해 직접 word pair들을 수집하고, 각 word pair를 모두 섞어 random한 pair들을 만들어낸다. 이렇게 생성해낸 dataset으로 test를 수행하는 것이다. 이 때 정답과 완전히 동일한 word를 예측한 경우에만 정답으로 간주한다. 동의어나 유사어에 대해서도 오답 처리를 하기 때문에 사실상 100% accuracy는 불가능한 task이다.</p>
 
 <h2 id="maximization-of-accuracy">Maximization of Accuracy</h2>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-17.48.27.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-17.48.27.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/06.jpg" alt="06.jpg" /></p>
 
 <p>word vector의 dimension과 #training words를 통해 실험을 진행했다. dimensionality나 #training words 중 하나를 고정시킨 뒤 다른 하나만을 증가시킬 경우 일정한 수준 이상으로 accuracy가 증가하지 않는 현상을 보였다. 기존의 많은 연구에서 단순히 training dataset의 크기만을 늘려가며 성능을 높이려 했지만, 많은 word가 train된다면 이에 대한 정보들을 담을 수 있는 충분한 dimension이 확보되어야 한다는 사실을 알 수 있다.</p>
 
 <h2 id="comparison-of-model-architectures">Comparison of Model Architectures</h2>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-17.48.35.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-17.48.35.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/07.jpg" alt="07.jpg" /></p>
 
 <p>RNNLM이 가장 낮은 성능을 보였다. CBOW와 Skip-gram은 semantic, syntactic, relatedness에서 모두 NNLM을 능가했다. 특히나 Skip-gram은 Semantic Accuracy에서 다른 model들을 압도했다.</p>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-17.48.43.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-17.48.43.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/08.jpg" alt="08.jpg" /></p>
 
 <p>다른 여러 NNLM과 비교했을 때에도 CBOW와 skip-gram은 훨씬 더 좋은 성능을 보여준다.</p>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-17.48.48.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-17.48.48.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/09.jpg" alt="09.jpg" /></p>
 
 <h2 id="microsoft-research-sentence-completion-challenge">Microsoft Research Sentence Completion Challenge</h2>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-19.38.14.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-19.38.14.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/10.jpg" alt="10.jpg" /></p>
 
 <p>Microsoft Research Sentence Completion Challenge는 1040개의 sentence가 주어지는게, 각 sentence는 1개의 word가 빠져 있다. 각 sentence에서 빠진 word를 predict하는 task이다. 이 task에서 skip-gram 단독으로는 기존의 model들에 비해 다소 낮은 수치를 보였지만, RNNLM과 결합한 뒤에는 SOTA를 달성했다.</p>
 
 <h1 id="examples-of-the-learned-relationships">Examples of the Learned Relationships</h1>
 
-<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/12-12-2020-17.49.09.jpg" alt="Efficient%20Estimation%20of%20Word%20Representations%20in%20Ve%200c819dde7f4d46c08a5a496f2efa5329/12-12-2020-17.49.09.jpg" /></p>
+<p><img src="/assets/images/2020-12-12-Efficient-Estimation-of-Word-Representations-in-Vector-Space/11.jpg" alt="11.jpg" /></p>
 
 <p>단어 사이의 상관관계를 분석해 다른 단어에 대해 유사한 관계를 갖는 단어를 예측하는 task에서 본 논문의 model은 60%의 정확도를 달성했다. 더 높은 정확도를 달성하기 위해서는 더 많은 dataset을 사용하고, 또 각 단어 사이의 상관관계 vector를 여러 단어쌍 사이의 subtract vector의 평균으로 만들어내면 될 것이다.</p>
 

@@ -347,7 +347,7 @@
 
 <p>Transformer Model은 attention seq2seq model과 비슷한 구조를 지닌다. Encoder-Decoder가 존재하고, fixed length의 하나의 context vector를 사용하는 방식이 아닌, 하나의 output word마다 각기 다른 새로운 attention을 갖는 context vector를 생성해 활용한다. 차이점은 RNN을 제거했다는 점이다. NLP에서 RNN을 사용하는 가장 큰 이유는 sequential 정보를 유지하기 위함(각 단어들의 순서 및 위치 정보를 활용하기 위함)이다. Transformer에서는 RNN 대신 FC Layer를 사용하되, 각 word vector마다 positional Encoding 과정을 추가해 각 word의 position 정보를 word vector 안에 추가했다.</p>
 
-<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/06-25-2020-16.22.01.jpg" alt="Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/06-25-2020-16.22.01.jpg" /></p>
+<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/01.jpg" alt="01.jpg" /></p>
 
 <h3 id="encoder">Encoder</h3>
 
@@ -355,9 +355,9 @@
 
 <h3 id="self-attention-layer">Self Attention Layer</h3>
 
-<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/06-25-2020-16.15.49.jpg" alt="Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/06-25-2020-16.15.49.jpg" /></p>
+<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/02.jpg" alt="02.jpg" /></p>
 
-<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/06-25-2020-16.16.23.jpg" alt="Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/06-25-2020-16.16.23.jpg" /></p>
+<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/03.jpg" alt="03.jpg" /></p>
 
 \[Attention\left(Q,K,V\right)=softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V\]
 
@@ -371,7 +371,7 @@
 
 <h3 id="decoder">Decoder</h3>
 
-<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/The_transformer_encoder_decoder_stack.png" alt="Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/The_transformer_encoder_decoder_stack.png" /></p>
+<p><img src="/assets/images/2020-07-05-Attention-is-All-You-Need/04.jpg" alt="04.jpg" /></p>
 
 <p>출처: <a href="https://jalammar.github.io/illustrated-transformer/">https://jalammar.github.io/illustrated-transformer/</a></p>
 

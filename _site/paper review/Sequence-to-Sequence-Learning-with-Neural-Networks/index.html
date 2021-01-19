@@ -346,7 +346,7 @@
 
 <h1 id="the-model">The model</h1>
 
-<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/Untitled.png" alt="Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/Untitled.png" /></p>
+<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/01.jpg" alt="01.jpg" /></p>
 
 \[h_t = sigmoid\left(W^{hx}x_t + W^{hh}h_{t-1}\right)\\y_t = W^{yh}h_t\]
 
@@ -364,17 +364,17 @@
 
 <p>dataset의 대부분은 short length sentence이기에 mini batch 사용 시 각 batch 마다 아주 적은 수의 long length sentence가 포함되는 문제가 존재했다. 따라서 각 batch마다 대략적으로 비슷한 length를 가진 sentence가 포함되도록 normalization을 수행한 뒤 실험을 진행했다.</p>
 
-<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.33.39.jpg" alt="Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.39.jpg" /></p>
+<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/02.jpg" alt="02.jpg" /></p>
 
-<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.33.54.jpg" alt="Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.54.jpg" /></p>
+<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/03.jpg" alt="03.jpg" /></p>
 
 <p>SOTA(State of the Art)에 비해 0.5 낮은 BLEU Score를 달성했다. OOV가 여전히 존재함에도 SOTA와 동등한 성능을 달성했다는 것은 충분히 의미가 있다.</p>
 
 <p>위에서 언급했듯이 long Sentence에서도 매우 좋은 성능을 보였다.</p>
 
-<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.39.20.jpg" alt="Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.39.20.jpg" /></p>
+<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/04.jpg" alt="04.jpg" /></p>
 
-<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.42.43.jpg" alt="Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.42.43.jpg" /></p>
+<p><img src="/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/05.jpg" alt="05.jpg" /></p>
 
         
       </section>

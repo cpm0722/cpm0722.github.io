@@ -68,7 +68,7 @@ MASS에서 hyperparameter $$k$$는 매우 중요한 parameter이다. $$k$$가 �
 
 $$k=1$$인 경우는 사실 BERT에서의 MLM(Masked Langage Model)이다. BERT의 MLM에 대한 자세한 설명은 아래를 참조하자.
 
-[Copy of BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://www.notion.so/Copy-of-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding-5cb659c4a2164cfa8ffc5dadfc411993)
+[BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/)
 
 ![02.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/02.jpg)
 
