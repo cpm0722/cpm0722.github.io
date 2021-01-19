@@ -1,19 +1,23 @@
 ---
-layout: archive
+
 title: An Empirical Study Of Tokenization Strategies For Various Korean Nlp Tasks
 subtitle: Korean Tokenizing
-categories: Paper Review
+category: Paper Review
 tags: NLP Korean
 date: 2021-01-19 12:59:23 +0000
-last_modified_at: 2021-01-19 12:59:23 +0000
+last_modified_at: 2020-10-10 23:29:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/2010.02534
-Created: Oct 10, 2020 11:29 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/2010.02534.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/2010.02534)
+
+[Paper Link](https://arxiv.org/pdf/2010.02534.pdf)
+
 Submit Date: Oct 6, 2020
+
+---
 
 # Introduction
 

@@ -1,19 +1,23 @@
 ---
+
 title: Neural Machine Translation of Rare Words with Subword Units
 subtitle: BPE
 category: Paper Review
 tags: NLP
 date: '2021-01-19 11:58:20 +0000'
-last_modified_at: '2021-01-19 11:58:20 +0000'
-comments: true
+last_modified_at: '2020-09-21 15:12:00 +0000'
+
 ---
 
-Archive Link: https://arxiv.org/abs/1508.07909
-Created: Sep 21, 2020 3:12 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1508.07909.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1508.07909)
+
+[Paper Link](https://arxiv.org/pdf/1508.07909.pdf)
+
 Submit Date: Aug 15, 2015
+
+---
 
 # Backgrounds
 

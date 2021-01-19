@@ -1,19 +1,23 @@
 ---
-#layout: single
+
 title: Neural Machine Translation By Jointly Learning To Align And Translate
 subtitle: Attention seq2seq
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 13:01:18 +0000
-last_modified_at: 2021-01-19 13:01:18 +0000
+last_modified_at: 2020-09-21 15:15:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1409.0473
-Created: Sep 21, 2020 3:15 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1409.0473.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1409.0473)
+
+[Paper Link](https://arxiv.org/pdf/1409.0473.pdf)
+
 Submit Date: Sep 1, 2014
+
+---
 
 # Abstract
 

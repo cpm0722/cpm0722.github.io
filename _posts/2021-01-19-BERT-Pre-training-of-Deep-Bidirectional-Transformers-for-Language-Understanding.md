@@ -1,22 +1,23 @@
 ---
-title: Bert Pre Training Of Deep Bidirectional Transformers For Language Understanding
----
 
-# BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
-title: BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
+title: Bert Pre Training Of Deep Bidirectional Transformers For Language Understanding
 subtitle: BERT
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 13:00:09 +0000
-last_modified_at: 2021-01-19 13:00:09 +0000
+last_modified_at: 2020-09-21 15:17:09 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1810.04805
-Created: Sep 21, 2020 3:17 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1810.04805.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1810.04805)
+
+[Paper Link](https://arxiv.org/pdf/1810.04805.pdf)
+
 Submit Date: Oct 11, 2018
+
+---
 
 # Introduction
 

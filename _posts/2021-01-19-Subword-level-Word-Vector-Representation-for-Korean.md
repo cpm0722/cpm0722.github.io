@@ -1,23 +1,23 @@
 ---
-title: Subword Level Word Vector Representation For Korean
----
 
-# Subword-level Word Vector Representation for Korean
-title: Subword-level Word Vector Representation for Korean
+title: Subword Level Word Vector Representation For Korean
 subtitle: Korean BPE
-categories: Paper Review
+category: Paper Review
 tags: NLP Korean
 date: 2021-01-19 13:00:25 +0000
-last_modified_at: 2021-01-19 13:00:25 +0000
+last_modified_at: 2020-09-21 15:20:00 +0000
+
 ---
 
-Archive Link: https://www.aclweb.org/anthology/P18-1226/
-Created: Sep 21, 2020 3:20 PM
-Field: NLP
-Paper Link: https://www.aclweb.org/anthology/P18-1226.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://www.aclweb.org/anthology/P18-1226/)
+
+[Paper Link](https://www.aclweb.org/anthology/P18-1226.pdf)
+
 Submit Date: Jul 1, 2018
 
+---
 
 # Abstract
 

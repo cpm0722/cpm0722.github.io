@@ -1,22 +1,23 @@
 ---
-title: Kr Bert A Small Scale Korean Specific Language Model
----
 
-# KR-BERT: A Small-Scale Korean-Specific Language Model
-title: KR-BERT: A Small-Scale Korean-Specific Language Model
+title: Kr Bert A Small Scale Korean Specific Language Model
 subtitle: KR-BERT
-categories: Paper Review
+category: Paper Review
 tags: NLP Korean
 date: 2021-01-19 13:01:42 +0000
-last_modified_at: 2021-01-19 13:01:42 +0000
+last_modified_at: 2020-11-13 09:50:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/2008.03979
-Created: Nov 13, 2020 9:50 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/2008.03979.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/2008.03979)
+
+[Paper Link](https://arxiv.org/pdf/2008.03979.pdf)
+
 Submit Date: Aug 10, 2020
+
+---
 
 # Introduction
 

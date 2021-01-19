@@ -1,22 +1,23 @@
 ---
-title: Efficient Estimation Of Word Representations In Vector Space
----
 
-# Efficient Estimation of Word Representations in Vector Space
-title: Efficient Estimation of Word Representations in Vector Space
+title: Efficient Estimation Of Word Representations In Vector Space
 subtitle: Word2Vec
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 13:01:02 +0000
-last_modified_at: 2021-01-19 13:01:02 +0000
+last_modified_at: 2020-12-12 19:48:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1301.3781
-Created: Dec 12, 2020 7:48 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1301.3781.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1301.3781)
+
+[Paper Link](https://arxiv.org/pdf/1301.3781.pdf)
+
 Submit Date: Jan 16, 2013
+
+---
 
 # Introduction
 

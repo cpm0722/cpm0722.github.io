@@ -1,22 +1,23 @@
 ---
-title: Deep Contextualized Word Representations
----
 
-# Deep contextualized word representations
-title: Deep contextualized word representations
+title: Deep Contextualized Word Representations
 subtitle: ELMo
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 13:01:33 +0000
-last_modified_at: 2021-01-19 13:01:33 +0000
+last_modified_at: 2021-01-02 01:02:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1802.05365
-Created: Jan 2, 2021 1:02 AM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1802.05365.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1802.05365)
+
+[Paper Link](https://arxiv.org/pdf/1802.05365.pdf)
+
 Submit Date: Feb 15, 2018
+
+---
 
 # Introduction
 

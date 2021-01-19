@@ -1,22 +1,23 @@
 ---
-title: Xlnet Generalized Autoregressive Pretraining For Language Understanding
----
 
-# XLNet: Generalized Autoregressive Pretraining for Language Understanding
-title: XLNet: Generalized Autoregressive Pretraining for Language Understanding
+title: Xlnet Generalized Autoregressive Pretraining For Language Understanding
 subtitle: XLNet
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 12:59:48 +0000
-last_modified_at: 2021-01-19 12:59:48 +0000
+last_modified_at: 2020-09-21 15:15:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1906.08237
-Created: Sep 21, 2020 3:18 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1906.08237.pdf
-Status: not checked
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1906.08237)
+
+[Paper Link](https://arxiv.org/pdf/1906.08237.pdf)
+
 Submit Date: Jun 19, 2019
+
+---
 
 # Introduction
 

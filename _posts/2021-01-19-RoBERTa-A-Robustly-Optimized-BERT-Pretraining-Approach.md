@@ -1,22 +1,23 @@
 ---
-title: Roberta A Robustly Optimized Bert Pretraining Approach
----
 
-# RoBERTa: A Robustly Optimized BERT Pretraining Approach
-title: RoBERTa: A Robustly Optimized BERT Pretraining Approach
+title: Roberta A Robustly Optimized Bert Pretraining Approach
 subtitle: RoBERTa
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 13:00:33 +0000
-last_modified_at: 2021-01-19 13:00:33 +0000
+last_modified_at: 2020-10-05 01:08:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1907.11692
-Created: Oct 5, 2020 1:08 AM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1907.11692.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1907.11692)
+
+[Paper Link](https://arxiv.org/pdf/1907.11692.pdf)
+
 Submit Date: Jul 26, 2019
+
+---
 
 # Introduction
 

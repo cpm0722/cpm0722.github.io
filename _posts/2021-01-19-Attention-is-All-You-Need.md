@@ -1,27 +1,23 @@
 ---
-title: Attention Is All You Need
----
 
-# Attention is All You Need
-title: Attention is All You Need
+title: Attention Is All You Need
 subtitle: Transformer
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 13:00:41 +0000
-last_modified_at: 2021-01-19 13:00:41 +0000
+last_modified_at: 2020-09-21 15:16:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1706.03762
-Created: Sep 21, 2020 3:16 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1706.03762.pdf
-Status: completed
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1706.03762)
+
+[Paper Link](https://arxiv.org/pdf/1706.03762.pdf)
+
 Submit Date: Jun 12, 2017
 
-```yaml
-cleanUrl: /nlp/attention-is-all-you-need
-disqus: true
-```
+---
 
 # Introduction
 

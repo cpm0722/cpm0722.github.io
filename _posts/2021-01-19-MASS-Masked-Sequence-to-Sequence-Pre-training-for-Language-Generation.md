@@ -1,22 +1,23 @@
 ---
-title: Mass Masked Sequence To Sequence Pre Training For Language Generation
----
 
-# MASS: Masked Sequence to Sequence Pre-training for Language Generation
-title: MASS: Masked Sequence to Sequence Pre-training for Language Generation
+title: Mass Masked Sequence To Sequence Pre Training For Language Generation
 subtitle: MASS
-categories: Paper Review
+category: Paper Review
 tags: NLP
 date: 2021-01-19 12:59:35 +0000
-last_modified_at: 2021-01-19 12:59:35 +0000
+last_modified_at: 2020-09-21 15:19:00 +0000
+
 ---
 
-Archive Link: https://arxiv.org/abs/1905.02450
-Created: Sep 21, 2020 3:19 PM
-Field: NLP
-Paper Link: https://arxiv.org/pdf/1905.02450.pdf
-Status: not checked
+## Paper Info
+
+[Archive Link](https://arxiv.org/abs/1905.02450)
+
+[Paper Link](https://arxiv.org/pdf/1905.02450.pdf)
+
 Submit Date: Jun 21, 2019
+
+---
 
 # Abstract
 
