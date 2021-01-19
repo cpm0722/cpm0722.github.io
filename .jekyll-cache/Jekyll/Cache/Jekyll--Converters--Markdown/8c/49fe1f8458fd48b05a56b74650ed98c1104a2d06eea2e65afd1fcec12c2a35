@@ -1,0 +1,320 @@
+I"�T<p>Archive Link: https://arxiv.org/abs/1508.07909
+Created: Sep 21, 2020 3:12 PM
+Field: NLP
+Paper Link: https://arxiv.org/pdf/1508.07909.pdf
+Status: completed
+Submit Date: Aug 15, 2015</p>
+
+<h1 id="backgrounds">Backgrounds</h1>
+
+<h2 id="bleu-score-bilingual-evaluation-understudy-score">BLEU Score (Bilingual Evaluation Understudy) score</h2>
+
+\[BLEU=min\left(1,\frac{\text{output length}}{\text{reference length}}\right)\left(\prod_{i=1}^4precision_i\right)^{\frac{1}{4}}\]
+
+<p>reference sentence와 output sentence의 일치율을 나타내는 score이다. 3단계 절차를 거쳐 최종 BLEU Score를 도출해낸다.</p>
+
+<ol>
+  <li>n-gram에서 순서쌍의 겹치는 정도 (Precision)
+    <ul>
+      <li>Example
+        <ul>
+          <li>
+            <p>output sentence</p>
+
+            <p><strong>빛이 쐬는</strong> 노인은 <strong>완벽한</strong> 어두운 곳에서 <strong>잠든 사람과 비교할 때</strong> 강박증이 <strong>심해질</strong> 기회가 <strong>훨씬 높았다</strong></p>
+          </li>
+          <li>
+            <p>true sentence</p>
+
+            <p><strong>빛이 쐬는</strong> 사람은 <strong>완벽한</strong> 어둠에서 <strong>잠든 사람과 비교할 때</strong> 우울증이 <strong>심해질</strong> 가능성이 <strong>훨씬 높았다</strong></p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>1-gram precision</p>
+
+\[\frac{\text{\# of correct 1-gram in output sentence}}{\text{all 1-gram pair in output sentence}}=\frac{10}{14}\]
+      </li>
+      <li>
+        <p>2-gram precision</p>
+
+\[\frac{\text{\# of correct 2-gram in output sentence}}{\text{all 2-gram pair in output sentence}}=\frac{5}{13}\]
+      </li>
+      <li>
+        <p>3-gram precision</p>
+
+\[\frac{\text{\# of correct 3-gram in output sentence}}{\text{all 3-gram pair in output sentence}}=\frac{2}{12}\]
+      </li>
+      <li>
+        <p>4-gram precision</p>
+
+\[\frac{\text{\# of correct 4-gram in output sentence}}{\text{all 4-gram pair in output sentence}}=\frac{1}{11}\]
+      </li>
+    </ul>
+  </li>
+  <li>같은 단어에 대한 보정 (Clipping)
+    <ul>
+      <li>Example
+        <ul>
+          <li>
+            <p>output sentence</p>
+
+            <p><strong>The more</strong> decomposition <strong>the more</strong> flavor <strong>the</strong> food has</p>
+          </li>
+          <li>
+            <p>true sentence</p>
+
+            <p><strong>The more the</strong> merrier I always say</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>1-gram precision</p>
+
+\[\frac{\text{\# of 1-gram in output sentence}}{\text{all 1-gram pair in output sentence}}=\frac{5}{9}\]
+      </li>
+      <li>
+        <p>Clipping 1-gram precision</p>
+
+\[\frac{\text{\# of 1-gram in output sentence}}{\text{all 1-gram pair in output sentence}}=\frac{3}{9}\]
+      </li>
+    </ul>
+  </li>
+  <li>문장 길이에 대한 보정 (Brevity Penalty)
+    <ul>
+      <li>Example
+        <ul>
+          <li>
+            <p>output sentence</p>
+
+            <p><strong>빛이 쐬는</strong> 노인은 <strong>완벽한</strong> 어두운 곳에서 잠듬</p>
+          </li>
+          <li>
+            <p>true sentence</p>
+
+            <p><strong>빛이 쐬는</strong> 사람은 <strong>완벽한</strong> 어둠에서 잠든 사람과 비교할 때 우울증이 심해질 가능성이 훨씬 높았다</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>brevity penalty</p>
+
+\[min\left(1,\frac{\text{\# of words in output sentence}}{\text{\# of words in true sentence}}\right)=min\left(1,\frac{6}{14}\right)=\frac{3}{7}\]
+      </li>
+    </ul>
+  </li>
+  <li>최종 BLEU Score
+    <ul>
+      <li>Example
+        <ul>
+          <li>
+            <p>output sentence</p>
+
+            <p><strong>빛이 쐬는</strong> 노인은 완벽한 어두운 곳에서 <strong>잠든 사람과 비교할 때</strong> 강박증이 <strong>심해질</strong> 기회가 <strong>훨씬 높았다</strong></p>
+          </li>
+          <li>
+            <p>true sentence</p>
+
+            <p><strong>빛이 쐬는</strong> 사람은 <strong>완벽한</strong> 어둠에서 <strong>잠든 사람과 비교할 때</strong> 우울증이 <strong>심해질</strong> 가능성이 <strong>훨씬 높았다</strong></p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>BLEU Score</p>
+
+\[BLEU=min\left(1,\frac{\text{output length}}{\text{reference length}}\right)\left(\prod_{i=1}^4precision_i\right)^{\frac{1}{4}}\\=min\left(1,\frac{14}{14}\right)\times\left(\frac{10}{14}\times\frac{5}{13}\times\frac{2}{12}\times\frac{1}{11}\right)^{\frac{1}{4}}\]
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>출처: <a href="https://donghwa-kim.github.io/BLEU.html">https://donghwa-kim.github.io/BLEU.html</a></p>
+
+<h1 id="abstract">Abstract</h1>
+
+<p>기존의 NMT (Neural machine translation)는 모두 고정된 개수의 vocabulary 안에서 작업했다. 하지만 translation은 vocabulary 개수의 제한이 없는 open-vocabulary problem이기 OOV(out of vocabulary) word가 많이 발생할 수밖에 없다. 본 논문에서는 이러한 OOV 문제를 subword unit 활용해 해결하고자 했다.</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>기존의 NMT Model은 OOV words에 대해 back-off model 사용해왔다. back-off model 대신 본 논문에서 제시할 subword unit을 사용할 경우 OOV 문제를 더 확실히 해결해 open-vocabulary problem에서 성능 향상을 이끌어낼 수 있다.</p>
+
+<h1 id="subword-translation">Subword Translation</h1>
+
+<p>현재의 language model에서 translatable하지 않더라도, 다른 language의 translation의 sub word를 사용하면 translate이 가능하다.</p>
+
+<ol>
+  <li>이름 등의 고유 명사는 음절 별로 대응시킨다.
+    <ul>
+      <li>Barack Obama (English; German)</li>
+      <li>Барак Обама (Russian)</li>
+      <li>バラク・オバマ (ba-ra-ku o-ba-ma) (Japanese)</li>
+    </ul>
+  </li>
+  <li>동의어, 외래어 등 같은 origin을 갖는 단어들은 일정한 규칙을 갖고 변형되므로, character-level translation 사용한다.
+    <ul>
+      <li>claustrophobia (English)</li>
+      <li>Klaustrophobie (German)</li>
+      <li>Клаустрофобия (Klaustrofobiâ) (Russian)</li>
+    </ul>
+  </li>
+  <li>복합어는 각각의 sub-word를 번역한 후 결합한다.
+    <ul>
+      <li>solar system (English)</li>
+      <li>Sonnensystem (Sonne + System) (German)</li>
+      <li>Naprendszer (Nap + Rendszer) (Hungarian)</li>
+    </ul>
+  </li>
+</ol>
+
+<p>위와 같은 규칙으로 german training data에서 가장 빈도 낮은 100개의 word를 분석하면 english data를 통해 56개의 복합어, 21개의 고유명사, 6개의 외래어 등을 찾아낼 수 있었다.</p>
+
+<h2 id="related-work">Related Work</h2>
+
+<p>OOV는 고유명사 (사람 이름, 지역명), 외래어 등에 대해서 자주 발생한다. 이를 해결하기 위해 character level로 word를 분리한 뒤, 각 character들이 일정한 기준을 충족할 경우 하나의 token으로 묶어 표현하는 방식을 채택했다. 이를 통해 text size는 줄어들게 된다. 이 때 단어를 subword로 구분하는 기존의 Segmentation algorithm을 사용하되,  좀 더 aggressive한 기준을 적용하고자 했다. vocabulary size와 text size는 서로 trade-off 관계이므로 vocabulary size가 감소한다면 시간/공간 복잡도는 낮아지겠지만  unknown word의 개수가 증가하게 된다.</p>
+
+<h2 id="byte-pair-encoding-bpe">Byte Pair Encoding (BPE)</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">re</span><span class="p">,</span> <span class="n">collections</span>
+
+<span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="n">vocab</span><span class="p">):</span>
+	<span class="n">pairs</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">vocab</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+		<span class="n">symbols</span> <span class="o">=</span> <span class="n">word</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+			<span class="n">pairs</span><span class="p">[</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">freq</span>
+	<span class="k">return</span> <span class="n">pairs</span>
+
+<span class="k">def</span> <span class="nf">merge_vocab</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="n">v_in</span><span class="p">):</span>
+	<span class="n">v_out</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="n">bigram</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">escape</span><span class="p">(</span><span class="s">' '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">))</span>
+	<span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s">'(?&lt;!\S)'</span> <span class="o">+</span> <span class="n">bigram</span> <span class="o">+</span> <span class="sa">r</span><span class="s">'(?!\S)'</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">v_in</span><span class="p">:</span>
+		<span class="n">w_out</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">),</span> <span class="n">word</span><span class="p">)</span>
+		<span class="n">v_out</span><span class="p">[</span><span class="n">w_out</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_in</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">v_out</span>
+
+<span class="n">vocab</span> <span class="o">=</span> <span class="p">{</span><span class="s">'low&lt;/w&gt;'</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'lower&lt;/w&gt;'</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+				 <span class="s">'newest&lt;/w&gt;'</span> <span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'widest&lt;/w&gt;'</span> <span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">num_merges</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_merges</span><span class="p">):</span>
+	<span class="n">pairs</span> <span class="o">=</span> <span class="n">get_stats</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+	<span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">pairs</span><span class="p">.</span><span class="n">get</span><span class="p">)</span>
+	<span class="n">vocab</span> <span class="o">=</span> <span class="n">merge_vocab</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">vocab</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+
+<span class="c1"># r .  -&gt;  r.
+# l o  -&gt;  lo
+# lo w -&gt;  low
+# e r. -&gt;  er.
+</span></code></pre></div></div>
+
+<p>BPE는 가장 빈도가 높은 pair of bytes부터 하나의 single byte로 치환해 저장하는 압축 algorithm이다.</p>
+
+<p>BPE는 다음과 같은 과정을 따른다.</p>
+
+<ol>
+  <li>word를 character의 sequence로 변환 후 end symbol  ·  추가</li>
+  <li>모든 character의 pair를 센 후 가장 빈도가 높은 pair of character (‘A’, ‘B’)를 새로운 symbol ‘AB’ (character n-gram)로 치환</li>
+  <li>2번 단계를 원하는 횟수만큼(vocabulary size만큼 token이 생성될 때까지) 반복</li>
+</ol>
+
+<p>BPE의 반복 횟수는 vocabulary size라는 hyperparameter에 따라 결정된다.</p>
+
+<ul>
+  <li>예시
+    <ol>
+      <li>
+        <p>train sentences</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">sentence</span> <span class="o">=</span> <span class="p">[</span> 
+ <span class="s">'black bug bit a black bear but is the black bear that the big black bug bit'</span><span class="p">,</span>
+ <span class="s">'a big bug bit the little beetle but the little beetle bit the big bug back'</span><span class="p">.</span>
+ <span class="s">'the better with the butter is the batter that is better'</span>
+ <span class="p">]</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>count segments</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">[(</span><span class="s">'t h e &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s">'b l a c k &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'b i t &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+  <span class="p">(</span><span class="s">'i s &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'b i g &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'b e a r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+  <span class="p">(</span><span class="s">'b u t &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'t h a t &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'l i t t l e &lt;/w&gt;'</span><span class="p">,</span> <span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+  <span class="p">(</span><span class="s">'b e e t l e &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'b e t t e r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'b a c k &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+  <span class="p">(</span><span class="s">'w i t h &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'b u t t e r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'b a t t e r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>count bi-grams</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">[((</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'h'</span><span class="p">),</span> <span class="mi">11</span><span class="p">),</span>
+  <span class="p">((</span><span class="s">'h'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">),</span> <span class="mi">8</span><span class="p">).</span>
+  <span class="p">((</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span>
+  <span class="p">((</span><span class="s">'g'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">),</span> <span class="mi">7</span><span class="p">)]</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>add merge-rules</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">(</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'h'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">th</span>
+ <span class="p">(</span><span class="s">'h'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">he</span>
+ <span class="p">(</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">&lt;/</span><span class="n">w</span><span class="o">&gt;</span>
+ <span class="p">(</span><span class="s">'g'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">g</span><span class="o">&lt;/</span><span class="n">w</span><span class="o">&gt;</span>
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<h1 id="evaluation">Evaluation</h1>
+
+<h2 id="subword-statistics">Subword statistics</h2>
+
+<p><img src="/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.10.22.jpg" alt="Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.10.22.jpg" /></p>
+
+<ul>
+  <li>
+    <h1 id="tokens-text-size">tokens: text size</h1>
+  </li>
+  <li>
+    <h1 id="types-vocabulary-size-token-개수">types: vocabulary size, token 개수</h1>
+  </li>
+  <li>
+    <h1 id="unk-unknown-word-oov-word의-개수">UNK: unknown word (OOV word)의 개수</h1>
+  </li>
+</ul>
+
+<h2 id="translation-experiments">Translation experiments</h2>
+
+<p><img src="/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.22.15.jpg" alt="Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.22.15.jpg" /></p>
+
+<p><img src="/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.24.02.jpg" alt="Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.24.02.jpg" /></p>
+
+<ul>
+  <li>W Unk: back-off dictionary를 사용하지 않은 model이다.</li>
+  <li>W Dict: back-off dictionary를 사용한 model이다.</li>
+  <li>C2-50k: char-bigram을 사용한 model이다.</li>
+  <li>CHR F3: 인간의 판단과 일치율</li>
+  <li>unigram F1: BLEU unigram(brevity penalty 제외)와 Recall의 조합</li>
+</ul>
+
+<p>source와 target 각각 따로 BPE를 수행하는 BPE보다 동시에 수행하는 BPE joint가 더 좋은 성능을 보였다.</p>
+
+<h1 id="analysis">Analysis</h1>
+
+<h2 id="unigram-accuracy">Unigram accuracy</h2>
+
+<p><img src="/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-22.04.35.jpg" alt="Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-22.04.35.jpg" /></p>
+
+<p><img src="/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-23.20.17.jpg" alt="Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-23.20.17.jpg" /></p>
+
+<h2 id="manual-analysis">Manual Analysis</h2>
+
+<p><img src="/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.29.jpg" alt="Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.29.jpg" /></p>
+
+<p><img src="/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.33.jpg" alt="Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.33.jpg" /></p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>OOV 문제를 해결해 NMT와 같은 open-vocabulary translation에서 좋은 성능을 보였다. 기존에 OOV를 해결하기 위해 사용되던 back-off translation model보다 더 좋은 성능을 보였다.</p>
+:ET

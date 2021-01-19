@@ -1,3 +1,7 @@
+---
+title: Sequence To Sequence Learning With Neural Networks
+---
+
 # Sequence to Sequence Learning with Neural Networks
 title: Sequence to Sequence Learning with Neural Networks
 subtitle: seq2seq
@@ -14,18 +18,13 @@ Paper Link: https://arxiv.org/pdf/1409.3215.pdf
 Status: completed
 Submit Date: Sep 10, 2014
 
-```yaml
-cleanUrl: /nlp/sequence-to-sequence-learning-with-neural-networks
-disqus: true
-```
-
 # Introduction
 
 DNN (Deep Neural Network)는 음성 인식, 사물 인식 등에서 꾸준한 성과를 내어왔다. 하지만 input size가 fixed된다는 한계점이 존재하기 때문에 sequencial problem을 제대로 해결할 수 없다는 한계점이 존재했다. 본 논문에서는 2개의 LSTM (Long Short Term Memory)을 각각 Encoder, Decoder로 사용해 sequencial problem을 해결하고자 했다. 이를 통해 많은 성능 향상을 이루어냈으며, 특히나 long sentence에서 더 큰 상승 폭을 보였다. 이에 더해 단어를 역순으로 배치하는 방식으로도 성능을 향상시켰다.
 
 # The model
 
-![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/Untitled.png](Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/Untitled.png)
+![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/Untitled.png](/assets/images/2021-01-19-Sequence-to-Sequence-Learning-with-Neural-Networks/Untitled.png)
 
 $$h_t = sigmoid\left(W^{hx}x_t + W^{hh}h_{t-1}\right)\\y_t = W^{yh}h_t$$
 
@@ -41,14 +40,14 @@ WMT'14의 English to French dataset으로 실험을 진행했다. source / targe
 
 dataset의 대부분은 short length sentence이기에 mini batch 사용 시 각 batch 마다 아주 적은 수의 long length sentence가 포함되는 문제가 존재했다. 따라서 각 batch마다 대략적으로 비슷한 length를 가진 sentence가 포함되도록 normalization을 수행한 뒤 실험을 진행했다.
 
-![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.39.jpg](Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.39.jpg)
+![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.39.jpg](/assets/images/2021-01-19-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.33.39.jpg)
 
-![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.54.jpg](Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.54.jpg)
+![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.33.54.jpg](/assets/images/2021-01-19-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.33.54.jpg)
 
 SOTA(State of the Art)에 비해 0.5 낮은 BLEU Score를 달성했다. OOV가 여전히 존재함에도 SOTA와 동등한 성능을 달성했다는 것은 충분히 의미가 있다.
 
 위에서 언급했듯이 long Sentence에서도 매우 좋은 성능을 보였다.
 
-![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.39.20.jpg](Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.39.20.jpg)
+![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.39.20.jpg](/assets/images/2021-01-19-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.39.20.jpg)
 
-![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.42.43.jpg](Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.42.43.jpg)
+![Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks%20291498ef530149d190ef2b186d28d51f/05-16-2020-17.42.43.jpg](/assets/images/2021-01-19-Sequence-to-Sequence-Learning-with-Neural-Networks/05-16-2020-17.42.43.jpg)

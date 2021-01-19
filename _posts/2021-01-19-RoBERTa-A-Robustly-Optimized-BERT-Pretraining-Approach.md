@@ -1,3 +1,7 @@
+---
+title: Roberta A Robustly Optimized Bert Pretraining Approach
+---
+
 # RoBERTa: A Robustly Optimized BERT Pretraining Approach
 title: RoBERTa: A Robustly Optimized BERT Pretraining Approach
 subtitle: RoBERTa
@@ -13,11 +17,6 @@ Field: NLP
 Paper Link: https://arxiv.org/pdf/1907.11692.pdf
 Status: completed
 Submit Date: Jul 26, 2019
-
-```yaml
-cleanUrl: /nlp/roberta-a-robustly-optimized-bert-pretraining-approach
-disqus: true
-```
 
 # Introduction
 
@@ -86,13 +85,13 @@ BERT model L=12, H=768, A=12, #params: 110M으로 은 고정해둔 상태로 실
 
 ## Static vs Dynamic Masking
 
-![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-16.01.28.jpg](RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-16.01.28.jpg)
+![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-16.01.28.jpg](/assets/images/2021-01-19-RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/10-03-2020-16.01.28.jpg)
 
 본 논문에서는 Dynamic Masking 기법을 도입했다. 기존의 BERT에서의 Masking Rule은 전처리 과정에서 한 번 수행한 masking이 계속 유지되는 Static Masking이다. 이는 매 epoch마다 동일한 masking으로 학습을 하게 됨을 의미한다. Dynamic Masking은 training data를 10배로 복제해 각각의 training data마다 다른 masking을 수행했다. 같은 비율의 masking 정책 하에서 (80%/10%/10% 등) 다른 word가 masking되는 것이다. 이를 40 epochs동안 수행하는데, 결국 같은 masking으로 총 4epochs의 학습이 이루어지게 되는 것이다. 이러한 Dynamic Masking 기법은 dataset이 클 수록 Static Masking 대비 더 큰 성능 향상을 보였다. 위 Table에서 볼 수 있듯이 static 대비 dynamic masking이 조금이나마 더 좋은 성능을 보였다.
 
 ## Model Input Format and Next Sentence Prediction
 
-![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.21.21.jpg](RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.21.21.jpg)
+![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.21.21.jpg](/assets/images/2021-01-19-RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/10-03-2020-18.21.21.jpg)
 
 NSP가 성능 향상에 얼마나 기여하는지에 대해서는 많은 연구가 있어왔고, 때로는 각 논문마다 다른 결과를 도출해내기도 했다. 이를 검증하기 위해 위와 같은 실험을 진행했다. 각 항목에 대해서 자세히 살펴보겠다.
 
@@ -120,7 +119,7 @@ SEGMENT-PAIR와 SENTENCE-PAIR를 비교해보자. SENTENCE-PAIR가 더 낮은 �
 
 ## Training with large batches
 
-![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.37.29.jpg](RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.37.29.jpg)
+![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.37.29.jpg](/assets/images/2021-01-19-RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/10-03-2020-18.37.29.jpg)
 
 batch-size를 증가시킬수록 optimization speed와 성능 향상에 기여한다는 것은 알려져 있다. BERT 역시 larget batch size가 효과가 있는지 확인을 해보기로 한다. batch size=256, #steps=1M은 original BERT_BASE의 값이다. 이와 동일한 computational cost를 갖는 다른 batch size & #steps를 실험해본다. 실제로 같은 computational cost를 갖는 경우에도 batch size가 커질수록 perplexity가 감소함을 확인할 수 있었다. end-task에서의 정확도도 상승했다.
 
@@ -137,13 +136,13 @@ BPE는 등장 빈도를 기반으로 subword를 생성해내는 기법으로, OO
 3. large mini batches
 4. byte-level BPE
 
-![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.57.17.jpg](RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.57.17.jpg)
+![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-18.57.17.jpg](/assets/images/2021-01-19-RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/10-03-2020-18.57.17.jpg)
 
 original BERT_LARGE model과 성능을 비교하기 위해서 RoBERTa의 model 크기를 BERT_LARGE와 동일하게 했다. 또한 original BERT에서 사용했던 dataset으로만 pretraining한 경우, 추가적인 dataset으로 pretraining한 경우, pretraining 횟수를 100K에서 300K, 500K로 증가시킨 경우를 비교했다. RoBERTa는 BERT_LARGE나 XLNet_LARGE와 동일한 조건에서도 더 높은 성능을 보였으며, 당연하게도 가장 많은 pretraining을 시킨 경우가 가장 좋은 성능을 보였다.
 
 ## GLUE Results
 
-![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.34.jpg](RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.34.jpg)
+![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.34.jpg](/assets/images/2021-01-19-RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/10-03-2020-19.17.34.jpg)
 
 Single-task single models on dev는 GLUE의 각 subtask에 대해 별개로 fine-tuning을 진행한 model들이다.
 
@@ -155,13 +154,13 @@ Ensembles on test에서 RoBERTa는 전체 9개 중 4개의 subtask에서 SOTA를
 
 ## SQuAD Results
 
-![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.49.jpg](RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.49.jpg)
+![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.49.jpg](/assets/images/2021-01-19-RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/10-03-2020-19.17.49.jpg)
 
 SQuAD 2.0에 대해서는 추가적으로 answerable에 대한 binary classification을 수행하고, 기존의 loss와 더했다. 한편, RoBERTa는 original BERT나 XLNet과 달리 pretraining에서 추가적인 QA dataset을 사용하지 않고, 바로 SQuAD에 대해 fine-tuning을 진행했다. 그럼에도 불구하고 BERT나 XLNet에 비해 더 좋은 성능을 보였다.
 
 ## RACE Results
 
-![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.57.jpg](RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.57.jpg)
+![RoBERTa%20A%20Robustly%20Optimized%20BERT%20Pretraining%20Appr%204a1cb342927840b2a7b4a0865bfc6c53/10-03-2020-19.17.57.jpg](/assets/images/2021-01-19-RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/10-03-2020-19.17.57.jpg)
 
 RoBERTa 는 RACE task에서도 Middle school data와 High school data 모두에서 BERT_LARGE나 XLNET_LARGE 대비 더 좋은 성능을 보였다.
 
