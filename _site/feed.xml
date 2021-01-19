@@ -5,8 +5,8 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Jan 2021 00:20:36 -0600</pubDate>
-    <lastBuildDate>Tue, 19 Jan 2021 00:20:36 -0600</lastBuildDate>
+    <pubDate>Tue, 19 Jan 2021 00:27:55 -0600</pubDate>
+    <lastBuildDate>Tue, 19 Jan 2021 00:27:55 -0600</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -343,7 +343,7 @@ Submit Date: Aug 15, 2015&lt;/p&gt;
       </item>
     
       <item>
-        <title>test title v2</title>
+        <title>test title v3</title>
         <description>\[\sum^N_{i=1}i\]
 </description>
         <pubDate>Tue, 19 Jan 2021 00:00:00 -0600</pubDate>
