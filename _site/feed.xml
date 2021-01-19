@@ -5,8 +5,8 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Jan 2021 03:59:14 -0600</pubDate>
-    <lastBuildDate>Tue, 19 Jan 2021 03:59:14 -0600</lastBuildDate>
+    <pubDate>Tue, 19 Jan 2021 04:03:47 -0600</pubDate>
+    <lastBuildDate>Tue, 19 Jan 2021 04:03:47 -0600</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -689,7 +689,7 @@
 
 &lt;p&gt;BERT에 대한 overview&lt;/p&gt;
 
-&lt;p&gt;BERT Review 참고 &lt;a href=&quot;https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/&quot;&gt;BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/&quot;&gt;BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding&lt;/a&gt; 참고&lt;/p&gt;
 
 &lt;h1 id=&quot;experimental-setup&quot;&gt;Experimental Setup&lt;/h1&gt;
 
@@ -730,12 +730,12 @@
   &lt;li&gt;
     &lt;p&gt;GLUE&lt;/p&gt;
 
-    &lt;p&gt;BERT Review 참고 &lt;a href=&quot;https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/&quot;&gt;BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/&quot;&gt;BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding&lt;/a&gt; 참고&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;SQuAD&lt;/p&gt;
 
-    &lt;p&gt;BERT Review 참고 &lt;a href=&quot;https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/&quot;&gt;BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;https://cpm0722.github.io/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/&quot;&gt;BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding&lt;/a&gt; 참고&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;RACE&lt;/p&gt;
