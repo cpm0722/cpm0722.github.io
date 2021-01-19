@@ -467,7 +467,7 @@ int main(void)a
 
 solution은 동시에 테이블에 앉을 수 있는 최대 인원수를 N-1로 제한하는 것이다. 이 때 semaphore를 사용한다. 
 
-[Semaphore](https://www.notion.so/Semaphore-18da3149d8ee4528852dd4786c0ecac1)
+[Semaphore](https://cpm0722.github.io/operating%20system/Semaphore/)
 
 pseudo code는 다음과 같다.
 

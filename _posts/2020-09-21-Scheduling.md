@@ -247,7 +247,7 @@ $$Avr\ T_{arround\_time}=\frac{0+0+1+1+2}{5}\\=\frac{4}{5}=0.8$$
 
 RR에서 좀 더 발전해 Time Slicing의 길이가 다른 Queue를 여러 개 운용하는 것이다.
 
-[Copy of Scheduling: MLFQ(Multi Level Feedback Queue)](https://www.notion.so/Copy-of-Scheduling-MLFQ-Multi-Level-Feedback-Queue-3680760d8cb84fab9605642639d403b3)
+[Scheduling: MLFQ(Multi Level Feedback Queue)](https://cpm0722.github.io/operating%20system/Scheduling-MLFQ/)
 
 ### Incorporating I /O
 
@@ -255,4 +255,11 @@ I/O를 고려하는 scheduling이다. I/O 수행 중에는 CPU를 사용하지 �
 
 ### 성능 비교
 
-[Copy of Scheduling 성능 비교](https://www.notion.so/aac58807a60e43a49a5fdcd9c67f7eac)
+|Scheduling|선택 함수|preemption|응답 시간|문맥 교환 비용|유리한 process|Starvation|
+|:---|:---|:---|:---|:---|:---|:---:|
+|FIFO/FCFS|max[w]|non-preemption|길 수 있음|최소|연산 많은 process|X|
+|SJF/SPN|min[s]|non-preemption|연산 적을수록 짧음|커질 수 있음|짧은 process|O|
+|STCF/SRT|min[s-e]|preemption|짧음|커질 수 있음|연산 적은 process|O|
+|HRRN|max((w+s)/s)|non-preemption|짧음|커질 수 있음|다소 공정|X|
+|RR|상수|preemption|연산 적을수록 짧음|최소|모두에게 공정|X|
+
