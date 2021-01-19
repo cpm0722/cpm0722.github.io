@@ -2,22 +2,6 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
     <url>
-      <loc>http://0.0.0.0:4000/2020-09-28-Scheduling-MLFQ/</loc>
-      
-        <lastmod>2021-01-19T05:14:43-06:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
       <loc>http://0.0.0.0:4000/paper%20review/Deep-contextualized-word-representations/</loc>
       
         <lastmod>2021-01-01T18:00:00-06:00</lastmod>
@@ -181,6 +165,22 @@
       <loc>http://0.0.0.0:4000/operating%20system/Address-Memory/</loc>
       
         <lastmod>2020-10-04T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Scheduling-MLFQ/</loc>
+      
+        <lastmod>2020-09-27T19:00:00-05:00</lastmod>
       
 
       

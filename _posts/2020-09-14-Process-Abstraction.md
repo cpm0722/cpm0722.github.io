@@ -1,6 +1,6 @@
 ---
 
-title: Process Abstraction
+title: "[운영체제] Process Abstraction"
 subtitle: Process Abstraction
 category: Operating System
 tag: Operating System

@@ -1,6 +1,6 @@
 ---
 
-title: Address & Memory
+title: "[운영체제] Address & Memory"
 subtitle: Address & Memory
 category: Operating System
 tag: Operating System

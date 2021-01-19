@@ -1,6 +1,6 @@
 ---
 
-title: Semaphore
+title: "[운영체제] Semaphore"
 subtitle: Semaphore
 category: Operating System
 tag: Operating System

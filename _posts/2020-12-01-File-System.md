@@ -1,7 +1,6 @@
 ---
 
-# File System
-title: File System
+title: "[운영체제] File System"
 subtitle: File System
 category: Operating System
 tag: Operating System

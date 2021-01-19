@@ -1,6 +1,6 @@
 ---
 
-title: Scheduling: MLFQ(Multi Level Feedback Queue)
+title: "[운영체제] Scheduling: MLFQ(Multi Level Feedback Queue)"
 subtitle: MLFQ Scheduling
 category: Operating System
 tag: Operating System

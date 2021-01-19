@@ -1,6 +1,6 @@
 ---
 
-title: Introduction to Operating Systems
+title: "[운영체제] Introduction to Operating Systems"
 subtitle: Introduction to Operating Systems
 category: Operating System
 tag: Operating System

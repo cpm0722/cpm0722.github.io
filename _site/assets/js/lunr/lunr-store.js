@@ -41,13 +41,13 @@ var store = [{
         "url": "http://0.0.0.0:4000/paper%20review/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/",
         "teaser": null
       },{
-        "title": "Introduction to Operating Systems",
+        "title": "[운영체제] Introduction to Operating Systems",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. OS (Operating System) OS의 정의 OS는 SW의 일종이다. ‘자원’(HW)관리’자’(SW)로 정의할 수 있다. HW를 SW로 관리해주는 역할을 수행한다. 구체적으로 CPU, Memory, Disk 등을 struct로 정의해 각각 Process, Virtual Memory, File System을 만들어낸다. OS는 kernel 함수를 이용해 HW를 관리하며, 사용자는 kernel 함수를...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Introduction-to-Operating-Systems/",
         "teaser": null
       },{
-        "title": "Process Abstraction",
+        "title": "[운영체제] Process Abstraction",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Process / Program process와 program를 우선 정의내려 보자. program은 disk에 위치한다. 반면 process는 memory에 위치한다. process는 disk에 위치한 program file을 memory에 올린 것이다. 이 때 program file 전체를 모두 memory에 올릴 수도, 필요한 일부분만 memory에 올릴 수도 있다. 정리하자면, process는...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Process-Abstraction/",
@@ -59,13 +59,19 @@ var store = [{
         "url": "http://0.0.0.0:4000/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/",
         "teaser": null
       },{
-        "title": "Scheduling",
+        "title": "[운영체제] Scheduling",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. 단기 Scheduling Scheduling에는 여러 종류가 있다. 장기(long-term) scheduling은 process가 CPU에 의해 실행될 자격을 부여할 지를 결정하는 것이다. 중기(medium-term) scheduling은 process(의 일부)가 Memory에 올라갈 자격을 부여할 지를 결정하는 것이다. 단기(short-term) scheduling은 CPU에 실행될 다음 process를 선택하는 것으로, Dispatcher라고 불린다. 아래에서는 단기...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Scheduling/",
         "teaser": null
       },{
-        "title": "Address & Memory",
+        "title": "[운영체제] Scheduling: MLFQ(Multi Level Feedback Queue)",
+        "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. RR과 MLFQ Round Robin 기법은 평균 응답 시간은 최소화시켰지만, 평균 반환 시간은 최악이라는 점에서 한계가 있었다. 물론 평균 응답 시간이 짧기 때문에 사용자가 속도가 빠른 시스템으로 인지하도록 착각을 유도할 수 있었다. 하지만 짧은 task에 대해서도 slicing을 수행해 여러 번 나눠...","categories": ["Operating System"],
+        "tags": ["Operating System"],
+        "url": "http://0.0.0.0:4000/operating%20system/Scheduling-MLFQ/",
+        "teaser": null
+      },{
+        "title": "[운영체제] Address & Memory",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Virtual Memory의 등장 과정 Single Programming 초기 (1950~1970)의 운영체제는 물리 memory에 하나의 program만을 올리는 Single Programming 형태였다. 즉, memory는 OS 영역, 실행 중인 1개의 program이 올라가는 영역으로 구분됐다. memory 가상화에 대한 개념도 존재하지 않았다. 동시에 memory를 점유할 수 있는 program의...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Address-Memory/",
@@ -83,7 +89,7 @@ var store = [{
         "url": "http://0.0.0.0:4000/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/",
         "teaser": null
       },{
-        "title": "Paging Mechanism",
+        "title": "[운영체제] Paging Mechanism",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Paging Mechanism paging 기법에 대해 자세히 알아보자. 위에서 살펴본 고정 분할 및 가변 분할 기법은 각각 내부 단편화, 외부 단편화의 문제점이 존재했다. paging은 이러한 단점들을 해결하기 위해 고안된 방식이다. paging을 사용하면 결론적으로 외부 단편화는 발생하지 않으며, 내부 단편화는 아주 적은...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Paging-Mechanism/",
@@ -101,13 +107,13 @@ var store = [{
         "url": "http://0.0.0.0:4000/operating%20system/Concurrency/",
         "teaser": null
       },{
-        "title": "Semaphore",
+        "title": "[운영체제] Semaphore",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Semaphore semaphore는 다수의 thread 사이의 병행성 유지를 위해 OS 단위에서 제공되는 기법이다. 기본적인 작동 원리는 특정 thread가 특정 signal을 수신할 때까지 정해진 위치에서 wait하도록 강제하는 것이다. counting semaphore counting semahpore는 정수값을 갖는 counting 변수와 3가지 연산으로 구성된다. 범용 semaphore라고도 불리운다....","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Semaphore/",
         "teaser": null
       },{
-        "title": "File System",
+        "title": "[운영체제] File System",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Block OS는 disk를 일정한 크기의 block으로 나누어 저장한다. 대개 block의 크기는 4KB이다. 각 block은 그 목적에 따라 아래의 4가지로 구분지을 수 있다. Super block file system의 global한 정보들을 담는 block으로 하나의 file system에 1개만 존재한다. Allocation structure block bitmap, linked...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/File-System/",
@@ -119,7 +125,7 @@ var store = [{
         "url": "http://0.0.0.0:4000/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/",
         "teaser": null
       },{
-        "title": "Disk",
+        "title": "[운영체제] Disk",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Hard Disk hard disk는 가장 범용적으로 사용되는 저장 장치이다. main memory와 다르게 영속적(persistent)으로 data를 저장할 수 있다. hard disk는 물리적으로 회전(rotation)하면서 data를 저장할 장소를 찾는다. 전체 구성 요소는 다음과 같다. hard disk는 여러 층으로 이루어져 있다. 각 층은 platter라는 하나의...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Disk/",
@@ -129,11 +135,5 @@ var store = [{
         "excerpt":"Paper Info Archive Link Paper Link Submit Date: Feb 15, 2018 Introduction word2vec이나 glove와 같은 기존의 word embedding 방식은 다의어의 모든 의미를 담아내기 곤란하다는 심각한 한계점을 갖고 있다. ELMo(Embeddings from Language Models)는 이러한 한계점을 극복하기 위해 embedding에 sentence의 전체 context를 담도록 했다. pre-train된 LSTM layer에 sentence 전체를 넣어 각 word의...","categories": ["Paper Review"],
         "tags": ["NLP"],
         "url": "http://0.0.0.0:4000/paper%20review/Deep-contextualized-word-representations/",
-        "teaser": null
-      },{
-        "title": null,
-        "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. RR과 MLFQ Round Robin 기법은 평균 응답 시간은 최소화시켰지만, 평균 반환 시간은 최악이라는 점에서 한계가 있었다. 물론 평균 응답 시간이 짧기 때문에 사용자가 속도가 빠른 시스템으로 인지하도록 착각을 유도할 수 있었다. 하지만 짧은 task에 대해서도 slicing을 수행해 여러 번 나눠...","categories": [],
-        "tags": null,
-        "url": "http://0.0.0.0:4000/2020-09-28-Scheduling-MLFQ/",
         "teaser": null
       }]

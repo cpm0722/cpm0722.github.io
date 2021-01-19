@@ -1,6 +1,6 @@
 ---
 
-title: Scheduling
+title: "[운영체제] Scheduling"
 subtitle: Scheduling
 category: Operating System
 tag: Operating System

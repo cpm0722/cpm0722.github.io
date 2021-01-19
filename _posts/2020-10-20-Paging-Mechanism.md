@@ -1,6 +1,6 @@
 ---
 
-title: Paging Mechanism
+title: "[운영체제] Paging Mechanism"
 subtitle: Paging Mechanism
 category: Operating System
 tag: Operating System
