@@ -4,8 +4,8 @@ title: "[NLP 논문 리뷰] Deep Contextualized Word Representations (ELMo)"
 subtitle: ELMo
 category: Paper Review
 tags: NLP
-date: 2021-01-19 13:01:33 +0000
-last_modified_at: 2021-01-02 01:02:00 +0000
+date: 2021-01-02 00:00:00 +0000
+last_modified_at: 2021-01-02 00:00:00 +0000
 
 ---
 
@@ -77,7 +77,7 @@ ELMo는 기존의 pre-trained biLM와 큰 구조는 비슷하지만 몇가지 �
 
 # Evaluation
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.00.50.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.00.50.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.00.50.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.00.50.jpg)
 
 ELMo를 단순하게 추가하는 것만으로도 baseline model에 비해 성능이 향상됐고, 이를 통해 SOTA를 달성할 수 있었다.
 
@@ -85,7 +85,7 @@ ELMo를 단순하게 추가하는 것만으로도 baseline model에 비해 성�
 
 ## Alternate layer weighting schemes
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.01.02.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.01.02.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.01.02.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.01.02.jpg)
 
 ELMo representation을 사용하지 않고 단순하게 LSTM의 마지막 layer의 output ($$h_{k,L}$$)을 사용하는 방법도 있다. 이러한 방식은 biLM, CoVe 등 기존의 많은 연구에서 시도되었는데 이와 ELMo representation을 사용한 경우를 비교해본다. Table 2의 Last Only는 마지막 LSTM layer의 output만을 word embedding으로 사용하는 경우이다.
 
@@ -95,23 +95,23 @@ Table 2에서는 task에 관계 없이 동일한 경향성을 보이는데, base
 
 ## Where to include ELMo?
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.01.17.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.01.17.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.01.17.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.01.17.jpg)
 
 위에서 언급했듯 supervised NLP model에 ELMo를 적용할 때에는 input layer의 직후에 ELMo를 삽입했다. SQuAD, SNLI, SRL의 baseline model은 모두 biRNN model인데, ELMo를 biRNN 직후에도 삽입을 한 뒤 성능을 비교했다. SQuAD와 SNLI에 있어서는 ELMo를 biRNN 이후에도 추가하는 것이 더 좋은 성능을 보여줬는데, 이는 SNLI와 SQuAD는 biRNN 직후 attention layer가 있는데, biRNN과 attention layer 사이에 ELMo를 추가함으로써 ELMo representation에 attention이 직접적으로 반영됐기 때문이라고 유추해 볼 수 있다.
 
 ## What information is captured by the biLM's representations?
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.22.09.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.22.09.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.22.09.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.22.09.jpg)
 
 ### Word sense disambiguation
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.22.19.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.22.19.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.22.19.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.22.19.jpg)
 
 WSD는 다의어의 의미를 구분짓는 task로 embedding이 얼마나 semantic 정보를 잘 담고 있는지에 대한 지표이다. ELMo는 WSD-specific한 model과 동등한 수치를, CoVe보다는 월등히 높은 수치를 달성했다. 주목할만한 점은 ELMo의 first LSTM layer의 output보다는 second layer (top layer)의 output이 WSD에서 좋은 성능을 보였다는 점이다.
 
 ### POS tagging
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.22.28.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.22.28.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.22.28.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.22.28.jpg)
 
 POS tagging은 word의 품사를 tagging하는 task로 embedding이 얼마나 syntax 정보를 잘 담고 있는지에 대한 지표이다. 여기서도 ELMo는 POS tagging-specific model과 동둥한 수준의 성능을, CoVe보다는 월등히 높은 성능을 보여줬다. WSD와는 다르게 오히려 first LSTM layer의 output이 top layer의 output보다 POS tagging에서 더 좋은 성능을 보였다는 점이 주목할 만하다.
 
@@ -121,7 +121,7 @@ POS tagging은 word의 품사를 tagging하는 task로 embedding이 얼마나 sy
 
 ## Sample efficiency
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.47.27.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.47.27.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.47.27.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.47.27.jpg)
 
 ELMo의 사용은 일정 수준 이상의 성능 달성에 필요한 parameter update 횟수 및 전체 training set size를 획기적으로 줄여준다. SRL task에 있어서 ELMo 사용 이전 baseline model의 경우에는 486 epoch가 지나서야 score가 수렴했는데, ELMo를 추가하고 난 뒤에는 10 epoch만에 baseline model의 score를 능가했다.
 
@@ -129,7 +129,7 @@ Figure 1에서는 같은 크기의 dataset에서 ELMo를 사용하는 경우가 
 
 ## Visualization of learned weights
 
-![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.47.33.jpg](/assets/images/2021-01-19-Deep-contextualized-word-representations/01-01-2021-23.47.33.jpg)
+![Deep%20contextualized%20word%20representations%204e91492dc98641ada8f1fdfac764a546/01-01-2021-23.47.33.jpg](/assets/images/2020-01-02-Deep-contextualized-word-representations/01-01-2021-23.47.33.jpg)
 
 softmax-normalized parameter $$s_j$$를 시각화한 것이다. ELMo를 biRNN의 input과 output에 사용했을 때를 각각 나눠 비교했다. ELMo가 input에 사용된 경우에는 대개 first LSTM layer가 선호되는 경향을 보였다. 특히나 SQuAD에서 이러한 경향성이 가장 두드러지게 나타났다. 반면 ELMO가 output에 사용된 경우에는 weight가 균형있게 분배되었지만 낮은 layer가 조금 더 높은 선호를 보였다.
 

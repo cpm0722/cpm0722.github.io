@@ -4,8 +4,8 @@ title: "[NLP 논문 리뷰] Neural Machine Translation of Rare Words with Subwor
 subtitle: BPE
 category: Paper Review
 tags: NLP
-date: '2021-01-19 11:58:20 +0000'
-last_modified_at: '2020-09-21 15:12:00 +0000'
+date: '2020-05-03 00:00:00 +0000'
+last_modified_at: '2020-05-03 00:00:00 +0000'
 
 ---
 
@@ -223,7 +223,7 @@ BPE의 반복 횟수는 vocabulary size라는 hyperparameter에 따라 결정된
 
 ## Subword statistics
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.10.22.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.10.22.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.10.22.jpg](/assets/images/2020-05-03-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.10.22.jpg)
 
 - # tokens: text size
 - # types: vocabulary size, token 개수
@@ -231,9 +231,9 @@ BPE의 반복 횟수는 vocabulary size라는 hyperparameter에 따라 결정된
 
 ## Translation experiments
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.22.15.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.22.15.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.22.15.jpg](/assets/images/2020-05-03-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.22.15.jpg)
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.24.02.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.24.02.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.24.02.jpg](/assets/images/2020-05-03-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.24.02.jpg)
 
 - W Unk: back-off dictionary를 사용하지 않은 model이다.
 - W Dict: back-off dictionary를 사용한 model이다.
@@ -247,15 +247,15 @@ source와 target 각각 따로 BPE를 수행하는 BPE보다 동시에 수행하
 
 ## Unigram accuracy
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-22.04.35.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-22.04.35.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-22.04.35.jpg](/assets/images/2020-05-03-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-22.04.35.jpg)
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-23.20.17.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-23.20.17.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-23.20.17.jpg](/assets/images/2020-05-03-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-23.20.17.jpg)
 
 ## Manual Analysis
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.29.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.29.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.29.jpg](/assets/images/2020-05-03-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.29.jpg)
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.33.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.33.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.33.jpg](/assets/images/2020-05-03-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.33.jpg)
 
 # Conclusion
 

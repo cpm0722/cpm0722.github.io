@@ -4,8 +4,8 @@ title: "[NLP 논문 리뷰] KR-BERT: A Small Scale Korean Specific Language Mode
 subtitle: KR-BERT
 category: Paper Review
 tags: NLP Korean
-date: 2021-01-19 13:01:42 +0000
-last_modified_at: 2020-11-13 09:50:00 +0000
+date: 2020-11-13 00:00:00 +0000
+last_modified_at: 2020-11-13 00:00:00 +0000
 
 ---
 
@@ -34,13 +34,13 @@ Korean NLP task를 해결하기 위한 BERT model은 다음과 같은 이유들�
 
 ## Models after BERT
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-18.44.37.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-18.44.37.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-18.44.37.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-18.44.37.jpg)
 
 BERT 이후로 XLNet과 RoBERTa와 같은 대규모 dataset을 사용한 model들이 많이 등장했다. 그에 비해 DistilBERT나 ALBERT와 같이 #parameters를 줄이고, dataset도 늘리지 않은 small model들도 등장했다.
 
 ## Recent Korean BERT models
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-18.44.42.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-18.44.42.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-18.44.42.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-18.44.42.jpg)
 
 # The Need for a Small-scale Language-specific Model
 
@@ -74,13 +74,13 @@ XLNet이나 RoBERTa와 같은 대규모 model은 매우 많은 parameters와 큰
 
 ## Subcharacter Text Representation
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.07.23.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.07.23.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.07.23.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.07.23.jpg)
 
 자음/모음 단위 구분을 통해 얻을 수 있는 이점은 동사나 형용사에 붙는 활용형을 정확하게 잡아낼 수 있다는 것이다. Table 3의 "갔", "감", "간", "갈"은 모두 "가다"의 "가"에 여러 활용형이 붙은 경우이다. 하지만 이를 character-level로 분석하게 되면 모두 별개의 token이 된다. sub-character level로 분석을 함으로써 실제 "가다"의 의미를 파악해 낼 수 있는 것이다.
 
 ## Subword Vocabulary
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.13.13.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.13.13.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.13.13.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.13.13.jpg)
 
 BPE의 성능은 vocabulary size에 따라 결정된다. 이는 heuristic하게 결정해야 하는데, 8000~20000 사이의 vocabulary size에 대해 test를 진행한 뒤 100,000 step에서의 Masked LM Accuracy를 비교한 결과 vocabulary size가 10,000일 때에 가장 성능이 좋다는 결론을 도출해냈다.
 
@@ -102,9 +102,9 @@ BPE를 forward로만 진행하지 않고, backward로도 동시에 진행하는 
 
 ## Comparison with Other Korean Models
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.55.26.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.55.26.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.55.26.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.55.26.jpg)
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.55.37.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.55.37.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-20.55.37.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-20.55.37.jpg)
 
 [Table 4]를 보면 KR-BERT는 Multilingual BERT, KorBERT에 비해 더 적은 vocabulary, 더 적은 parameter, 더 적은 data size를 갖는다는 것을 확인할 수 있다. 반면 KoBERT에 비해서는 더 많은 vocabulary, 더 많은 parameter를 갖지만 dataset은 더 적다.
 
@@ -126,13 +126,13 @@ BPE를 forward로만 진행하지 않고, backward로도 동시에 진행하는 
 
 ### Masked LM Accuracy
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.19.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.19.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.19.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.19.jpg)
 
 KR-BERT의 모든 model이 KoBERT보다 더 좋은 MLM Accuracy를 보여준다. 또한 KR-BERT 내에서 Bidirectional WordPiece를 사용한 model이 조금 더 나은 결과를 보여준다.
 
 ### Downstream tasks
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.26.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.26.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.26.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.26.jpg)
 
 sentiment classification은 Naver Sentiment Movie Corpus Dataset을, question answering은 KorQuAd Dataset을, named entity recognition는 KorNER Dataset을, paraphrase detection은 Korean Paired Question Dataset을 사용했다.
 
@@ -140,9 +140,9 @@ sentiment classification은 Naver Sentiment Movie Corpus Dataset을, question an
 
 ## Analysis of Downstream Tasks
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.31.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.31.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.31.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.31.jpg)
 
-![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.45.jpg](/assets/images/2021-01-19-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.45.jpg)
+![KR-BERT%20A%20Small-Scale%20Korean-Specific%20Language%20Mod%20efca31692a294cd195649aaf8d7f1881/11-13-2020-21.08.45.jpg](/assets/images/2020-11-13-KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/11-13-2020-21.08.45.jpg)
 
 사실 KR-BERT model 중에서 sub-character Bidirectional WordPiece model이 일관되게 최고의 성능을 보여주지는 못한다. 하지만 그럼에도 다른 model들에 비해 일관되게 좋은 성능을 유지한다는 점에서 긍정적이다.
 
