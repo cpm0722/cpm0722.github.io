@@ -23,7 +23,7 @@
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="Hansu Kim's Dev Blog">
 <meta property="og:title" content="Hansu Kim’s Dev Blog">
-<meta property="og:url" content="http://0.0.0.0:4000/2021-01-19-Scheduling-MLFQ/">
+<meta property="og:url" content="http://0.0.0.0:4000/2020-09-28-Scheduling-MLFQ/">
 
 
   <meta property="og:description" content="Hansu Kim’s Dev Blog">
@@ -34,7 +34,7 @@
 
 
 
-  <meta property="article:published_time" content="2021-01-19T05:03:23-06:00">
+  <meta property="article:published_time" content="2021-01-19T05:14:43-06:00">
 
 
 
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="http://0.0.0.0:4000/2021-01-19-Scheduling-MLFQ/">
+<link rel="canonical" href="http://0.0.0.0:4000/2020-09-28-Scheduling-MLFQ/">
 
 
 
@@ -290,7 +290,7 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     
     <meta itemprop="description" content="">
-    <meta itemprop="datePublished" content="2021-01-19T05:03:23-06:00">
+    <meta itemprop="datePublished" content="2021-01-19T05:14:43-06:00">
     
 
 		<script type="text/javascript" async
@@ -333,7 +333,7 @@
 
 <p>Round Robin 기법은 평균 응답 시간은 최소화시켰지만, 평균 반환 시간은 최악이라는 점에서 한계가 있었다. 물론 평균 응답 시간이 짧기 때문에 사용자가 속도가 빠른 시스템으로 인지하도록 착각을 유도할 수 있었다. 하지만 짧은 task에 대해서도 slicing을 수행해 여러 번 나눠 작업을 수행하며 오랜 시간이 지난 후에 최종적으로 작업이 종료되기에 짧은 task에 있어서 너무나 불리한 정책이었다. MLFQ는 이러한 RR의 한계점을 극복하기 위해 고안해낸 방법이다. RR의 장점인 짧은 평균 응답 시간은 유지하면서, RR의 단점인 짧은 task의 불리함을 해결하자는 것이다. RR에서는 Queue를 1개만 운용했다면, MLFQ는 다양한 Time Quantum을 가지는 여러 Queue를 동시에 운용한다. 각각의 Queue들은 RR의 Queue와 동일한 방식으로 작동한다.</p>
 
-<p><img src="/assets/images/2020-10-06-Scheduling-MLFQ/01.png" alt="01.png" /></p>
+<p><img src="/assets/images/2020-09-28-Scheduling-MLFQ/01.png" alt="01.png" /></p>
 
 <p>여러 개의 Queue는 상단에서 하단으로 내려갈수록 Time Quantum은 길어지고, 이는 당연히 process가 CPU를 점유했을 시 한 번에 실행되는 시간이 길어짐을 뜻한다. 반면 상단에서 하단 Queue로 내려갈수록 우선 순위는 떨어져 점유 가능성은 낮아진다. 더 정확히는, 하단에 있는 Queue가 Pop되려면 해당 Queue의 상단에 있는 모든 Queue가 empty 상태여야만 한다.</p>
 
@@ -403,7 +403,7 @@
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2021-01-19T05:03:23-06:00">January 19, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2021-01-19T05:14:43-06:00">January 19, 2021</time></p>
 
 
       </footer>
@@ -413,11 +413,11 @@
     <h4 class="page__share-title">공유하기</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=%20http%3A%2F%2F0.0.0.0%3A4000%2F2021-01-19-Scheduling-MLFQ%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=%20http%3A%2F%2F0.0.0.0%3A4000%2F2020-09-28-Scheduling-MLFQ%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F0.0.0.0%3A4000%2F2021-01-19-Scheduling-MLFQ%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F0.0.0.0%3A4000%2F2020-09-28-Scheduling-MLFQ%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2F0.0.0.0%3A4000%2F2021-01-19-Scheduling-MLFQ%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2F0.0.0.0%3A4000%2F2020-09-28-Scheduling-MLFQ%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
@@ -532,46 +532,6 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/operating%20system/File-System/" rel="permalink">File System
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          7 분 소요
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
-</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
         <a href="/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/" rel="permalink">[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)
 </a>
       
@@ -598,6 +558,46 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">Paper Info
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/operating%20system/File-System/" rel="permalink">File System
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
 </p>
   </article>
 </div>

@@ -34,11 +34,11 @@
 
 
 
-  <meta property="article:published_time" content="2020-12-16T18:00:00-06:00">
+  <meta property="article:published_time" content="2020-11-30T18:00:00-06:00">
 
 
 
-  <meta property="article:modified_time" content="2020-12-16T18:00:00-06:00">
+  <meta property="article:modified_time" content="2020-11-30T18:00:00-06:00">
 
 
 
@@ -292,8 +292,8 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="File System">
     <meta itemprop="description" content="숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.">
-    <meta itemprop="datePublished" content="2020-12-16T18:00:00-06:00">
-    <meta itemprop="dateModified" content="2020-12-16T18:00:00-06:00">
+    <meta itemprop="datePublished" content="2020-11-30T18:00:00-06:00">
+    <meta itemprop="dateModified" content="2020-11-30T18:00:00-06:00">
 
 		<script type="text/javascript" async
 		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -361,9 +361,9 @@
 
 <p>아래는 2개의 allocation structure block이 각각 inode bitmap, data bitmap으로 운용되고, 최대 80개의 inode struct가 5개의 key meta data block에 저장되는 경우의 전체 disk 구조이다.</p>
 
-<p><img src="/assets/images/2020-12-17-File-System/01.png" alt="01.png" /></p>
+<p><img src="/assets/images/2020-12-01-File-System/01.png" alt="01.png" /></p>
 
-<p><img src="/assets/images/2020-12-17-File-System/02.png" alt="02.png" /></p>
+<p><img src="/assets/images/2020-12-01-File-System/02.png" alt="02.png" /></p>
 
 <h2 id="inode-struct">inode struct</h2>
 
@@ -387,7 +387,7 @@
 
 <p>disk에서 실제 file을 읽어들이는 과정을 따라가보자. super block만이 memory에 올라와 있고, bitmap이 담긴 allocation structure block은 disk에 남아있는 상태라고 가정해보자. 다음의 순서를 따른다.</p>
 
-<p><img src="/assets/images/2020-12-17-File-System/03.png" alt="03.png" /></p>
+<p><img src="/assets/images/2020-12-01-File-System/03.png" alt="03.png" /></p>
 
 <ol>
   <li>root directory (“ / “) read
@@ -441,7 +441,7 @@
 
 <p>disk에서 실제 file을 생성하고 write하는 과정을 따라가보자. 역시나 super block만이 memory에 올라와 있고, bitmap이 담긴 allocation structure block은 disk에 남아있는 상태라고 가정한다. 다음의 순서를 따른다.</p>
 
-<p><img src="/assets/images/2020-12-17-File-System/04.png" alt="04.png" /></p>
+<p><img src="/assets/images/2020-12-01-File-System/04.png" alt="04.png" /></p>
 
 <ol>
   <li>root directory (“ / “) read
@@ -484,13 +484,13 @@
 
 <h1 id="ffs-fast-file-system">FFS (Fast File System)</h1>
 
-<p><img src="/assets/images/2020-12-17-File-System/05.png" alt="05.png" /></p>
+<p><img src="/assets/images/2020-12-01-File-System/05.png" alt="05.png" /></p>
 
 <p>fast file system은 기존의 unix file system에서 성능을 더 향상시킨 file system이다. 기존의 file system은 disk 전체에 super block, inode bitmap, data bitmap이 disk에 오직 1개만 존재했다. 또한 inode 역시 disk의 한 영역에 몰려서 저장되어 있어 실제 data block들과의 disk상에서의 물리적 거리가 멀 수 밖에 없었다. FFS는 이러한 단점을 해결하고자 disk 전체를 여러 group으로 나누고, 각 group마다 super block, bitmaps, inodes, data block들을 부여한다. 이를 통해 inode에서 참조하는 data block과 실제 inode가 저장된 block 사이의 물리적 거리가 줄어들어 seek time이 감소한다.</p>
 
 <p>또한 FFS는 directory 구조 역시 개선했는데, 기존의 file system은 단순한 계층 구조였기에 하위 file들의 data block이 부모 directory의 data block과 멀리 떨어져 있을 가능성이 농후했다. FFS는 동일한 directory에 있는 file에 접근할 확률이 40%나 된다는 통계에 기반해 (Name-based Locality) directory와 그 하위 file들을 disk 내에서 같은 group 안에 배치하도록 했다. 이를 통해 seek time을 감소시킬 수 있었다.</p>
 
-<p><img src="/assets/images/2020-12-17-File-System/06.png" alt="06.png" /></p>
+<p><img src="/assets/images/2020-12-01-File-System/06.png" alt="06.png" /></p>
 
 <p>마지막으로, FFS는 disk layout에 대해서 최적화를 수행했다. 초기 hard disk는 HW의 성능이 떨어져 rotation 속도가 많이 느렸다. 하지만 점차 HW가 발전함에 따라 rotation 속도가 비약적으로 상승했고, 연속된 sector를 읽어들이기에는 이미 head가 다음 sector를 지나쳐버리는 증상이 발생하게 되었다. 이를 해결하기 위해 FFS는 다음 sector를 연속적으로 배치하지 않고, 1칸 뒤에 배치하는 식으로 sector 배치를 변경했다.</p>
 
@@ -506,42 +506,42 @@
   <li>
     <p>data block만 정상 갱신, data bitmap, inodes는 crash되는 경우</p>
 
-    <p><img src="/assets/images/2020-12-17-File-System/07.png" alt="07.png" /></p>
+    <p><img src="/assets/images/2020-12-01-File-System/07.png" alt="07.png" /></p>
 
     <p>data bitmap과 inodes가 모두 crash되었기 때문에 bitmap과 inodes 사이의 불일치(inconsistent)는 없다. 따라서 consistent한 상황이다. 대신 data block은 갱신이 되었는데, 해당 block은 data bitmap에서도 unused로 표시가 되어 있고, inodes에도 data block 포인터가 연결이 되어 있지 않기 떄문에 garbage data이다.</p>
   </li>
   <li>
     <p>inodes만 정상 갱신, data bitmap, data block은 crash되는 경우</p>
 
-    <p><img src="/assets/images/2020-12-17-File-System/08.png" alt="08.png" /></p>
+    <p><img src="/assets/images/2020-12-01-File-System/08.png" alt="08.png" /></p>
 
     <p>data bitmap은 crash, inodes는 정상 갱신되었기 때문에 inconsistent한 상황이다. inodes는 이미 data block을 가리키는데 해당 data block에는 data가 쓰여 있지 않고, data bitmap에서도 해당 data block은 unused로 표시가 되어 있다.</p>
   </li>
   <li>
     <p>data bitmap만 정상 갱신, inodes, data block은 crash되는 경우</p>
 
-    <p><img src="/assets/images/2020-12-17-File-System/09.png" alt="09.png" /></p>
+    <p><img src="/assets/images/2020-12-01-File-System/09.png" alt="09.png" /></p>
 
     <p>data bitmap은 정상 갱신되었지만, inodes는 crash되었기 때문에 inconsistent한 상황이다. data block에는 write가 되지 않았고, inodes에서도 해당 data block을 가리키지 않는데 datat bitmap에서는 used로 표시가 되어있는 경우이다. 이후 해당 data block은 사용되지 못하고 낭비될 것이다.</p>
   </li>
   <li>
     <p>data bitmap, inodes는 정상 갱신, data block만 crash되는 경우</p>
 
-    <p><img src="/assets/images/2020-12-17-File-System/10.png" alt="10.png" /></p>
+    <p><img src="/assets/images/2020-12-01-File-System/10.png" alt="10.png" /></p>
 
     <p>data bitmap과 inodes가 모두 정상갱신 되었기 때문에 consistent한 상황이다. data block에 write만 되지 않은 것이기 때문에 garbage data가 저장된 상태이다.</p>
   </li>
   <li>
     <p>inodes, data block은 정상 갱신, data bitmap만 crash되는 경우</p>
 
-    <p><img src="/assets/images/2020-12-17-File-System/11.png" alt="11.png" /></p>
+    <p><img src="/assets/images/2020-12-01-File-System/11.png" alt="11.png" /></p>
 
     <p>data bitmap은 crash되고, inodes는 정상 갱신되었기 때문에 inconsistent한 상황이다. 이 경우 inode에서 data block을 가리키고, 해당 data block에는 정상적인 data가 쓰여져 있음에도 data bitmap에서 unused로 표시가 되어 있기 때문에 언제든 덮어씌워질 수 있고, 다른 inode가 동일한 data block을 가리킬 수도 있다.</p>
   </li>
   <li>
     <p>data bitmap, data block은 정상 갱신, inodes만 crash되는 경우</p>
 
-    <p><img src="/assets/images/2020-12-17-File-System/12.png" alt="12.png" /></p>
+    <p><img src="/assets/images/2020-12-01-File-System/12.png" alt="12.png" /></p>
 
     <p>data bitmap은 정상 갱신, inodes는 crash되었기 때문에 inconsistent한 상황이다. 이 경우 data block에도 정상적인 data가 쓰여져 있고 data bitmap에서도 used로 표시가 되었지만 inodes에서 해당 data block을 가리키지 않기 때문에 해당 data block은 어떤 file에도 연결되지 못한다. 이를 orphan data block이라고 한다.</p>
   </li>
@@ -604,7 +604,7 @@
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-12-17">December 17, 2020</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-12-01">December 1, 2020</time></p>
 
 
       </footer>
@@ -625,11 +625,11 @@
       
   <nav class="pagination">
     
-      <a href="/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/" class="pagination--pager" title="[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)
+      <a href="/operating%20system/Semaphore/" class="pagination--pager" title="Semaphore
 ">이전</a>
     
     
-      <a href="/operating%20system/Disk/" class="pagination--pager" title="Disk
+      <a href="/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/" class="pagination--pager" title="[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)
 ">다음</a>
     
   </nav>
@@ -654,7 +654,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/2021-01-19-Scheduling-MLFQ/" rel="permalink">
+        <a href="/2020-09-28-Scheduling-MLFQ/" rel="permalink">
 </a>
       
     </h2>

@@ -34,11 +34,11 @@
 
 
 
-  <meta property="article:published_time" content="2020-10-04T19:00:00-05:00">
+  <meta property="article:published_time" content="2020-09-20T19:00:00-05:00">
 
 
 
-  <meta property="article:modified_time" content="2020-10-04T19:00:00-05:00">
+  <meta property="article:modified_time" content="2020-09-20T19:00:00-05:00">
 
 
 
@@ -292,8 +292,8 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Scheduling">
     <meta itemprop="description" content="숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.">
-    <meta itemprop="datePublished" content="2020-10-04T19:00:00-05:00">
-    <meta itemprop="dateModified" content="2020-10-04T19:00:00-05:00">
+    <meta itemprop="datePublished" content="2020-09-20T19:00:00-05:00">
+    <meta itemprop="dateModified" content="2020-09-20T19:00:00-05:00">
 
 		<script type="text/javascript" async
 		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -378,11 +378,11 @@
 
 <p>Queue를 이용한 non-preemption 방식이다. 대기 시간을 기준으로 Scheduling을 수행한다. 예시를 통해 이해해보자.</p>
 
-<p><img src="/assets/images/2020-10-05-Scheduling/01.png" alt="01.png" /></p>
+<p><img src="/assets/images/2020-09-21-Scheduling/01.png" alt="01.png" /></p>
 
 <p>위의 5개의 process가 있다고 가정해보자. Arrival Time과 Service Time이 주어졌다. FIFO Scheduling을 수행하면 아래와 같이 실행되게 된다.</p>
 
-<p><img src="/assets/images/2020-10-05-Scheduling/02.png" alt="02.png" /></p>
+<p><img src="/assets/images/2020-09-21-Scheduling/02.png" alt="02.png" /></p>
 
 <p>평균 반환 시간을 계산해보자.</p>
 
@@ -420,7 +420,7 @@
 
 <p>SJF 방식은 FIFO와 동일하게 non-preemption  방식이다. 그런데 먼저 들어온 순서보다는 task의 소요 시간을 기준으로 Scheduling을 수행한다.</p>
 
-<p><img src="/assets/images/2020-10-05-Scheduling/03.png" alt="03.png" /></p>
+<p><img src="/assets/images/2020-09-21-Scheduling/03.png" alt="03.png" /></p>
 
 <p>평균 반환 시간을 계산해보자.</p>
 
@@ -458,7 +458,7 @@
 
 <p>STCF는 위의 scheduling들과는 달리 preemption 방식이다. 즉, 이미 작업을 수행하던 process가 중단될 수 있다는 것이다. 새로운 process가 들어오게 될 경우, 현재 수행 중인 process의 잔여 시간보다 새로 들어온 process의 수행 시간이 짧을 경우에 preemption을 하게 된다.</p>
 
-<p><img src="/assets/images/2020-10-05-Scheduling/04.png" alt="04.png" /></p>
+<p><img src="/assets/images/2020-09-21-Scheduling/04.png" alt="04.png" /></p>
 
 <p>평균 반환 시간을 계산해보자.</p>
 
@@ -498,7 +498,7 @@
 
 <p>대기 시간과 실행 시간을 더한 값을 대기 시간으로 나눈 값이 큰 process를 먼저 선택한다.</p>
 
-<p><img src="/assets/images/2020-10-05-Scheduling/05.png" alt="05.png" /></p>
+<p><img src="/assets/images/2020-09-21-Scheduling/05.png" alt="05.png" /></p>
 
 <p>평균 반환 시간을 계산해보자.</p>
 
@@ -542,7 +542,7 @@
 
 <p>preemption 방식이다. 일정 시간마다 서로 돌아가면서 공정하게 scheduling을 하고자 함이다. 이 때 들어온 순서대로 Queue에 넣고, Queue에서 pop을 해 새로운 process를 선택한다. 만약 수행이 끝났음에도 아직 남아있는 작업이 있다면 다시 Queue에 삽입한다. 가장 중요한 변수는 Time Slicing의 길이인데 만약 무한대에 수렴할 경우, non-preemption과 다를 바 없어지고, 0에 수렴할 경우 context switch 수행 횟수가 급격히 늘어나 overhead가 발생할 것이다. 아래의 예시는 Time Slicing의 길이가 1인 경우이다.</p>
 
-<p><img src="/assets/images/2020-10-05-Scheduling/06.png" alt="06.png" /></p>
+<p><img src="/assets/images/2020-09-21-Scheduling/06.png" alt="06.png" /></p>
 
 <p>평균 반환 시간을 계산해보자.</p>
 
@@ -633,7 +633,7 @@
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-10-05">October 5, 2020</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-09-21">September 21, 2020</time></p>
 
 
       </footer>
@@ -654,7 +654,7 @@
       
   <nav class="pagination">
     
-      <a href="/operating%20system/Process-Abstraction/" class="pagination--pager" title="Process Abstraction
+      <a href="/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/" class="pagination--pager" title="[NLP 논문 리뷰] Subword-level Word Vector Representation for Korean
 ">이전</a>
     
     
@@ -683,7 +683,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/2021-01-19-Scheduling-MLFQ/" rel="permalink">
+        <a href="/2020-09-28-Scheduling-MLFQ/" rel="permalink">
 </a>
       
     </h2>
@@ -803,7 +803,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/operating%20system/File-System/" rel="permalink">File System
+        <a href="/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/" rel="permalink">[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)
 </a>
       
     </h2>
@@ -821,14 +821,14 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 분 소요
+          5 분 소요
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
+    <p class="archive__item-excerpt" itemprop="description">Paper Info
 </p>
   </article>
 </div>

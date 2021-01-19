@@ -4,8 +4,8 @@ title: Scheduling: MLFQ(Multi Level Feedback Queue)
 subtitle: MLFQ Scheduling
 category: Operating System
 tag: Operating System
-date: 2020-10-06 00:00:00 +0000
-last_modified_at: 2020-10-06 00:00:00 +0000
+date: 2020-09-28 00:00:00 +0000
+last_modified_at: 2020-09-28 00:00:00 +0000
 
 ---
 
@@ -15,7 +15,7 @@ last_modified_at: 2020-10-06 00:00:00 +0000
 
 Round Robin 기법은 평균 응답 시간은 최소화시켰지만, 평균 반환 시간은 최악이라는 점에서 한계가 있었다. 물론 평균 응답 시간이 짧기 때문에 사용자가 속도가 빠른 시스템으로 인지하도록 착각을 유도할 수 있었다. 하지만 짧은 task에 대해서도 slicing을 수행해 여러 번 나눠 작업을 수행하며 오랜 시간이 지난 후에 최종적으로 작업이 종료되기에 짧은 task에 있어서 너무나 불리한 정책이었다. MLFQ는 이러한 RR의 한계점을 극복하기 위해 고안해낸 방법이다. RR의 장점인 짧은 평균 응답 시간은 유지하면서, RR의 단점인 짧은 task의 불리함을 해결하자는 것이다. RR에서는 Queue를 1개만 운용했다면, MLFQ는 다양한 Time Quantum을 가지는 여러 Queue를 동시에 운용한다. 각각의 Queue들은 RR의 Queue와 동일한 방식으로 작동한다.
 
-![01.png](/assets/images/2020-10-06-Scheduling-MLFQ/01.png)
+![01.png](/assets/images/2020-09-28-Scheduling-MLFQ/01.png)
 
 여러 개의 Queue는 상단에서 하단으로 내려갈수록 Time Quantum은 길어지고, 이는 당연히 process가 CPU를 점유했을 시 한 번에 실행되는 시간이 길어짐을 뜻한다. 반면 상단에서 하단 Queue로 내려갈수록 우선 순위는 떨어져 점유 가능성은 낮아진다. 더 정확히는, 하단에 있는 Queue가 Pop되려면 해당 Queue의 상단에 있는 모든 Queue가 empty 상태여야만 한다.
 

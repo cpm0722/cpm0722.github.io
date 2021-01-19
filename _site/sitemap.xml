@@ -2,9 +2,9 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
     <url>
-      <loc>http://0.0.0.0:4000/2021-01-19-Scheduling-MLFQ/</loc>
+      <loc>http://0.0.0.0:4000/2020-09-28-Scheduling-MLFQ/</loc>
       
-        <lastmod>2021-01-19T05:03:23-06:00</lastmod>
+        <lastmod>2021-01-19T05:14:43-06:00</lastmod>
       
 
       
@@ -50,22 +50,6 @@
     </url>
   
     <url>
-      <loc>http://0.0.0.0:4000/operating%20system/File-System/</loc>
-      
-        <lastmod>2020-12-16T18:00:00-06:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
       <loc>http://0.0.0.0:4000/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</loc>
       
         <lastmod>2020-12-11T18:00:00-06:00</lastmod>
@@ -82,9 +66,25 @@
     </url>
   
     <url>
+      <loc>http://0.0.0.0:4000/operating%20system/File-System/</loc>
+      
+        <lastmod>2020-11-30T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
       <loc>http://0.0.0.0:4000/operating%20system/Semaphore/</loc>
       
-        <lastmod>2020-11-16T18:00:00-06:00</lastmod>
+        <lastmod>2020-11-23T18:00:00-06:00</lastmod>
       
 
       
@@ -162,70 +162,6 @@
     </url>
   
     <url>
-      <loc>http://0.0.0.0:4000/operating%20system/Address-Memory/</loc>
-      
-        <lastmod>2020-10-05T19:00:00-05:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
-      <loc>http://0.0.0.0:4000/operating%20system/Scheduling/</loc>
-      
-        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
-      <loc>http://0.0.0.0:4000/operating%20system/Process-Abstraction/</loc>
-      
-        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
-      <loc>http://0.0.0.0:4000/operating%20system/Introduction-to-Operating-Systems/</loc>
-      
-        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
       <loc>http://0.0.0.0:4000/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</loc>
       
         <lastmod>2020-10-04T19:00:00-05:00</lastmod>
@@ -242,9 +178,73 @@
     </url>
   
     <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Address-Memory/</loc>
+      
+        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Scheduling/</loc>
+      
+        <lastmod>2020-09-20T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
       <loc>http://0.0.0.0:4000/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/</loc>
       
         <lastmod>2020-09-19T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Process-Abstraction/</loc>
+      
+        <lastmod>2020-09-13T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Introduction-to-Operating-Systems/</loc>
+      
+        <lastmod>2020-09-06T19:00:00-05:00</lastmod>
       
 
       

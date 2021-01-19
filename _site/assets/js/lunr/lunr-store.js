@@ -41,18 +41,6 @@ var store = [{
         "url": "http://0.0.0.0:4000/paper%20review/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/",
         "teaser": null
       },{
-        "title": "[NLP 논문 리뷰] Subword-level Word Vector Representation for Korean",
-        "excerpt":"Paper Info Archive Link Paper Link Submit Date: Jul 1, 2018 Abstract 지금까지의 word representation에 관한 연구는 모두 영어에 집중되어 왔다. language-specific knowledge는 언어 학습에 있어서 매우 결정적인 요소인데 영어와 기원이 다른 여러 다양한 언어들에 대해서는 이러한 연구가 부진했던 것이 사실이다. 본 논문에서는 한국어만의 unique한 언어 구조를 분석해 NLP에 적용해보고자...","categories": ["Paper Review"],
-        "tags": ["NLP","Korean"],
-        "url": "http://0.0.0.0:4000/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/",
-        "teaser": null
-      },{
-        "title": "[NLP 논문 리뷰] RoBERTa: A Robustly Optimized BERT Pretraining Approach",
-        "excerpt":"Paper Info Archive Link Paper Link Submit Date: Jul 26, 2019 Introduction BERT 계열의 model들은 지금까지 매우 뛰어난 성능을 보여왔다. 본 논문에서는 BERT에 대한 추가적인 연구를 통해 기존의 BERT model들이 undertrained되었음을 보여주고, 다음의 개선 방안들을 제시한다. 더 긴 시간, 더 큰 batch size의 training NSP 제거 long sequence에 대한 학습...","categories": ["Paper Review"],
-        "tags": ["NLP"],
-        "url": "http://0.0.0.0:4000/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/",
-        "teaser": null
-      },{
         "title": "Introduction to Operating Systems",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. OS (Operating System) OS의 정의 OS는 SW의 일종이다. ‘자원’(HW)관리’자’(SW)로 정의할 수 있다. HW를 SW로 관리해주는 역할을 수행한다. 구체적으로 CPU, Memory, Disk 등을 struct로 정의해 각각 Process, Virtual Memory, File System을 만들어낸다. OS는 kernel 함수를 이용해 HW를 관리하며, 사용자는 kernel 함수를...","categories": ["Operating System"],
         "tags": ["Operating System"],
@@ -65,6 +53,12 @@ var store = [{
         "url": "http://0.0.0.0:4000/operating%20system/Process-Abstraction/",
         "teaser": null
       },{
+        "title": "[NLP 논문 리뷰] Subword-level Word Vector Representation for Korean",
+        "excerpt":"Paper Info Archive Link Paper Link Submit Date: Jul 1, 2018 Abstract 지금까지의 word representation에 관한 연구는 모두 영어에 집중되어 왔다. language-specific knowledge는 언어 학습에 있어서 매우 결정적인 요소인데 영어와 기원이 다른 여러 다양한 언어들에 대해서는 이러한 연구가 부진했던 것이 사실이다. 본 논문에서는 한국어만의 unique한 언어 구조를 분석해 NLP에 적용해보고자...","categories": ["Paper Review"],
+        "tags": ["NLP","Korean"],
+        "url": "http://0.0.0.0:4000/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/",
+        "teaser": null
+      },{
         "title": "Scheduling",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. 단기 Scheduling Scheduling에는 여러 종류가 있다. 장기(long-term) scheduling은 process가 CPU에 의해 실행될 자격을 부여할 지를 결정하는 것이다. 중기(medium-term) scheduling은 process(의 일부)가 Memory에 올라갈 자격을 부여할 지를 결정하는 것이다. 단기(short-term) scheduling은 CPU에 실행될 다음 process를 선택하는 것으로, Dispatcher라고 불린다. 아래에서는 단기...","categories": ["Operating System"],
         "tags": ["Operating System"],
@@ -75,6 +69,12 @@ var store = [{
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Virtual Memory의 등장 과정 Single Programming 초기 (1950~1970)의 운영체제는 물리 memory에 하나의 program만을 올리는 Single Programming 형태였다. 즉, memory는 OS 영역, 실행 중인 1개의 program이 올라가는 영역으로 구분됐다. memory 가상화에 대한 개념도 존재하지 않았다. 동시에 memory를 점유할 수 있는 program의...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/Address-Memory/",
+        "teaser": null
+      },{
+        "title": "[NLP 논문 리뷰] RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+        "excerpt":"Paper Info Archive Link Paper Link Submit Date: Jul 26, 2019 Introduction BERT 계열의 model들은 지금까지 매우 뛰어난 성능을 보여왔다. 본 논문에서는 BERT에 대한 추가적인 연구를 통해 기존의 BERT model들이 undertrained되었음을 보여주고, 다음의 개선 방안들을 제시한다. 더 긴 시간, 더 큰 batch size의 training NSP 제거 long sequence에 대한 학습...","categories": ["Paper Review"],
+        "tags": ["NLP"],
+        "url": "http://0.0.0.0:4000/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/",
         "teaser": null
       },{
         "title": "[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks",
@@ -107,16 +107,16 @@ var store = [{
         "url": "http://0.0.0.0:4000/operating%20system/Semaphore/",
         "teaser": null
       },{
-        "title": "[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)",
-        "excerpt":"Paper Info Archive Link Paper Link Submit Date: Jan 16, 2013 Introduction one-hot encoding 방식은 word를 단순하게 표현하는 방법이다. word 자체가 갖는 정보를 담고 있지 않고 단순하게 index만을 담고 있는데, index 역시 word에 내재된 어떤 정보와도 관련이 없다. 본 논문에서는 word vector에 word 자체가 담고 있는 의미를 확실하게 담아내고자 했다....","categories": ["Paper Review"],
-        "tags": ["NLP"],
-        "url": "http://0.0.0.0:4000/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/",
-        "teaser": null
-      },{
         "title": "File System",
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. Block OS는 disk를 일정한 크기의 block으로 나누어 저장한다. 대개 block의 크기는 4KB이다. 각 block은 그 목적에 따라 아래의 4가지로 구분지을 수 있다. Super block file system의 global한 정보들을 담는 block으로 하나의 file system에 1개만 존재한다. Allocation structure block bitmap, linked...","categories": ["Operating System"],
         "tags": ["Operating System"],
         "url": "http://0.0.0.0:4000/operating%20system/File-System/",
+        "teaser": null
+      },{
+        "title": "[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)",
+        "excerpt":"Paper Info Archive Link Paper Link Submit Date: Jan 16, 2013 Introduction one-hot encoding 방식은 word를 단순하게 표현하는 방법이다. word 자체가 갖는 정보를 담고 있지 않고 단순하게 index만을 담고 있는데, index 역시 word에 내재된 어떤 정보와도 관련이 없다. 본 논문에서는 word vector에 word 자체가 담고 있는 의미를 확실하게 담아내고자 했다....","categories": ["Paper Review"],
+        "tags": ["NLP"],
+        "url": "http://0.0.0.0:4000/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/",
         "teaser": null
       },{
         "title": "Disk",
@@ -134,6 +134,6 @@ var store = [{
         "title": null,
         "excerpt":"숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다. RR과 MLFQ Round Robin 기법은 평균 응답 시간은 최소화시켰지만, 평균 반환 시간은 최악이라는 점에서 한계가 있었다. 물론 평균 응답 시간이 짧기 때문에 사용자가 속도가 빠른 시스템으로 인지하도록 착각을 유도할 수 있었다. 하지만 짧은 task에 대해서도 slicing을 수행해 여러 번 나눠...","categories": [],
         "tags": null,
-        "url": "http://0.0.0.0:4000/2021-01-19-Scheduling-MLFQ/",
+        "url": "http://0.0.0.0:4000/2020-09-28-Scheduling-MLFQ/",
         "teaser": null
       }]

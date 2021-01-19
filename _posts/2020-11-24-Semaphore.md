@@ -4,8 +4,8 @@ title: Semaphore
 subtitle: Semaphore
 category: Operating System
 tag: Operating System
-date: 2020-11-17 00:00:00 +0000
-last_modified_at: 2020-11-17 00:00:00 +0000
+date: 2020-11-24 00:00:00 +0000
+last_modified_at: 2020-11-24 00:00:00 +0000
 
 ---
 
@@ -107,7 +107,7 @@ queue에서 FIFO 방식을 사용하는 semaphore를 강성(strong) semaphore라
 
 아래는 강성 semaphore의 예시이다. D thread는 생산자,와 A, B, C thread는 소비자인 문제이다. 초기 semaphore 변수 s가 값이 1로 시작된다.  s의 값이 음수일 때에는 그 절댓값이 기다리는 thread의 개수(waitQueue 내 thread의 개수)를 뜻하고, s의 값이 음수가 아닐 때에는 생산자가 생성한 자원의 여분 개수를 뜻한다.
 
-![01.png](/assets/images/2020-11-17-Semaphore/01.png)
+![01.png](/assets/images/2020-11-24-Semaphore/01.png)
 
 ## mutual exclusion problem
 
@@ -136,7 +136,7 @@ int main(void)
 
 thread가 1, 2, 3 순서대로 실행된다고 가정했을 때 각 thread는 아래와 같은 형태로 실행된다.
 
-![02.png](/assets/images/2020-11-17-Semaphore/02.png)
+![02.png](/assets/images/2020-11-24-Semaphore/02.png)
 
 ## producer-consumer problem
 
