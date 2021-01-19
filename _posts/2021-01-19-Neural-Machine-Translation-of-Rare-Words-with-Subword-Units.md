@@ -1,10 +1,11 @@
 ---
 title: Neural Machine Translation of Rare Words with Subword Units
 subtitle: BPE
-categories: NLP
+category: Paper Review
 tags: NLP
-date: 2021-01-19 11:58:20 +0000
-last_modified_at: 2021-01-19 11:58:20 +0000
+date: '2021-01-19 11:58:20 +0000'
+last_modified_at: '2021-01-19 11:58:20 +0000'
+comments: true
 ---
 
 Archive Link: https://arxiv.org/abs/1508.07909
@@ -14,16 +15,11 @@ Paper Link: https://arxiv.org/pdf/1508.07909.pdf
 Status: completed
 Submit Date: Aug 15, 2015
 
-```yaml
-cleanUrl: /nlp/neural-machine-translation-of-rare-words-with-subword-units
-disqus: true
-```
-
 # Backgrounds
 
 ## BLEU Score (Bilingual Evaluation Understudy) score
 
-$$BLEU=min\left(1,\frac{\text{output length}}{\text{reference length}}\right)\left(\prod_{i=1}^4precision_i\right)^{\frac{1}{4}}$$
+$$BLEU=min\left(1,\frac{\text{output length}}{\text{reference_length}}\right)\left(\prod_{i=1}^4precision_i\right)^{\frac{1}{4}}$$
 
 reference sentence와 output sentence의 일치율을 나타내는 score이다. 3단계 절차를 거쳐 최종 BLEU Score를 도출해낸다.
 
@@ -116,11 +112,11 @@ reference sentence와 output sentence의 일치율을 나타내는 score이다. 
 1. 이름 등의 고유 명사는 음절 별로 대응시킨다.
     - Barack Obama (English; German)
     - Барак Обама (Russian)
-    - バラク・オバマ (ba-ra-ku o-ba-ma) (Japanese)
+    - バラク・オバマ (ba-ra-ku o-ba-ma) (Japanese)
 2. 동의어, 외래어 등 같은 origin을 갖는 단어들은 일정한 규칙을 갖고 변형되므로, character-level translation 사용한다.
     - claustrophobia (English)
     - Klaustrophobie (German)
-    - Клаустрофобия (Klaustrofobiâ) (Russian)
+    - Клаустрофобия (Klaustrofobiâ) (Russian)
 3. 복합어는 각각의 sub-word를 번역한 후 결합한다.
     - solar system (English)
     - Sonnensystem (Sonne + System) (German)
@@ -223,7 +219,7 @@ BPE의 반복 횟수는 vocabulary size라는 hyperparameter에 따라 결정된
 
 ## Subword statistics
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.10.22.jpg](Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.10.22.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.10.22.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.10.22.jpg)
 
 - # tokens: text size
 - # types: vocabulary size, token 개수
@@ -231,9 +227,9 @@ BPE의 반복 횟수는 vocabulary size라는 hyperparameter에 따라 결정된
 
 ## Translation experiments
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.22.15.jpg](Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.22.15.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.22.15.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.22.15.jpg)
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.24.02.jpg](Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.24.02.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.24.02.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.24.02.jpg)
 
 - W Unk: back-off dictionary를 사용하지 않은 model이다.
 - W Dict: back-off dictionary를 사용한 model이다.
@@ -247,15 +243,15 @@ source와 target 각각 따로 BPE를 수행하는 BPE보다 동시에 수행하
 
 ## Unigram accuracy
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-22.04.35.jpg](Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-22.04.35.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-22.04.35.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-22.04.35.jpg)
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-23.20.17.jpg](Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-23.20.17.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-23.20.17.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-23.20.17.jpg)
 
 ## Manual Analysis
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.29.jpg](Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.29.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.29.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.29.jpg)
 
-![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.33.jpg](Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.33.jpg)
+![Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.33.jpg](/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.33.jpg)
 
 # Conclusion
 

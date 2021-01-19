@@ -1,1 +1,319 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-01-18T21:00:32-06:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Hansu Kim’s Dev Blog</title><subtitle>Hansu Kim's Dev Blog</subtitle><author><name>Hansu Kim</name><email>cpm0722@gmail.com</email></author></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2021-01-18T21:53:14-06:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Hansu Kim’s Dev Blog</title><subtitle>Hansu Kim's Dev Blog</subtitle><author><name>Hansu Kim</name><email>cpm0722@gmail.com</email></author><entry><title type="html">Neural Machine Translation of Rare Words with Subword Units</title><link href="http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/" rel="alternate" type="text/html" title="Neural Machine Translation of Rare Words with Subword Units" /><published>2021-01-19T05:58:20-06:00</published><updated>2021-01-19T05:58:20-06:00</updated><id>http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units</id><content type="html" xml:base="http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/">&lt;p&gt;Archive Link: https://arxiv.org/abs/1508.07909
+Created: Sep 21, 2020 3:12 PM
+Field: NLP
+Paper Link: https://arxiv.org/pdf/1508.07909.pdf
+Status: completed
+Submit Date: Aug 15, 2015&lt;/p&gt;
+
+&lt;h1 id=&quot;backgrounds&quot;&gt;Backgrounds&lt;/h1&gt;
+
+&lt;h2 id=&quot;bleu-score-bilingual-evaluation-understudy-score&quot;&gt;BLEU Score (Bilingual Evaluation Understudy) score&lt;/h2&gt;
+
+\[BLEU=min\left(1,\frac{\text{output length}}{\text{reference_length}}\right)\left(\prod_{i=1}^4precision_i\right)^{\frac{1}{4}}\]
+
+&lt;p&gt;reference sentence와 output sentence의 일치율을 나타내는 score이다. 3단계 절차를 거쳐 최종 BLEU Score를 도출해낸다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;n-gram에서 순서쌍의 겹치는 정도 (Precision)
+    &lt;ul&gt;
+      &lt;li&gt;Example
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;output sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;빛이 쐬는&lt;/strong&gt; 노인은 &lt;strong&gt;완벽한&lt;/strong&gt; 어두운 곳에서 &lt;strong&gt;잠든 사람과 비교할 때&lt;/strong&gt; 강박증이 &lt;strong&gt;심해질&lt;/strong&gt; 기회가 &lt;strong&gt;훨씬 높았다&lt;/strong&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;true sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;빛이 쐬는&lt;/strong&gt; 사람은 &lt;strong&gt;완벽한&lt;/strong&gt; 어둠에서 &lt;strong&gt;잠든 사람과 비교할 때&lt;/strong&gt; 우울증이 &lt;strong&gt;심해질&lt;/strong&gt; 가능성이 &lt;strong&gt;훨씬 높았다&lt;/strong&gt;&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;1-gram precision&lt;/p&gt;
+
+\[\frac{\text{\# of correct 1-gram in output sentence}}{\text{all 1-gram pair in output sentence}}=\frac{10}{14}\]
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;2-gram precision&lt;/p&gt;
+
+\[\frac{\text{\# of correct 2-gram in output sentence}}{\text{all 2-gram pair in output sentence}}=\frac{5}{13}\]
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;3-gram precision&lt;/p&gt;
+
+\[\frac{\text{\# of correct 3-gram in output sentence}}{\text{all 3-gram pair in output sentence}}=\frac{2}{12}\]
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;4-gram precision&lt;/p&gt;
+
+\[\frac{\text{\# of correct 4-gram in output sentence}}{\text{all 4-gram pair in output sentence}}=\frac{1}{11}\]
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;같은 단어에 대한 보정 (Clipping)
+    &lt;ul&gt;
+      &lt;li&gt;Example
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;output sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;The more&lt;/strong&gt; decomposition &lt;strong&gt;the more&lt;/strong&gt; flavor &lt;strong&gt;the&lt;/strong&gt; food has&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;true sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;The more the&lt;/strong&gt; merrier I always say&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;1-gram precision&lt;/p&gt;
+
+\[\frac{\text{\# of 1-gram in output sentence}}{\text{all 1-gram pair in output sentence}}=\frac{5}{9}\]
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Clipping 1-gram precision&lt;/p&gt;
+
+\[\frac{\text{\# of 1-gram in output sentence}}{\text{all 1-gram pair in output sentence}}=\frac{3}{9}\]
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;문장 길이에 대한 보정 (Brevity Penalty)
+    &lt;ul&gt;
+      &lt;li&gt;Example
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;output sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;빛이 쐬는&lt;/strong&gt; 노인은 &lt;strong&gt;완벽한&lt;/strong&gt; 어두운 곳에서 잠듬&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;true sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;빛이 쐬는&lt;/strong&gt; 사람은 &lt;strong&gt;완벽한&lt;/strong&gt; 어둠에서 잠든 사람과 비교할 때 우울증이 심해질 가능성이 훨씬 높았다&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;brevity penalty&lt;/p&gt;
+
+\[min\left(1,\frac{\text{\# of words in output sentence}}{\text{\# of words in true sentence}}\right)=min\left(1,\frac{6}{14}\right)=\frac{3}{7}\]
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;최종 BLEU Score
+    &lt;ul&gt;
+      &lt;li&gt;Example
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;output sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;빛이 쐬는&lt;/strong&gt; 노인은 완벽한 어두운 곳에서 &lt;strong&gt;잠든 사람과 비교할 때&lt;/strong&gt; 강박증이 &lt;strong&gt;심해질&lt;/strong&gt; 기회가 &lt;strong&gt;훨씬 높았다&lt;/strong&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;true sentence&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;빛이 쐬는&lt;/strong&gt; 사람은 &lt;strong&gt;완벽한&lt;/strong&gt; 어둠에서 &lt;strong&gt;잠든 사람과 비교할 때&lt;/strong&gt; 우울증이 &lt;strong&gt;심해질&lt;/strong&gt; 가능성이 &lt;strong&gt;훨씬 높았다&lt;/strong&gt;&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;BLEU Score&lt;/p&gt;
+
+\[BLEU=min\left(1,\frac{\text{output length}}{\text{reference length}}\right)\left(\prod_{i=1}^4precision_i\right)^{\frac{1}{4}}\\=min\left(1,\frac{14}{14}\right)\times\left(\frac{10}{14}\times\frac{5}{13}\times\frac{2}{12}\times\frac{1}{11}\right)^{\frac{1}{4}}\]
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;출처: &lt;a href=&quot;https://donghwa-kim.github.io/BLEU.html&quot;&gt;https://donghwa-kim.github.io/BLEU.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
+
+&lt;p&gt;기존의 NMT (Neural machine translation)는 모두 고정된 개수의 vocabulary 안에서 작업했다. 하지만 translation은 vocabulary 개수의 제한이 없는 open-vocabulary problem이기 OOV(out of vocabulary) word가 많이 발생할 수밖에 없다. 본 논문에서는 이러한 OOV 문제를 subword unit 활용해 해결하고자 했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;기존의 NMT Model은 OOV words에 대해 back-off model 사용해왔다. back-off model 대신 본 논문에서 제시할 subword unit을 사용할 경우 OOV 문제를 더 확실히 해결해 open-vocabulary problem에서 성능 향상을 이끌어낼 수 있다.&lt;/p&gt;
+
+&lt;h1 id=&quot;subword-translation&quot;&gt;Subword Translation&lt;/h1&gt;
+
+&lt;p&gt;현재의 language model에서 translatable하지 않더라도, 다른 language의 translation의 sub word를 사용하면 translate이 가능하다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;이름 등의 고유 명사는 음절 별로 대응시킨다.
+    &lt;ul&gt;
+      &lt;li&gt;Barack Obama (English; German)&lt;/li&gt;
+      &lt;li&gt;Барак Обама (Russian)&lt;/li&gt;
+      &lt;li&gt;バラク・オバマ (ba-ra-ku o-ba-ma) (Japanese)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;동의어, 외래어 등 같은 origin을 갖는 단어들은 일정한 규칙을 갖고 변형되므로, character-level translation 사용한다.
+    &lt;ul&gt;
+      &lt;li&gt;claustrophobia (English)&lt;/li&gt;
+      &lt;li&gt;Klaustrophobie (German)&lt;/li&gt;
+      &lt;li&gt;Клаустрофобия (Klaustrofobiâ) (Russian)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;복합어는 각각의 sub-word를 번역한 후 결합한다.
+    &lt;ul&gt;
+      &lt;li&gt;solar system (English)&lt;/li&gt;
+      &lt;li&gt;Sonnensystem (Sonne + System) (German)&lt;/li&gt;
+      &lt;li&gt;Naprendszer (Nap + Rendszer) (Hungarian)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위와 같은 규칙으로 german training data에서 가장 빈도 낮은 100개의 word를 분석하면 english data를 통해 56개의 복합어, 21개의 고유명사, 6개의 외래어 등을 찾아낼 수 있었다.&lt;/p&gt;
+
+&lt;h2 id=&quot;related-work&quot;&gt;Related Work&lt;/h2&gt;
+
+&lt;p&gt;OOV는 고유명사 (사람 이름, 지역명), 외래어 등에 대해서 자주 발생한다. 이를 해결하기 위해 character level로 word를 분리한 뒤, 각 character들이 일정한 기준을 충족할 경우 하나의 token으로 묶어 표현하는 방식을 채택했다. 이를 통해 text size는 줄어들게 된다. 이 때 단어를 subword로 구분하는 기존의 Segmentation algorithm을 사용하되,  좀 더 aggressive한 기준을 적용하고자 했다. vocabulary size와 text size는 서로 trade-off 관계이므로 vocabulary size가 감소한다면 시간/공간 복잡도는 낮아지겠지만  unknown word의 개수가 증가하게 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;byte-pair-encoding-bpe&quot;&gt;Byte Pair Encoding (BPE)&lt;/h2&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collections&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_stats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vocab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collections&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;defaultdict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;freq&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vocab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;symbols&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;symbols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;symbols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;symbols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;freq&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;merge_vocab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;v_out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;bigram&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;escape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;' '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'(?&amp;lt;!\S)'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bigram&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;sa&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'(?!\S)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;w_out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;v_out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w_out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_out&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;vocab&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'low&amp;lt;/w&amp;gt;'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'lower&amp;lt;/w&amp;gt;'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+				 &lt;span class=&quot;s&quot;&gt;'newest&amp;lt;/w&amp;gt;'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'widest&amp;lt;/w&amp;gt;'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;num_merges&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_merges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_stats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vocab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;best&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;vocab&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;merge_vocab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;best&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vocab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;best&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# r .  -&amp;gt;  r.
+# l o  -&amp;gt;  lo
+# lo w -&amp;gt;  low
+# e r. -&amp;gt;  er.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;BPE는 가장 빈도가 높은 pair of bytes부터 하나의 single byte로 치환해 저장하는 압축 algorithm이다.&lt;/p&gt;
+
+&lt;p&gt;BPE는 다음과 같은 과정을 따른다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;word를 character의 sequence로 변환 후 end symbol  ·  추가&lt;/li&gt;
+  &lt;li&gt;모든 character의 pair를 센 후 가장 빈도가 높은 pair of character (‘A’, ‘B’)를 새로운 symbol ‘AB’ (character n-gram)로 치환&lt;/li&gt;
+  &lt;li&gt;2번 단계를 원하는 횟수만큼(vocabulary size만큼 token이 생성될 때까지) 반복&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;BPE의 반복 횟수는 vocabulary size라는 hyperparameter에 따라 결정된다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;예시
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;train sentences&lt;/p&gt;
+
+        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;sentence&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; 
+ &lt;span class=&quot;s&quot;&gt;'black bug bit a black bear but is the black bear that the big black bug bit'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'a big bug bit the little beetle but the little beetle bit the big bug back'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'the better with the butter is the batter that is better'&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;count segments&lt;/p&gt;
+
+        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'t h e &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b l a c k &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b i t &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'i s &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b i g &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b e a r &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b u t &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'t h a t &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'l i t t l e &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b e e t l e &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b e t t e r &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b a c k &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'w i t h &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b u t t e r &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b a t t e r &amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;count bi-grams&lt;/p&gt;
+
+        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;p&quot;&gt;[((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'t'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'h'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'h'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'e'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'t'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'g'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;add merge-rules&lt;/p&gt;
+
+        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'t'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'h'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;th&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'h'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'e'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;he&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'t'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'g'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&amp;lt;/w&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;evaluation&quot;&gt;Evaluation&lt;/h1&gt;
+
+&lt;h2 id=&quot;subword-statistics&quot;&gt;Subword statistics&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.10.22.jpg&quot; alt=&quot;Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.10.22.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;h1 id=&quot;tokens-text-size&quot;&gt;tokens: text size&lt;/h1&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h1 id=&quot;types-vocabulary-size-token-개수&quot;&gt;types: vocabulary size, token 개수&lt;/h1&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h1 id=&quot;unk-unknown-word-oov-word의-개수&quot;&gt;UNK: unknown word (OOV word)의 개수&lt;/h1&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;translation-experiments&quot;&gt;Translation experiments&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.22.15.jpg&quot; alt=&quot;Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.22.15.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-21.24.02.jpg&quot; alt=&quot;Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-21.24.02.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;W Unk: back-off dictionary를 사용하지 않은 model이다.&lt;/li&gt;
+  &lt;li&gt;W Dict: back-off dictionary를 사용한 model이다.&lt;/li&gt;
+  &lt;li&gt;C2-50k: char-bigram을 사용한 model이다.&lt;/li&gt;
+  &lt;li&gt;CHR F3: 인간의 판단과 일치율&lt;/li&gt;
+  &lt;li&gt;unigram F1: BLEU unigram(brevity penalty 제외)와 Recall의 조합&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;source와 target 각각 따로 BPE를 수행하는 BPE보다 동시에 수행하는 BPE joint가 더 좋은 성능을 보였다.&lt;/p&gt;
+
+&lt;h1 id=&quot;analysis&quot;&gt;Analysis&lt;/h1&gt;
+
+&lt;h2 id=&quot;unigram-accuracy&quot;&gt;Unigram accuracy&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-22.04.35.jpg&quot; alt=&quot;Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-22.04.35.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/05-09-2020-23.20.17.jpg&quot; alt=&quot;Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/05-09-2020-23.20.17.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;manual-analysis&quot;&gt;Manual Analysis&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.29.jpg&quot; alt=&quot;Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.29.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-19-Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/12-01-2020-01.37.33.jpg&quot; alt=&quot;Neural%20Machine%20Translation%20of%20Rare%20Words%20with%20Subw%203301351401254a21af391ffcd056405b/12-01-2020-01.37.33.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;OOV 문제를 해결해 NMT와 같은 open-vocabulary translation에서 좋은 성능을 보였다. 기존에 OOV를 해결하기 위해 사용되던 back-off translation model보다 더 좋은 성능을 보였다.&lt;/p&gt;</content><author><name>Hansu Kim</name><email>cpm0722@gmail.com</email></author><category term="Paper Review" /><category term="NLP" /><summary type="html">Archive Link: https://arxiv.org/abs/1508.07909 Created: Sep 21, 2020 3:12 PM Field: NLP Paper Link: https://arxiv.org/pdf/1508.07909.pdf Status: completed Submit Date: Aug 15, 2015</summary></entry><entry><title type="html">hello</title><link href="http://0.0.0.0:4000/hello/" rel="alternate" type="text/html" title="hello" /><published>2021-01-19T00:00:00-06:00</published><updated>2021-01-19T00:00:00-06:00</updated><id>http://0.0.0.0:4000/hello</id><content type="html" xml:base="http://0.0.0.0:4000/hello/">\[\sum^N_{i=1}i\]</content><author><name>Hansu Kim</name><email>cpm0722@gmail.com</email></author><summary type="html">\[\sum^N_{i=1}i\]</summary></entry></feed>
