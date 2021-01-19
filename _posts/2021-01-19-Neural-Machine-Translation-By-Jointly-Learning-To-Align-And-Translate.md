@@ -1,6 +1,6 @@
 ---
 
-title: [NLP 논문 리뷰] Neural Machine Translation By Jointly Learning To Align And Translate (Attention Seq2Seq)
+title: "[NLP 논문 리뷰] Neural Machine Translation By Jointly Learning To Align And Translate (Attention Seq2Seq)"
 subtitle: Attention Seq2Seq
 category: Paper Review
 tags: NLP

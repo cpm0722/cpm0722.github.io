@@ -1,6 +1,6 @@
 ---
 
-title: [NLP 논문 리뷰] Attention Is All You Need (Transformer)
+title: "[NLP 논문 리뷰] Attention Is All You Need (Transformer)"
 subtitle: Transformer
 category: Paper Review
 tags: NLP

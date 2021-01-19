@@ -1,6 +1,6 @@
 ---
 
-title: [NLP 논문 리뷰] MASS: Masked Sequence To Sequence Pre Training For Language Generation
+title: "[NLP 논문 리뷰] MASS: Masked Sequence To Sequence Pre Training For Language Generation"
 subtitle: MASS
 category: Paper Review
 tags: NLP

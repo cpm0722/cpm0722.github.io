@@ -1,6 +1,6 @@
 ---
 
-title: [NLP 논문 리뷰] RoBERTa: A Robustly Optimized BERT Pretraining Approach
+title: "[NLP 논문 리뷰] RoBERTa: A Robustly Optimized BERT Pretraining Approach"
 subtitle: RoBERTa
 category: Paper Review
 tags: NLP
