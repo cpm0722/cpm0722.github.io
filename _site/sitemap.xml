@@ -10,9 +10,13 @@
 <loc>http://0.0.0.0:4000/</loc>
 </url>
 <url>
-<loc>http://0.0.0.0:4000/posts/</loc>
+<loc>http://0.0.0.0:4000/tags/</loc>
 </url>
 <url>
-<loc>http://0.0.0.0:4000/tags/</loc>
+<loc>http://0.0.0.0:4000/years/</loc>
+</url>
+<url>
+<loc>http://0.0.0.0:4000/google38a77fb8b9e9ac2a.html</loc>
+<lastmod>2021-01-14T19:29:03-06:00</lastmod>
 </url>
 </urlset>

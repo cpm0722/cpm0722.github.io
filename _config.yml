@@ -18,14 +18,16 @@ minimal_mistakes_skin    : "dirt" # "default" "air", "aqua", "contrast", "dark",
 locale                   : "ko-KR"
 title                    : "Hansu Kim's Dev Blog"
 title_separator          : "&#124;"
-subtitle                 : "cpm0722@gmail.com" # site tagline that appears below site title in masthead
+subtitle                 : "기술 블로그" # site tagline that appears below site title in masthead
 name                     : "Hansu Kim"
 description              : "Hansu Kim's Dev Blog"
 url                      : "https://cpm0722.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "cpm0722/cpm0722.github.com" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : "/assets/images/teaser.jpg" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : "/assets/images/logo.jpg" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+search									 : true
+search_full_content			 : false
+# teaser                   : "/assets/images/teaser.jpg" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
+# logo                     : "/assets/images/logo.jpg" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : "Hansu Kim's Dev Blog" # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
@@ -101,26 +103,26 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:cpm0722@gmail.com"
+      url: "mailto:cpm0722@gmail.com"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      # url: "https://www.facebook.com/profile.php?id=100003380546271"
+      url: "https://www.facebook.com/profile.php?id=100003380546271"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/cpm0722"
+      url: "https://github.com/cpm0722"
 
 # Site Footer
 footer:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:cpm0722@gmail.com"
+      url: "mailto:cpm0722@gmail.com"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      # url: "https://www.facebook.com/profile.php?id=100003380546271"
+      url: "https://www.facebook.com/profile.php?id=100003380546271"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/cpm0722"
+      url: "https://github.com/cpm0722"
 
 
 # Reading Files
@@ -258,7 +260,7 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: # true
+      comments: true
       share: true
       related: true
 

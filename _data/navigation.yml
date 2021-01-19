@@ -2,9 +2,9 @@
 main:
   - title: "Categories"
     url: /categories/
+  - title: "Years"
+    url: /years/
   - title: "Tags"
     url: /tags/
   - title: "About"
     url: /about/
-  - title: "Posts"
-    url: /posts/

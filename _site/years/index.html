@@ -5,29 +5,26 @@
   Free for personal and commercial use under the MIT license
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
 -->
-<html lang="en" class="no-js">
+<html lang="ko" class="no-js">
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Posts by Year - Site Title</title>
-<meta name="description" content="An amazing website.">
+<!-- begin _includes/seo.html --><title>Posts by Year | Hansu Kim’s Dev Blog</title>
+<meta name="description" content="Hansu Kim’s Dev Blog">
 
 
-  <meta name="author" content="Your Name">
+  <meta name="author" content="Hansu Kim">
   
 
 
 <meta property="og:type" content="website">
-<meta property="og:locale" content="en_US">
-<meta property="og:site_name" content="Site Title">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Hansu Kim's Dev Blog">
 <meta property="og:title" content="Posts by Year">
-<meta property="og:url" content="http://0.0.0.0:4000/posts/">
+<meta property="og:url" content="http://0.0.0.0:4000/years/">
 
 
-  <meta property="og:description" content="An amazing website.">
-
-
-
+  <meta property="og:description" content="Hansu Kim’s Dev Blog">
 
 
 
@@ -36,12 +33,15 @@
 
 
 
-  
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://0.0.0.0:4000/posts/">
+
+<link rel="canonical" href="http://0.0.0.0:4000/years/">
 
 
 
@@ -51,7 +51,7 @@
     "@context": "https://schema.org",
     
       "@type": "Person",
-      "name": "Your Name",
+      "name": "Hansu Kim",
       "url": "http://0.0.0.0:4000/"
     
   }
@@ -65,7 +65,7 @@
 <!-- end _includes/seo.html -->
 
 
-<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Site Title Feed">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Hansu Kim's Dev Blog Feed">
 
 <!-- https://t.co/dKP3o1e -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -103,7 +103,7 @@
 
   </head>
 
-  <body class="layout--posts">
+  <body class="layout--years">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -125,21 +125,21 @@
       <nav id="site-nav" class="greedy-nav">
         
         <a class="site-title" href="/">
-          Site Title
-          
+          Hansu Kim's Dev Blog
+          <span class="site-subtitle">기술 블로그</span>
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="/categories/">Categories</a>
             </li><li class="masthead__menu-item">
+              <a href="/years/">Years</a>
+            </li><li class="masthead__menu-item">
               <a href="/tags/">Tags</a>
             </li><li class="masthead__menu-item">
               <a href="/about/">About</a>
-            </li><li class="masthead__menu-item">
-              <a href="/posts/">Posts</a>
             </li></ul>
         
         <button class="greedy-nav__toggle hidden" type="button">
-          <span class="visually-hidden">Toggle menu</span>
+          <span class="visually-hidden">토글 메뉴</span>
           <div class="navicon"></div>
         </button>
         <ul class="hidden-links hidden"></ul>
@@ -163,14 +163,20 @@
 <div itemscope itemtype="https://schema.org/Person">
 
   
+    <div class="author__avatar">
+      
+        <img src="/assets/images/profile.jpg" alt="Hansu Kim" itemprop="image">
+      
+    </div>
+  
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Your Name</h3>
+      <h3 class="author__name" itemprop="name">Hansu Kim</h3>
     
     
       <div class="author__bio" itemprop="description">
-        <p>I am an <strong>amazing</strong> person.</p>
+        <p>ML, NLP를 주로 공부하는 학부생입니다.</p>
 
       </div>
     
@@ -181,28 +187,35 @@
     <ul class="author__urls social-icons">
       
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Republic of Korea</span>
         </li>
       
 
       
         
           
-        
+            <li><a href="mailto:cpm0722@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
           
         
           
-        
+            <li><a href="https://www.facebook.com/profile.php?id=100003380546271" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i><span class="label">Facebook</span></a></li>
           
         
           
-        
+            <li><a href="https://github.com/cpm0722" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
       
 
       
 
+      
+        <li>
+          <a href="mailto:cpm0722@gmail.com">
+            <meta itemprop="email" content="cpm0722@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
       
 
       
@@ -301,24 +314,24 @@
     
       
         
-      
+          <li><a href="mailto:cpm0722@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
         
       
         
-      
+          <li><a href="https://www.facebook.com/profile.php?id=100003380546271" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
         
       
         
-      
+          <li><a href="https://github.com/cpm0722" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
         
       
     
 
-    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> RSS</a></li>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2021 Your Name. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2021 Hansu Kim. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
