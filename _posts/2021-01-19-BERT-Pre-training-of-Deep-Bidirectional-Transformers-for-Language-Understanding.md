@@ -1,6 +1,6 @@
 ---
 
-title: Bert Pre Training Of Deep Bidirectional Transformers For Language Understanding
+title: [NLP 논문 리뷰] BERT: Pre-Training of Deep Bidirectional Transformers for Language Understanding
 subtitle: BERT
 category: Paper Review
 tags: NLP

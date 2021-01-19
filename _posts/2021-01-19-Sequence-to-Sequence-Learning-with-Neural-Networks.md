@@ -1,7 +1,7 @@
 ---
 
-title: Sequence To Sequence Learning With Neural Networks
-subtitle: seq2seq
+title: [NLP 논문 리뷰] Sequence To Sequence Learning With Neural Networks (Seq2Seq)
+subtitle: Seq2Seq
 category: Paper Review
 tags: NLP
 date: 2021-01-19 12:59:59 +0000

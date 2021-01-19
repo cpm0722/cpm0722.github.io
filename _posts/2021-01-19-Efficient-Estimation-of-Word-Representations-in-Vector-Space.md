@@ -1,6 +1,6 @@
 ---
 
-title: Efficient Estimation Of Word Representations In Vector Space
+title: [NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)
 subtitle: Word2Vec
 category: Paper Review
 tags: NLP

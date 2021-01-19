@@ -1,6 +1,6 @@
 ---
 
-title: Xlnet Generalized Autoregressive Pretraining For Language Understanding
+title: [NLP 논문 리뷰] Xlnet: Generalized Autoregressive Pretraining for Language Understanding
 subtitle: XLNet
 category: Paper Review
 tags: NLP
