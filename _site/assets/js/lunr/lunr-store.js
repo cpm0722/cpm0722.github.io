@@ -71,8 +71,8 @@ var store = [{
         "url": "http://0.0.0.0:4000/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/",
         "teaser": null
       },{
-        "title": "test",
-        "excerpt":"title: test title subtitle: test subtitle categories: test_category tags: test_tag date: 2021-01-19 14:33:00 +0000 use_math: true   \\[\\sum^N_{i=1}i\\] ","categories": [],
+        "title": "test title",
+        "excerpt":"\\[\\sum^N_{i=1}i\\] ","categories": [],
         "tags": [],
         "url": "http://0.0.0.0:4000/test/",
         "teaser": null
