@@ -1,6 +1,6 @@
 ---
 
-title: "[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks"
+t10-03-2020-19.17.57itle: "[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks"
 subtitle: Korean Tokenizing
 category: Paper Review
 tags: NLP Korean
@@ -41,7 +41,7 @@ BPE는 data에서의 등장 빈도를 기반으로 묶는 data-driven statistica
 
 # Tokenization Strategies
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-15.06.26.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-15.06.26.jpg)
+![01.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/01.jpg)
 
 ## Consonant and Vowel (CV)
 
@@ -77,7 +77,7 @@ AI Hub에서 제공하는 Korean-English parallel corpus를 사용했다. 800K s
 
 ### BPE Modeling
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-15.20.52.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-15.20.52.jpg)
+![02.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/02.jpg)
 
 BPE training에서 AI Hub의 data를 사용할지, Wiki의 data를 사용할지 결정하기 위해 실험을 진행한다. AI Hub의 data는 실제 task에서의 dataset과 동일하기 때문에 corpus set이 동일하다는 장점이 있는 반면, dataset의 크기가 작다. Wiki는 dataset의 크기가 크지만, news에서 사용되는 corpus set과는 차이가 있다는 단점이 있다. Korean-English Translation, English-Korean Translation으로 성능을 비교해보는데, English BPE는 동일하게 Wiki의 English data를 사용한 32K BPE model을 사용했다. 그 결과, AI Hub의 data보다 Wiki의 data가 더 좋은 성능을 보였다. 따라서 본 논문의 이후에서는 Korean BPE training을 위해 Wiki dataset을 사용한다.
 
@@ -87,13 +87,13 @@ BPE training에서 AI Hub의 data를 사용할지, Wiki의 data를 사용할지 
 
 ### Results
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-15.41.07.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-15.41.07.jpg)
+![03.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/03.jpg)
 
 Ko-En, En-Ko task에서 모두 Subword와 Syllable가 Morpheme이나 Word보다 더 좋은 성능을 보였다. 이는 OOV Rate와 큰 관련이 있다. 한국어의 형태론은 너무 복잡한 규칙을 가져 수많은 형태소가 있기 때문에 64K 이하의 vocabulary size로는 OOV가 많이 발생할 수 밖에 없다. 하지만 Subword나 Syllable은 모두 음절 단위의 model이기 때문에 OOV가 훨씬 더 적게 발생하게 된다.
 
 한편 CV의 OOV Rate는 당연히 가장 적은 수치를 보여주는데, Syllable나 Subword에 비해서는 더 낮은 성능을 보여준다. 이를 통해 자모 단위는 문맥 정보를 담기에는 너무 작은 단위라는 것을 알 수 있다.
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-15.52.00.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-15.52.00.jpg)
+![04.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/04.jpg)
 
 Morpheme-aware Subword가 가장 높은 BLEU Scores를 보여준다. Subword와 Morpheme-aware Subword의 차이점은 BPE 이전에 Morpheme의 수행 여부인데, 이는 결국 형태소 경계를 넘어서는 BPE가 발생하는가(Token Spanning Morpheme Boundaries)에서 차이를 보인다. 위의 Table은 Subword에서 각 vocabulary size마다 발생하는 Tokens Spanning Morpheme Boundaries의 횟수를 보여준다. 6~37%의 수치를 보여준다. 이를 통해 형태소 단위의 구분은 tokenization에서 성능에 큰 영향을 미치며, 따라서 형태소 구분을 무시한 단순 BPE는 Korean Tokenizing에 적합하지 않다는 것을 알 수 있다.
 
@@ -125,13 +125,13 @@ BERT model을 사용했다. KorQuAD, KorNLI, KorSTS, NSMC, PAWS의 5개 NLU down
 
 ### Training
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-16.17.38.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-16.17.38.jpg)
+![05.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/05.jpg)
 
 large corpus로 pre-train된 BERT-Base model을 각 5개의 NLU task에 대해 별개로 fine-tuning시켜 실험을 진행했다. Korean Wiki Corpus(640MB)는 pre-train을 진행할 만큼 충분한 크기가 되지 못해 Namu-wiki에서 5.5GB의 corpus를 추출해내 Wiki Corpus와 함께 사용했다. hyperparameter는 batch size=1024, max sequence length=128, optimizer=AdamW, lr=5e-5, warm up steps=10K를 사용했다. pre-trained된 BERT Model을 Tensorflow에서 Pytorch로 convert한 뒤, HuggingFace Transformers를 사용해 fine-tuning을 진행했다. fine-tuning에서의 hyperparameter는 위 Table의 값을 사용했다.
 
 ### Results
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-16.38.13.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-16.38.13.jpg)
+![06.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/06.jpg)
 
 위의 5개의 NLU task에 대해 6개의 tokenizing 기법을 사용해 각각 dev set, test set에서의 성능을 측정했다. 예외적으로 KorQuAD의 경우에는 test set이 부족해 dev set만 사용했다.
 
@@ -141,7 +141,7 @@ KorQuAD task에서는 Subword 64K model이 가장 좋은 성능을 보였다. Mo
 
 # Discussion
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-16.57.50.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-16.57.50.jpg)
+![07.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/07.jpg)
 
 ## Token Length
 
@@ -155,7 +155,7 @@ Figure 1에서 8K Subword model과 16K Morpheme-aware Subword model을 비교해
 
 ## Under-trained Tokens
 
-![An%20Empirical%20Study%20of%20Tokenization%20Strategies%20for%20%202aedcd7cbfe34b1b9c25caf885ff22a5/10-10-2020-16.58.00.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/10-10-2020-16.58.00.jpg)
+![08.jpg](/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/08.jpg)
 
 Figure 1에서 Morpheme model의 경우에만 예외적으로 CV보다 훨씬 못한 성능을 보여준다. 이러한 결과는 Morpheme model의 높은 OOV rate에서 비롯된다. 위의 Experiments에서 살펴본 NMT task에서의 result table을 확인해보면 Morpheme model의 OOV rate가 압도적으로 높다는 것을 확인할 수 있다(본 논의에서는 모든 task에서 최악의 성능을 보여줬던  Word model은 배제한다). OOV는 정의하자면 test set에서만 등장하고, train set에서는 등장하지 않았던 token을 의미한다. 즉, OOV rate가 높다는 것은 model 입장에서는 처음 보는 token이 test set에서 등장하는 비율을 의미한다. 완전히 처음 마주하는 token이 아닌 적게 마주한 token들의 비율에 대해서도 확인을 해보자. OOV가 아니라 하더라도 등장 빈도가 확연히 적은 token들에 대해서는 model이 under-train했을 가능성이 농후하기 때문이다. Figure 2에서는 실제로 등장 빈도가 낮은 token의 비중이 얼마나 되는지를 시각화 한 graph이다.  예상했던 바와 같이 OOV rate가 높은 Morpheme model이 훨씬 더 높은 수치를 보여준다는 것을 확인할 수 있다. 이는 결국 Morpheme model이 under-trained된 token의 비중이 높다는 것을 의미한다. 이러한 이유로 Morpheme model이 타 model 대비 확연히 낮은 성능을 보이는 것이다.
 

@@ -43,7 +43,7 @@ character-level의 subword features 방식은 여러 NLP task에서 성능 향�
 
 ## Decomposition of Korean Words
 
-![Subword-level%20Word%20Vector%20Representation%20for%20Korea%2030b57d4d751a4283a16ae362d09b11b1/09-19-2020-19.34.06.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/09-19-2020-19.34.06.jpg)
+![01.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/01.jpg)
 
 우선 한국어 word를 'jamo' 단위로 분해하는 것에 대해서 살펴보자. 영어와는 달리 한국어는 자음과 모음의 규칙이 엄격하다. (영어의 straight을 생각해보자. 모음 a 뒤에 모음 i가 연속해서 등장한다.) 한국어의 character는 영어의 음절과 비슷한 개념이며, 이는 3개의 'jamo' {1. 초성('chosung'):자음, 2. 중성('joongsung'):모음, 3. 종성( 'jongsung'):자음}로 구성된다.  'joongsung'에 대해서는 예외적으로 없을 수도 있는데, 이 때에는 새로운 symbol $$e$$를 사용했다. 아래는 한국어 '해'와 '달'에 대한 예시이다.
 
@@ -81,7 +81,7 @@ $$\{\lt,ㅁ,ㅓ\},\{ㅓ,ㄱ,ㅇ\},\{ㄱ,ㅇ,ㅓ\},\{ㅆ,ㄷ,ㅏ\},\{ㅓ,ㅆ,ㄷ\
 
 ## Corpus
 
-![Subword-level%20Word%20Vector%20Representation%20for%20Korea%2030b57d4d751a4283a16ae362d09b11b1/09-19-2020-21.42.46.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/09-19-2020-21.42.46.jpg)
+![02.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/02.jpg)
 
 한국어 Wikipedia, 뉴스 기사, Sejong Corpus에서 corpus를 수집했다. 0.12 billion개의 token과 638,708개의 unique words를 얻었는데, 이 중 10번 미만 등장한 corpus는 제외했다.
 
@@ -173,25 +173,25 @@ similarity task와 analogy task를 통해 word vector의 성능을 측정하고�
 
 ### Word Similarity
 
-![Subword-level%20Word%20Vector%20Representation%20for%20Korea%2030b57d4d751a4283a16ae362d09b11b1/09-19-2020-22.22.32.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/09-19-2020-22.22.32.jpg)
+![03.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/03.jpg)
 
 단어 유사성에 대해 인간의 판단과 model의 cosine 유사도에 대해서 스피어만 상관 계수를 분석한다. word-level skip-gram인 SG보다 character n-gram을 적용한 SISG가 훨씬 더 좋은 성능을 보였다. 'jamo'-level로 더 깊게 분해한 model이 가장 좋은 성능을 보였다.
 
 ### Word Analogy
 
-![Subword-level%20Word%20Vector%20Representation%20for%20Korea%2030b57d4d751a4283a16ae362d09b11b1/09-19-2020-22.23.02.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/09-19-2020-22.23.02.jpg)
+![04.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/04.jpg)
 
 a:b=c:d의 4개의 단어가 주어진다. 왕:왕비 = 남자:여자 와 같은 형태이다. 여기서 a + b - c와 d 사이의 cosine 유사도를 구한다.
 
 ### Sentiment Analysis
 
-![Subword-level%20Word%20Vector%20Representation%20for%20Korea%2030b57d4d751a4283a16ae362d09b11b1/09-19-2020-22.23.11.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/09-19-2020-22.23.11.jpg)
+![05.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/05.jpg)
 
 word-level skip-gram보다 character-level, 'jamo'-level이 더 좋은 성능을 보였다. 하지만 word-level은 F1 Score에서 본 논문에서 제시한 model보다는 낮지만, character-level, 'jamo'-level보다 더 좋은 수치를 보였다. 이는 영화 리뷰라는 dataset의 특성 상 고유 명사가 많이 등장하는데, word-level이 고유 명사를 더 잘 잡아내기 때문으로 추측할 수 있다.
 
 ### Effect of Size n in both n-grams
 
-![Subword-level%20Word%20Vector%20Representation%20for%20Korea%2030b57d4d751a4283a16ae362d09b11b1/09-19-2020-22.23.18.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/09-19-2020-22.23.18.jpg)
+![06.jpg](/assets/images/2020-09-20-Subword-level-Word-Vector-Representation-for-Korean/06.jpg)
 
 'jamo'-level에서의 n은 증가할수록 대체로 더 좋은 성능을 보여주지만, character-level에서의 n은 그렇지 않다. 이는 한국어의 특성에서 기인하는데, 대부분의 한국어 word는 6자 이하(97.2%)이기 때문에, n=6은 과도하게 큰 값이다. 4자 이하의 word는 전체 한국어 word의 82.6%를 차지하기 때문에 n=4로도 충분하다고 볼 수 있다.
 

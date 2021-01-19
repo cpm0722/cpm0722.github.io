@@ -26,7 +26,7 @@ RNN과 LSTM을 사용한 Neural Network 접근 방식은 Sequencial Transduction
 
 Transformer Model은 attention seq2seq model과 비슷한 구조를 지닌다. Encoder-Decoder가 존재하고, fixed length의 하나의 context vector를 사용하는 방식이 아닌, 하나의 output word마다 각기 다른 새로운 attention을 갖는 context vector를 생성해 활용한다. 차이점은 RNN을 제거했다는 점이다. NLP에서 RNN을 사용하는 가장 큰 이유는 sequential 정보를 유지하기 위함(각 단어들의 순서 및 위치 정보를 활용하기 위함)이다. Transformer에서는 RNN 대신 FC Layer를 사용하되, 각 word vector마다 positional Encoding 과정을 추가해 각 word의 position 정보를 word vector 안에 추가했다.
 
-![Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/06-25-2020-16.22.01.jpg](/assets/images/2020-07-05-Attention-is-All-You-Need/06-25-2020-16.22.01.jpg)
+![01.jpg](/assets/images/2020-07-05-Attention-is-All-You-Need/01.jpg)
 
 ### Encoder
 
@@ -34,9 +34,9 @@ Transformer의 Encoder는 6개의 동일한 Encoder Layer를 Stack 구조로 쌓
 
 ### Self Attention Layer
 
-![Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/06-25-2020-16.15.49.jpg](/assets/images/2020-07-05-Attention-is-All-You-Need/06-25-2020-16.15.49.jpg)
+![02.jpg](/assets/images/2020-07-05-Attention-is-All-You-Need/02.jpg)
 
-![Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/06-25-2020-16.16.23.jpg](/assets/images/2020-07-05-Attention-is-All-You-Need/06-25-2020-16.16.23.jpg)
+![03.jpg](/assets/images/2020-07-05-Attention-is-All-You-Need/03.jpg)
 
 $$Attention\left(Q,K,V\right)=softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
@@ -50,7 +50,7 @@ query, key, value는 모두 위의 단어 예시에서 vector 단위였다. 이�
 
 ### Decoder
 
-![Attention%20is%20All%20You%20Need%20c507a427409b4c17b5611326901ab369/The_transformer_encoder_decoder_stack.png](/assets/images/2020-07-05-Attention-is-All-You-Need/The_transformer_encoder_decoder_stack.png)
+![04.jpg](/assets/images/2020-07-05-Attention-is-All-You-Need/04.jpg)
 
 출처: [https://jalammar.github.io/illustrated-transformer/](https://jalammar.github.io/illustrated-transformer/)
 

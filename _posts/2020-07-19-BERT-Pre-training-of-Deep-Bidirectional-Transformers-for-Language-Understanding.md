@@ -43,11 +43,11 @@ Pre-Training에서는 Unsupervised Learning을 통해 Language 자체의 represe
 
 ## Architecture
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/Untitled.png](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/Untitled.png)
+![01.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/01.jpg)
 
 ## Input/Output Representation
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/Untitled%201.png](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/Untitled%201.png)
+![02.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/02.jpg)
 
 Input은 Token Embedding + Segment Embedding + Position Embedding이다. Token은 실제 word에 대한 embedding, Segment Embedding은 몇번째 Sentence에 포함되는지에 대한 Embedding, Position Embedding은 Input에서 몇번째 word인지에 대한 Embedding이다. Transformer에서도 언급했듯이 병렬 처리를 위해 RNN을 제거하고, Sequential한 정보를 보존하기 위해 Position Embedding을 추가한 것이다. BERT는 Input으로 최대 2개의 Sentence까지 입력받을 수 있는데, 이는 Q&A task와 같은 2개의 문장에 대한 task도 처리할 수 있게 하기 위함이다. 이를 처리하기 위해 Seperate Token SEP을 추가했다. 이와 별개로 Classification을 위한 CLS Token도 Input Sequence의 제일 앞에 항상 위치하는데, Transformer Encoder의 최종 Output에서 CLS Token과 대응되는 값은 Classification을 처리하기 위해 sequence representation을 종합해서 담게 된다.
 
@@ -59,17 +59,17 @@ BERT는 MLM과 NSP라는 2가지의 Unsupervised task를 사용해 Pre-training�
 
 기존의 전통적인 Pre-train은 left to right model과 right to left model을 단순하게 concat한 뒤 사용했다는 점에서 제대로 된 Bidirectional context를 담지 못했다. BERT는 MLM을 사용해 진정한 의미의 Bidirectional context를 담게 된다. 기존의 Model들이 unidirectional model의 결과들을 concat해서 사용한 이유는, bidirectional model은 word 자기 자신을 masking하더라도 다층 Layer에서는 간접적으로 자기 자신에 대한 정보를 알 수 있기에 제대로 된 학습이 불가능했기 때문이다.
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/07-25-2020-16.59.58.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/07-25-2020-16.59.58.jpg)
+![03.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/03.jpg)
 
 위의 왼쪽 Model은 BERT로, Bidirectional Model이다. 반면 오른쪽 Model은 OpenAI GPT로, left to right Unidirectional Model이다. Bidirectional Model에서 다층 Layer일 경우에는 이전 Layer의 모든 Output에서 모든 Token에 대한 정보를 담게 되기 때문에 특정 Token을 Masking했다고 하더라도 다음 Layer에서는 자기 자신에 대한 정보를 간접적으로 참조할 수 있게 된다. 반면 Unidirectional Model에서는 이런 일이 발생하지 않는다. 
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-17.23.54.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-17.23.54.jpg)
+![04.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/04.jpg)
 
 이를 해결하기 위해 BERT는 Masking을 하되, 그 중 80%에 대해서만 실제 MASK Token으로 변경하고, 10%에 대해서는 random한 다른 Token으로, 나머지 10%에 대해서는 변경을 하지 않았다. Masking을 하는 비율은 전체 Word 중에서 15%만 수행했으므로, 실제로 MASK Token으로 변경되는 비율은 12%밖에 되지 않는다. 이를 통해 얻을 수 있는 이점은 Model이 모든 Token에 대해서 실제로 맞는 Token인지 의심을 할 수 밖에 없게 되기에 제대로 된 학습을 이뤄낼 수 있다. 이는 Bidirectional Model의 한계인 간접 참조도 해결했다.
 
 ### NSP (Next Sentence Prediction)
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-17.25.30.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-17.25.30.jpg)
+![05.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/05.jpg)
 
 QA, NLI와 같은 task는 token단위보다 sentence 단위의 관계가 더 중요하다. 위의 MLM만으로 Pre-training을 하게 될 경우 token level의 정보만을 학습하기 때문에 NSP를 통해 sentence level의 정보도 담기로 한다. 두 문장이 서로 연결되는 문장인지를 isNext, NotNext의 Binary classification으로 해석하게 된다. 50%의 확률로 isNext, NotNext의 data를 생성한 뒤에 학습을 시킨다. 이 때 위에서 언급한 CLS Token이 주요하게 사용된다.
 
@@ -113,7 +113,7 @@ dataset의 크기가 클 수록 Hyperparameter의 영향이 줄어들었으며, 
 
 ## Experiments
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-18.06.17.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-18.06.17.jpg)
+![06.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/06.jpg)
 
 ### GLUE (General Language Understanding Evaluation)
 
@@ -121,7 +121,7 @@ GLUE 에 맞춰 fine-tuning을 진행한다. CLS token에 대응하는 hidden la
 
 $$log(softmax(CW^T))$$
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-06-2020-21.18.26.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-06-2020-21.18.26.jpg)
+![07.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/07.jpg)
 
 BERT_BASE는 L=12, H=768, A=12, #Parameters=110M이고, BERT_LARGE는 L=24, H=1024, A=16, #Parameters=340M이다. (L: Layer 개수, H: hidden size, A: self-attention head 개수)
 
@@ -163,7 +163,7 @@ $$\hat s_{i,j} > s_{null} + r$$
 
 ### Effect of Pre-training Tasks
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-14.49.27.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-14.49.27.jpg)
+![08.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08.jpg)
 
 No NSP는 pre-training 단계에서 MLM만 수행하고, NSP는 수행하지 않은 model이다. LTR & No NSP는 NSP 는 수행하지 않고, MLM 대신 Left to Right의 Unidirectional attention을 적용한 model이다.
 
@@ -173,13 +173,13 @@ BERT와 No NSP를 비교함으로써 NSP Pre-training이 성능 향상에 영향
 
 ### Effect of Model Size
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-15.23.06.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-15.23.06.jpg)
+![09.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/09.jpg)
 
 GLUE task 중 3개를 뽑아 Model Size에 따라 성능을 측정했다. Model Size가 증가할수록 성능이 높아지는 경향을 확인할 수 있다. 특히 MRPC task는 pre-training task와 차이가 큰 task이면서 3600개의 적은 labeled training data를 사용했음에도 불구하고 Model Size가 증가함에 따라 성능도 향상됐다. 이를 통해 Model Size의 증가는 번역과 Langauge Modeling과 같은 큰 scale의 task에서도 성능 향상에 기여함은 물론, 충분한 pre-training이 있었다는 전제 하에 작은 scale의 task에서도 성능 향상에 기여함을 알 수 있다.
 
 ### Feature-based Approach with BERT
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-17.02.13.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-17.02.13.jpg)
+![10.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/10.jpg)
 
 지금까지의 BERT는 모두 fine-tuning model이었다. Feature-based Approach가 갖는 장점은 크게 두 가지로 정리할 수 있다.
 
@@ -190,12 +190,12 @@ NER(Named Entity Recognition) task에 대해 Feature-based Approach를 적용해
 
 ### Effect of Number of Training Steps
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-17.52.27.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-17.52.27.jpg)
+![11.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/11.jpg)
 
 Training을 많이 수행할 수록 성능은 향상되지만, 일정 수준 이상을 지나면 점차 converge하게 된다. MLM과 LTR을 비교했을 때 MLM이 수렴이 더 늦게 일어나기 때문에 Training에 더 많은 시간이 소요된다고 볼 수 있다. 하지만 절대적인 성능 수치는 시작과 거의 동시에 LTR을 뛰어넘는다.
 
 ### Different Masking Procedure
 
-![BERT%20Pre-training%20of%20Deep%20Bidirectional%20Transforme%2017fcc0b61a15468490e784be91487627/08-08-2020-17.58.09.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/08-08-2020-17.58.09.jpg)
+![12.jpg](/assets/images/2020-07-19-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/12.jpg)
 
 Masking Rate를 다르게 하며 성능을 비교해보자. MASK는 실제로 [MASK] token으로 변경된 비율을, SAME은 동일한 word로 남아있는 비율을, RND는 random한 다른 word로 변경된 비율을 뜻한다. BERT는 각각 80%, 10%, 10%를 채택했다. MASK가 100%나 RND가 100%인 경우에 성능이 최악이라는 것을 알 수 있다.

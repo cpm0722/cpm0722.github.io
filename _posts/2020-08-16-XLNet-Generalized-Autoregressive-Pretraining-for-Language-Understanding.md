@@ -103,19 +103,19 @@ $$p\left(X_{z_t}=x|x_{z_{<t}}\right) =\frac{exp\left(e\left(x\right)^Tg_\theta\l
 
 $$h_\theta\left(x_{z<t}\right)$$는 기존 Transformer의 hidden state와 동일한 구조이다. 현재 시점($$t$$)의 정보까지 포함해 입력으로 받는다. 이를 Content Representation이라고 하고, Key, Value에 사용하게 된다.
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-18.49.21.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-18.49.21.jpg)
+![01.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/01.jpg)
 
 ### Query Representation
 
 $$g_\theta\left(x_{z_{<t}},z_t\right)$$는 현재 시점($$t$$)의 정보는 제외하고 입력으로 받는다. 대신 현재 시점($$t$$)의 위치 정보($$z_t$$)는 입력으로 받는다. 이를 Query Representation이라고 하고, Query에 사용하게 된다.
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-18.49.27.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-18.49.27.jpg)
+![02.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/02.jpg)
 
 ### Permutation Language Modeling with Two-Stream Attention
 
 전체적인 Two-Stream Attention의 구조는 아래와 같다.
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-18.52.01.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-18.52.01.jpg)
+![03.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/03.jpg)
 
 Query의 초기값은 weight $$w$$, Key와 Value의 초기 값은 embedding된 input 값 $$e\left(x_i\right)$$이다. 이후 아래와 같이 갱신된다.
 
@@ -159,27 +159,27 @@ Pretraining의 Dataset으로 BooksCorpus, Giga5, CLue Web2012-B, Common Crawl da
 
 ## Fair Comparison with BERT
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.01.26.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.01.26.jpg)
+![04.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/04.jpg)
 
 XLNet-Large는 모든 task에서 BERT-Large보다 좋은 성능을 보였다.
 
 ## Comparison with RoBERTa: Scailing Up
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.01.38.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.01.38.jpg)
+![05.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/05.jpg)
 
 XLNet은 RACE task에서도 BERT, GPT, RoBERTa 등의 model들보다 좋은 성능을 보였다.
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.05.19.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.05.19.jpg)
+![06.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/06.jpg)
 
 XLNet은 SQuAD2.0 task에서도 BERT, RoBERTa보다 좋은 성능을 보였다.
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.06.47.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.06.47.jpg)
+![07.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/07.jpg)
 
 XLNet은 GLUE task에서도 BERT, RoBERTa보다 좋은 성능을 보였다.
 
 ## Ablation Study
 
-![XLNet%20Generalized%20Autoregressive%20Pretraining%20for%20L%20833f510b35954da883906c9bc6b15f9d/08-29-2020-22.12.45.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08-29-2020-22.12.45.jpg)
+![08.jpg](/assets/images/2020-08-16-XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/08.jpg)
 
 1~4를 살펴보면 XLNet-Base가 BERT나 Transformer-XL보다 좋은 성능을 보인다. 이를 통해 permutation language modeling objective가 효과적이었다는 것을 알 수 있다.
 

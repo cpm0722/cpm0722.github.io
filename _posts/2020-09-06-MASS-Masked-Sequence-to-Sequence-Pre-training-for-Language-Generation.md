@@ -56,7 +56,7 @@ $$L(\theta;X)=\frac{1}{\vert X\vert}\sum_{x\in X}log\ P\left(x^{u:v}|x^{\backsla
 
 $$x^{u:v}$$는 sentence $$x$$에서 $$u$$부터 $$v$$까지의 tokens를 뜻하고, $$x^{\backslash u:v}$$는 $$u$$부터 $$v$$까지 MASK된 sentence $$x$$ 전체를 뜻한다.
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-14.43.42.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-14.43.42.jpg)
+![01.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/01.jpg)
 
 구체적인 예시를 살펴보자. 위의 figure는 $$x_3, x_4, x_5, x_6$$이 masking된 상황이다. $$k=4$$이고, $$u=3, v=6$$이다. Encoder의 input 으로는 masking된 input sentence $$x^{\backslash u:v}$$가 들어오게 되는데, 이 경우에는 $$x^{\backslash 3:6}$$이다. Attention 기법을 적용해 Decoder로 값이 넘어오고, Decoder에서는 새로운 input으로 $$x^{u:v}$$, 이 경우에는 $$x^{3:6}$$을 입력으로 받는다. 이 때 input sentence에서 masking이 되지 않은 token들 ($$x_1, x_2, x_7,x_8)$$의 경우에는 Decoder에 input으로 들어오지 않는다. Decoder의 input으로 들어온 token들 $$x_3, x_4, x_5, x_6$$ 중 실제로는 $$x^{u:v}_{<t}$$로 사용되기 때문에 마지막 token $$x_6$$은 사용되지 않는다.
 
@@ -70,19 +70,19 @@ $$k=1$$인 경우는 사실 BERT에서의 MLM(Masked Langage Model)이다. BERT�
 
 [Copy of BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://www.notion.so/Copy-of-BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding-5cb659c4a2164cfa8ffc5dadfc411993)
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-15.15.36.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-15.15.36.jpg)
+![02.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/02.jpg)
 
 BERT의 MLM은 MASK token에 대해서 predict만 하는 방식으로 Pre-training을 수행했다. 즉 Decoder에 어떠한 input도 추가적으로 주어지지 않고, Encoder에서 넘어온 Context Vector만을 사용해 MASK token을 predict하는 training이다. 이는 MASS에서 $$k=1$$일 때의 경우이다.
 
 한편, $$k=m$$ ($$m$$은 sentence의 token 개수)인 경우는 일반적인 Language Generation Model이다.
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-15.15.46.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-15.15.46.jpg)
+![03.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/03.jpg)
 
 $$k=m$$인 경우는 사실 일반적인 Language Model의 경우이다. $$k=m$$라는 것은 다시 말해 input sentence의 모든 token이 masking되었다는 의미이고, 이는 Encoder의 input으로 아무 값도 들어오지 않는 경우와 같다. 한편 Decoder의 입장에서는 input으로 original sentence의 masked token들이 들어오게 되는데, original sentence는 모두 masking되었으므로 모든 token이 Decoder로 들어오는 경우이다. 이는 결국 Encoder가 없이 Decoder만 작동하는 상황이라고 볼 수 있다. 일반적인 GPT model와 같다.
 
 위의 두 가지 special case와 일반적인 case를 Table로 정리하면 아래와 같다.
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-15.07.10.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-15.07.10.jpg)
+![04.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/04.jpg)
 
 ### Comparison with existing model
 
@@ -116,19 +116,19 @@ Unsupervised NMT를 수행하기 위해서 back-translation을 사용한다. bil
 
 ### Results on Unsupervised NMT
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-16.53.36.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-16.53.36.jpg)
+![05.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/05.jpg)
 
 RNN 계열의 Model들(1,2행)과 Pre-train 방식이 아닌 Transformer Model(3,4행), Pre-train Transfor Model(5행)들을 모두 능가했다. Unsupervised NMT는 난제이기에 절대적인 Score는 낮지만, 기존의 SOTA Model인 XLM을 능가했다는 점에서 의미가 있다.
 
 ### Compared with Other Pre-training Methods
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-16.59.37.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-16.59.37.jpg)
+![06.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/06.jpg)
 
 다양한 Pre-train Methods를 적용한 Model들과 Unsupervised NMT에서의 BLEU Score를 비교해본다. BERT와 동일한 방식으로 Pre-train을 진행한 BERT+LM Model, denoising auto-encoder Pre-train 방식을 적용한 DAE를 모두 능가했다.
 
 ### Experiments on Low-Resource NMT
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-17.04.30.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-17.04.30.jpg)
+![07.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/07.jpg)
 
 Pre-train은 20000 step 진행했으며, bilingual dataset의 sample 크기가 10K, 100K, 1M인 경우에 대해서 각각의 언어에 대해 별개로 성능을 측정했다. baseline model은 pre-train 과정이 없는 model이다. 모든 경우에 있어서 MASS가 baseline model을 압도했으며, 특히나 Sample의 크기가 작을 수록(fine-tuning을 적게 수행할수록) 성능의 차이가 컸다.
 
@@ -140,13 +140,13 @@ Gigaword corpus를 fine-tuning data로 사용했다. sample size가 10K, 100K, 1
 
 ### Results
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-17.12.48.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-17.12.48.jpg)
+![08.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/08.jpg)
 
 pre-training을 수행하지 않은 basemodel과 비교를 수행했으며, dataset이 적은 경우에 대해서 압도적인 성능 격차를 보였다는 것을 확인할 수 있다.
 
 ### Compared with Other Pre-Training Methods
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-17.14.56.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-17.14.56.jpg)
+![09.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09.jpg)
 
 다른 Pre-training model에 대해서도 더 좋은 성능을 보였다.
 
@@ -158,7 +158,7 @@ Cornell movie dialog corpus를 Dataset으로 사용했다. 총 140K의 pair 중�
 
 ### Results
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-17.18.54.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-17.18.54.jpg)
+![10.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/10.jpg)
 
 Sample 크기가 10K, 110K인 경우에 대해서 성능을 측정했다. MASS는 모든 경우에서 Pre-training을 수행하지 않은 Baseline Model과, Pre-training을 수행한 BERT Model보다 더 좋은 성능을 보였다. PPL은 더 낮은 Score가 더 좋은 성능을 뜻한다.
 
@@ -166,7 +166,7 @@ Sample 크기가 10K, 110K인 경우에 대해서 성능을 측정했다. MASS�
 
 ### Study of Different k
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-17.25.48.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-17.25.48.jpg)
+![11.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/11.jpg)
 
 hyperparameter $$k$$에 대해서 자세히 살펴보자. $$k$$의 값 변화에 따른 Score들을 측정해본다.
 
@@ -186,7 +186,7 @@ Language Generation task에서는 Encoder(source)와 Decoder(target) 중 어느 
 
 ### Ablation Study of MASS
 
-![MASS%20Masked%20Sequence%20to%20Sequence%20Pre-training%20for%20%2071c3529aece54ebab2fa54feb4adda92/09-04-2020-17.37.03.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/09-04-2020-17.37.03.jpg)
+![12.jpg](/assets/images/2020-09-06-MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/12.jpg)
 
 MASS에서 추가된 새로운 Masking Rule 다음의 2가지로 정리할 수 있다.
 
