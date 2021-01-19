@@ -1,0 +1,388 @@
+I"ۋ<h1 id="semaphore">Semaphore</h1>
+<p>title: Semaphore
+subtitle: Semaphore
+categories: “Operating System”
+tags: “Operating System”
+date: 2021-01-19 19:11:49 +0000
+last_modified_at: 2021-01-19 19:11:49 +0000
+—</p>
+
+<p>Created: Nov 17, 2020 5:06 PM
+Reference: Jiman Hong: Soongsil Univ., Operating Systems Concepts 10th by A.Silberschatz P.Galvin and G.Gagne
+status: completed</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">cleanUrl</span><span class="pi">:</span> <span class="s">/os/semaphore</span>
+<span class="na">disqus</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.</p>
+
+<h1 id="semaphore-1">Semaphore</h1>
+
+<p>semaphore는 다수의 thread 사이의 병행성 유지를 위해 OS 단위에서 제공되는 기법이다. 기본적인 작동 원리는 특정 thread가 특정 signal을 수신할 때까지 정해진 위치에서 wait하도록 강제하는 것이다.</p>
+
+<h2 id="counting-semaphore">counting semaphore</h2>
+
+<p>counting semahpore는 정수값을 갖는 counting 변수와 3가지 연산으로 구성된다. 범용 semaphore라고도 불리운다. 3가지 연산은 아래와 같다.</p>
+
+<ol>
+  <li>semInit(): semaphore 변수를 음이 아닌 값(대개 1)으로 초기화를 수행한다.</li>
+  <li>semWait(): semaphore 변수 값을 감소시킨다. 만약 값이 음수가 되면 semWait()을 호출한 thread는 block된다. 그 외에는 해당 thread는 정상적으로 계속 수행한다.</li>
+  <li>semSignal(): semaphore 변수 값을 증가시킨다. 만약 값이 양수가 아니면 semWait()에 의해 block된 thread 중 하나를 깨운다.</li>
+</ol>
+
+<p>기본적인 pseudo code는 다음과 같다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+	<span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+	<span class="n">queue</span> <span class="n">waitQueue</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">semaphore</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">semInit</span><span class="p">(</span><span class="n">semaphore</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">s</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">semWait</span><span class="p">(</span><span class="n">semaphore</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">s</span><span class="p">.</span><span class="n">count</span><span class="o">--</span><span class="p">;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">count</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+		<span class="c1">//요청한 thread를 s.waitQueue에 push</span>
+		<span class="c1">//요청한 thread의 상태를 block으로 변경</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">semSignal</span><span class="p">(</span><span class="n">semaphore</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">s</span><span class="p">.</span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">){</span>
+		<span class="c1">//s.waitQueue에서 thread 1개를 pop</span>
+		<span class="c1">//pop한 thread의 상태를 runnable로 변경 후 OS의 readyQueue에 push</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>count 변수는 값이 음수인 경우에 그 절대값은 대기 queue의 길이를 의미한다.</p>
+
+<h2 id="binary-semaphore-mutex">binary semaphore (mutex)</h2>
+
+<p>mutex는 semaphore 변수가 0 또는 1의 binary 값만 갖는 semaphore를 뜻한다. 동일하게 3가지 연산으로 구성된다.</p>
+
+<ol>
+  <li>semInitB(): semaphore 변수를 0 또는 1로 초기화한다.</li>
+  <li>semWaitB(): semaphore 변수 값을 확인해 0일 경우 semWaitB()를 호출한 thread는 block되고, 1일 경우 값을 0으로 변경시킨 뒤 thread는 계속 수행한다.</li>
+  <li>semSignalB(): block된 thread가 있는지 확인한 후, 만약 있을 경우 해당 thread들 중 하나를 깨우고, 없을 경우 semaphore 변수 값을 1로 설정한다.</li>
+</ol>
+
+<p>pseudo code는 다음과 같다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+	<span class="kt">_Bool</span> <span class="n">value</span><span class="p">;</span>
+	<span class="n">queue</span> <span class="n">waitQueue</span><span class="p">;</span>
+<span class="p">}</span><span class="n">binary_semaphore</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">semInitB</span><span class="p">(</span><span class="n">binary_semaphore</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">s</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">semWaitB</span><span class="p">(</span><span class="n">binary_semaphore</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">s</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">else</span><span class="p">{</span>
+		<span class="c1">//요청한 thread를 s.waitQueue에 push</span>
+		<span class="c1">//요청한 thread의 상태를 block으로 변경</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">semSignalB</span><span class="p">(</span><span class="n">binary_semaphore</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">waitQueue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+		<span class="n">s</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">else</span><span class="p">{</span>
+		<span class="c1">//s.waitQueue에서 thread 1개를 pop</span>
+		<span class="c1">//pop한 thread의 상태를 runnable로 변경 후 OS의 readyQueue에 push</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>binary semahpore는 일반 범용 semaphore에 비해 구현이 간단하다는 장점이 있다. 둘 모두 waitQueue를 운용한다는 점에서 공통적이다.</p>
+
+<h2 id="strong--weak-semaphore">strong / weak semaphore</h2>
+
+<p>queue에서 FIFO 방식을 사용하는 semaphore를 강성(strong) semaphore라고 하고, 특별히 queue의 순서를 명시하지 않은 semaphore를 약성(weak) semaphore라고 한다. 하지만 실제로 대부분의 OS에서는 강성 semaphore를 사용한다. starvation이 없고, 직관적이며 구현하기도 용이하기 때문이다.</p>
+
+<p>아래는 강성 semaphore의 예시이다. D thread는 생산자,와 A, B, C thread는 소비자인 문제이다. 초기 semaphore 변수 s가 값이 1로 시작된다.  s의 값이 음수일 때에는 그 절댓값이 기다리는 thread의 개수(waitQueue 내 thread의 개수)를 뜻하고, s의 값이 음수가 아닐 때에는 생산자가 생성한 자원의 여분 개수를 뜻한다.</p>
+
+<p><img src="Semaphore%20b9f4eb0a53d84d5d8095e6194255911c/Untitled.png" alt="Semaphore%20b9f4eb0a53d84d5d8095e6194255911c/Untitled.png" /></p>
+
+<h2 id="mutual-exclusion-problem">mutual exclusion problem</h2>
+
+<p>범용 semaphore를 사용해 상호 배제 문제를 해결해보자. 상호 배제 문제란 동일한 자원에 접근하려는 n개의 thread의 병행성을 처리하는 문제이다. semInit()에서 count 변수를 0이 아닌 변수로 초기화한다. count 변수의 초기값은 자원의 개수를 의미한다. 따라서 count 변수는 0으로 초기화 되어서는 안된다. 모든 thread가 무한히 block될 것이기 때문이다. 각 thread에서 critical section(임계 영역)을 생성하게 되는데, critical section이란 한 번에 최대 1개의 thread만이 접근할 수 있는 영역이다. semWait()~semSignal() 사이의 영역이 된다. pseudo code는 다음과 같다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">thread_execute</span><span class="p">(</span><span class="kt">int</span> <span class="n">thread_no</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">semWait</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="c1">//임계 영역</span>
+		<span class="n">semSignal</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="c1">//임계 영역 이후</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">semInit</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_threads</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>thread가 1, 2, 3 순서대로 실행된다고 가정했을 때 각 thread는 아래와 같은 형태로 실행된다.</p>
+
+<p><img src="Semaphore%20b9f4eb0a53d84d5d8095e6194255911c/Untitled%201.png" alt="Semaphore%20b9f4eb0a53d84d5d8095e6194255911c/Untitled%201.png" /></p>
+
+<h2 id="producer-consumer-problem">producer-consumer problem</h2>
+
+<p>생산자-소비자 문제를 mutex를 이용해 해결해보자. 생산자-소비자 문제는 다수의 생산자 thread가 각자 자원을 생성해 공용 buffer에 저장하고, 다수의 소비자 thread가 공용 buffer에서 자원을 1개씩 소비하는 상황의 병행성을 처리하는 문제이다. 공용 buffer에는 한 번에 1개의 thread만 접근 가능하다(critical section)는 조건이 있다. 우선 공용 buffer가 무한한 크기를 갖는다고 가정한다. 이 때 in과 out이라는 pointer 변수를 사용하는데, in은 다음에 생산자가 생성한 자원이 저장될 buffer에서의 위치이며, out은 다음에 소비자가 소비할 자원이 저장된 buffer에서의 위치이다. 따라서 out&lt;in인 경우에만 소비자가 소비할 자원이 있는 것이다. 전체 pseudo code는 다음과 같다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span><span class="p">;</span>                     <span class="c1">//in-out의 값</span>
+<span class="n">binary_semaphore</span> <span class="n">s</span><span class="p">;</span>        <span class="c1">//buffer의 접근을 제어하는 mutex</span>
+<span class="n">binary_semaphore</span> <span class="n">delay</span><span class="p">;</span>    <span class="c1">//buffer가 비었는지를 확인해 소비를 제어하는 mutex</span>
+
+<span class="kt">void</span> <span class="nf">producer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">produce</span><span class="p">();</span>       <span class="c1">//자원 생산</span>
+		<span class="n">semWaitB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+			                     critical section start
+		*/</span>
+		<span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>           <span class="c1">//buffer에 push</span>
+		<span class="n">n</span><span class="o">++</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>            <span class="c1">//buffer.empty()==false가 된 상황</span>
+			<span class="n">semSignalB</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span>   <span class="c1">//consumer 중 1개 block 해제</span>
+		<span class="cm">/*
+		                       critical section end
+		*/</span>
+		<span class="n">semSignalB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="err">}</span>
+
+<span class="kt">void</span> <span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="c1">//consumer가 producer보다 먼저 실행되는 상황(buffer.empty()==true)를 막기 위해 block</span>
+	<span class="n">semWaitB</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">semWaitB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+		                     critical section start
+		*/</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">take</span><span class="p">();</span>        <span class="c1">//buffer에서 pop</span>
+		<span class="n">n</span><span class="o">--</span><span class="p">;</span>
+		<span class="cm">/*
+			                	critical section end
+		*/</span>
+		<span class="n">semSignalB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="n">consume</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>       <span class="c1">//자원 소비</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>          <span class="c1">//buffer.empty()==true가 된 상황</span>
+			<span class="n">semWaitB</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span> <span class="c1">//thread block</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span>
+<span class="p">{</span>
+	<span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">semInitB</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="n">semInitB</span><span class="p">(</span><span class="n">delay</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_producers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>위의 code는 producer와 consumer 내의 while문이 매 번 atomic하게 전체가 함께 실행되면 정상적으로 작동할 것이다. 하지만 while loop가 1번 도는 사이에 scheduling이 발생하지 않을 것이라는 보장이 없다. 만약 consumer에서 semSignalB(s)와 if(n==0) 사이에서 scheduling이 발생해 producer가 실행된다면 n은 0에서 1로 변경될 것이고, 그렇다면 다시 scheduling이 되어 consumer로 돌아왔을 때 if(n==0)을 만족하지 못하므로 semWaitB(delay)가 실행되지 않을 것이다. 이는 소비자가 한 개의 thread라면 큰 문제가 되지 않지만, 다수의 thread일 경우에는 문제 상황이 된다. empty임에도 여러 소비자 thread 모두 block되지 않을 수 있기 때문이다.</p>
+
+<h3 id="solution-1-보조-변수-사용">solution 1: 보조 변수 사용</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span><span class="p">;</span>                     <span class="c1">//in-out의 값</span>
+<span class="n">binary_semaphore</span> <span class="n">s</span><span class="p">;</span>        <span class="c1">//buffer의 접근을 제어하는 mutex</span>
+<span class="n">binary_semaphore</span> <span class="n">delay</span><span class="p">;</span>    <span class="c1">//buffer가 비었는지를 확인해 소비를 제어하는 mutex</span>
+
+<span class="kt">void</span> <span class="nf">producer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">produce</span><span class="p">();</span>       <span class="c1">//자원 생산</span>
+		<span class="n">semWaitB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+			                     critical section start
+		*/</span>
+		<span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>           <span class="c1">//buffer에 push</span>
+		<span class="n">n</span><span class="o">++</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>            <span class="c1">//buffer.empty()==false가 된 상황</span>
+			<span class="n">semSignalB</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span>   <span class="c1">//consumer 중 1개 block 해제</span>
+		<span class="cm">/*
+		                       critical section end
+		*/</span>
+		<span class="n">semSignalB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="err">}</span>
+
+<span class="kt">void</span> <span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="o">**</span><span class="kt">int</span> <span class="n">m</span><span class="p">;</span><span class="o">**</span>
+	<span class="c1">//consumer가 producer보다 먼저 실행되는 상황(buffer.empty()==true)를 막기 위해 block</span>
+	<span class="n">semWaitB</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">semWaitB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+		                     critical section start
+		*/</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">take</span><span class="p">();</span>        <span class="c1">//buffer에서 pop</span>
+		<span class="n">n</span><span class="o">--</span><span class="p">;</span>
+		<span class="o">**</span><span class="n">m</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span><span class="o">**</span>
+		<span class="cm">/*
+			                	critical section end
+		*/</span>
+		<span class="n">semSignalB</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="n">consume</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>       <span class="c1">//자원 소비</span>
+		<span class="o">**</span><span class="k">if</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">**</span>          <span class="c1">//buffer.empty()==true가 된 상황</span>
+			<span class="n">semWaitB</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span> <span class="c1">//thread block</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span>
+<span class="p">{</span>
+	<span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">semInitB</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="n">semInitB</span><span class="p">(</span><span class="n">delay</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_producers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>n의 값이 변경되는 것을 막기 위해 critical section 내에서 보조 변수 m에 현재 n의 값을 임시로 저장한다. 이후 critical section 밖의 if문에서 n 대신 m이 0인지를 확인하게 된다.</p>
+
+<h3 id="solution-2-범용-semaphore-사용">solution 2: 범용 semaphore 사용</h3>
+
+<p>binary semaphore가 아닌 범용 semaphore를 사용하면 애초에 위의 문제 상황이 발생하지 않는다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>               <span class="c1">//buffer의 접근을 제어하는 semaphore</span>
+<span class="n">semaphore</span> <span class="n">n</span><span class="p">;</span>               <span class="c1">//buffer에 들어있는 자원의 개수를 제어하는 semaphore</span>
+
+<span class="kt">void</span> <span class="nf">producer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">produce</span><span class="p">();</span>       <span class="c1">//자원 생산</span>
+		<span class="n">semWait</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+			                     critical section start
+		*/</span>
+		<span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>           <span class="c1">//buffer에 push</span>
+		<span class="n">semSignal</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>          <span class="c1">//consumer 중 1개 block 해제</span>
+		<span class="cm">/*
+		                       critical section end
+		*/</span>
+		<span class="n">semSignal</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="err">}</span>
+
+<span class="kt">void</span> <span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">semWait</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>          <span class="c1">//buffer.empty()==true일 때 실행되는 것을 방지하기 위해 block</span>
+		<span class="n">semWait</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+		                     critical section start
+		*/</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">take</span><span class="p">();</span>        <span class="c1">//buffer에서 pop</span>
+		<span class="cm">/*
+			                	critical section end
+		*/</span>
+		<span class="n">semSignal</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="n">consume</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>       <span class="c1">//자원 소비</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span>
+<span class="p">{</span>
+	<span class="n">semInit</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="n">semInit</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_producers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<p>공용 변수 n과 delay를 통합해 하나의 범용 semaphore n으로 운용한다. n의 값에 따라 delay를 wait 또는 signal하지 않고 무조건적으로 producer에서는 semSignal(n), consumer에서는 semWait(n)하게 된다. n은 buffer에 들어가 있는 자원의 개수(음수일 경우 그 절댓값은 waitQueue에 들어있는 thread의 수)임과 동시에 thread의 실행 순서를 제어하는 역할을 하게 된다. consumer thread들은 매 번 실행될 때마다 semWait(n)을 하게 된다. 따라서 producer에서 semSignal(n)과 semSignal(s)가 서로 순서가 바뀌어 semSignal(n)이 critical section 밖에서 수행된다고 하더라도 동일하게 실행된다. 왜냐하면 어차피 consumer들은 semWait(n)을 통해 block된 상태이기에 semSignal(n)이 호출되어야 수행될 수 있기 때문이다.</p>
+
+<h3 id="유한-buffer-사용">유한 buffer 사용</h3>
+
+<p>위의 모든 solution은 무한한 buffer를 사용한다는 가정 하에서 이루어졌다. 하지만 실제로 무한한 buffer는 존재하지 않으므로 유한한 buffer를 사용하게 된다. 대개 circular queue를 사용하게 된다. pseudo code는 다음과 같다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>               <span class="c1">//buffer의 접근을 제어하는 semaphore</span>
+<span class="n">semaphore</span> <span class="n">n</span><span class="p">;</span>               <span class="c1">//buffer에 들어있는 자원의 개수를 제어하는 semaphore</span>
+<span class="n">semaphore</span> <span class="n">b</span><span class="p">;</span>               <span class="c1">//유한 buffer를 관리하는 semaphore</span>
+
+<span class="kt">void</span> <span class="nf">producer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">produce</span><span class="p">();</span>       <span class="c1">//자원 생산</span>
+		<span class="o">**</span><span class="n">semWait</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="p">;</span>            <span class="c1">//buffer.full()==true일 경우 block</span>
+		<span class="n">semWait</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+			                     critical section start
+		*/</span>
+		<span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>           <span class="c1">//buffer에 push</span>
+		<span class="n">semSignal</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>          <span class="c1">//consumer 중 1개 block 해제</span>
+		<span class="cm">/*
+		                       critical section end
+		*/</span>
+		<span class="n">semSignal</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="err">}</span>
+
+<span class="kt">void</span> <span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">semWait</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>          <span class="c1">//buffer.empty()==true일 때 실행되는 것을 방지하기 위해 block</span>
+		<span class="n">semWait</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="cm">/*
+		                     critical section start
+		*/</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">take</span><span class="p">();</span>        <span class="c1">//buffer에서 pop</span>
+		<span class="cm">/*
+			                	critical section end
+		*/</span>
+		<span class="n">semSignal</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+		<span class="o">**</span><span class="n">semSignal</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="p">;</span>       <span class="c1">//buffer.full()==false이므로 block된 producer 중 1개 unblock</span>
+		<span class="n">consume</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>       <span class="c1">//자원 소비</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span>
+<span class="p">{</span>
+	<span class="n">semInit</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="n">semInit</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="n">semInit</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">BUFFER_SIZE</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_producers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="err">}</span>
+</code></pre></div></div>
+:ET

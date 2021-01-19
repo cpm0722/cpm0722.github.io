@@ -1,20 +1,14 @@
+---
+
 # File System
 title: File System
 subtitle: File System
-categories: "Operating System"
-tags: "Operating System"
-date: 2021-01-19 19:11:14 +0000
-last_modified_at: 2021-01-19 19:11:14 +0000
+category: Operating System
+tag: Operating System
+date: 2020-12-17 00:00:00 +0000
+last_modified_at: 2020-12-17 00:00:00 +0000
+
 ---
-
-Created: Dec 17, 2020 1:44 PM
-Reference: Jiman Hong: Soongsil Univ., Operating Systems Concepts 10th by A.Silberschatz P.Galvin and G.Gagne
-status: completed
-
-```yaml
-cleanUrl: /os/file-system
-disqus: true
-```
 
 숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
 
@@ -40,9 +34,9 @@ OS는 disk를 일정한 크기의 block으로 나누어 저장한다. 대개 blo
 
 아래는 2개의 allocation structure block이 각각 inode bitmap, data bitmap으로 운용되고, 최대 80개의 inode struct가 5개의 key meta data block에 저장되는 경우의 전체 disk 구조이다.
 
-![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled.png)
+![01.png](/assets/images/2020-12-17-File-System/01.png)
 
-![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%201.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%201.png)
+![02.png](/assets/images/2020-12-17-File-System/02.png)
 
 ## inode struct
 
@@ -66,7 +60,7 @@ directory는 file의 한 종류이다. 그렇다면 directory의 inode struct는
 
 disk에서 실제 file을 읽어들이는 과정을 따라가보자. super block만이 memory에 올라와 있고, bitmap이 담긴 allocation structure block은 disk에 남아있는 상태라고 가정해보자. 다음의 순서를 따른다.
 
-![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%202.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%202.png)
+![03.png](/assets/images/2020-12-17-File-System/03.png)
 
 1. root directory (" / ") read
     1. root의 inode struct read
@@ -100,7 +94,7 @@ disk에서 실제 file을 읽어들이는 과정을 따라가보자. super block
 
 disk에서 실제 file을 생성하고 write하는 과정을 따라가보자. 역시나 super block만이 memory에 올라와 있고, bitmap이 담긴 allocation structure block은 disk에 남아있는 상태라고 가정한다. 다음의 순서를 따른다.
 
-![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%203.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%203.png)
+![04.png](/assets/images/2020-12-17-File-System/04.png)
 
 1. root directory (" / ") read
     1. root의 inode struct read
@@ -129,13 +123,13 @@ disk에서 실제 file을 생성하고 write하는 과정을 따라가보자. �
 
 # FFS (Fast File System)
 
-![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%204.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%204.png)
+![05.png](/assets/images/2020-12-17-File-System/05.png)
 
 fast file system은 기존의 unix file system에서 성능을 더 향상시킨 file system이다. 기존의 file system은 disk 전체에 super block, inode bitmap, data bitmap이 disk에 오직 1개만 존재했다. 또한 inode 역시 disk의 한 영역에 몰려서 저장되어 있어 실제 data block들과의 disk상에서의 물리적 거리가 멀 수 밖에 없었다. FFS는 이러한 단점을 해결하고자 disk 전체를 여러 group으로 나누고, 각 group마다 super block, bitmaps, inodes, data block들을 부여한다. 이를 통해 inode에서 참조하는 data block과 실제 inode가 저장된 block 사이의 물리적 거리가 줄어들어 seek time이 감소한다.
 
 또한 FFS는 directory 구조 역시 개선했는데, 기존의 file system은 단순한 계층 구조였기에 하위 file들의 data block이 부모 directory의 data block과 멀리 떨어져 있을 가능성이 농후했다. FFS는 동일한 directory에 있는 file에 접근할 확률이 40%나 된다는 통계에 기반해 (Name-based Locality) directory와 그 하위 file들을 disk 내에서 같은 group 안에 배치하도록 했다. 이를 통해 seek time을 감소시킬 수 있었다.
 
-![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%205.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%205.png)
+![06.png](/assets/images/2020-12-17-File-System/06.png)
 
 마지막으로, FFS는 disk layout에 대해서 최적화를 수행했다. 초기 hard disk는 HW의 성능이 떨어져 rotation 속도가 많이 느렸다. 하지만 점차 HW가 발전함에 따라 rotation 속도가 비약적으로 상승했고, 연속된 sector를 읽어들이기에는 이미 head가 다음 sector를 지나쳐버리는 증상이 발생하게 되었다. 이를 해결하기 위해 FFS는 다음 sector를 연속적으로 배치하지 않고, 1칸 뒤에 배치하는 식으로 sector 배치를 변경했다.
 
@@ -149,37 +143,37 @@ disk I/O 과정에서 crash가 발생하는 경우에 대해서 살펴보자. �
 
 1. data block만 정상 갱신, data bitmap, inodes는 crash되는 경우
 
-    ![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%206.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%206.png)
+    ![07.png](/assets/images/2020-12-17-File-System/07.png)
 
     data bitmap과 inodes가 모두 crash되었기 때문에 bitmap과 inodes 사이의 불일치(inconsistent)는 없다. 따라서 consistent한 상황이다. 대신 data block은 갱신이 되었는데, 해당 block은 data bitmap에서도 unused로 표시가 되어 있고, inodes에도 data block 포인터가 연결이 되어 있지 않기 떄문에 garbage data이다.
 
 2. inodes만 정상 갱신, data bitmap, data block은 crash되는 경우
 
-    ![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%207.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%207.png)
+    ![08.png](/assets/images/2020-12-17-File-System/08.png)
 
     data bitmap은 crash, inodes는 정상 갱신되었기 때문에 inconsistent한 상황이다. inodes는 이미 data block을 가리키는데 해당 data block에는 data가 쓰여 있지 않고, data bitmap에서도 해당 data block은 unused로 표시가 되어 있다.
 
 3. data bitmap만 정상 갱신, inodes, data block은 crash되는 경우
 
-    ![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%208.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%208.png)
+    ![09.png](/assets/images/2020-12-17-File-System/09.png)
 
     data bitmap은 정상 갱신되었지만, inodes는 crash되었기 때문에 inconsistent한 상황이다. data block에는 write가 되지 않았고, inodes에서도 해당 data block을 가리키지 않는데 datat bitmap에서는 used로 표시가 되어있는 경우이다. 이후 해당 data block은 사용되지 못하고 낭비될 것이다.
 
 4. data bitmap, inodes는 정상 갱신, data block만 crash되는 경우
 
-    ![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%209.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%209.png)
+    ![10.png](/assets/images/2020-12-17-File-System/10.png)
 
     data bitmap과 inodes가 모두 정상갱신 되었기 때문에 consistent한 상황이다. data block에 write만 되지 않은 것이기 때문에 garbage data가 저장된 상태이다.
 
 5. inodes, data block은 정상 갱신, data bitmap만 crash되는 경우
 
-    ![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%2010.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%2010.png)
+    ![11.png](/assets/images/2020-12-17-File-System/11.png)
 
     data bitmap은 crash되고, inodes는 정상 갱신되었기 때문에 inconsistent한 상황이다. 이 경우 inode에서 data block을 가리키고, 해당 data block에는 정상적인 data가 쓰여져 있음에도 data bitmap에서 unused로 표시가 되어 있기 때문에 언제든 덮어씌워질 수 있고, 다른 inode가 동일한 data block을 가리킬 수도 있다.
 
 6. data bitmap, data block은 정상 갱신, inodes만 crash되는 경우
 
-    ![File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%2011.png](File%20System%20bdaddc6bb70742ce98401ff67400c6eb/Untitled%2011.png)
+    ![12.png](/assets/images/2020-12-17-File-System/12.png)
 
     data bitmap은 정상 갱신, inodes는 crash되었기 때문에 inconsistent한 상황이다. 이 경우 data block에도 정상적인 data가 쓰여져 있고 data bitmap에서도 used로 표시가 되었지만 inodes에서 해당 data block을 가리키지 않기 때문에 해당 data block은 어떤 file에도 연결되지 못한다. 이를 orphan data block이라고 한다.
 

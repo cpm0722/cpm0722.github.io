@@ -1,20 +1,13 @@
-# Scheduling
-title: Scheduling
-subtitle: Scheduling
-categories: "Operating System"
-tags: "Operating System"
-date: 2021-01-19 19:11:35 +0000
-last_modified_at: 2021-01-19 19:11:35 +0000
 ---
 
-Created: Oct 5, 2020 4:22 PM
-Reference: Jiman Hong: Soongsil Univ., Operating Systems Concepts 10th by A.Silberschatz P.Galvin and G.Gagne
-status: completed
+title: Scheduling
+subtitle: Scheduling
+category: Operating System
+tag: Operating System
+date: 2020-10-05 00:00:00 +0000
+last_modified_at: 2020-10-05 00:00:00 +0000
 
-```yaml
-cleanUrl: /os/scheduling
-disqus: true
-```
+---
 
 숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
 
@@ -56,11 +49,11 @@ Scheduling에 대해 알아보기 전에 우선 preemption에 대한 개념을 �
 
 Queue를 이용한 non-preemption 방식이다. 대기 시간을 기준으로 Scheduling을 수행한다. 예시를 통해 이해해보자.
 
-![Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.12.43.jpg](Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.12.43.jpg)
+![01.png](/assets/images/2020-10-05-Scheduling/01.png)
 
 위의 5개의 process가 있다고 가정해보자. Arrival Time과 Service Time이 주어졌다. FIFO Scheduling을 수행하면 아래와 같이 실행되게 된다.
 
-![Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.40.38.jpg](Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.40.38.jpg)
+![02.png](/assets/images/2020-10-05-Scheduling/02.png)
 
 평균 반환 시간을 계산해보자.
 
@@ -98,7 +91,7 @@ FIFO 방식은 Convoy Effect (홍위병 효과)라는 치명적인 단점이 존
 
 SJF 방식은 FIFO와 동일하게 non-preemption  방식이다. 그런데 먼저 들어온 순서보다는 task의 소요 시간을 기준으로 Scheduling을 수행한다.
 
-![Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.29.jpg](Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.29.jpg)
+![03.png](/assets/images/2020-10-05-Scheduling/03.png)
 
 평균 반환 시간을 계산해보자.
 
@@ -136,7 +129,7 @@ $Avr\ T_{arround\_time}=\frac{0+1+7+9+1}{5}\\=\frac{18}{5}=3.6$
 
 STCF는 위의 scheduling들과는 달리 preemption 방식이다. 즉, 이미 작업을 수행하던 process가 중단될 수 있다는 것이다. 새로운 process가 들어오게 될 경우, 현재 수행 중인 process의 잔여 시간보다 새로 들어온 process의 수행 시간이 짧을 경우에 preemption을 하게 된다.
 
-![Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.37.jpg](Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.37.jpg)
+![04.png](/assets/images/2020-10-05-Scheduling/04.png)
 
 평균 반환 시간을 계산해보자.
 
@@ -176,7 +169,7 @@ $(T_{wait}+T_{service})/T_{service}$
 
 대기 시간과 실행 시간을 더한 값을 대기 시간으로 나눈 값이 큰 process를 먼저 선택한다.
 
-![Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.45.jpg](Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.45.jpg)
+![05.png](/assets/images/2020-10-05-Scheduling/05.png)
 
 평균 반환 시간을 계산해보자.
 
@@ -220,7 +213,7 @@ $E: \frac{(9-8)+2}{2}=\frac{3}{2}=1.5$
 
 preemption 방식이다. 일정 시간마다 서로 돌아가면서 공정하게 scheduling을 하고자 함이다. 이 때 들어온 순서대로 Queue에 넣고, Queue에서 pop을 해 새로운 process를 선택한다. 만약 수행이 끝났음에도 아직 남아있는 작업이 있다면 다시 Queue에 삽입한다. 가장 중요한 변수는 Time Slicing의 길이인데 만약 무한대에 수렴할 경우, non-preemption과 다를 바 없어지고, 0에 수렴할 경우 context switch 수행 횟수가 급격히 늘어나 overhead가 발생할 것이다. 아래의 예시는 Time Slicing의 길이가 1인 경우이다.
 
-![Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.53.jpg](Scheduling%20c5c279a951e1492386f4dbdc2c1c9fcc/09-23-2020-16.37.53.jpg)
+![06.png](/assets/images/2020-10-05-Scheduling/06.png)
 
 평균 반환 시간을 계산해보자.
 

@@ -1,20 +1,13 @@
-# Concurrency
-title: Concurrency
-subtitle: Concurrency
-categories: "Operating System"
-tags: "Operating System"
-date: 2021-01-19 19:11:26 +0000
-last_modified_at: 2021-01-19 19:11:26 +0000
 ---
 
-Created: Nov 17, 2020 5:05 PM
-Reference: Jiman Hong: Soongsil Univ., Operating Systems Concepts 10th by A.Silberschatz P.Galvin and G.Gagne
-status: completed
+title: "[운영체제] Concurrency"
+subtitle: Concurrency
+category: Operating System
+tag: Operating System
+date: 2020-11-17 00:00:00 +0000
+last_modified_at: 2020-11-17 00:00:00 +0000
 
-```yaml
-cleanUrl: /os/concurrency
-disqus: true
-```
+---
 
 숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
 
@@ -28,11 +21,11 @@ OS에서 process는 역할을 정리해보자. 우선 process는 자원 소유�
 
 os가 하나의 process 내에 여러 thread를 지원하는 것을 다중 쓰레딩(kernel-level multi thread)라고 한다. MS-DOS와 같은 단일 사용자 process의 경우에는 오직 하나의 process만 동시에 실행될 수 있으며, 해당 process 내에 하나의 thread만이 존재한다. 즉, thread라는 개념이 없는 것과 마찬가지이다. 초기의 UNIX와 같은 다중 사용자 process는 여러 process가 동시에 실행될 수 있지만, 각 process 내에 하나의 thread만이 존재한다. Windows, Mac OS, BSD와 같은 비교적 최신 운영체제는 모두 multi thread를 채택하고 있다. 여러 process가 동시에 실행될 수 있으면서, 각 process 내에 여러 thread가 함께 존재하는 것이다.
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled.png)
+![01.png](/assets/images/2020-11-17-Concurrency/01.png)
 
 다증 쓰레딩 환경에서 process는 자원 할당의 단위, 보호의 단위로써의 의미를 갖는다. process 별로 자원을 할당하고, 다른 process가 자신의 자원에 접근하지 못하도록 보호하는 것이다. 한편 dispatching(scheduling)의 단위는 process가 아닌 thread가 수행하게 된다. 각 thread는 context switching 수행을 위해 별개의 독립된 program counter를 보유한다. 또한 별개의 독립된 stack을 각자 보유한다. 반면 heap, data, bss, text와 같은 memory 영역은 process 내의 다른 thread들과 공유한다. 즉, process에게 할당된 stack memory 영역을 여러 thread들이 나누어 사용하고, 나머지 memory 영역은 process 단위로 공유하는 것이다. 따라서 기본적으로 memory 등의 모든 자원은 process 내의 모든 thread들이 공유한다고 볼 수 있다.
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%201.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%201.png)
+![02.png](/assets/images/2020-11-17-Concurrency/02.png)
 
 그렇다면 multi-thread를 사용함으로써 얻는 이점은 어떤 것이 있을까? 우선 성능 향상에 큰 도움이 된다. process를 여러 thread 별로 할당해 I/O를 많이 하는 thread, CPU 연산을 많이 하는 thread를 분리한다면 I/O 때문에 대기하는 시간을 단일 process 방식보다 훨씬 줄일 수 있을 것이다. 또한 process를 생성하는 것에 비해 이미 존재하는 process 내에서 새로운 thread를 생성하는데 드는 비용이 더 적다는 장점도 있다. 이에 더해 context switching도 thread 간의 전환이 process 단위보다 더 빠르다. 마지막으로, process 간에는 자원을 공유할 수 없기 때문에 서로 통신하기 위해서는 kernel이 개입해야 하지만, thread는 kernel 호출 없이도 서로 원활하게 통신할 수 있다.
 
@@ -59,7 +52,7 @@ thread의 상태는 process의 상태와는 별개이다. process의 상태를 �
 
 사용자는 kernel-level thread를 직접 제어하지 못한다. KLT는 오직 kernel만이 제어할 수 있는 thread이다. single-thread 운영체제일 경우에는 KLT가 구현되어 있지 않다. 사용자는 현재 환경이 KLT가 구현되어 있는지도 알지 못하고, KLT를 제어할 수도 없기 때문에 user-level thread를 사용하게 되는데, 대개 pthread와 같은 thread library를 활용한다. thread library는 실행 운영체제가 single-thread일 경우 여러 ULT를 하나의 process로 보내게 된다. 만약 KLT가 구현되어 있는 multi-thread 운영체제라면 알맞게 KLT와 mapping을 시켜 여러 process로 보내게 된다.
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%202.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%202.png)
+![03.png](/assets/images/2020-11-17-Concurrency/03.png)
 
 ULT와 KLT를 비교해보자. 한 process 내의 thread 사이 dispatch를 수행할 때를 생각해보자. 우선 ULT는 각 thread가 모두 사용자 주소 공간에 위치하기 때문에 dispatch를 할 때에 kernel mode로 변경될 필요 없이 user mode에서 모두 수행 가능하다. 반면 KLT는 dispatch를 할 때마다 kernel mode로 변경되어야만 한다. 즉, mode 전환 여부에 있어서는 ULT가 KLT보다 유리하다. 또한, ULT는 운영 체제에 종속적이지 않고 어떠한 kernel의 변경 없이도 원활히 수행될 수 있는 반면, KLT는 운영 체제에 따라 존재하지 않을 수도 있다는 차이점도 있다. 한편, ULT의 경우에는 하나의 thread에서 system call을 호출할 경우 같은 process 내의 모든 thread들이 함께 block이 된다는 치명적인 단점이 있다. 즉, 순수한 ULT만으로는 다중 처리의 장점을 살리지 못하게 된다. 반면 KLT의 경우에는 한 thread가 block된다고 하더라도 다른 thread들은 자유롭다. 즉, 여러 dispatcher에 하나의 process에 속한 여러 thread를 동시에 scheduling이 가능하다. 진정한 의미의 다중 처리가 가능한 것이다.
 
@@ -323,11 +316,11 @@ deadlock은 아래의 4가지 조건이 모두 충족되었을 때 발생한다.
 
     자원 할당 그래프 (Resource Allocation Graph)에서 cycle이 생성된 경우이다. 즉, 서로 다른 thread의 행동을 기다리면서 무한히 대기하는 상황이다.
 
-    ![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%203.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%203.png)
+    ![04.png](/assets/images/2020-11-17-Concurrency/04.png)
 
 1~3의 조건은 deadlock의 필요 조건이다. 즉, 조건 중 어느 하나라도 충족하지 않으면 deadlock은 발생하지 않는다. 하지만 1~3의 조건이 모두 충족되었다고 해서 무조건 deadlock이 발생하는 것은 아니다. 1~4의 조건이 모두 만족해야만 deadlock이 발생한다. 즉 1~4의 조건은 deadlock의 필요충분 조건이다.
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%204.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%204.png)
+![05.png](/assets/images/2020-11-17-Concurrency/05.png)
 
 위는 Process P와 Q가 자원 A와 B를 경쟁적으로 사용하는 상황에서의 deadlock 발생 가능성을 나타낸 것이다. 총 6개의 시나리오에 대해서 살펴보자.
 
@@ -338,7 +331,7 @@ deadlock은 아래의 4가지 조건이 모두 충족되었을 때 발생한다.
 5. P가 A를 획득하고, B를 획득한다. Q로 전환되지만 B를 획득할 수 없어 block된다. P가 마저 실행되고 A와 B를 release한 뒤에 Q가 실행된다.
 6. P가 A를 획득하고, B를 획득한다. P는 모든 작업을 수행하고 A와 B를 순서대로 release한다. 이후에 Q로 전환되어 자유롭게 실행된다.
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%205.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%205.png)
+![06.png](/assets/images/2020-11-17-Concurrency/06.png)
 
 위와 같이 한 process가 두 자원은 동시에 점유하지 않을 경우에는 deadlock이 발생하지 않게 된다. 위의 deadlock 발생 상황과의 차이점은 한 process가 동시에 두 자원을 점유하지 않는다는 것이다.
 
@@ -396,13 +389,13 @@ $R_j\ge C_{(n+1)j}+\sum_{i=1}^n{C_{ij}}\ \ \ for\ all\ j$
 
 다음은 safe state가 계속되어 정상적으로 모든 process가 실행되는 경우 대한 예시이다.
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%206.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%206.png)
+![07.png](/assets/images/2020-11-17-Concurrency/07.png)
 
 $C-A$는 추가적으로 할당해야 할 자원들의 matrix이다. $V$와 비교해 더 작은 값들을 갖는 $C-A$의 row를 찾은 뒤 해당 process를 실행시키게 된다. 이후 $A$에서 해당 process의 값들이 $V$에 더해지게 된다. 해당 process의 값들은 $C$와 $A$, $C-A$에서 모두 0이 된다.
 
 아래는 unsafe state에 대한 예시이다. 실행할 수 있는 process가 없는 경우이다.
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%207.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%207.png)
+![08.png](/assets/images/2020-11-17-Concurrency/08.png)
 
 ## Deadlock Detection
 
@@ -410,7 +403,7 @@ deadlock detection은 deadlock prevention에 비해 상대적으로 낙관적인
 
 ### Deadlock Detection
 
-![Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%208.png](Concurrency%20ede4aa10772740e08ebf09ff0608c084/Untitled%208.png)
+![09.png](/assets/images/2020-11-17-Concurrency/09.png)
 
 deadlock prevention과 비슷하게 동작한다. algorithm은 다음과 같다.
 

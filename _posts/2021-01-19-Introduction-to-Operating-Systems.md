@@ -1,20 +1,13 @@
-# Introduction to Operating Systems
-title: Introduction to Operating Systems
-subtitle: "Introduction to Operating Systems"
-categories: "Operating System"
-tags: "Operating System"
-date: 2021-01-19 19:12:49 +0000
-last_modified_at: 2021-01-19 19:12:49 +0000
 ---
 
-Created: Oct 5, 2020 4:21 PM
-Reference: Jiman Hong: Soongsil Univ., Operating Systems Concepts 10th by A.Silberschatz P.Galvin and G.Gagne
-status: completed
+title: Introduction to Operating Systems
+subtitle: Introduction to Operating Systems
+category: Operating System
+tag: Operating System
+date: 2020-10-05 00:00:00 +0000
+last_modified_at: 2020-10-05 00:00:00 +0000
 
-```yaml
-cleanUrl: /os/introduction-to-operating-systems
-disqus: true
-```
+---
 
 숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
 

@@ -2,9 +2,57 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
     <url>
+      <loc>http://0.0.0.0:4000/2021-01-19-Scheduling-MLFQ/</loc>
+      
+        <lastmod>2021-01-19T05:03:23-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
       <loc>http://0.0.0.0:4000/paper%20review/Deep-contextualized-word-representations/</loc>
       
         <lastmod>2021-01-01T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Disk/</loc>
+      
+        <lastmod>2020-12-17T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/File-System/</loc>
+      
+        <lastmod>2020-12-16T18:00:00-06:00</lastmod>
       
 
       
@@ -34,6 +82,38 @@
     </url>
   
     <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Semaphore/</loc>
+      
+        <lastmod>2020-11-16T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Concurrency/</loc>
+      
+        <lastmod>2020-11-16T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
       <loc>http://0.0.0.0:4000/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</loc>
       
         <lastmod>2020-11-12T18:00:00-06:00</lastmod>
@@ -50,9 +130,89 @@
     </url>
   
     <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Paging-Mechanism/</loc>
+      
+        <lastmod>2020-10-19T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
       <loc>http://0.0.0.0:4000/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</loc>
       
         <lastmod>2020-10-09T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Address-Memory/</loc>
+      
+        <lastmod>2020-10-05T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Scheduling/</loc>
+      
+        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Process-Abstraction/</loc>
+      
+        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Introduction-to-Operating-Systems/</loc>
+      
+        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
       
 
       

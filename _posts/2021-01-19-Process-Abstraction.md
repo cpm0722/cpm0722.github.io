@@ -1,20 +1,13 @@
-# Process Abstraction
-title: Process Abstraction
-subtitle: Process Abstraction
-categories: "Operating System"
-tags: "Operating System"
-date: 2021-01-19 19:12:33 +0000
-last_modified_at: 2021-01-19 19:12:33 +0000
 ---
 
-Created: Oct 5, 2020 4:22 PM
-Reference: Jiman Hong: Soongsil Univ., Operating Systems Concepts 10th by A.Silberschatz P.Galvin and G.Gagne
-status: completed
+title: Process Abstraction
+subtitle: Process Abstraction
+category: Operating System
+tag: Operating System
+date: 2020-10-05 00:00:00 +0000
+last_modified_at: 2020-10-05 00:00:00 +0000
 
-```yaml
-cleanUrl: /os/process-abstraction
-disqus: true
-```
+---
 
 숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.
 
@@ -36,25 +29,25 @@ process는 여러 상태를 갖게 된다. 왜냐하면 os는 한 번에 하나�
 
 ### 2가지 State
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled.png](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled.png)
+![01.png](/assets/images/2020-10-05-Process-Abstraction/01.png)
 
 우선 수행(Running), 비수행(not Running)의 두 단계로 process의 상태를 나눌 수 있다. Running이라는 것은 프로그램의 일부 또는 전부가 memory에 올라갔다는 뜻이다. 그 동안 다른 process는 not Running 상태이다. 이후 Time Quntum (TQ)이 지나가거나(Interrupt) disk I/O 요청 등의 cpu가 process를 전환해야 할 시기가 오게 되면 dispatcher가 수행할 다음 process를 선택하게 된다. 그 동안 이전에 수행됐던 해당 process는 not Running 상태가 된다.
 
 ### 3가지 State
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%201.png](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%201.png)
+![02.png](/assets/images/2020-10-05-Process-Abstraction/02.png)
 
 not Running 상태를 Ready / Blocked 상태로 나눌 수 있다. Ready 상태는 process가 run할 수 있는 준비가 된상태로, run을 할 조건은 충족됐지만 os가 우선순위 등을 이유로 아직 실행하지 않은 것을 뜻한다. Blocked 상태는 간단하게 말해 자고 있는(Sleep) 상태이다. 대개 disk I/O를 뜻한다. disk I/O 도중에는 SATA와 같은 disk interface가 대부분의 작업을 수행하지, cpu는 별 일을 하지 않는다. 따라서 Blocked 상태의 경우에는 언제든 다른 process에게 cpu 점유를 뺏길(preemption) 수 있다.
 
 ### 5가지 State
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%202.png](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%202.png)
+![03.png](/assets/images/2020-10-05-Process-Abstraction/03.png)
 
 생성과 종료 상태가 추가된 것이다.  추가된 State는 특별한 점이 없지만, 여기서는 각 화살표에 대해 주목해봐야 한다. Ready 상태에서 Running 상태로 가는 것을 Dispatch라고 부른다. 또한 Running 상태에서 Blocked 상태로 가는 것(I/O initiate)를 사건 대기라고 명명하고, I/O가 끝난 경우를 사건발생 이라고 부른다. 즉, I/O 가 끝나는 것이 사건이다.
 
 ### 9가지 State
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%203.png](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%203.png)
+![04.png](/assets/images/2020-10-05-Process-Abstraction/04.png)
 
 많은 상태가 추가됐는데, 우선 생성 상태에서부터 따라가보자. process 생성 시 memory의 여유가 충분할 경우에는 바로 Ready 상태로 갈 수 있겠지만, 만약 그렇지 않다면 Suspend 상태로 가게 된다. program file이 memory가 아닌 disk 내의 swap 공간으로 이동된 경우를 뜻한다. Suspend 상태에서 할 수 있는 작업은 Swap In(memory로 이동해 Ready 상태가 되는 것)밖에 없다. Ready 상태에서는 Kernel mode로 가거나 User mode로 갈 수 있다. User mode로 가는 방법은 2가지가 있는데, Kernel mode를 거쳐가거나, preemption을 해 거쳐가는 것이다. preemption이란 '선점'으로 번역되고는 하는데, 직관적으로 와닿지 않는 번역이다. 본 뜻은 다른 process가 차지하고 있던 CPU를 빼앗는 것이다. User mode에서는 I/O를 시작하거나 System Call 호출, Interrput 등이 발생하게 되면 Kernel mode로 이동하게 된다. Kernel Mode에서 수행이 끝나면 다시 preemption을 통해 User Mode로 돌아가거나 Memory Blocked 상태로 넘어갈 수 있다. Memory Blocked 상태에서 memory에 여유가 사라지면 해당 process는 Suspend상태로 넘어갈 수 있다. 한편, Kernel Mdoe에서는 exit()을 호출해 종료를 위해 Zombie 상태가 될 수도 있다.
 
@@ -62,13 +55,13 @@ not Running 상태를 Ready / Blocked 상태로 나눌 수 있다. Ready 상태�
 
 os가 process를 실행하는 과정을 살펴보자. 우선 process list에 새로운 항목을 생성해야 한다. 이후 memory page를 할당하고, disk에 있는 program executable file을 memory page에 load한다. 마지막으로 진입점(main 함수)로 포인터를 이동시킨다.  더 세부적인 과정은 아래와 같다.
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/09-16-2020-12.45.59.jpg](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/09-16-2020-12.45.59.jpg)
+![05.png](/assets/images/2020-10-05-Process-Abstraction/05.png)
 
 ## Mode
 
 process는 다양한 연산을 수행할 수 있어야 한다. 그런데 그 중에는 I/O나 memory 접근 등의 특수 권한이 필요한 연산도 있다. 이러한 연산들을 process가 수행하게 하기 위해서는 어떻게 할까? 가장 간단한 방법으로는 process에게 별도의 제한 없이 모든 연산을 수행할 수 있게 하는 것이다. 하지만 접근 권한이 없는 곳에 접근하는 연산을 수행하게 되면 당연히 문제가 발생하게 된다. 현대의 OS는 이러한 문제를 해결하기 위해 User mode와 Kernel mode를 구분하는 정책을 채택했다. 특수 권한이 필요한 명령들은 Kernel mode에서 실행하고, 그 외 일상적인 연산들에 대해서는 User mode에서 실행하도록 구분짓는 것이다. User mode에서도 HW resource에 대해서는 모두 접근 가능하며, Kernel mode는 이에 더해 추가적으로 모든 system resource에 대해서도 접근할 수 있다. 기본적으로는 process는 User mode이며, 수행하는 연산에 따라 잠시 Kernel mode로 전환되었다가 다시 User mode로 복구된다. program의 현재 상태 word를 저장하는 PSW bit가 있는데, 이를 통해 현재 process의 mode가 어떤 type인지 파악할 수 있다.
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%204.png](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%204.png)
+![06.png](/assets/images/2020-10-05-Process-Abstraction/06.png)
 
 ## Interrupt
 
@@ -78,7 +71,7 @@ interrupt란 process가 User mode에서 Kernel mode로 변경되도록 하는 �
 
 비동기 interrupt (HW Interrupt, Trap)의 처리 과정에 대해 알아보자. 비동기는 언제든지 발생할 수 있다는 의미이다. Programmable Interrupt Controller가 여러 HW에서 interrupt 정보를 수집하고, interrupt가 발생했을 경우 CPU에 신호를 전달한다. CPU는 Kernel의 Interrupt Descriptor(Vector) Table에서 해당 interrupt의 entry pointer 값을 찾는다. 이 때 mode가 User mode에서 Kernel mode로 전환되게 된다. 찾은 pointer 값은 interrupt handler 내부의 특정 함수를 가리키게 되는데, 이를 이용해 실제 interrupt 처리가 수행되게 된다.
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%205.png](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%205.png)
+![07.png](/assets/images/2020-10-05-Process-Abstraction/07.png)
 
 ## System Call
 
@@ -86,7 +79,7 @@ interrupt란 process가 User mode에서 Kernel mode로 변경되도록 하는 �
 
 fork()를 호출하는 예시를 따라가며 system call 처리 과정을 이해해보자. system call도 결국 interrupt이기 때문에 위에서 살펴본 interrupt 처리 과정과 유사하다. c source code에서의 fork() 명령은 assembly code에서는 movl과 int의 두 명령어로 변환된다. 이 중 int 명령어는 interrupt 명령어이다. 이를 통해 IDT를 찾아가게 된다. system call은 결국 interrupt의 한 종류이기 때문에 IDT에서 한 공간을 system call의 entry가 차지하고 있다. 이 pointer값을 이용해 찾아간 interrupt handler는 system call들에 대한 주소들을 저장하는 table sys_call_table을 갖고 있는데, 해당 table 내부에서 sys_fork()에 대한 주소를 찾은 뒤 system call handler가 sys_fork() 명령을 실행하도록 명령한다.
 
-![Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%206.png](Process%20Abstraction%209922c39d2ab94230888ef15ad424ac95/Untitled%206.png)
+![08.png](/assets/images/2020-10-05-Process-Abstraction/08.png)
 
 ### System Call 추가
 

@@ -5,9 +5,85 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Jan 2021 04:03:47 -0600</pubDate>
-    <lastBuildDate>Tue, 19 Jan 2021 04:03:47 -0600</lastBuildDate>
+    <pubDate>Tue, 19 Jan 2021 05:03:23 -0600</pubDate>
+    <lastBuildDate>Tue, 19 Jan 2021 05:03:23 -0600</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title></title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;rr과-mlfq&quot;&gt;RR과 MLFQ&lt;/h2&gt;
+
+&lt;p&gt;Round Robin 기법은 평균 응답 시간은 최소화시켰지만, 평균 반환 시간은 최악이라는 점에서 한계가 있었다. 물론 평균 응답 시간이 짧기 때문에 사용자가 속도가 빠른 시스템으로 인지하도록 착각을 유도할 수 있었다. 하지만 짧은 task에 대해서도 slicing을 수행해 여러 번 나눠 작업을 수행하며 오랜 시간이 지난 후에 최종적으로 작업이 종료되기에 짧은 task에 있어서 너무나 불리한 정책이었다. MLFQ는 이러한 RR의 한계점을 극복하기 위해 고안해낸 방법이다. RR의 장점인 짧은 평균 응답 시간은 유지하면서, RR의 단점인 짧은 task의 불리함을 해결하자는 것이다. RR에서는 Queue를 1개만 운용했다면, MLFQ는 다양한 Time Quantum을 가지는 여러 Queue를 동시에 운용한다. 각각의 Queue들은 RR의 Queue와 동일한 방식으로 작동한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Scheduling-MLFQ/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;여러 개의 Queue는 상단에서 하단으로 내려갈수록 Time Quantum은 길어지고, 이는 당연히 process가 CPU를 점유했을 시 한 번에 실행되는 시간이 길어짐을 뜻한다. 반면 상단에서 하단 Queue로 내려갈수록 우선 순위는 떨어져 점유 가능성은 낮아진다. 더 정확히는, 하단에 있는 Queue가 Pop되려면 해당 Queue의 상단에 있는 모든 Queue가 empty 상태여야만 한다.&lt;/p&gt;
+
+&lt;p&gt;SJF, STCF와 같은 정책을 다시 생각해보자. 짧은 시간을 갖는 task에 대해서 우선순위를 부여하려고 하는 방식이었다. 하지만 CPU의 입장에서 처음 마주하는 process가 들어올 때 해당 process의 총 작업 시간이 얼마인지는 알 수 있는 방법이 없다. 따라서 SJF와 STCF와 같은 정책은 현실에서는 적용하기 불가능하다. MLFQ는 짧은 task들이 불리한 RR의 단점을 해결하기 위한 것이 목적이었다. MLFQ는 process의 실행 시간을 알 수 있는 방법이 없기 때문에 어디까지나 process의 실행 시간을 유추하게 된다. 우선은 새로 들어오는 모든 process가 짧은 process라고 가정하고 가장 TQ가 짧은 최상단 Queue에 push한다. 만약 첫번째 Queue에서 process가 끝나지 않았다면 아래에 있는 Queue에 push하게 된다. 우선 순위를 낮추되, 한 번 점유하면 오래 실행되도록 하는 것이다. 이는 해당 process가 실행 시간이 좀 더 길 것이라고 유추한다는 의미이다. 만약 2번째 Queue에서도 process가 종료되지 않았다면 3번째 Queue에 push하게 된다. 3번째 Queue는 1,2번째 Queue가 empty일 때에만 pop이 되기 때문에 우선 순위는 많이 떨어지지만, 한 번 점유하게 되면 오랜 시간 실행되게 된다. 이렇듯 각 process에게 고정적인 우선순위를 부여하는 기존의 scheduling 정책과 반대로 MLFQ는 동적으로 우선순위를 결정하게 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;mlfq-rule&quot;&gt;MLFQ Rule&lt;/h2&gt;
+
+&lt;p&gt;MLFQ가 작동하는 규칙에 대해 자세하게 살펴보자. 다음과 같은 5개의 규칙을 따른다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;우선순위가 더 높은 (더 상단의 Queue에 위치한) task를 먼저 수행한다.&lt;/li&gt;
+  &lt;li&gt;우선순위가 같은 (같은 Queue에 위치한) task 중에서는 먼저 들어온 task를 수행한다.&lt;/li&gt;
+  &lt;li&gt;처음 실행되는 task에 대해서는 가장 높은 우선순위를 부여한다(최상단 Queue에 push한다).&lt;/li&gt;
+  &lt;li&gt;TQ를 모두 소모하면, 우선순위가 낮아진다(아래의 Queue에 push한다).&lt;/li&gt;
+  &lt;li&gt;TQ를 모두 소모하기 전에 CPU 점유를 해제하면, 같은 우선순위를 유지한다(같은 Queue에 push한다).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;mlfq의-한계&quot;&gt;MLFQ의 한계&lt;/h2&gt;
+
+&lt;p&gt;기본 상태의 MLFQ는 크게 3개의 한계점이 존재한다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;기아 Starvation 발생 가능성&lt;/p&gt;
+
+    &lt;p&gt;실행 시간이 길어 우선순위가 낮아진 task는 계속 신규 task가 들어오게 될 경우 기아 상태에 빠지게 된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;시간에 따라 process의 특성이 변하더라도 한 번 내려간 우선순위 조정 불가&lt;/p&gt;
+
+    &lt;p&gt;I/O Bound(CPU보다 I/O 위주)인 task는 상단 Queue에 위치한다. 반면 CPU Bound인 task는 하단 Queue에 위치한다. 하지만 CPU Bound에서 I/O Bound로 process의 특성이 변경될 경우, 한 번 내려간 우선순위는 다시 올라가지 않는다. 따라서 해당 process는 제대로 실행되지 못한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;무의미한 I/O를 빈번히 발생시켜 우선순위를 강제로 유지 (gaming)&lt;/p&gt;
+
+    &lt;p&gt;Time Quantum이 끝나기 전에 CPU 점유를 해제하면 우선순위가 유지된다는 점을 악용해 매 Time Quantum이 끝나기 직전에 무의미한 I/O를 지속적으로 발생시키게 되면 해당 task는 계속 높은 우선순위를 유지하게 된다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;mlfq-개선&quot;&gt;MLFQ 개선&lt;/h2&gt;
+
+&lt;p&gt;위의 한계들을 극복하기 위해 새로운 rule을 도입할 수 있다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;일정 시간 $S$가 지나면, 모든 task들의 우선순위를 초기화한다(모든 task들을 최상위 Queue에 push한다).&lt;/p&gt;
+
+    &lt;p&gt;이러한 작업을 Boosting이라고 부른다. MLFQ의 1, 2번 문제를 해결할 수 있다. $S$는 hyperparameter로, heuristic하게 결정해야 하는 값이다. $S$를 너무 큰 값으로 지정하게 되면 Starvation이 여전히 발생하게 되고, 너무 작은 값으로 지정하게 되면 짧은 task(I/O Bound 또는 대화형 task)가 불리해진다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CPU 사용 시간의 합이 TQ에 다다를 경우 우선순위를 낮춘다(아래의 Queue에 push한다).&lt;/p&gt;
+
+    &lt;p&gt;해당 Queue 내에서 사용한 총 CPU time을 보관해 TQ에 다다르게 될 경우 그동안 CPU를 몇 번 양도했는지와 관계없이 우선 순위를 낮춰 다음 Queue에 push한다. 이를 통해 MLFQ의 3번 문제를 해결할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;mlfq-tuning&quot;&gt;MLFQ Tuning&lt;/h2&gt;
+
+&lt;p&gt;MLFQ에는 여러 hyperparameter들이 있다. 가장 대표적으로 Queue의 개수, 각 Queue의 Time Quantum, boosting에서의 $S$등이 있다. 이러한 값들은 모두 heuristic하게 결정해야 한다.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 Jan 2021 05:03:23 -0600</pubDate>
+        <link>http://0.0.0.0:4000/2021-01-19-Scheduling-MLFQ/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2021-01-19-Scheduling-MLFQ/</guid>
+        
+        
+      </item>
     
       <item>
         <title>[NLP 논문 리뷰] Deep Contextualized Word Representations (ELMo)</title>
@@ -147,6 +223,367 @@
         
         
         <category>Paper Review</category>
+        
+      </item>
+    
+      <item>
+        <title>Disk</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;hard-disk&quot;&gt;Hard Disk&lt;/h1&gt;
+
+&lt;p&gt;hard disk는 가장 범용적으로 사용되는 저장 장치이다. main memory와 다르게 영속적(persistent)으로 data를 저장할 수 있다. hard disk는 물리적으로 회전(rotation)하면서 data를 저장할 장소를 찾는다. 전체 구성 요소는 다음과 같다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;hard disk는 여러 층으로 이루어져 있다. 각 층은 platter라는 하나의 원판으로 구성되고, 모든 원판의 중심을 통과하는 spindle이 있다. spindle은 실제로 rotation을 수행하는 장치이다. 각 platter는 여러 track으로 구성되는데, 원하는 track을 선택하기 위해 disk arm이 이동하게 된다. disk arm의 끝에 달려있는 disk head가 실제로 data를 읽게 된다. 각 track은 sector로 구분되는데, sector는 가상 memory에서의 frame 또는 block과 같이 data가 한번에 읽고 씌여지는 단위이다. disk arm은 원하는 track으로 이동할 때 사용하고, 원하는 sector로 이동하기 위해서는 spindle이 flatter를 rotation시켜야 한다. 따라서 disk I/O의 단계는 다음과 같이 정리된다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;disk arm을 해당 track으로 이동 (seek time)&lt;/li&gt;
+  &lt;li&gt;해당 sector로 roatation (rotational delay)&lt;/li&gt;
+  &lt;li&gt;실제로 data를 read (transfer time)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;disk I/O에 소요되는 시간은 seek time + rotational delay + transfer time이 된다. 이 중 rotational delay, transfer time은 HW의 성능에 의해 좌우되기 때문에 실제로 disk scheduling을 통해 향상시키고자 하는 것은 seek time이다.&lt;/p&gt;
+
+&lt;h1 id=&quot;disk-scheduling&quot;&gt;Disk Scheduling&lt;/h1&gt;
+
+&lt;p&gt;disk의 seek time을 줄일 수 있는 disk scheduling algorithm들에 대해 알아보자. queue에 읽어야 할 track number가 다음과 같은 순서로 들어온다고 가정한다. 또한 disk arm의 시작 위치는 15라고 가정한다.&lt;/p&gt;
+
+\[15, 8, 17, 11, 3, 23, 19, 14, 20\]
+
+&lt;h2 id=&quot;fcfsfirst-come-first-service&quot;&gt;FCFS(First Come First Service)&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;queue에 들어온 순서대로 track으로 이동하는 것이다. 즉, FIFO와 동일한 방식이다. 모든 track에 대해 공정하게 접근하지만, 비효율적인 이동이 다수 발생할 수 있다는 단점이 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;sstf-shortest-seek-time-first&quot;&gt;SSTF (Shortest Seek Time First)&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;현재 disk arm의 위치에서 가장 적게 움직여 도달할 수 있는 track으로 먼저 이동하는 방식이다. FIFO에 비해 효율적이지만, 양극단(0, 24)에 가까운 track에 대해서는 starvation이 발생할 수 있다. 또한 하나의 track만이 계속 사용될 경우 arm이 움직이지 않고 고정되는 arm stickiness 현상이 발생할 수도 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;scan&quot;&gt;SCAN&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;한 방향으로의 관성을 갖고 움직여 양극단에 도달했을 경우에 반대 방향으로 전환해 이동하는 방식이다. 위의 경우는 track number가 감소하는 방향으로 시작한다고 가정한 것이다. 5시점까지 수행해 track 3으로 이동한 후, 최저점(0)에 도달한 뒤에 방향을 전환하게 된다. 마지막 9시점에서 23까지 이동하고 난 후 최고점(24)에 도달하게 된다. 이후 다시 방향을 전환하게 될 것이다. SSTF와 동일하게 starvation, arm stickiness가 발생할 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;c-scan&quot;&gt;C-SCAN&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;SCAN과 유사하지만 한 방향으로만 track을 읽어들이는 정책이다. 1~5시점까지는 track number를 감소시키면서 track을 읽어들이고, 5시점 이후에 최저점(0)에 도달한 뒤 최고점(24)로 이동해 다시 track number를 감소시키며 track을 읽어들인다. 이 역시 starvation, arm stickiness가 발생할 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;c-look&quot;&gt;C-LOOK&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;C-SCAN과 유사하지만 양극단(0, 24)까지 이동하지 않고 queue에서 가장 작은 track number(3), 가장 큰 track number(23)까지만 이동한다. 여전히 starvation, arm stickiness가 발생할 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;n-step-scan--fscan&quot;&gt;N-step-SCAN / FSCAN&lt;/h2&gt;
+
+&lt;p&gt;queue를 길이가 N인 하위 queue로 분할한 뒤, 각 queue에 대해 개별적으로 SCAN 정책을 사용하는 방식이다. 하나의 queue가 처리되는 동안 들어오는 신규 요청들은 모두 다른 queue에 추가된다. 따라서 starvation, arm stickiness가 발생하지 않는다. N의 값에 따라 성능이 달라지는데, N의 값이 커질 경우 SCAN과 유사한 성능을 보이고, N=1일 경우에는 FCFS와 완전히 동일한 정책이다. 이 중 FSCAN은 N=2인 경우를 지칭한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;raid&quot;&gt;RAID&lt;/h1&gt;
+
+&lt;p&gt;disk의 성능 지표로는 총 3가지가 있다. 성능(performance), 용량(capacity), 신뢰성(reliability)이다. performance는 얼마나 I/O time이 짧은가에 대한 지표이고, capacity는 얼마나 많은 data를 저장할 수 있는가에 대한 지표,reliability는 data가 얼마나 안전하게 저장되는가에 대한 지표이다. RAID는 여러 disk가 있을 때 사용하는 disk 가상화 기술로, 위의 지표 중 capacity를 다소 희생해 reliability를 향상시키는 정책이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;raid-0&quot;&gt;RAID 0&lt;/h2&gt;
+
+&lt;p&gt;RAID 0은 capacity를 희생시키지 않고 performance를 향상시키는 정책이다. 큰 size의 data를 disk에 저장해야 할 때 여러 disk block을 사용해야 할 것이다. 이 때 대개 하나의 disk에 존재하는 block을 사용하게 되는데, RAID 0은 여러 disk의 block을 균등하게 사용하는 것이다. 이를 striping이라고 한다. 이로 인해 얻을 수 있는 이점은 performance인데, 하나의 disk에서 disk arm을 여러 번 이동시켜 여러 track을 읽어들일 필요 없이, 병렬적으로 (동시에) 각 disk에서 disk arm을 이동시켜 전체 seek time을 줄일 수 있다.&lt;/p&gt;
+
+&lt;p&gt;RAID 0은 capacity를 희생시키지 않기 때문에 N개의 disk가 있을 경우 N개의 disk 전부를 온전히 data 저장 용도로 사용할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;raid-1&quot;&gt;RAID 1&lt;/h2&gt;
+
+&lt;p&gt;RAID 1은 mirroring 기법을 사용한다. mirroring이란 같은 disk를 그대로 또다른 disk에 복사해 저장하는 것이다. 이를 통해 둘 중 하나의 disk가 crash된다고 하더라도 다른 mirroring disk의 data를 통해 복구할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;RAID 1은 N개의 disk가 있을 경우 N/2개의 disk의 용량만큼 data를 저장할 수 있다. 대신 fault tolerance가 증가하게 된다. 즉, capacity를 희생해 reliability를 증가시킨 것이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/08.png&quot; alt=&quot;08.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;raid-10--raid-01&quot;&gt;RAID 10 / RAID 01&lt;/h2&gt;
+
+&lt;p&gt;RAID 1에 대해 RAID 0을 수행하는 정책이다. capacity는 N/2가 된다. reliability와 performance가 모두 향상된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/09.png&quot; alt=&quot;09.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;raid-01&quot;&gt;RAID 01&lt;/h2&gt;
+
+&lt;p&gt;RAID 0에 대해 RAID 1을 수행하는 정책이다. capacity는 N/2가 된다. reliability와 performance가 모두 향상된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/10.png&quot; alt=&quot;10.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;raid-234&quot;&gt;RAID 2/3/4&lt;/h2&gt;
+
+&lt;p&gt;RAID 2/3/4는 parity disk를 사용하는 방식이다. 이중 RAID 2는 다수의 parity disk를 사용하는 것이고, RAID 3,4는 하나의 parity disk를 사용한다. parity disk란 data 복구를 위해 존재하는 disk로 다른 disk들의 data를 검사할 수 있는 값을 저장하게 된다. 이 때 사용하는 단위는 RAID 3은 bit 단위, RAID 4는 block 단위이다. RAID 3/4는 최대 1개의 disk에 대한 crash를 복원할 수 있는데, 만약 data 저장 disk가 crash됐을 경우 parity disk의 값을 사용해 복원할 수 있고, 만약 parity disk가 crash됐을 경우 다른 disk들의 값을 사용해 parity data를 다시 생성한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/11.png&quot; alt=&quot;11.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;raid-5&quot;&gt;RAID 5&lt;/h2&gt;
+
+&lt;p&gt;RAID 4에서 parity disk를 별도로 운용하지 않고 여러 disk에 나눠 저장하는 것이다. 이는 parity disk의 I/O 횟수가 일반 data 저장 disk에 비해 많아 parity disk의 수명이 짧아지는 단점을 보완한 것이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/12.png&quot; alt=&quot;12.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;raid-6&quot;&gt;RAID 6&lt;/h2&gt;
+
+&lt;p&gt;서로 다른 parity 연산을 수행해 2개의 disk를 추가로 사용하는 방식이다. 최대 2개의 disk의 crash까지 복구 가능하다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/13.png&quot; alt=&quot;13.png&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 17 Dec 2020 18:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Disk/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Disk/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
+        
+      </item>
+    
+      <item>
+        <title>File System</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;block&quot;&gt;Block&lt;/h2&gt;
+
+&lt;p&gt;OS는 disk를 일정한 크기의 block으로 나누어 저장한다. 대개 block의 크기는 4KB이다. 각 block은 그 목적에 따라 아래의 4가지로 구분지을 수 있다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Super block&lt;/p&gt;
+
+    &lt;p&gt;file system의 global한 정보들을 담는 block으로 하나의 file system에 1개만 존재한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Allocation structure block&lt;/p&gt;
+
+    &lt;p&gt;bitmap, linked list 등의 방법으로 inode struct와 data에 대해 used/unused 정보가 저장된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Key meta data block&lt;/p&gt;
+
+    &lt;p&gt;inode struct의 table이 저장된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;User data block&lt;/p&gt;
+
+    &lt;p&gt;실제 data들이 저장된다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;아래는 2개의 allocation structure block이 각각 inode bitmap, data bitmap으로 운용되고, 최대 80개의 inode struct가 5개의 key meta data block에 저장되는 경우의 전체 disk 구조이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;inode-struct&quot;&gt;inode struct&lt;/h2&gt;
+
+&lt;p&gt;inode struct에는 file에 대한 meta data가 저장된다. 각 file마다 하나의 inode struct가 부여된다. file의 size, mode, permission, 소유자, 각종 시각 등이 저장된다. unix의 ls 명령어로 출력되는 정보들,  unistd.h의 stat() 함수에서 얻을 수 있는 struct stat 에 담긴 정보들은 모두 inode struct에서 가져온 것이다.&lt;/p&gt;
+
+&lt;p&gt;inode struct에서 가장 중요한 정보는 실제 data가 저장된 user data block의 pointer이다. file의 크기가 block의 size보다 클 경우에는 여러 block을 사용해야 하기 때문에 data block을 가리키는 여러 pointer 변수들이 inode struct에 존재하게 된다.&lt;/p&gt;
+
+&lt;p&gt;inode struct에서 pointer로 data block을 가리키는 방법에는 총 2가지가 있는데, direct pointer로 data block을 직접 가리키는 방법, indirect pointer로 disk block을 가리키는 pointer들이 저장된 block을 가리키는 방법이다. direct pointer만을 사용할 경우 한 file이 가질 수 있는 최대 size에 제약이 생기게 된다. 예를 들어 block size가 4KB이고, inode struct가 direct pointer 10개를 운용한다고 할 경우에는 한 file의 최대 size는 10&lt;em&gt;4KB=40KB가 된다. 반면 single indirect pointer 10개를 운용한다 할 경우 각 indirect pointer가 최대 저장할 수 있는 pointer의 개수는 block size / sizeof(pointer)이므로 4KB/4B = 1K이다. 각 pointer는 data block을 가리킬 수 있으므로 10&lt;/em&gt;1K*4KB = 40MB가 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;directory&quot;&gt;directory&lt;/h2&gt;
+
+&lt;p&gt;directory는 file의 한 종류이다. 그렇다면 directory의 inode struct는 어떻게 구성되어 있을까? inode struct의 일반적인 구성과 동일하다. directory의 data block에서의 data가 다른데, directory 하위 항목들에 대한 linked list를 저장된다. linked list의 각 node는 inode number와 name을 구성 요소로 갖는다. 이 때 inode struct pointer를 직접 저장하지 않고 단순 index 번호만 저장함으로써 공간을 절약한다. directory마다 단순 선형 linked list를 운용하게 될 경우 깊은 계층 구조를 갖는 directory에서 성능이 많이 하락하기 때문에 B-tree와 같은 자료구조를 사용해 성능을 향상시키기도 한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;file-descriptor--inode&quot;&gt;file descriptor &amp;amp; inode&lt;/h2&gt;
+
+&lt;p&gt;각 process는 고유한 file descriptor table을 운용한다. 그 중 0번은 stdin, 1번은 stdout, 2번은 stderr file로 미리 예약되어 있다. file descriptor란 해당 process가 어떤 file을 open했을 때 return되는 값인데, 한 process가 한 file을 여러 번 open할 수도 있다. 이 때마다 file descriptor는 새로 할당되게 된다. 즉, 같은 file에 대해 다른 file descriptor를 동시에 가질 수도 있는 것이다. 각 file descriptor는 open file table을 가리킨다. open file table의 각 항목은 status(read/write 등), offset, inode sturct pointer 등을 저장한다. open file table에서 inode struct를 가리키고, inode struct의 block pointer가 실제로 data가 저장된 data block을 가리키는 것이다.&lt;/p&gt;
+
+&lt;p&gt;정리하자면, file descriptor table은 process마다 별개로 부여되는 local 구조이고, open file table, inode table은 전체 file system에서 하나를 운용하는 global 구조이다. 각 항목이 가리키는 방향은 file descriptor table → open file table → inode table → data block이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;reading-a-file-from-disk&quot;&gt;Reading a File from Disk&lt;/h2&gt;
+
+&lt;p&gt;disk에서 실제 file을 읽어들이는 과정을 따라가보자. super block만이 memory에 올라와 있고, bitmap이 담긴 allocation structure block은 disk에 남아있는 상태라고 가정해보자. 다음의 순서를 따른다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;root directory (“ / “) read
+    &lt;ol&gt;
+      &lt;li&gt;root의 inode struct read&lt;/li&gt;
+      &lt;li&gt;root의 block pointer 획득&lt;/li&gt;
+      &lt;li&gt;root의 data block read&lt;/li&gt;
+      &lt;li&gt;root의 하위 항목들에 대한 linked list 획득&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;foo directory (“ /foo “) read
+    &lt;ol&gt;
+      &lt;li&gt;root의 하위 항목들에 대한 linked list에서 이름이 “foo”인 항목의 inode number 획득&lt;/li&gt;
+      &lt;li&gt;inode number를 통해 inode table에서의 주소 계산&lt;/li&gt;
+      &lt;li&gt;foo의 inode sturct read&lt;/li&gt;
+      &lt;li&gt;foo의 block pointer 획득&lt;/li&gt;
+      &lt;li&gt;foo의 하위 항목들에 대한 linked list 획득&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;bar file (“ /foo/bar “) read
+    &lt;ol&gt;
+      &lt;li&gt;bar의 하위 항목들에 대한 linked list에서 이름이 “bar”인 항목의 inode number 획득&lt;/li&gt;
+      &lt;li&gt;inode number를 통해 inode table에서의 주소 계산&lt;/li&gt;
+      &lt;li&gt;bar의 inode struct read&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;bar[0] read
+    &lt;ol&gt;
+      &lt;li&gt;bar의 inode struct에서 첫번째 data block pointer 획득&lt;/li&gt;
+      &lt;li&gt;data block read&lt;/li&gt;
+      &lt;li&gt;bar inode struct write(access time 등 갱신 위함)&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;bar[1] read
+    &lt;ol&gt;
+      &lt;li&gt;bar의 inode struct에서 두번째 data block pointer 획득&lt;/li&gt;
+      &lt;li&gt;data block read&lt;/li&gt;
+      &lt;li&gt;bar inode struct write(access time 등 갱신 위함)&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;bar[2] read
+    &lt;ol&gt;
+      &lt;li&gt;bar의 inode struct에서 세번째 data block pointer 획득&lt;/li&gt;
+      &lt;li&gt;data block read&lt;/li&gt;
+      &lt;li&gt;bar inode struct write(access time 등 갱신 위함)&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;creating--writing-a-file-from-disk&quot;&gt;Creating &amp;amp; Writing a File from Disk&lt;/h2&gt;
+
+&lt;p&gt;disk에서 실제 file을 생성하고 write하는 과정을 따라가보자. 역시나 super block만이 memory에 올라와 있고, bitmap이 담긴 allocation structure block은 disk에 남아있는 상태라고 가정한다. 다음의 순서를 따른다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;root directory (“ / “) read
+    &lt;ol&gt;
+      &lt;li&gt;root의 inode struct read&lt;/li&gt;
+      &lt;li&gt;root의 block pointer 획득&lt;/li&gt;
+      &lt;li&gt;root의 data block read&lt;/li&gt;
+      &lt;li&gt;root의 하위 항목들에 대한 linked list 획득&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;foo directory (“ /foo “) read
+    &lt;ol&gt;
+      &lt;li&gt;root의 하위 항목들에 대한 linked list에서 이름이 “foo”인 항목의 inode number 획득&lt;/li&gt;
+      &lt;li&gt;inode number를 통해 inode table에서의 주소 계산&lt;/li&gt;
+      &lt;li&gt;foo의 inode sturct read&lt;/li&gt;
+      &lt;li&gt;foo의 block pointer 획득&lt;/li&gt;
+      &lt;li&gt;foo의 하위 항목들에 대한 linked list 획득&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;bar file (“ /foo/bar “) create
+    &lt;ol&gt;
+      &lt;li&gt;현재 사용 중인 inode number을 확인하기 위해 inode bitmap read&lt;/li&gt;
+      &lt;li&gt;미사용 중인 inode number 선택 후 사용 중으로 변경하기 위해 inode bitmap write&lt;/li&gt;
+      &lt;li&gt;foo의 하위 항목들에 대한 linked list에 획득한 inode number와 “bar” 명칭으로 항목 추가하기 위해 bar data block write&lt;/li&gt;
+      &lt;li&gt;bar inode struct read (inode struct 초기화 위함)&lt;/li&gt;
+      &lt;li&gt;bar inode struct write (inode struct 초기화 위함)&lt;/li&gt;
+      &lt;li&gt;foo inode struct write (access time 등 갱신 위함)&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;bar file (“ /foo/bar “) write
+    &lt;ol&gt;
+      &lt;li&gt;write 가능한 여유 있는 data block 존재 여부 확인하기 위해 bar inode struct read&lt;/li&gt;
+      &lt;li&gt;현재 사용 중인 data block number 확인하기 위해 data bitmap read&lt;/li&gt;
+      &lt;li&gt;미사용 중인 data block number 선택 후 사용 중으로 변경하기 위해 data bitmap write&lt;/li&gt;
+      &lt;li&gt;bar data block write&lt;/li&gt;
+      &lt;li&gt;bar inode write (access time 등 갱신 위함)&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;ffs-fast-file-system&quot;&gt;FFS (Fast File System)&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;fast file system은 기존의 unix file system에서 성능을 더 향상시킨 file system이다. 기존의 file system은 disk 전체에 super block, inode bitmap, data bitmap이 disk에 오직 1개만 존재했다. 또한 inode 역시 disk의 한 영역에 몰려서 저장되어 있어 실제 data block들과의 disk상에서의 물리적 거리가 멀 수 밖에 없었다. FFS는 이러한 단점을 해결하고자 disk 전체를 여러 group으로 나누고, 각 group마다 super block, bitmaps, inodes, data block들을 부여한다. 이를 통해 inode에서 참조하는 data block과 실제 inode가 저장된 block 사이의 물리적 거리가 줄어들어 seek time이 감소한다.&lt;/p&gt;
+
+&lt;p&gt;또한 FFS는 directory 구조 역시 개선했는데, 기존의 file system은 단순한 계층 구조였기에 하위 file들의 data block이 부모 directory의 data block과 멀리 떨어져 있을 가능성이 농후했다. FFS는 동일한 directory에 있는 file에 접근할 확률이 40%나 된다는 통계에 기반해 (Name-based Locality) directory와 그 하위 file들을 disk 내에서 같은 group 안에 배치하도록 했다. 이를 통해 seek time을 감소시킬 수 있었다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;마지막으로, FFS는 disk layout에 대해서 최적화를 수행했다. 초기 hard disk는 HW의 성능이 떨어져 rotation 속도가 많이 느렸다. 하지만 점차 HW가 발전함에 따라 rotation 속도가 비약적으로 상승했고, 연속된 sector를 읽어들이기에는 이미 head가 다음 sector를 지나쳐버리는 증상이 발생하게 되었다. 이를 해결하기 위해 FFS는 다음 sector를 연속적으로 배치하지 않고, 1칸 뒤에 배치하는 식으로 sector 배치를 변경했다.&lt;/p&gt;
+
+&lt;p&gt;이 외에도 FFS는 block의 크기를 줄여 내부 단편화 현상을 감소시키고, symbolic link를 도입하는 등의 여러 변화를 채택했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;crash-consistency&quot;&gt;Crash Consistency&lt;/h1&gt;
+
+&lt;h2 id=&quot;disk-crash-scenario&quot;&gt;Disk Crash Scenario&lt;/h2&gt;
+
+&lt;p&gt;disk I/O 과정에서 crash가 발생하는 경우에 대해서 살펴보자. 이미 존재하는 file에 대해 새로운 data를 append하는 경우에는 data bitmap, inodes, data block을 갱신해야 한다. 위의 3가지 block들에 대한 갱신은 atomic하게 이루어져야 한다. 이 과정에서 발생할 수 있는 crash scenario는 다음의 6가지이다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;data block만 정상 갱신, data bitmap, inodes는 crash되는 경우&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;data bitmap과 inodes가 모두 crash되었기 때문에 bitmap과 inodes 사이의 불일치(inconsistent)는 없다. 따라서 consistent한 상황이다. 대신 data block은 갱신이 되었는데, 해당 block은 data bitmap에서도 unused로 표시가 되어 있고, inodes에도 data block 포인터가 연결이 되어 있지 않기 떄문에 garbage data이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;inodes만 정상 갱신, data bitmap, data block은 crash되는 경우&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/08.png&quot; alt=&quot;08.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;data bitmap은 crash, inodes는 정상 갱신되었기 때문에 inconsistent한 상황이다. inodes는 이미 data block을 가리키는데 해당 data block에는 data가 쓰여 있지 않고, data bitmap에서도 해당 data block은 unused로 표시가 되어 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;data bitmap만 정상 갱신, inodes, data block은 crash되는 경우&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/09.png&quot; alt=&quot;09.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;data bitmap은 정상 갱신되었지만, inodes는 crash되었기 때문에 inconsistent한 상황이다. data block에는 write가 되지 않았고, inodes에서도 해당 data block을 가리키지 않는데 datat bitmap에서는 used로 표시가 되어있는 경우이다. 이후 해당 data block은 사용되지 못하고 낭비될 것이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;data bitmap, inodes는 정상 갱신, data block만 crash되는 경우&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/10.png&quot; alt=&quot;10.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;data bitmap과 inodes가 모두 정상갱신 되었기 때문에 consistent한 상황이다. data block에 write만 되지 않은 것이기 때문에 garbage data가 저장된 상태이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;inodes, data block은 정상 갱신, data bitmap만 crash되는 경우&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/11.png&quot; alt=&quot;11.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;data bitmap은 crash되고, inodes는 정상 갱신되었기 때문에 inconsistent한 상황이다. 이 경우 inode에서 data block을 가리키고, 해당 data block에는 정상적인 data가 쓰여져 있음에도 data bitmap에서 unused로 표시가 되어 있기 때문에 언제든 덮어씌워질 수 있고, 다른 inode가 동일한 data block을 가리킬 수도 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;data bitmap, data block은 정상 갱신, inodes만 crash되는 경우&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-17-File-System/12.png&quot; alt=&quot;12.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;data bitmap은 정상 갱신, inodes는 crash되었기 때문에 inconsistent한 상황이다. 이 경우 data block에도 정상적인 data가 쓰여져 있고 data bitmap에서도 used로 표시가 되었지만 inodes에서 해당 data block을 가리키지 않기 때문에 해당 data block은 어떤 file에도 연결되지 못한다. 이를 orphan data block이라고 한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;fsck&quot;&gt;FSCK&lt;/h2&gt;
+
+&lt;p&gt;FSCK는 unix에서 file system에서의 crash inconsistency를 찾아내 해결하는 도구이다. 초기의 file system은 crash inconsistency를 발견하더라도 무시했다가 rebooting 과정에서 이를 해결했다. FSCK는 rebooting 없이도 이를 해결하고자 개발되었다. FSCK 동작 중에는 file system이 어떠한 다른 동작도 수행하지 않는다고 가정한다.&lt;/p&gt;
+
+&lt;p&gt;FSCK는 inodes 정보를 기반으로 bitmap을 재갱신한다. 개념적으로 간단하고 별도의 write overhead가 없다는 장점이 있지만, 과도하게 많은 연산을 수행하고, consistent한 경우에 대해서는 해결이 불가능하다는 단점이 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;journaling-wal-write-ahead-logging&quot;&gt;Journaling (WAL: Write-Ahead Logging)&lt;/h2&gt;
+
+&lt;p&gt;Journaling은 disk I/O, 특히 write 연산 시에 log를 기록해 저장했다가 이를 crash inconsistency를 해결하는데 사용하는 방식이다. write 요청이 올 경우 disk는 이를 즉시 갱신하지 않고 write 작업 중 수행할 연산들에 대한  log를 미리 작성한다. 이후 만약 write 도중 disk crash가 발생할 경우, 해당 log를 확인해 다시 write를 수행한다. 이러한 log를 저장하는 용도로 disk에 journal block을 새로 추가한다. log의 저장 단위는 transaction이다.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 16 Dec 2020 18:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/File-System/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/File-System/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
         
       </item>
     
@@ -306,6 +743,935 @@
         
         
         <category>Paper Review</category>
+        
+      </item>
+    
+      <item>
+        <title>Semaphore</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;semaphore&quot;&gt;Semaphore&lt;/h1&gt;
+
+&lt;p&gt;semaphore는 다수의 thread 사이의 병행성 유지를 위해 OS 단위에서 제공되는 기법이다. 기본적인 작동 원리는 특정 thread가 특정 signal을 수신할 때까지 정해진 위치에서 wait하도록 강제하는 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;counting-semaphore&quot;&gt;counting semaphore&lt;/h2&gt;
+
+&lt;p&gt;counting semahpore는 정수값을 갖는 counting 변수와 3가지 연산으로 구성된다. 범용 semaphore라고도 불리운다. 3가지 연산은 아래와 같다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;semInit(): semaphore 변수를 음이 아닌 값(대개 1)으로 초기화를 수행한다.&lt;/li&gt;
+  &lt;li&gt;semWait(): semaphore 변수 값을 감소시킨다. 만약 값이 음수가 되면 semWait()을 호출한 thread는 block된다. 그 외에는 해당 thread는 정상적으로 계속 수행한다.&lt;/li&gt;
+  &lt;li&gt;semSignal(): semaphore 변수 값을 증가시킨다. 만약 값이 양수가 아니면 semWait()에 의해 block된 thread 중 하나를 깨운다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;기본적인 pseudo code는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;waitQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//요청한 thread를 s.waitQueue에 push&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//요청한 thread의 상태를 block으로 변경&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//s.waitQueue에서 thread 1개를 pop&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//pop한 thread의 상태를 runnable로 변경 후 OS의 readyQueue에 push&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;count 변수는 값이 음수인 경우에 그 절대값은 대기 queue의 길이를 의미한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;binary-semaphore-mutex&quot;&gt;binary semaphore (mutex)&lt;/h2&gt;
+
+&lt;p&gt;mutex는 semaphore 변수가 0 또는 1의 binary 값만 갖는 semaphore를 뜻한다. 동일하게 3가지 연산으로 구성된다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;semInitB(): semaphore 변수를 0 또는 1로 초기화한다.&lt;/li&gt;
+  &lt;li&gt;semWaitB(): semaphore 변수 값을 확인해 0일 경우 semWaitB()를 호출한 thread는 block되고, 1일 경우 값을 0으로 변경시킨 뒤 thread는 계속 수행한다.&lt;/li&gt;
+  &lt;li&gt;semSignalB(): block된 thread가 있는지 확인한 후, 만약 있을 경우 해당 thread들 중 하나를 깨우고, 없을 경우 semaphore 변수 값을 1로 설정한다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;pseudo code는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;_Bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;waitQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;semInitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//요청한 thread를 s.waitQueue에 push&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//요청한 thread의 상태를 block으로 변경&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;semSignalB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;waitQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//s.waitQueue에서 thread 1개를 pop&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//pop한 thread의 상태를 runnable로 변경 후 OS의 readyQueue에 push&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;binary semahpore는 일반 범용 semaphore에 비해 구현이 간단하다는 장점이 있다. 둘 모두 waitQueue를 운용한다는 점에서 공통적이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;strong--weak-semaphore&quot;&gt;strong / weak semaphore&lt;/h2&gt;
+
+&lt;p&gt;queue에서 FIFO 방식을 사용하는 semaphore를 강성(strong) semaphore라고 하고, 특별히 queue의 순서를 명시하지 않은 semaphore를 약성(weak) semaphore라고 한다. 하지만 실제로 대부분의 OS에서는 강성 semaphore를 사용한다. starvation이 없고, 직관적이며 구현하기도 용이하기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;아래는 강성 semaphore의 예시이다. D thread는 생산자,와 A, B, C thread는 소비자인 문제이다. 초기 semaphore 변수 s가 값이 1로 시작된다.  s의 값이 음수일 때에는 그 절댓값이 기다리는 thread의 개수(waitQueue 내 thread의 개수)를 뜻하고, s의 값이 음수가 아닐 때에는 생산자가 생성한 자원의 여분 개수를 뜻한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Semaphore/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;mutual-exclusion-problem&quot;&gt;mutual exclusion problem&lt;/h2&gt;
+
+&lt;p&gt;범용 semaphore를 사용해 상호 배제 문제를 해결해보자. 상호 배제 문제란 동일한 자원에 접근하려는 n개의 thread의 병행성을 처리하는 문제이다. semInit()에서 count 변수를 0이 아닌 변수로 초기화한다. count 변수의 초기값은 자원의 개수를 의미한다. 따라서 count 변수는 0으로 초기화 되어서는 안된다. 모든 thread가 무한히 block될 것이기 때문이다. 각 thread에서 critical section(임계 영역)을 생성하게 되는데, critical section이란 한 번에 최대 1개의 thread만이 접근할 수 있는 영역이다. semWait()~semSignal() 사이의 영역이 된다. pseudo code는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread_execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thread_no&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//임계 영역&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;c1&quot;&gt;//임계 영역 이후&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_threads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;thread가 1, 2, 3 순서대로 실행된다고 가정했을 때 각 thread는 아래와 같은 형태로 실행된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Semaphore/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;producer-consumer-problem&quot;&gt;producer-consumer problem&lt;/h2&gt;
+
+&lt;p&gt;생산자-소비자 문제를 mutex를 이용해 해결해보자. 생산자-소비자 문제는 다수의 생산자 thread가 각자 자원을 생성해 공용 buffer에 저장하고, 다수의 소비자 thread가 공용 buffer에서 자원을 1개씩 소비하는 상황의 병행성을 처리하는 문제이다. 공용 buffer에는 한 번에 1개의 thread만 접근 가능하다(critical section)는 조건이 있다. 우선 공용 buffer가 무한한 크기를 갖는다고 가정한다. 이 때 in과 out이라는 pointer 변수를 사용하는데, in은 다음에 생산자가 생성한 자원이 저장될 buffer에서의 위치이며, out은 다음에 소비자가 소비할 자원이 저장된 buffer에서의 위치이다. 따라서 out&amp;lt;in인 경우에만 소비자가 소비할 자원이 있는 것이다. 전체 pseudo code는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                     &lt;span class=&quot;c1&quot;&gt;//in-out의 값&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//buffer의 접근을 제어하는 mutex&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;//buffer가 비었는지를 확인해 소비를 제어하는 mutex&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;producer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;produce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 생산&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;           &lt;span class=&quot;c1&quot;&gt;//buffer에 push&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;//buffer.empty()==false가 된 상황&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;semSignalB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;//consumer 중 1개 block 해제&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                       critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignalB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//consumer가 producer보다 먼저 실행되는 상황(buffer.empty()==true)를 막기 위해 block&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//buffer에서 pop&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                	critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignalB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;consume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 소비&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//buffer.empty()==true가 된 상황&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//thread block&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_producers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 code는 producer와 consumer 내의 while문이 매 번 atomic하게 전체가 함께 실행되면 정상적으로 작동할 것이다. 하지만 while loop가 1번 도는 사이에 scheduling이 발생하지 않을 것이라는 보장이 없다. 만약 consumer에서 semSignalB(s)와 if(n==0) 사이에서 scheduling이 발생해 producer가 실행된다면 n은 0에서 1로 변경될 것이고, 그렇다면 다시 scheduling이 되어 consumer로 돌아왔을 때 if(n==0)을 만족하지 못하므로 semWaitB(delay)가 실행되지 않을 것이다. 이는 소비자가 한 개의 thread라면 큰 문제가 되지 않지만, 다수의 thread일 경우에는 문제 상황이 된다. empty임에도 여러 소비자 thread 모두 block되지 않을 수 있기 때문이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;solution-1-보조-변수-사용&quot;&gt;solution 1: 보조 변수 사용&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                     &lt;span class=&quot;c1&quot;&gt;//in-out의 값&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//buffer의 접근을 제어하는 mutex&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;binary_semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;//buffer가 비었는지를 확인해 소비를 제어하는 mutex&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;producer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;produce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 생산&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;           &lt;span class=&quot;c1&quot;&gt;//buffer에 push&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;//buffer.empty()==false가 된 상황&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;semSignalB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;//consumer 중 1개 block 해제&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                       critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignalB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//consumer가 producer보다 먼저 실행되는 상황(buffer.empty()==true)를 막기 위해 block&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//buffer에서 pop&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                	critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignalB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;consume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 소비&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//buffer.empty()==true가 된 상황&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;semWaitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//thread block&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInitB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_producers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;n의 값이 변경되는 것을 막기 위해 critical section 내에서 보조 변수 m에 현재 n의 값을 임시로 저장한다. 이후 critical section 밖의 if문에서 n 대신 m이 0인지를 확인하게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;solution-2-범용-semaphore-사용&quot;&gt;solution 2: 범용 semaphore 사용&lt;/h3&gt;
+
+&lt;p&gt;binary semaphore가 아닌 범용 semaphore를 사용하면 애초에 위의 문제 상황이 발생하지 않는다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;c1&quot;&gt;//buffer의 접근을 제어하는 semaphore&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;c1&quot;&gt;//buffer에 들어있는 자원의 개수를 제어하는 semaphore&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;producer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;produce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 생산&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;           &lt;span class=&quot;c1&quot;&gt;//buffer에 push&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//consumer 중 1개 block 해제&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                       critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//buffer.empty()==true일 때 실행되는 것을 방지하기 위해 block&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//buffer에서 pop&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                	critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;consume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 소비&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_producers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;공용 변수 n과 delay를 통합해 하나의 범용 semaphore n으로 운용한다. n의 값에 따라 delay를 wait 또는 signal하지 않고 무조건적으로 producer에서는 semSignal(n), consumer에서는 semWait(n)하게 된다. n은 buffer에 들어가 있는 자원의 개수(음수일 경우 그 절댓값은 waitQueue에 들어있는 thread의 수)임과 동시에 thread의 실행 순서를 제어하는 역할을 하게 된다. consumer thread들은 매 번 실행될 때마다 semWait(n)을 하게 된다. 따라서 producer에서 semSignal(n)과 semSignal(s)가 서로 순서가 바뀌어 semSignal(n)이 critical section 밖에서 수행된다고 하더라도 동일하게 실행된다. 왜냐하면 어차피 consumer들은 semWait(n)을 통해 block된 상태이기에 semSignal(n)이 호출되어야 수행될 수 있기 때문이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;유한-buffer-사용&quot;&gt;유한 buffer 사용&lt;/h3&gt;
+
+&lt;p&gt;위의 모든 solution은 무한한 buffer를 사용한다는 가정 하에서 이루어졌다. 하지만 실제로 무한한 buffer는 존재하지 않으므로 유한한 buffer를 사용하게 된다. 대개 circular queue를 사용하게 된다. pseudo code는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;c1&quot;&gt;//buffer의 접근을 제어하는 semaphore&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;c1&quot;&gt;//buffer에 들어있는 자원의 개수를 제어하는 semaphore&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;c1&quot;&gt;//유한 buffer를 관리하는 semaphore&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;producer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;produce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 생산&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;//buffer.full()==true일 경우 block&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;           &lt;span class=&quot;c1&quot;&gt;//buffer에 push&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//consumer 중 1개 block 해제&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                       critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//buffer.empty()==true일 때 실행되는 것을 방지하기 위해 block&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+		                     critical section start
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//buffer에서 pop&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			                	critical section end
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//buffer.full()==false이므로 block된 producer 중 1개 unblock&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;consume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//자원 소비&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BUFFER_SIZE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_producers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_of_consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 16 Nov 2020 18:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Semaphore/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Semaphore/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
+        
+      </item>
+    
+      <item>
+        <title>[운영체제] Concurrency</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;thread&quot;&gt;Thread&lt;/h1&gt;
+
+&lt;h2 id=&quot;process&quot;&gt;Process&lt;/h2&gt;
+
+&lt;p&gt;OS에서 process는 역할을 정리해보자. 우선 process는 자원 소유의 단위이다. 자원이라는 것은 main memory, I/O device, file system 등을 의미한다. 대표적인 예시로 process별로 main memory에 서로 다른 공간을 할당하는 것이 있다. 두번째로 process는 scheduling의 단위이다. context switching은 process 사이에 발생하면서 다음 실행될 process를 선택한다. 이러한 process의 2가지 역할은 서로 독립적이다. 따라서 os는 두 가지 역할을 모두 process라는 하나의 개념으로 수행하지 않고, 별개의 단위를 만들어냈다. 우선 자원 관리 역할은 process가 그대로 수행한다. 이 때의 process를 task라고 명명하기도 한다. 반면 scheduling의 단위는 thread 또는 경량(lightweight) process라고 새로 정의한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;multi-thread&quot;&gt;Multi-thread&lt;/h2&gt;
+
+&lt;p&gt;os가 하나의 process 내에 여러 thread를 지원하는 것을 다중 쓰레딩(kernel-level multi thread)라고 한다. MS-DOS와 같은 단일 사용자 process의 경우에는 오직 하나의 process만 동시에 실행될 수 있으며, 해당 process 내에 하나의 thread만이 존재한다. 즉, thread라는 개념이 없는 것과 마찬가지이다. 초기의 UNIX와 같은 다중 사용자 process는 여러 process가 동시에 실행될 수 있지만, 각 process 내에 하나의 thread만이 존재한다. Windows, Mac OS, BSD와 같은 비교적 최신 운영체제는 모두 multi thread를 채택하고 있다. 여러 process가 동시에 실행될 수 있으면서, 각 process 내에 여러 thread가 함께 존재하는 것이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;다증 쓰레딩 환경에서 process는 자원 할당의 단위, 보호의 단위로써의 의미를 갖는다. process 별로 자원을 할당하고, 다른 process가 자신의 자원에 접근하지 못하도록 보호하는 것이다. 한편 dispatching(scheduling)의 단위는 process가 아닌 thread가 수행하게 된다. 각 thread는 context switching 수행을 위해 별개의 독립된 program counter를 보유한다. 또한 별개의 독립된 stack을 각자 보유한다. 반면 heap, data, bss, text와 같은 memory 영역은 process 내의 다른 thread들과 공유한다. 즉, process에게 할당된 stack memory 영역을 여러 thread들이 나누어 사용하고, 나머지 memory 영역은 process 단위로 공유하는 것이다. 따라서 기본적으로 memory 등의 모든 자원은 process 내의 모든 thread들이 공유한다고 볼 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;그렇다면 multi-thread를 사용함으로써 얻는 이점은 어떤 것이 있을까? 우선 성능 향상에 큰 도움이 된다. process를 여러 thread 별로 할당해 I/O를 많이 하는 thread, CPU 연산을 많이 하는 thread를 분리한다면 I/O 때문에 대기하는 시간을 단일 process 방식보다 훨씬 줄일 수 있을 것이다. 또한 process를 생성하는 것에 비해 이미 존재하는 process 내에서 새로운 thread를 생성하는데 드는 비용이 더 적다는 장점도 있다. 이에 더해 context switching도 thread 간의 전환이 process 단위보다 더 빠르다. 마지막으로, process 간에는 자원을 공유할 수 없기 때문에 서로 통신하기 위해서는 kernel이 개입해야 하지만, thread는 kernel 호출 없이도 서로 원활하게 통신할 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;processthread&quot;&gt;Process/Thread&lt;/h2&gt;
+
+&lt;p&gt;process와 thread의 유사점/차이점을 정리해보자. 우선 context switching의 단위라는 점이 공통적이다. 또한 program counter를 보유한다는 점도 공통적이다. 반면 process는 PCB(process control block)으로 관리하지만, thread는 TCB(thread control block)으로 관리한다는 점이 차이가 있다. 또한 process는 다른 process의 자원(memory 공간 등)에 접근할 수 없는 반면, thread는 다른 thread의 자원에 접근 가능하다는 차이점이 있다. 마지막으로, process 단위의 context switching 후에는 memory 주소 공간이 달라지지만, thread 단위의 context switching 후에는 memory 주소 공간의 변화가 없다는 차이점이 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;states-of-threads&quot;&gt;States of Threads&lt;/h2&gt;
+
+&lt;p&gt;thread의 상태는 process의 상태와는 별개이다. process의 상태를 떠올려보면, suspend 상태가 존재했다. thread 상태에서는 suspend가 존재하지 않는다. suspend라는 것은 main memory가 아닌 disk의 swap 영역에 위치하는 상태인데, 이는 process 전체가 swap 영역으로 옮겨지는 것이기에 thread 단위의 작업이 아니다. 즉, process가 swap-out된다면 해당 process에 속한 모든 thread가 함께 swap-out되는 것이다. 즉, suspend는 thread의 state와는 아무런 연관이 없다. thread의 상태는 크게 다음의 4가지가 있다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;생성(spawn)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;블록(block)&lt;/p&gt;
+
+    &lt;p&gt;thread가 어떠한 사건을 기다리는 상태이다. 자신의 register, program counter, stack pointer를 저장한다. dispatcher는 같은 process나 다른 process 내의 다른 thread를 수행한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;비블록(unblock)&lt;/p&gt;
+
+    &lt;p&gt;사건이 발생해 thread가 준비 queue에 push되는 상태이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;종료(finish)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;ultuser-level-thread--kltkernel-level-thread&quot;&gt;ULT(User-level Thread) / KLT(Kernel-level Thread)&lt;/h2&gt;
+
+&lt;p&gt;사용자는 kernel-level thread를 직접 제어하지 못한다. KLT는 오직 kernel만이 제어할 수 있는 thread이다. single-thread 운영체제일 경우에는 KLT가 구현되어 있지 않다. 사용자는 현재 환경이 KLT가 구현되어 있는지도 알지 못하고, KLT를 제어할 수도 없기 때문에 user-level thread를 사용하게 되는데, 대개 pthread와 같은 thread library를 활용한다. thread library는 실행 운영체제가 single-thread일 경우 여러 ULT를 하나의 process로 보내게 된다. 만약 KLT가 구현되어 있는 multi-thread 운영체제라면 알맞게 KLT와 mapping을 시켜 여러 process로 보내게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ULT와 KLT를 비교해보자. 한 process 내의 thread 사이 dispatch를 수행할 때를 생각해보자. 우선 ULT는 각 thread가 모두 사용자 주소 공간에 위치하기 때문에 dispatch를 할 때에 kernel mode로 변경될 필요 없이 user mode에서 모두 수행 가능하다. 반면 KLT는 dispatch를 할 때마다 kernel mode로 변경되어야만 한다. 즉, mode 전환 여부에 있어서는 ULT가 KLT보다 유리하다. 또한, ULT는 운영 체제에 종속적이지 않고 어떠한 kernel의 변경 없이도 원활히 수행될 수 있는 반면, KLT는 운영 체제에 따라 존재하지 않을 수도 있다는 차이점도 있다. 한편, ULT의 경우에는 하나의 thread에서 system call을 호출할 경우 같은 process 내의 모든 thread들이 함께 block이 된다는 치명적인 단점이 있다. 즉, 순수한 ULT만으로는 다중 처리의 장점을 살리지 못하게 된다. 반면 KLT의 경우에는 한 thread가 block된다고 하더라도 다른 thread들은 자유롭다. 즉, 여러 dispatcher에 하나의 process에 속한 여러 thread를 동시에 scheduling이 가능하다. 진정한 의미의 다중 처리가 가능한 것이다.&lt;/p&gt;
+
+&lt;h1 id=&quot;lock&quot;&gt;Lock&lt;/h1&gt;
+
+&lt;p&gt;thread는 서로 memory를 공유한다. 따라서 공통으로 사용하는 공유 변수가 있다. 여러 thread가 모두 변수의 값을 read만 하는 경우에는 문제가 발생하지 않지만, 만약 특정 thread가 변수의 값을 write하게 된다면 동기화 문제가 발생한다. 이를 해결하기 위해서는 한 thread가 변수를 write할 때에는 다른 thread가 해당 변수에 접근할 수 없도록 lock을 걸어주는 과정이 필요하다. lock~unlock의 구간을 critical section(임계 영역)이라고 한다. critical section은 해당 영역 내의 다수의 명령어를 atomic(원자적)하게 실행되도록 보장한다. lock에 대한 정책은 모든 thread에게 공정해야만 한다. 구체적으로, 우선 모든 thread가 적절한 시간 내에 critical section에 들어갈 수 있어야만 하고, critical section에 들어가기 위해 대기 중인 모든 thread들의 요청은 언젠가는 허가가 되어야 한다. 마지막으로 starvation이 발생하지 않아야 한다. lock은 적용 범위에 따라 사용하는 일부분만 lock을 하는 coarse-grained lock, 사용하는 모든 영역을 lock하는 fine-grained lock으로 구분되기도 한다.&lt;/p&gt;
+
+&lt;p&gt;lock에서 사용되는 용어들을 정리해보자.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;mutual exclusion (상호 배제)&lt;/p&gt;
+
+    &lt;p&gt;critical section에는 어느 시점에서든 반드시 단 1개의 thread만 접근 가능해야 한다는 개념이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;race condition (경쟁 조건)&lt;/p&gt;
+
+    &lt;p&gt;다수의 thread가 공유 data를 read/write하는 상황이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;busy waiting&lt;/p&gt;
+
+    &lt;p&gt;모든 thread가 critical section 접근 조건을 만족하지 못해, 반복적으로 접근 조건만을 검사하며 함께 대기하는 상황이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;deadlock (교착 상태)&lt;/p&gt;
+
+    &lt;p&gt;다수의 thread가 다른 thread가 어떠한 일을 해 줄 때까지 대기하는 상태로, 모든 thread가 다른 thread의 변화를 기다리며 대기하는 상황이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;livelock&lt;/p&gt;
+
+    &lt;p&gt;다수의 thread가 단순히 자신의 상태를 변화시키는 작업만 반복적으로 수행하면서 대기하는 상황이다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;mutual-exclusion&quot;&gt;mutual exclusion&lt;/h2&gt;
+
+&lt;p&gt;mutual exclusion을 위한 세부 요구 조건이 있는데, 우선 mutual exclusion은 선택 사항이 아니라 필수 사항이라는 점이다. 즉, mutual exclusion은 강제되어야만 한다. 두번째로, critical section의 밖에 있는 어떤 thread도 critical section 내의 thread에게 간섭해서는 안된다. 세번째로, deadlock 및 starvation이 발생하지 않아야 한다. 네번째로, critical section에 아무도 접근하지 않을 때에는 대기하던 thread 중 하나가 즉시 critical section에 접근할 수 있어야 한다. 마지막으로, 어떠한 thread도 critical section을 무한히 점유할 수는 없다.&lt;/p&gt;
+
+&lt;p&gt;mutual exclusion을 구현하기 위한 여러 방법을 살펴보자. 단순화를 위해 binary mutual exclusion으로 가정한다. 즉, 2개의 process만이 존재하는 상황이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;turn-variable&quot;&gt;turn variable&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;turn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 0&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;turn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;turn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 1&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;turn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;turn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;turn이라는 boolean 변수를 활용해 turn==0일 때에는 thread0을, turn==1일 때에는 thread1을 실행한다.&lt;/p&gt;
+
+&lt;p&gt;하지만 이러한 정책은 한 thread가 연속적으로 critical section을 점유하지 못한다는 문제점이 있다. 구체적인 예시로, thread0이 critical section을 점유한 뒤 나오게 되면, thread1이 critical section을 점유하기 전까지는 절대 critical section을 점유할 수 없다. 만약 thread1이 critical section에 접근할 필요가 없는 thread라면 thread0은 무한히 대기하게 될 것이다. 즉, deadlock이 발생한 것이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;flag&quot;&gt;flag&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 0&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 1&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;각 thread마다 하나의 boolean 변수를 사용해 자신이 critical section을 점유하고 있는지를 나타낸다. 따라서 turn variable 정책과는 달리 하나의 thread가 연속적으로 critical section을 점유할 수 있다. 상대방 thread가 critical section을 점유하고 있는지만 확인하기 때문이다. 이는 flag 변수의 개수를 늘리고 while문에서 확인할 flag 개수를 증가만 시킨다면 binary가 아닌 n개의 thread에 대해서도 적용 가능하도록 손쉽게 확장할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;하지만 이러한 정책은 busy waiting을 발생시킨다는 문제점이 있다. 만약 다른 thread의 flag를 검사하는while문과 자신의 flag를 1로 변화시키는 명령어 사이에 context switching이 발생하게 된다면 두 flag가 모두 1이 되어 두 thread 모두 critical section에 접근하게 된다. 이는 critical section의 정의에 부합하지 않는 상황이다. 이는 실제 lock을 수행하는 명령과 lock 수행을 돕는 변수의 값 변경 사이에 context switching이 발생한 것으로 lock step 사이에 scheduling이 발생했다고 볼 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;busy-waiting&quot;&gt;busy waiting&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 0&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 1&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;lock step 사이에 context switching이 발생하는 것을 막기 위해서 flag를 먼저 변경시킨 뒤 대기한다. 그러나 이 경우에도 flag의 변경과 while문 사이에 context switching이 발생하게 되면 모든 flag가 1이 되게 된다. 이러한 경우 모든 thread가 flag를 확인하는 while문을 무한히 수행하게 된다. busy waiting이 발생한 것이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;busy-flag-again&quot;&gt;busy flag again&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 0&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]){&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 1&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]){&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다른 thread의 flag를 검사하는 while문 내에서 자신의 flag를 일정 시간 간격으로 toggle하는 것이다. 이러한 경우 delay 시각 내에 context switching이 발생하게 되면 다른 thread가 critical section에 접근할 수 있게 된다. 하지만 이 역시 두 thread의 delay가 동시에 발생하는 최악의 경우에는 livelock 상태에 빠지게 된다. 하지만 이는 현실에서는 발생하기 불가능에 가깝기 때문에 무시되고는 한다. SW 상으로 critical section 정책을 구현하는 것에 있어서는 위의 정책이 가장 최선이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;interrupt-disable&quot;&gt;interrupt disable&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// thread 0&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;interrupt_disable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;interrupt_enable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 1&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;interrupt_disable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;interrupt_enable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;HW적으로 critical section 접근 이전에 interrupt를 disable한 뒤, critical section 이후에 interrupt를 enable함으로써 context switching이 발생하지 않도록 만드는 것이다. 그러나 real time OS에서 context switching을 금지한다는 것은 있을 수 없는 일이기에 현실성이 없다.&lt;/p&gt;
+
+&lt;h3 id=&quot;atomic-instruction&quot;&gt;atomic instruction&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread0_atomic_instruction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread1_atomic_instruction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 0&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread0_atomic_instruction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// thread 1&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;thread1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thread1_atomic_instruction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;cm&quot;&gt;/*
+			critical section...
+		*/&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;기존의 flag 정책에서 문제가 발생하는 상황은 다른 thread의 flag를 검사하는 while문과 자신 flag의 값을 변경하는 명령어 사이에 context switching이 발생하는 경우였다. 이를 막기 위해 HW 상에서 두 명령어를 묶어 atomic하게 실행되도록 하는 것이다. 이를 위해서 HW는 testset과 exchange라는 명령어를 제공하게 된다.&lt;/p&gt;
+
+&lt;h1 id=&quot;deadlock&quot;&gt;Deadlock&lt;/h1&gt;
+
+&lt;p&gt;deadlock은 어느 경우에 발생하는지, 어떻게 해결할 수 있는지에 대해 알아보자.&lt;/p&gt;
+
+&lt;p&gt;deadlock은 아래의 4가지 조건이 모두 충족되었을 때 발생한다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;mutual exclusion (상호 배제)&lt;/p&gt;
+
+    &lt;p&gt;critical section을 동시에 최대 1개의 thread만 점유할 수 있는 것이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Hold-and-wait (점유 대기)&lt;/p&gt;
+
+    &lt;p&gt;critical section을 점유할 수 없을 경우 critical section이 비워질 때까지 대기한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Non preemption (비선점)&lt;/p&gt;
+
+    &lt;p&gt;한 번 점유한 경우 다른 thread에 의해 강제로 점유를 뺏기지 않는다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Circular wait (환형 대기)&lt;/p&gt;
+
+    &lt;p&gt;자원 할당 그래프 (Resource Allocation Graph)에서 cycle이 생성된 경우이다. 즉, 서로 다른 thread의 행동을 기다리면서 무한히 대기하는 상황이다.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;1~3의 조건은 deadlock의 필요 조건이다. 즉, 조건 중 어느 하나라도 충족하지 않으면 deadlock은 발생하지 않는다. 하지만 1~3의 조건이 모두 충족되었다고 해서 무조건 deadlock이 발생하는 것은 아니다. 1~4의 조건이 모두 만족해야만 deadlock이 발생한다. 즉 1~4의 조건은 deadlock의 필요충분 조건이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위는 Process P와 Q가 자원 A와 B를 경쟁적으로 사용하는 상황에서의 deadlock 발생 가능성을 나타낸 것이다. 총 6개의 시나리오에 대해서 살펴보자.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Q가 B를 획득하고, A를 획득한다. Q는 모든 작업을 수행하고 B와 A를 순서대로 release한다. 이후에 P로 전환되어 자유롭게 실행된다.&lt;/li&gt;
+  &lt;li&gt;Q가 B를 획득하고, A를 획득한다. P로 전환되지만 A를 획득할 수 없어 block된다. Q가 마저 실행되고 B와 A를 release한 뒤에 P가 실행된다.&lt;/li&gt;
+  &lt;li&gt;Q가 B를 획득한 뒤 P로 전환되어 P가 A를 획득한다. 이후에 Q로 전환될 경우 Q가 A를 획득할 수 없어 block되고, P가 계속 실행될 경우 B를 획득할 수 없어 block된다. &lt;strong&gt;deadlock&lt;/strong&gt;이다.&lt;/li&gt;
+  &lt;li&gt;P가 A를 획득한 뒤 Q로 전환되어 Q가 B를 획득한다. 이후에 P로 전환될 경우 P가 B를 획득할 수 없어 block되고, Q가 계속 실행될 경우 A를 획득할 수 없어 block된다. &lt;strong&gt;deadlock&lt;/strong&gt;이다.&lt;/li&gt;
+  &lt;li&gt;P가 A를 획득하고, B를 획득한다. Q로 전환되지만 B를 획득할 수 없어 block된다. P가 마저 실행되고 A와 B를 release한 뒤에 Q가 실행된다.&lt;/li&gt;
+  &lt;li&gt;P가 A를 획득하고, B를 획득한다. P는 모든 작업을 수행하고 A와 B를 순서대로 release한다. 이후에 Q로 전환되어 자유롭게 실행된다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위와 같이 한 process가 두 자원은 동시에 점유하지 않을 경우에는 deadlock이 발생하지 않게 된다. 위의 deadlock 발생 상황과의 차이점은 한 process가 동시에 두 자원을 점유하지 않는다는 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;deadlock-prevention&quot;&gt;Deadlock Prevention&lt;/h2&gt;
+
+&lt;p&gt;deadlock을 해결하는 방법은 크게 2가지가 있다. deadlock이 발생할 가능성이 생기면 이를 예방하는 것이 그 중 하나이다. deadlock의 필요 조건(상호 배제, 점유 대기, 비선점)은 고려하지 않고 circular wait이 발생하지 않도록만 하는 것이다. 하지만 process가 사용할 모든 자원을 미리 알고 있어야 circular wait이 발생하는지를 예측할 수 있기 때문에 현실적으로 구현이 불가능에 가깝다. deadlock prevention의 방법으로는 process 시작 거부와 자원 할당 거부가 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;process-시작-거부&quot;&gt;Process 시작 거부&lt;/h3&gt;
+
+&lt;p&gt;자원에 대한 vector와 matrix를 정의해 계산하고, 이를 이용해 deadlock 발생을 예측해 회피한다. OS는 process 수행 이전에 아래의 정보들을 모두 알고 있어야만 한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;자원: system에 존재하는 자원의 전체 개수&lt;/p&gt;
+
+    &lt;p&gt;$R = (R_1,R_2, …,R_m)$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;가용: system에 존재하는 자원 중 현재 사용 가능한 자원의 개수&lt;/p&gt;
+
+    &lt;p&gt;$V=(V_1,V_2,…,V_m)$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;요청: process가 요청하고 있는 자원의 개수&lt;/p&gt;
+
+    &lt;p&gt;$C=\begin{pmatrix}C_{11}&amp;amp;…&amp;amp;C_{1m}\&amp;amp;…&amp;amp;\C_{n1}&amp;amp;…&amp;amp;C_{nm}\end{pmatrix}$&lt;/p&gt;
+
+    &lt;p&gt;$C_{ij}$: process $i$가 자원 $j$를 $C_{ij}$만큼 요청&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;할당: process가 할당받고 있는 자원의 개수&lt;/p&gt;
+
+    &lt;p&gt;$A=\begin{pmatrix}A_{11}&amp;amp;…&amp;amp;A_{1m}\&amp;amp;…&amp;amp;\A_{n1}&amp;amp;…&amp;amp;A_{nm}\end{pmatrix}$&lt;/p&gt;
+
+    &lt;p&gt;$A_{ij}$: process $i$가 자원 $j$를 $A_{ij}$만큼 할당받음&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;위의 vector와 matrix는 정의에 따라 아래와 같은 수식들이 성립된다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;전체 자원의 개수는 가용 가능한 자원과 전체 process들에게서 사용중인 자원의 합이다.&lt;/p&gt;
+
+    &lt;p&gt;$R_j=V_j+\sum_{j=1}^m{A_{ij}}$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;요청 자원은 전체 자원의 양보다 많을 수 없다.&lt;/p&gt;
+
+    &lt;p&gt;$C_{ij}\le R_j$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;할당 자원은 요청 자원보다 많을 수 없다.&lt;/p&gt;
+
+    &lt;p&gt;$A_{ij}\le C_{ij}$&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;process 시작 거부 방식은 모든 자원들에 대해 아래의 수식을 만족할 때에만 해당 process를 시작한다.&lt;/p&gt;
+
+&lt;p&gt;$R_j\ge C_{(n+1)j}+\sum_{i=1}^n{C_{ij}}\ \ \ for\ all\ j$&lt;/p&gt;
+
+&lt;p&gt;모든 자원들에 대해 process가 요청하는 전체 자원의 합과 새로운 process가 요청하는 자원을 더한 값이 실제 자원의 양보다 작을 때에만 process를 시작하는 것이다. 이는 최악의 경우에도 실행됨을 보장하기 위함이다. 최악의 경우라는 것은 모든 process들이 동시에 자신이 요청할 수 있는 최대 자원량을 한꺼번에 요청하는 상황을 뜻한다. 이러한 보수적인 조건을 만족했을 때에만 process가 실행되는 것이기에 현실에서 사용할 수 없는 방식이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;자원-할당-거부-은행원-algorithm&quot;&gt;자원 할당 거부 (은행원 algorithm)&lt;/h3&gt;
+
+&lt;p&gt;자원 할당 거부를 통한 deadlock prevention는 은행원 algorithm을 사용한다. 은행원 algorithm이란 system의 상태를 safe state와 unsafe state로 구분한다. safe state란 deadlock이 발생하지 않도록 process에게 자원을 할당할 수 있는 경로가 존재하는 상태를 의미하고, unsafe state란 해당 경로가 존재하지 않는 상태를 말한다. 은행원 algorithm은 safe state를 유지할 수 있는 thread의 요청에 대해서만 수락해 자원을 할당해주고, unsafe state가 되는 thread의 요청에 대해서는 계속 거절한다.&lt;/p&gt;
+
+&lt;p&gt;다음은 safe state가 계속되어 정상적으로 모든 process가 실행되는 경우 대한 예시이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;$C-A$는 추가적으로 할당해야 할 자원들의 matrix이다. $V$와 비교해 더 작은 값들을 갖는 $C-A$의 row를 찾은 뒤 해당 process를 실행시키게 된다. 이후 $A$에서 해당 process의 값들이 $V$에 더해지게 된다. 해당 process의 값들은 $C$와 $A$, $C-A$에서 모두 0이 된다.&lt;/p&gt;
+
+&lt;p&gt;아래는 unsafe state에 대한 예시이다. 실행할 수 있는 process가 없는 경우이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/08.png&quot; alt=&quot;08.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;deadlock-detection&quot;&gt;Deadlock Detection&lt;/h2&gt;
+
+&lt;p&gt;deadlock detection은 deadlock prevention에 비해 상대적으로 낙관적인 방법이다. process의 시작이나 자원 접근에 대해 제약을 가하지 않고, 요청이 들어오면 항상 할당을 한다. 대신 주기적으로 system에서 deadlock이 발생했는지를 검사하고 발생했을 경우 이를 해결하게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;deadlock-detection-1&quot;&gt;Deadlock Detection&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/09.png&quot; alt=&quot;09.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;deadlock prevention과 비슷하게 동작한다. algorithm은 다음과 같다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;임시 vector $W$를 생성해 초기 값으로 $V$를 복사한다.&lt;/li&gt;
+  &lt;li&gt;$Q$의 row를 탐색하며 모든 자원이 $W$보다 작은 process가 있을 경우 해당 process를 mark한다. 그러한 process가 없을 경우 deadlock이 발생한 것이므로 algorithm을 종료한다.&lt;/li&gt;
+  &lt;li&gt;process를 찾았을 경우 $W$에 $A$에서의 process의 값을 더한다. 2단계로 돌아가 다시 수행한다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;deadlock-solution&quot;&gt;Deadlock Solution&lt;/h3&gt;
+
+&lt;p&gt;여러 deadlock solution이 있지만, 그 중에서 대표적인 solution들을 살펴본다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;deadlock에 연관된 모든 process 중지&lt;/p&gt;
+
+    &lt;p&gt;실제 많은 OS에서 채택하고 있는 방식이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;deadlock에 연관된 모든 process roll-back 후 재수행&lt;/p&gt;
+
+    &lt;p&gt;특정 checkpoint까지 roll-back 후 재수행하는 방식이나, 어떤 process가 먼저 수행될 지는 nondeterministic하기 때문에 deadlock이 재발생할 수도 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;deadlock이 해소될 때까지 연관된 process를 하나씩 종료&lt;/p&gt;
+
+    &lt;p&gt;비용이 가장 적은 것, 지금까지 사용한 dispatcher 시간이 적은 것, 지금까지 생산한 출력량이 적은 것, 이후 남은 수행 시간이 가장 긴 것, 할당받은 자원이 가장 적은 것, 우선 순위가 낮은 것부터 종료시킨다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;deadlock이 해소될 때까지 연관된 자원들을 하나씩 preemption&lt;/p&gt;
+
+    &lt;p&gt;가장 비용이 적은 자원부터 하나씩 preemption한 후 deadlock detection algorithm을 수행해 deadlock 존재 여부를 파악한다. 자원을 preemption당한 process는 해당 자원을 할당 받기 전으로 roll-back된다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;dinning-philosopher-problem&quot;&gt;Dinning Philosopher Problem&lt;/h2&gt;
+
+&lt;p&gt;식사하는 철학자 problem은 deadlock의 대표적인 예시이다. 여러 철학자가 원탁 테이블에 앉아 식사를 하는데, 철학자가 왼쪽의 포크를 먼저 집은 뒤, 오른쪽에 있는 포크를 집어 식사를 한다. 식사를 마치면 두 포크를 테이블에 내려놓는다. 철학자들은 포크 2개를 모두 가진 상태에서만 식사를 할 수 있다. 이 때 포크가 철학자의 인원수와 동일하게 배치가 되어있다고 하면 deadlock이 발생할 것이다. pseudo code는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#define N 5       //number of philosopher
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;philosopher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;think&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mod&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;eat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mod&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//semaphore 모두 로 초기화&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;philosopher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;solution은 동시에 테이블에 앉을 수 있는 최대 인원수를 N-1로 제한하는 것이다. 이 때 semaphore를 사용한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.notion.so/Semaphore-18da3149d8ee4528852dd4786c0ecac1&quot;&gt;Semaphore&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;pseudo code는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#define N 5       //number of philosopher
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;semaphore&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;philosopher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;think&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semWait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mod&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;eat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mod&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semSignal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//semaphore 모두 로 초기화&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fork&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semInit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;philosopher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 16 Nov 2020 18:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Concurrency/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Concurrency/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
         
       </item>
     
@@ -474,6 +1840,137 @@
         
         
         <category>Paper Review</category>
+        
+      </item>
+    
+      <item>
+        <title>Paging Mechanism</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;paging-mechanism&quot;&gt;Paging Mechanism&lt;/h1&gt;
+
+&lt;p&gt;paging 기법에 대해 자세히 알아보자. 위에서 살펴본 고정 분할 및 가변 분할 기법은 각각 내부 단편화, 외부 단편화의 문제점이 존재했다. paging은 이러한 단점들을 해결하기 위해 고안된 방식이다. paging을 사용하면 결론적으로 외부 단편화는 발생하지 않으며, 내부 단편화는 아주 적은 횟수 (대개 process 당 1회) 발생하게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;paging이란 memory 가상화에서 가상 주소와 물리 주소를 mapping시킬 때에 page frame을 단위로 하는 방식이다. page table에는 가상 주소, 물리 주소 뿐만 아니라 P, M, U bit 등의 control bit도 담겨져 있다. P(present) bit는 해당 page가 memory에 위치하는가에 대한 bit로, 1일 경우 가리키는 물리 주소가 물리 memory 영역이라는 의미이고 0일 경우에는 가리키는 물리 주소가 memory가 아닌 disk의 swap 영역이라는 뜻이다. 즉, P bit가 0일 경우에는 swap 영역에 있는 page를 memory로 불러와야 한다. 이러한 과정을 &lt;strong&gt;page fault&lt;/strong&gt;라고 한다. page fault는 결국 disk I/O를 호출하는 것이기에 schedule() 함수를 호출한다. 한편 M(modify) bit는 해당 page가 수정된 적이 있는지에 대한 bit이고, W(write) bit, D(dirty) bit라고도 불린다. U(used) bit는 해당 page를 read한 적이 있는지에 대한 bit로, R(read) bit라고도 불린다. page table은 OS가 각각의 process에게 개별적으로 부여하게 되며,  task_struct와 같은 PCB들은 멤버 변수로 page table을 가리키는 포인터 값을 저장한다. 한편, 대부분의 가상 memory 기법은 page table을 실제 memory가 아닌 가상 memory에 저장하게 된다. process가 running 상태라면, 최소한 해당 process의 page table 중 일부분은 memory에 존재해야 하고, 전체 page table이 memory에 존재하는 것이 가장 바람직할 것이다.&lt;/p&gt;
+
+&lt;h1 id=&quot;virtual-address&quot;&gt;Virtual Address&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;page table을 통해 사용되는 가상 주소와 물리 주소는 모두 number + offset의 구조를 갖는다. page number를 통해 page table의 몇 번째 row에 접근할 지를 파악하고, register에 저장된 page table의 포인터 값과 page number를 더해 해당 page table의 row에 접근한다. 이후 얻은 frame number를 통해 실제 물리 memory에 접근하게 된다. 하지만 frame number는 결국 물리 memory에서의 시작 주소를 뜻하는 값이기 때문에 얼마나 data를 읽어들일지에 대한 정보는 알지 못한다. 이 때 사용하는 것이 offset이다. 가상 주소에서의 offset을 그대로 물리 주소에서 사용하게 된다. 이러한 모든 작업은 대개 HW(CPU의 Memory Management Unit)가 수행하게 된다. 과거에는 OS에서 SW를 통해 구현해 사용하기도 했으나 속도가 HW를 이용하는 것에 비해 많이 느리다.&lt;/p&gt;
+
+&lt;p&gt;가상 주소의 bit 사용량을 통해 역으로 OS의 각종 변수 값을 유추할 수도 있다. 가상 주소에서 offset이 차지하는 bit수가 $o$라면, 해당 OS의 page frame size는 $2^o$가 된다. 한편, 가상 주소에서 page number가 사용하는 bit 수가 $p$라면, 해당 OS의 page table의 최대 크기(가질 수 있는 최대 항목 수)는 $2^p$가 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;과도한-크기의-page-table-문제-해결&quot;&gt;과도한 크기의 Page Table 문제 해결&lt;/h1&gt;
+
+&lt;h2 id=&quot;계층-구조-page-table-사용&quot;&gt;계층 구조 Page Table 사용&lt;/h2&gt;
+
+&lt;p&gt;page table의 크기는 page table entry의 size * page table가 가질 수 있는 최대 항목 수로 계산할 수 있다. 즉, page table이 가질 수 있는 최대 항목 수가 클 수록 page table의 크기도 커진다는 것이다. 너무 큰 page table을 운용하게 되면 memory 낭비가 심해진다. 각 process마다 page table 운용을 위해 여러 page frame을 사용하지만 그 중 실제로 page table의 극히 일부만 사용하는 상황이 대표적인 예시이다. 이를 해결하기 위한 대표적인 방법이 계층 구조 page table이다. 주로 2단계 계층 구조, 3단계 계층 구조 등이 있다. 우선 page directory가 있어 각각의 항목이 page table을 가리키도록 한다. page directory가 가리키는 page table이 꽉 찼을 경우에만 page directory의 다음 항목에서 새로운 page table을 가리키도록 동적으로 운용하는 방식이다. 아래는 2단계 계층 구조 page table의 예시이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;inverted-page-table-사용&quot;&gt;Inverted Page Table 사용&lt;/h2&gt;
+
+&lt;p&gt;Page Number를 그대로 사용하지 않고 hash function을 이용해 얻은 hash value로 사용하게 된다. hash value는 hash table에서의 인덱스이다. hash table의 항목 수는 물리 memory의 page frame의 개수와 동일하다. 즉, hash table은 모든 process가 공용으로 사용하는 것이다. 따라서 hash table entry에는 page number뿐만 아니라 pid까지 함께 담겨져 있다. hash table에서의 collision을 해결하기 위해 linked list로 다음 entry를 연결하게 된다. 이렇게 찾은 hash table entry의 hash table에서의 인덱스를 이용해 page frame을 찾아가게 된다. hash table에서의 인덱스가 $i$라면, mapping된 page frame도 실제 물리 memory에서 $i$번째 page frame이 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tlb-translation-look-aside-buffer-사용&quot;&gt;TLB (Translation Look-aside Buffer) 사용&lt;/h2&gt;
+
+&lt;p&gt;translation look-aside buffer란 page table 항목들을 저장하기 위한 특수한 고속 cache 장치이다. 가장 최근에 참조된 n개의 page table entry항목들을 저장하게 된다. page table은 기존과 동일하게 control bits와 frame number를 저장하고 있으며, page number를 page table에서의 인덱스로 사용한다. 하지만 TLB에서는 page number를 인덱스로 사용해 각 항목에 접근할 수 없기 때문에 page table의 항목들이 가진 정보에 더해 page number를 추가적으로 저장해야 한다. 이를 &lt;strong&gt;연관 사상(Assosiative Mapping)&lt;/strong&gt;이라고 한다.&lt;/p&gt;
+
+&lt;p&gt;실제 가상 주소를 물리 주소로 변환하는 과정을 따라가보자. 가상 주소가 주어지면 우선 TLB에서 해당 page number가 있는지 확인한다. page number가 TLB에 있을 경우 TLB Hit으로, 바로 frame number를 얻어 물리 주소를 구해낸다. 만약 TLB에 page number가 없을 경우 TLB Miss로, 기존과 동일하게 page table에서 page number를 통해 frame number를 구해낸다. 이후 해당 page number에 관련된 정보들을 TLB에 추가한다.  만약 TLB에 여유 공간이 없을 경우 가장 오래된 항목을 제거해 공간을 확보한다. 한편, 만약 page table에서 P bit가 0이라면 Page Fault로, secondary memory(swap)에 접근해 해당 page frame을 memory로 load한다. 이후 다시 page table에서 물리 주소를 찾아나선다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;적절한-page-frame-size&quot;&gt;적절한 Page (Frame) Size&lt;/h1&gt;
+
+&lt;p&gt;page의 크기는 HW 설계에 있어서 매우 중요한 issue 중 하나이다. 여러 관점에서 장단점을 고려해서 신중하게 결정해야만 한다. 만약 page의 크기가 작다면 내부 단편화가 적게 발생할 것이다. 대신 한 process 당 필요한 page의 수가 많아지고, 이는 결국 page table의 size를 늘리는 결과를 낳는다. page table의 size가 커지면 Multi-Programming 환경에서는 여러 활성 process 중 일부의 page table이 물리 memory가 아닌 swap 영역에 있어야 함을 의미한다. 최악의 경우에는 한 번의 memory 참조로 Page Fault가 2번(page table, page frame) 발생할 수 있는 것이다.&lt;/p&gt;
+
+&lt;h1 id=&quot;paging-replacement-policy&quot;&gt;Paging Replacement Policy&lt;/h1&gt;
+
+&lt;p&gt;Memory의 모든 page frame이 사용 중인 상황에서 swap에 위치한 page frame을 참조하는 상황이 발생할 수 있다. 이 때에는 memory의 page frame 중 하나를 swap의 page frame과 교체해야 한다. 이러한 현상을 Page Fault라고 부른다. page fault가 다수 발생하는 현상을 thrashing이라고 한다. thrashing을 방지하기 위해 합리적인 page replacement policy를 채택해야 한다. 만약 자주 호출되는 page frame을 memory에서 빼내어 swap으로 이동시키게 되면, page fault 발생 횟수가 증가해 성능에 악영향을 미칠 것이다. page replacement 정책의 핵심은 page frame이 미래에 얼마나 참조될 지를 예측하는 것이다. 미래의 일을 완전히 예견하는 것은 불가능하나 과거의 경향을 근거로 미흡하게나마 예측할 수는 있다. 따라서 page replacement 정책은 대개 과거의 page frame 이동의 경향을 파악해 미래를 예측하고자 한다. 하지만 너무 정교한 page replacement policy를 적용하게 된다면 오히려 HW와 SW 상의 부담이 더 커지기 때문에 적절한 trade-off가 이루어져야 한다. 아래에서는 6가지 Paging Replacement 정책에 대해 살펴본다.&lt;/p&gt;
+
+&lt;h2 id=&quot;optimal&quot;&gt;Optimal&lt;/h2&gt;
+
+&lt;p&gt;미래에 참조될 page의 순서를 모두 아는 상태에서 앞으로 참조될 때까지의 시간이 가장 긴 page를 교체한다. 당연하게도 현실에서는 구현할 수 없다. optimal 정책은 어디까지나 다른 paging replacement 정책을 평가하는 기준으로써의 가치만 있을 뿐, 구현 대상이 아니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;5 time에서 page 5가 삽입되는데, 이전 time 기준으로 main memory에 존재하는 page 2, 3, 1는 각각 1 time, 4 time, $\infin$ time 후에 다시 참조된다. 따라서 이후 참조되기까지의 시간이 가장 많이 남은 page 1이 교체되게 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;fifo-first-input-first-out&quot;&gt;FIFO (First Input First Out)&lt;/h2&gt;
+
+&lt;p&gt;먼저 들어온 page가 먼저 나가는 단순 Queue 방식이다. scheduling 중 RR과 비슷하다고 볼 수 있다. 가장 오래 전에 반입된 page는 memory에 가장 오래 존재했기 때문에 더이상 사용되지 않을 것이라는 논리 하에서 구현된 정책이다. 구현이 매우 간단하지만 좋은 성능을 보이지 못한다. FIFO 정책 하에서 main memory의 page frame 수를 늘릴 경우에는 page fault가 덜 발생할 것 같지만, 의외로 page fault가 더 자주 발생하기도 한다. 이를 FIFO abnormally(이상 현상)이라고 한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/08.png&quot; alt=&quot;08.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;lifo-last-input-last-out&quot;&gt;LIFO (Last Input Last Out)&lt;/h2&gt;
+
+&lt;p&gt;가장 최근에 들어온 page가 빠져나가는 Stack 방식이다. 하나의 page frame만이 지속적으로 교체되기 때문에 page fault가 매우 자주 발생할 것이다. 하지만 의외로 평균적인 성능은 FIFO와 비슷하다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/09.png&quot; alt=&quot;09.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;lru-least-recently-used&quot;&gt;LRU (Least Recently Used)&lt;/h2&gt;
+
+&lt;p&gt;가장 오랫동안 참조되지 않은 page를 교체하는 것이다. LRU는 Optimal과 가장 비슷한 성능을 보이지만 실제로는 구현이 매우 곤란하다는 단점이 있다. 각 page frame마다 가장 최근에 참조된 시각을 기록해야 하는데, 결국 물리 memory 내의 모든 page frame에 대해 int 변수를 추가하고 매 참조마다 갱신하는 형태가 될 수 밖에 없다. 이는 시스템에 큰 부하를 줘 좋은 성능을 내지 못한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/10.png&quot; alt=&quot;10.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;5 time에서 page 5가 삽입되는데, 이전 time 기준으로 memory에 존재하는 page 2, 3, 1은 각각 참조 시점이 2 time, 3 time, 1 time 전이다. 따라서 가장 오래 전에 참조된 page 3이 교체된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;lfu-least-frequently-used&quot;&gt;LFU (Least Frequently Used)&lt;/h2&gt;
+
+&lt;p&gt;참조된 빈도가 가장 낮은 page를 교체하는 것이다. LRU와 동일하게 좋은 성능을 보이지만 구현하기 곤란하다. LRU와 마찬가지로 각 page frame마다 새로운 변수를 추가해야 하는데, 이 경우에는 참조 횟수일 것이다. 만약 동일한 참조 횟수를 가진다면 FIFO 정책을 채택해 먼저 들어온 page를 교체한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/11.png&quot; alt=&quot;11.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;5 time에서 page 5가 삽입되는데, 이전 time 기준으로 memory에 존재하는 page 2, 3, 1은 각각 참조 횟수 2, 1, 1을 갖는다. 따라서 page 3과 1 중 선택을 해야 하는데, FIFO 정책을 채택해 더 먼저 들어온 page 3을 교체한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;clock--nur-not-used-recently&quot;&gt;Clock = NUR (Not Used Recently)&lt;/h2&gt;
+
+&lt;p&gt;Clock 정책은 현대 OS에서 채택하고 있는 page replacement 정책이다. LRU나 LFU와 같이 추가적인 변수를 생성하지 않고, 기존에 page table에 이미 존재하던 R, W bit를 활용하게 된다. 사용하는 bit 수가 더 많아질수록 더 좋은 성능을 보인다. 아래에서는 2 bit를 사용하는 two handed clock이 아닌 one handed clock의 예시이다. 교체하는 우선 순위는 다음과 같다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;참조되지 않았으며, 수정되지 않음 (R = 0, W = 0)&lt;/li&gt;
+  &lt;li&gt;참조되었으며, 수정되지 않음 (R = 1, W = 0)&lt;/li&gt;
+  &lt;li&gt;참조되었으며, 수정됨 (R = 1, W = 1)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;우선 순위 1을 먼저 찾고, 우선 순위 1이 없을 경우 우선 순위 2를 찾아나가되 그 과정에서 지나치는 모든 page frame의 R bit를 0으로 설정한다. 만약 우선 순위 2도 없을 경우 모든 page frame을 탐색하면서 R bit를 0으로 만들었을 것이다. 그 상태에서 다시 우선 순위 1을 찾는 반복을 수행한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/12.png&quot; alt=&quot;12.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;새로운 symbol이 추가되는데, $\rightarrow$는 memory를 가리키는 pointer이다. clock 정책에서 다음에 삽입할 page가 어디인지를 가리킨다. * symbol은 참조 여부이다. *가 있을 경우 참조된 frame (R bit = 1), *가 없을 경우 참조되지 않은 frame (R bit = 0)이다.&lt;/p&gt;
+
+&lt;p&gt;5 time에서 page 5가 삽입되는데, 현재 pointer가 가리키는 page frame은 2이다. page 2는 이미 참조가 된 상태이므로 우선 순위 1에 해당되지 않는다. 따라서 우선 순위 2를 찾아 나선다. 그 과정에서 page 2, 3, 1의 R bit를 0으로 수정한다. 우선 순위 2를 찾기 실패했기 때문에 처음으로 되돌아온다. page 2가 R bit=0이 되었기 때문에 우선 순위 1에 해당한다. 따라서 page 2를 교체한다.&lt;/p&gt;
+
+&lt;p&gt;6 time에서 page 2가 삽입되는데, 현재 pointer가 가리키는 page frame은 3이다. page 3은 R bit=0이므로 우선 순위 1에 해당되기 때문에 3 page를 교체한다.&lt;/p&gt;
+
+&lt;p&gt;7 time에서 page 4가 삽입되는데, 현재 pointer가 가리키는 page frame은 1이다. page 1은 R bit=0이므로 우선 순위 1에 해당되기 때문에 1 page를 교체한다.&lt;/p&gt;
+
+&lt;p&gt;8 time에서 page 5가 삽입되는데, 이미 main memory에 존재하므로 fault가 발생하지 않는다. 따라서 pointer도 이동하지 않는다.&lt;/p&gt;
+
+&lt;p&gt;9 time에서 page 3이 삽입되는데, 현재 pointer가 가리키는 page frame은 5이다. page 5는 이미 참조가 된 상태이므로 우선 순위 1에 해당되지 않는다. 따라서 우선 순위 2를 찾아 나선다. 그 과정에서 page 5, page 2, page 4의 R bit를 0으로 수정한다. 우선 순위 2를 찾기 실패했기 때문에 처음으로 되돌아온다. page 5가 R bit=0이 되었기 때문에 우선 순위 1에 해당한다. 따라서 page 5를 교체한다.&lt;/p&gt;
+
+&lt;p&gt;10 time에서 page 2가 삽입되는데, 이미 main memory에 존재하므로  fault가 발생하지 않는다. 그런데 R bit=0이므로 R bit=1로 변경한다.&lt;/p&gt;
+
+&lt;p&gt;11 time에서 page 5가 삽입되는데, 현재 pointer가 가리키는 page frame은 2이다. page 2는 이미 참조가 된 상태이므로 우선 순위 1에 해당되지 않는다. 따라서 우선 순위 2를 찾아 나선다. 우선 순위 1에 해당하는 page 4를 찾았고, 그 과정에서 page 2의 R bit를 0으로 변경했다. page 4를 교체한다.&lt;/p&gt;
+
+&lt;p&gt;12 time에서 page 2가 삽입되는데, 이미 main memory에 존재하므로 fault가 발생하지 않는다. 그런데 page 2의 R bit=0이므로 R bit를 1로 변경한다.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 19 Oct 2020 19:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Paging-Mechanism/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Paging-Mechanism/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
         
       </item>
     
@@ -651,6 +2148,674 @@
         
         
         <category>Paper Review</category>
+        
+      </item>
+    
+      <item>
+        <title>Address &amp; Memory</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;virtual-memory의-등장-과정&quot;&gt;Virtual Memory의 등장 과정&lt;/h1&gt;
+
+&lt;h2 id=&quot;single-programming&quot;&gt;Single Programming&lt;/h2&gt;
+
+&lt;p&gt;초기 (1950~1970)의 운영체제는 물리 memory에 하나의 program만을 올리는 Single Programming 형태였다. 즉, memory는 OS 영역, 실행 중인 1개의 program이 올라가는 영역으로 구분됐다. memory 가상화에 대한 개념도 존재하지 않았다. 동시에 memory를 점유할 수 있는 program의 개수가 최대 1개였기 때문에 multi-tasking도 불가능했다. Single Programming을 채택한 대표적인 OS로는 MS-DOS가 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;multi-programming&quot;&gt;Multi Programming&lt;/h2&gt;
+
+&lt;p&gt;이후 Multi Programming이 등장했다. 동시에 여러 process를 실행(되는 것 처럼 보이게)할 수 있다. OS는 하나의 process를 매우 짧은 시간동안 실행하고, 이후 다른 process로 전환(context switch)한다. 이러한 과정을 계속 반복하게 된다. 이를 Time Sharing(시분할)이라고 한다. 이 때 기존에 실행되던 process의 상태를 disk에 저장하게 되는데, disk에 저장한다는 것은 결국 I/O가 발생한다는 것이므로, 실행 속도가 느릴 수 밖에 없었다. 또한 다른 process의 memory 공간에 침범을 할 위험성도 존재했다. 즉, process 간 isolation이 제대로 보장되기 힘들었다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;virtual-memory&quot;&gt;Virtual Memory&lt;/h2&gt;
+
+&lt;p&gt;이러한 문제를 해결하기 위해 memory 가상화 개념이 도입되었다. 각 process마다 가상의 memory 주소 체계를 도입해 실제 물리 memory의 공간과 mapping을 시키는 것이다. 이 과정에서 page table, MMU가 등장하게 된다. page table은 가상 memory의 공간을 page 단위로 나눠 물리 memory의 주소와 mapping시키는 table이다. 이 과정을 Memory Management Unit (MMU)가 수행하게 되는데, MMU는 과거에는 OS에 구현이 되어있었으나, 현대의 대부분의 CPU는 HW로 MMU를 탑재하고 있다. 가상 memory 공간은 각 process마다 별개로 보유하고 있다. page table 역시 마찬가지이다. 따라서 서로 다른 process들의 가상 memory 상에서의 주소가 같다고 하더라도 실제 물리 memory에서의 주소는 다른 page를 가리키게 된다. 이러한 방식으로 process간 isolation을 보장하게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;memory-management&quot;&gt;Memory Management&lt;/h1&gt;
+
+&lt;h2 id=&quot;memory-management의-목적&quot;&gt;Memory Management의 목적&lt;/h2&gt;
+
+&lt;p&gt;Memory Management는 아래의 3가지 목적을 갖는다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;투명성 Transparency&lt;/p&gt;
+
+    &lt;p&gt;가상화와 같은 구체적인 방법을 모르는 상태에서도 원활하게 사용할 수 있도록 하는 것이다. 실행되는 process 입장에서는 자신의 memory 체계가 가상 memory인지조차도 깨닫지 못하게 한다. 이는 가상화의 정의(속임)에도 부합한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;효율성 Efficiency&lt;/p&gt;
+
+    &lt;p&gt;시간 복잡도와 공간 복잡도를 낮추는 것이다. 특히 공간 복잡도를 중요시 여기는데, 만약 page table의 크기가 너무 클 경우 memory를 많이 사용하게 되므로 공간 복잡도에서 효율적이지 못하다고 할 수 있을 것이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;보호 Protection&lt;/p&gt;
+
+    &lt;p&gt;process 간 isolation을 보장하는 것과 OS kernel의 isolation을 보장하는 것이다. 가상 memory를 통해 달성할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;memory-management의-issue&quot;&gt;Memory Management의 Issue&lt;/h2&gt;
+
+&lt;p&gt;Memory Management에는 아래와 같은 주요 Issue가 있다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;배치 Placement&lt;/p&gt;
+
+    &lt;p&gt;memory의 여러 빈 공간 중 어느 곳에 새로운 process를 삽입할 것인가에 대한 issue이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;재배치 Replacement&lt;/p&gt;
+
+    &lt;p&gt;memory에 올라가 있던 process가 종료되어 빈 공간이 생길 때, 이러한 빈 공간을 어떻게 최소화할 지에 대한 issue이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;보호 Protection&lt;/p&gt;
+
+    &lt;p&gt;memory 상의 여러 process 및 OS가 어떻게 서로의 공간을 침범하지 않을지에 대한 issue이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;반입 loading&lt;/p&gt;
+
+    &lt;p&gt;요청을 하는 시점에 반입을 할 지(on-demand loading), 요청이 올 시점을 예측해 반입을 할 지에 대한 issue이다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;memory-management의-종류&quot;&gt;Memory Management의 종류&lt;/h2&gt;
+
+&lt;h3 id=&quot;단일-사용자-전용-시스템-single-user-system&quot;&gt;단일 사용자 전용 시스템 Single User System&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;memory를 동시에 점유할 수 있는 process의 수가 최대 1개이기 때문에 배치, 재배치를 고려할 필요가 없다. 만약 주어진 memory보다 더 큰 process가 들어오게 될 경우, overlay 기법을 사용하게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;고정-분할-다중-프로그래밍-시스템-fixed-partition-multi-programming-system&quot;&gt;고정 분할 다중 프로그래밍 시스템 Fixed Partition Multi Programming System&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;절대 번역 어셈블러 (absolute aseembler)&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;memory를 초기에 고정된 크기로 분할시킨 뒤에, 각각의 segment마다 독립적인 queue를 운용하는 것이다. 각 process는 compile time에 결정된 segment에 할당이 되기 때문에, 자신이 배정된 segment는 다른 process가 점유하고 있고, 다른 segment가 비어있는 상황에서도 자신의 segment가 비워질 때 까지 대기해야만 한다. 구현이 간단하다는 장점이 있지만 memory의 낭비가 심하다는 단점이 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;재배치 가능 어셈블러 (relocating assembler)&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;memory를 초기에 고정된 크기로 분할시키는 것은 동일하지만, 하나의 공통된 queue를 운용해 각각의 segment에 분배하는 것이다. 이를 통해 재배치가 가능해진다. 즉, compile time의 정적인 결정에 의존하지 않고 memory 내 segment들의 상태에 따라 동적으로 배치되는 것이다. 절대 번역 어셈블러에 비해 효율적이나 구현이 어렵다는 단점이 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위의 2가지 배치 방법은 모두 다 고정적으로 memory를 분할하기 때문에 내부 단편화(internal fragmentation)현상이 발생할 수 밖에 없다 &lt;strong&gt;내부 단편화(internal fragmentation)&lt;/strong&gt;란, segment의 크기보다 더 작은 process가 들어오게 될 경우 해당 segment 내부에 빈 공간이 생기게 되는 현상이다. 각 segment마다 빈 공간이 발생하게 되고, 해당 공간들은 사용되지 못한다. 이는 결국 memory의 낭비가 심해짐을 뜻한다. 또한 동시에 memory에 올릴 수 있는 process(활성 process)의 개수가 정적으로 제한된다는 큰 단점 역시 존재한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;가변-분할-다중-프로그래밍-시스템-variable-partition-multi-programming-system&quot;&gt;가변 분할 다중 프로그래밍 시스템 Variable Partition Multi Programming System&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;내부 단편화 문제를 해결하기 위해 가변 분할 다중 프로그래밍 시스템이 등장했다. 공통된 하나의 queue를 운용하는 방식은 동일하지만, memory를 초기에 segment로 분할시키지 않고 통합해 관리하는 것이다. 이는 내부 단편화 현상은 해결하지만, 외부 단편화(external fragmentation)현상이 발생하게 된다. &lt;strong&gt;외부 단편화(external fragmentation)&lt;/strong&gt;란, 하나의 process가 종료됐을 경우 해당 process가 차지하고 있던 공간에 새로운 process가 들어오지 못하고 계속 빈 상태로 유지되는 현상을 뜻한다. 만약 종료된 process가 10KB인데 queue에서 대기하고 있는 process들이 모두 다 10KB 이상일 경우에는 해당 공간은 계속 낭비되게 될 것이다. 이러한 현상을 해결하기 위해서는 compaction 또는 coalescing을 수행해야 한다. &lt;strong&gt;compaction&lt;/strong&gt;은 memory 전체에서 외부 단편화 현상을 제거하는 것이고, &lt;strong&gt;coalescing&lt;/strong&gt;은 특정 두 process 사이의 외부 단편화 현상을 제거하는 것이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;재배치-기법&quot;&gt;재배치 기법&lt;/h3&gt;
+
+&lt;p&gt;위와 같이 여러 fragmentation이 발생했을 경우 여러 fragmentation 중 하나를 선택해 새로운 process를 삽입해야 한다. 물론 해당 framentation이 process의 크기보다 작을 경우 삽입이 불가능하겠지만, 가능한 후보 fragmentation이 여러 개라면 그 중 하나를 선택해야만 할 것이다. 이렇듯 재배치 상황에서 fragmentation을 선택하는 전략에는 아래의 4가지가 있다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;First Fit&lt;/p&gt;
+
+    &lt;p&gt;memory의 처음부터 탐색해 알맞는 첫번째 후보를 선택하는 전략이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Best Fit&lt;/p&gt;
+
+    &lt;p&gt;memory의 처음부터 탐색해 가장 크기가 작은 후보(크기의 차이가 적은 후보)를 선택하는 전략이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Worst Fit&lt;/p&gt;
+
+    &lt;p&gt;memory의 처음부터 탐색해 가장 크기가 큰 후보를 선택하는 전략이다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Next Fit&lt;/p&gt;
+
+    &lt;p&gt;memory의 처음부터가 아닌 직후부터 탐색해 알맞는 첫번째 후보를 선택하는 전략이다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;buddy-algorithm&quot;&gt;Buddy Algorithm&lt;/h2&gt;
+
+&lt;p&gt;가변 분할 다중 프로그래밍 시스템은 외부 단편화 현상을 해결하기 위해 compaction, coalescing과 같은 작업을 지속적으로 수행해야 하는 단점이 존재한다. 외부 단편화 현상을 최소화하기 위한 Buddy Algorithm이 있다. 가변 분할 다중 프로그래밍 시스템의 일종인데, 기존의 시스템과의 차이점은 Release가 발생해 free block이 생성될 때 마다 근처의 여유 block과 merge를 수행한다는 것이다. 이를 통해 큰 크기의 block을 운용하고, 새로운 process가 들어올 때 해당 process의 크기에 가장 적합한 크기가 될 때까지 이분할을 수행해 내부 파편화 크기를 최소화한다. 동시에 free block을 큰 size로 묶어 운용하기 때문에 외부 파편화 발생 빈도도 현저히 줄어들게 된다. Buddy Algorithm은 주로 Red-Black Tree를 이용해 구현한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/08.png&quot; alt=&quot;08.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;process-실행-과정&quot;&gt;Process 실행 과정&lt;/h1&gt;
+
+&lt;p&gt;disk에는 실행 파일이 저장되어 있다. disk에 있는 파일이 메모리에 올라가 process가 된다. disk 상에서 실행 파일(.out, .exe 등)이 저장되는 format은 ELF (windows의 경우 PG) format이다. process가 memory에 올라갈 때와는 구조가 다른데, 아래와 같은 차이를 지닌다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/09.png&quot; alt=&quot;09.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Process 구조&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/10.png&quot; alt=&quot;10.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ELF format 구조&lt;/p&gt;
+
+&lt;p&gt;disk에 저장되는 파일은 stack/heap을 가질 필요가 없다. stack/heap은 process가 실행될 때 활용하는 공간이기 때문이다. disk에 저장되는 파일은 disk block 단위로 나눠 저장이 되는데, 대개 그 크기는 4KB이다. 한편, memory에서도 page frame 단위로 나누어 보관을 하는데, 그 크기는 disk block의 것을 따른다. 따라서 disk와 memory에서의 process 실행 시의 구조는 아래와 같은 흐름을 따르게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/11.png&quot; alt=&quot;11.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;단순 프로그램 실행이 아닌 좀 더 복잡한 경우를 살펴보자. fork()를 호출한 경우이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/12.png&quot; alt=&quot;12.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/13.png&quot; alt=&quot;13.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;좌측은 fork() 호출 전, 우측은 fork() 호출 후이다. fork()는 부모 process와 자식 process가 동일한 code를 사용하기 때문에 text 영역은 서로 공유하게 된다(같은 물리 memory를 가리킨다). 반면 data와 stack 영역에 대해서는 물리 memory에 새로운 page frame을 생성해 자식 process에게 할당하게 된다. 이러한 방식은 여러 자식 process가 생성될 경우 memory 낭비가 심하다는 단점이 존재한다. 자식 process라고 하더라도 내부에서 지역 변수 및 전역 변수 등을 수정하지 않는 경우라면 굳이 새로운 page frame을 생성하지 않아도 되기 때문이다. 이러한 단점을 해결하기 위해 현대 OS는 대부분 &lt;strong&gt;COW (Copy On Write)&lt;/strong&gt; 방식을 채택하고 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/14.png&quot; alt=&quot;14.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/15.png&quot; alt=&quot;15.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;좌측은 COW 방식에서의 fork() 호출 직후이고, 우측은 fork() 호출 후 전역 변수에 대한 변경이 일어난 뒤이다. COW 방식에서는 fork()를 한다고 해서 바로 data 및 stack 영역에 대한 새로운 page frame을 생성하지 않고 우선 부모 process의 것을 공유한다. 이후 자식 process에서 값 변경이 발생한 시점에 새로운 page frame을 생성해 자식 process에게 할당하게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-06-Address-Memory/16.png&quot; alt=&quot;16.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;exec()의 경우에는 fork()와는 다르게 동작하는데, exec()는 실행중이던 process의 모든 memory 영역을 교체하게 된다. 기존에 사용하던 page frame과의 연결을 끊고, exec() 호출 시 넘겨준 새로운 실행 파일을 disk에서 읽어들여 새로운 text page frame, data page frame, stack page frame을 생성해 연결한다.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 05 Oct 2020 19:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Address-Memory/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Address-Memory/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
+        
+      </item>
+    
+      <item>
+        <title>Scheduling</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;단기-scheduling&quot;&gt;단기 Scheduling&lt;/h2&gt;
+
+&lt;p&gt;Scheduling에는 여러 종류가 있다. 장기(long-term) scheduling은 process가 CPU에 의해 실행될 자격을 부여할 지를 결정하는 것이다. 중기(medium-term) scheduling은 process(의 일부)가 Memory에 올라갈 자격을 부여할 지를 결정하는 것이다. 단기(short-term) scheduling은 CPU에 실행될 다음 process를 선택하는 것으로, Dispatcher라고 불린다. 아래에서는 단기 scheduling에 대해서 다룬다.&lt;/p&gt;
+
+&lt;h1 id=&quot;scheduling&quot;&gt;Scheduling&lt;/h1&gt;
+
+&lt;p&gt;여러가지 Scheduling 기법에 대해 알아보자. 하지만 여기서 다루는 기법들은 어디까지나 Ideial한 가정 하에 성립하는 것으로 현실에 그대로 적용되기는 불가능에 가깝다. 앞으로 다루는 Scheduling들은 다음의 가정을 따른다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;모든 task는 동일한 시간 동안에 실행된다.&lt;/li&gt;
+  &lt;li&gt;모든 task는 동일한 시간에 도착한다.&lt;/li&gt;
+  &lt;li&gt;모든 task는 시작되면 완료될 때까지 실행된다.&lt;/li&gt;
+  &lt;li&gt;모든 task는 CPU만 사용한다. (I/O 배제)&lt;/li&gt;
+  &lt;li&gt;모든 task의 실행 시간은 알려져 있다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;preemption-vs-non-preemption&quot;&gt;preemption vs non-preemption&lt;/h2&gt;
+
+&lt;p&gt;Scheduling에 대해 알아보기 전에 우선 preemption에 대한 개념을 확실히 정의하고 가는 것이 좋다. preemption이란 이전에도 설명했듯이, 다른 process가 이미 차지하고 있던 CPU를 빼앗는 행위를 뜻한다. non-preemption이라는 것은 preemption의 반댓말(빼앗김)이 아닌, 빼앗기지 않는다는 의미이다. 다시 말해, 자신이 이미 CPU를 차지하고 있고 다른 process에게 넘겨주지 않는다는 것을 non-preemption이라고 한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;평가-기준&quot;&gt;평가 기준&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Turn around time (반환 시간)&lt;/p&gt;
+
+    &lt;p&gt;$T_{turn_around} = T_{completion} - T_{arrival}$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Response time (응답 시간)&lt;/p&gt;
+
+    &lt;p&gt;$T_{response} = T_{start}-T_{arrival}$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fairness&lt;/p&gt;
+
+    &lt;p&gt;얼마나 고르게 여러 process에 cpu를 분배했느냐에 대한 척도이다. 성능과 상충되는 기준이다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;종류&quot;&gt;종류&lt;/h2&gt;
+
+&lt;h3 id=&quot;first-in-first-out-fifo--first-come-first-service-fcfs&quot;&gt;First In First Out (FIFO) / First Come First Service (FCFS)&lt;/h3&gt;
+
+&lt;p&gt;Queue를 이용한 non-preemption 방식이다. 대기 시간을 기준으로 Scheduling을 수행한다. 예시를 통해 이해해보자.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Scheduling/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위의 5개의 process가 있다고 가정해보자. Arrival Time과 Service Time이 주어졌다. FIFO Scheduling을 수행하면 아래와 같이 실행되게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Scheduling/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{arround_time} : 9-2 = 7$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{arround_time} : 13-4 = 9$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{arround_time} : 18-6 = 12$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{arround_time} : 20-8 = 12$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+7+9+12+12}{5}\=\frac{43}{5}=8.6$&lt;/p&gt;
+
+&lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{response_time} : 9-4=5$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{response_time} : 13-6=7$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{response_time} : 18-8=10$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+5+7+10}{5}\=\frac{23}{5}=4.6$&lt;/p&gt;
+
+&lt;p&gt;FIFO 방식은 Convoy Effect (홍위병 효과)라는 치명적인 단점이 존재한다. E를 예시로 들어볼 수 있는데, 실행 시간이 2로 매우 짧음에도 불구하고 늦게 들어왔다는 이유만으로 가장 나중에 실행되어 평균 반환, 응답 시간이 길어지게 되었다.&lt;/p&gt;
+
+&lt;p&gt;실생활에서의 예시를 들어보자. 편의점에 손님이 많아 카운터의 줄이 긴 상태이다. 자신은 음료수 하나만을 구매하려고 줄을 섰는데 바로 앞의 사람은 무려 10만원 어치의 상품을 결제 중이어서 한참을 기다리는 상황이다. “나는 10초면 계산이 끝나는데 먼저 양보해줬으면 좋겠다”는 생각이 들 것이다. 이처럼 매우 짧은 시간이 소요되는 task임에도 조금이라도 늦게 시작됐다는 이유만으로 매우 긴 시간 대기하는 상황을 Convoy Effect라고 한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;shortest-job-first-sjf--shortest-process-next-spn&quot;&gt;Shortest Job First (SJF) / Shortest Process Next (SPN)&lt;/h3&gt;
+
+&lt;p&gt;SJF 방식은 FIFO와 동일하게 non-preemption  방식이다. 그런데 먼저 들어온 순서보다는 task의 소요 시간을 기준으로 Scheduling을 수행한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Scheduling/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{arround_time} : 9-2 = 7$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{arround_time} : 15-4 = 11$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{arround_time} : 11-8 = 3$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+7+11+14+3}{5}\=\frac{38}{5}=7.6$&lt;/p&gt;
+
+&lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{response_time} : 11-4=7$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{response_time} : 15-6=9$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{response_time} : 9-8=1$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+7+9+1}{5}\=\frac{18}{5}=3.6$&lt;/p&gt;
+
+&lt;p&gt;평균 응답, 반환 시간이 FIFO에 비해 줄어든 것을 확인할 수 있다. Convey Effect를 해결한 것이다. 구체적인 예시로, B가 끝난 직후의 상황에서 C나 D 대신 가장 실행 시간이 짧은 E가 선택됨으로써 E의 평균 반환, 응답 시간이 FIFO에 비해 획기적으로 줄어들게 되었다.&lt;/p&gt;
+
+&lt;p&gt;하지만 SJF scheduling도 Starvation(기아) Effect가 발생할 수 있는데, 이 역시 실생활의 예시로 이해해보자. 아까의 편의점 상황을 다시 떠올려 보자. 대신 이번에는 내가 10만원 어치의 구매를 한 고객이다. 계산대 앞에 섰으나 뒤에 금방 계산이 끝나는 사람이 있기에 먼저 양보를 했다. 그러나 그 뒤에 사람들도 모두 자신 역시 금방 계산이 끝난다며 먼저 계산을 하게 되었다. 결국 자신은 여러 사람의 계산이 모두 끝나기를 한참이나 기다린 뒤에 본인의 계산을 할 수 있게 되었다. 이처럼 짧은 시간이 소요되는 task들을 모두 기다리다가 무한정 기다리게 되는 상황을 Starvation Effect라고 한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;shortest-time-to-completion-first-stcf--shortest-remaining-time-srt&quot;&gt;Shortest Time-to-Completion First (STCF) / Shortest Remaining Time (SRT)&lt;/h3&gt;
+
+&lt;p&gt;STCF는 위의 scheduling들과는 달리 preemption 방식이다. 즉, 이미 작업을 수행하던 process가 중단될 수 있다는 것이다. 새로운 process가 들어오게 될 경우, 현재 수행 중인 process의 잔여 시간보다 새로 들어온 process의 수행 시간이 짧을 경우에 preemption을 하게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Scheduling/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{arround_time} : 15-2 = 13$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{arround_time} : 8-4 = 4$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{arround_time} : 10-8 = 2$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+13+4+14+2}{5}\=\frac{36}{5}=7.2$&lt;/p&gt;
+
+&lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{response_time} : 4-4=0$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{response_time} : 15-6=9$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{response_time} : 8-8=0$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+0+9+0}{5}\=\frac{10}{5}=2$&lt;/p&gt;
+
+&lt;p&gt;C가 가장 큰 혜택을 보게 되었다. 4time이 지난 시점에 C가 새로 들어오게 되는데, 이미 수행중이던 B의 잔여 시간은 5초인 반면 C의 전체 수행 시간은 4초이기에 수행 중이던 B에게서 preemption을 해 C가 수행되게 된다. 하지만 STCF 역시 Starvation Effect를 해결하지는 못한다. 전체 수행 시간이 긴 process의 경우 계속 새로 들어온 작업들에 밀려 수행될 수 없게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;highest-response-ratio-next-hrrn&quot;&gt;Highest Response Ratio Next (HRRN)&lt;/h3&gt;
+
+&lt;p&gt;HRNN은 다시 non-preemption 방식이다. 대신 이전의 일률적인 기준 (FIFO: 대기 시간, SJF: 수행 시간)이 아닌 두 기준을 결합한 수식을 사용하기로 했다.&lt;/p&gt;
+
+&lt;p&gt;$(T_{wait}+T_{service})/T_{service}$&lt;/p&gt;
+
+&lt;p&gt;대기 시간과 실행 시간을 더한 값을 대기 시간으로 나눈 값이 큰 process를 먼저 선택한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Scheduling/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{arround_time} : 9-2 = 11$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{arround_time} : 13-4 = 9$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{arround_time} : 15-8 = 7$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+11+9+14+7}{5}\=\frac{44}{5}=8.8$&lt;/p&gt;
+
+&lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{response_time} : 9-4=0$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{response_time} : 15-6=9$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{response_time} : 13-8=5$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+0+9+5}{5}\=\frac{15}{5}=3$&lt;/p&gt;
+
+&lt;p&gt;B가 수행이 끝난 9time 직후를 보면 C, D, E 중 선택을 하는 상황이다. 각각의 time을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$C: \frac{(9-4)+4}{4}=\frac{9}{4}=2.25$&lt;/p&gt;
+
+&lt;p&gt;$D: \frac{(9-6)+5}{5}=\frac{8}{5}=1.6$&lt;/p&gt;
+
+&lt;p&gt;$E: \frac{(9-8)+2}{2}=\frac{3}{2}=1.5$&lt;/p&gt;
+
+&lt;p&gt;이 중 가장 큰 값인 C를 선택하게 된다. SJF에서는  C가 E에 밀려 더 나중에 수행됐다면, 여기서는 C가 E보다 대기 시간에서의 보정을 받아 더 먼저 수행된 것이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;round-robin-rr--time-slicing&quot;&gt;Round Robin (RR) / Time Slicing&lt;/h3&gt;
+
+&lt;p&gt;preemption 방식이다. 일정 시간마다 서로 돌아가면서 공정하게 scheduling을 하고자 함이다. 이 때 들어온 순서대로 Queue에 넣고, Queue에서 pop을 해 새로운 process를 선택한다. 만약 수행이 끝났음에도 아직 남아있는 작업이 있다면 다시 Queue에 삽입한다. 가장 중요한 변수는 Time Slicing의 길이인데 만약 무한대에 수렴할 경우, non-preemption과 다를 바 없어지고, 0에 수렴할 경우 context switch 수행 횟수가 급격히 늘어나 overhead가 발생할 것이다. 아래의 예시는 Time Slicing의 길이가 1인 경우이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Scheduling/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{arround_time} : 4-0 = 4$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{arround_time} : 18-2 = 16$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{arround_time} : 17-4 = 13$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{arround_time} : 15-8 = 7$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{4+16+13+14+7}{5}\=\frac{54}{5}=10.8$&lt;/p&gt;
+
+&lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
+
+&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+
+&lt;p&gt;$B’s\ T_{response_time} : 2-2=0$&lt;/p&gt;
+
+&lt;p&gt;$C’s\ T_{response_time} : 5-4=1$&lt;/p&gt;
+
+&lt;p&gt;$D’s\ T_{response_time} : 7-6=1$&lt;/p&gt;
+
+&lt;p&gt;$E’s\ T_{response_time} : 10-8=2$&lt;/p&gt;
+
+&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+0+1+1+2}{5}\=\frac{4}{5}=0.8$&lt;/p&gt;
+
+&lt;h3 id=&quot;mlfq-multi-level-feedback-queue&quot;&gt;MLFQ (Multi-level Feedback Queue)&lt;/h3&gt;
+
+&lt;p&gt;RR에서 좀 더 발전해 Time Slicing의 길이가 다른 Queue를 여러 개 운용하는 것이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.notion.so/Copy-of-Scheduling-MLFQ-Multi-Level-Feedback-Queue-3680760d8cb84fab9605642639d403b3&quot;&gt;Copy of Scheduling: MLFQ(Multi Level Feedback Queue)&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;incorporating-i-o&quot;&gt;Incorporating I /O&lt;/h3&gt;
+
+&lt;p&gt;I/O를 고려하는 scheduling이다. I/O 수행 중에는 CPU를 사용하지 않는다. 따라서 해당 기간 동안에 CPU를 휴식시키지 않고, 다른 process를 수행하도록 하는 것이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;성능-비교&quot;&gt;성능 비교&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.notion.so/aac58807a60e43a49a5fdcd9c67f7eac&quot;&gt;Copy of Scheduling 성능 비교&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 04 Oct 2020 19:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Scheduling/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Scheduling/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
+        
+      </item>
+    
+      <item>
+        <title>Process Abstraction</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;process--program&quot;&gt;Process / Program&lt;/h2&gt;
+
+&lt;p&gt;process와 program를 우선 정의내려 보자. program은 disk에 위치한다. 반면 process는 memory에 위치한다. process는 disk에 위치한 program file을 memory에 올린 것이다. 이 때 program file 전체를 모두 memory에 올릴 수도, 필요한 일부분만 memory에 올릴 수도 있다. 정리하자면, process는 Runnable(Running) program이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;process의-구성&quot;&gt;Process의 구성&lt;/h2&gt;
+
+&lt;p&gt;process는 위에서 언급했듯이 Memory에 위치한다. 구체적으로 Stack, Heap, Data, Text(Code) 등의 영역으로 구분된다. process는 자신만의 물리적 Memory 공간을 할당받아 그 안에서 자신만의 가상 주소 체계를 갖는다. process의 가상 주소 0번지는 Stack의 처음이고, 가상 주소의 가장 끝은 Text의 끝이다. process는 memory로만 구성되지는 않으며 register도 있다. Program Counter (PC), Stack Pointer 등이 있다. PC는 다음에 실행할 명령어를 가리키게 되며, Stack Pointer는 Stack 내의 특정 공간의 위치를 저장해준다.&lt;/p&gt;
+
+&lt;h2 id=&quot;process-생성&quot;&gt;Process 생성&lt;/h2&gt;
+
+&lt;p&gt;fork()와 같은 system call을 사용해 process를 생성할 수 있다. 위에서 설명했듯이 process를 생성한다는 것은 program를 memory로 load하는 작업이다. 더 정확히는 process 자신의 가상 주소 공간 안으로 load한다. disk와의 I/O는 시간이 많이 걸리는 작업이기 때문에, 한꺼번에 전부를 load하지는 않고 가장 먼저 필요한 일부분을 우선 load한 뒤 실행 도중 나머지 code와 data를 page 단위로 나눠 load한다. stack 내에 지역변수, 함수 parameter, return address 등이 저장되며, heap에서 malloc(), free() 등의 동적 할당 작업을 수행하고, 그 사이 OS는 I/O setup (표준 fd 할당) 등의 여타 초기화 작업을 진행한다. process 시작 시에는 진입점 main()을 찾게 되면 os에서 process로 cpu 제어권이 넘어온다.&lt;/p&gt;
+
+&lt;h2 id=&quot;process-status&quot;&gt;Process Status&lt;/h2&gt;
+
+&lt;p&gt;process는 여러 상태를 갖게 된다. 왜냐하면 os는 한 번에 하나의  process만을 수행하는 것이 아니라, dispatcher라는 전환기를 사용해 여러 process를 아주 짧은 간격으로 번갈아 실행하기 때문이다. 하나의 cpu는 한 번에 하나의 process밖에 실행하지 못하므로, 필연적으로 다른 process들은 실행 중인 상태가 아니게 된다. 결국, 여러 가지 상태를 정의해야 한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;2가지-state&quot;&gt;2가지 State&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;우선 수행(Running), 비수행(not Running)의 두 단계로 process의 상태를 나눌 수 있다. Running이라는 것은 프로그램의 일부 또는 전부가 memory에 올라갔다는 뜻이다. 그 동안 다른 process는 not Running 상태이다. 이후 Time Quntum (TQ)이 지나가거나(Interrupt) disk I/O 요청 등의 cpu가 process를 전환해야 할 시기가 오게 되면 dispatcher가 수행할 다음 process를 선택하게 된다. 그 동안 이전에 수행됐던 해당 process는 not Running 상태가 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;3가지-state&quot;&gt;3가지 State&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;not Running 상태를 Ready / Blocked 상태로 나눌 수 있다. Ready 상태는 process가 run할 수 있는 준비가 된상태로, run을 할 조건은 충족됐지만 os가 우선순위 등을 이유로 아직 실행하지 않은 것을 뜻한다. Blocked 상태는 간단하게 말해 자고 있는(Sleep) 상태이다. 대개 disk I/O를 뜻한다. disk I/O 도중에는 SATA와 같은 disk interface가 대부분의 작업을 수행하지, cpu는 별 일을 하지 않는다. 따라서 Blocked 상태의 경우에는 언제든 다른 process에게 cpu 점유를 뺏길(preemption) 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;5가지-state&quot;&gt;5가지 State&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;생성과 종료 상태가 추가된 것이다.  추가된 State는 특별한 점이 없지만, 여기서는 각 화살표에 대해 주목해봐야 한다. Ready 상태에서 Running 상태로 가는 것을 Dispatch라고 부른다. 또한 Running 상태에서 Blocked 상태로 가는 것(I/O initiate)를 사건 대기라고 명명하고, I/O가 끝난 경우를 사건발생 이라고 부른다. 즉, I/O 가 끝나는 것이 사건이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;9가지-state&quot;&gt;9가지 State&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;많은 상태가 추가됐는데, 우선 생성 상태에서부터 따라가보자. process 생성 시 memory의 여유가 충분할 경우에는 바로 Ready 상태로 갈 수 있겠지만, 만약 그렇지 않다면 Suspend 상태로 가게 된다. program file이 memory가 아닌 disk 내의 swap 공간으로 이동된 경우를 뜻한다. Suspend 상태에서 할 수 있는 작업은 Swap In(memory로 이동해 Ready 상태가 되는 것)밖에 없다. Ready 상태에서는 Kernel mode로 가거나 User mode로 갈 수 있다. User mode로 가는 방법은 2가지가 있는데, Kernel mode를 거쳐가거나, preemption을 해 거쳐가는 것이다. preemption이란 ‘선점’으로 번역되고는 하는데, 직관적으로 와닿지 않는 번역이다. 본 뜻은 다른 process가 차지하고 있던 CPU를 빼앗는 것이다. User mode에서는 I/O를 시작하거나 System Call 호출, Interrput 등이 발생하게 되면 Kernel mode로 이동하게 된다. Kernel Mode에서 수행이 끝나면 다시 preemption을 통해 User Mode로 돌아가거나 Memory Blocked 상태로 넘어갈 수 있다. Memory Blocked 상태에서 memory에 여유가 사라지면 해당 process는 Suspend상태로 넘어갈 수 있다. 한편, Kernel Mdoe에서는 exit()을 호출해 종료를 위해 Zombie 상태가 될 수도 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;process-실행&quot;&gt;Process 실행&lt;/h2&gt;
+
+&lt;p&gt;os가 process를 실행하는 과정을 살펴보자. 우선 process list에 새로운 항목을 생성해야 한다. 이후 memory page를 할당하고, disk에 있는 program executable file을 memory page에 load한다. 마지막으로 진입점(main 함수)로 포인터를 이동시킨다.  더 세부적인 과정은 아래와 같다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;mode&quot;&gt;Mode&lt;/h2&gt;
+
+&lt;p&gt;process는 다양한 연산을 수행할 수 있어야 한다. 그런데 그 중에는 I/O나 memory 접근 등의 특수 권한이 필요한 연산도 있다. 이러한 연산들을 process가 수행하게 하기 위해서는 어떻게 할까? 가장 간단한 방법으로는 process에게 별도의 제한 없이 모든 연산을 수행할 수 있게 하는 것이다. 하지만 접근 권한이 없는 곳에 접근하는 연산을 수행하게 되면 당연히 문제가 발생하게 된다. 현대의 OS는 이러한 문제를 해결하기 위해 User mode와 Kernel mode를 구분하는 정책을 채택했다. 특수 권한이 필요한 명령들은 Kernel mode에서 실행하고, 그 외 일상적인 연산들에 대해서는 User mode에서 실행하도록 구분짓는 것이다. User mode에서도 HW resource에 대해서는 모두 접근 가능하며, Kernel mode는 이에 더해 추가적으로 모든 system resource에 대해서도 접근할 수 있다. 기본적으로는 process는 User mode이며, 수행하는 연산에 따라 잠시 Kernel mode로 전환되었다가 다시 User mode로 복구된다. program의 현재 상태 word를 저장하는 PSW bit가 있는데, 이를 통해 현재 process의 mode가 어떤 type인지 파악할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;interrupt&quot;&gt;Interrupt&lt;/h2&gt;
+
+&lt;p&gt;interrupt란 process가 User mode에서 Kernel mode로 변경되도록 하는 것이다. Interrupt는 크게 HW interrupt와 SW interrupt로 구분할 수 있다. 일반적으로 interrupt라 불리우는 것은 대개 HW interrupt를 의미하며, 현재 수행 중인 process와 관계 없이 외부에서 유발되는 사건에 의해 비동기적으로 발생하는 interrupt를 뜻한다. 대표적으로 I/O가 종료되거나, Time Quntum이 다 되어 running process를 전환해야 할 경우(clock interrupt)가 있다. SW interrupt는 trap과 system call이 있다. trap은 현재 process의 명령어를 수행하는 도중 error나 exception이 발생해 이에 대한 처리를 하는 비동기적 호출이다. system call은 superviser call이라고도 불리우며, 명시적으로 system call (OS function)을 호출(동기적 호출)하는 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;hw-interrupt--trap-처리-과정&quot;&gt;HW Interrupt / Trap 처리 과정&lt;/h2&gt;
+
+&lt;p&gt;비동기 interrupt (HW Interrupt, Trap)의 처리 과정에 대해 알아보자. 비동기는 언제든지 발생할 수 있다는 의미이다. Programmable Interrupt Controller가 여러 HW에서 interrupt 정보를 수집하고, interrupt가 발생했을 경우 CPU에 신호를 전달한다. CPU는 Kernel의 Interrupt Descriptor(Vector) Table에서 해당 interrupt의 entry pointer 값을 찾는다. 이 때 mode가 User mode에서 Kernel mode로 전환되게 된다. 찾은 pointer 값은 interrupt handler 내부의 특정 함수를 가리키게 되는데, 이를 이용해 실제 interrupt 처리가 수행되게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;system-call&quot;&gt;System Call&lt;/h2&gt;
+
+&lt;h3 id=&quot;system-call-처리-과정&quot;&gt;System Call 처리 과정&lt;/h3&gt;
+
+&lt;p&gt;fork()를 호출하는 예시를 따라가며 system call 처리 과정을 이해해보자. system call도 결국 interrupt이기 때문에 위에서 살펴본 interrupt 처리 과정과 유사하다. c source code에서의 fork() 명령은 assembly code에서는 movl과 int의 두 명령어로 변환된다. 이 중 int 명령어는 interrupt 명령어이다. 이를 통해 IDT를 찾아가게 된다. system call은 결국 interrupt의 한 종류이기 때문에 IDT에서 한 공간을 system call의 entry가 차지하고 있다. 이 pointer값을 이용해 찾아간 interrupt handler는 system call들에 대한 주소들을 저장하는 table sys_call_table을 갖고 있는데, 해당 table 내부에서 sys_fork()에 대한 주소를 찾은 뒤 system call handler가 sys_fork() 명령을 실행하도록 명령한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-05-Process-Abstraction/08.png&quot; alt=&quot;08.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;system-call-추가&quot;&gt;System Call 추가&lt;/h3&gt;
+
+&lt;p&gt;sys_call_table은 실제로 어디에 위치하고 있을까? 운영체제마다 세부 위치는 다르지만, /usr/src/[os kernel version]/arch 밑에 위치한다는 사실은 공통적이다. 만약 OS에 새로운 System Call을 추가하고 싶다면 해당 sys_call_table 파일을 열어 새로운 번호를 추가하는 것이 먼저이다. 이후 실제 해당 함수에 대한 원형을 선언해야 하는데, system call의 원형을 저장하는 header file은 /usr/src/[os kerner version]/arch/…/include/syscalls.h에 위치한다. 실제 함수 body를 정의한 뒤 이를 object file로 compile하면, 해당 object file을 /usr/src/[os kernel version]에 위치시키면 작업이 완료된다. 정리하자면 다음의 4단계를 거친다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;syscall table에 새로운 함수 등록&lt;/li&gt;
+  &lt;li&gt;함수 header syscalls.h에 추가&lt;/li&gt;
+  &lt;li&gt;함수 body .c file 작성&lt;/li&gt;
+  &lt;li&gt;함수 body 작성한 .c file 컴파일 해 .o file 생성 후 kernel 경로에 저장&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;context-문맥&quot;&gt;Context (문맥)&lt;/h2&gt;
+
+&lt;p&gt;문맥은 크게 3가지로 구분될 수 있다. HW (register) 문맥, system 문맥, memory 문맥이 그 예이다. 실제 task_struct 구조체에서도 struct mm struct *mm으로 memory 문맥을, struct threadstruct로 HW 문맥을 구현했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;process-전환&quot;&gt;Process 전환&lt;/h2&gt;
+
+&lt;h3 id=&quot;process-전환-1&quot;&gt;Process 전환&lt;/h3&gt;
+
+&lt;p&gt;schedule() 함수는 다음 실행할 process의 PCB를 return하는 함수이다. PCB란 Process Control Block으로 os가 process를 추상화한 것이다. linux에서는 PCB가 task_struct type이다. 이렇게 얻어낸 다음 process의 PCB와 현재 실행 중이던 process의 PCB를 switch()함수에 인자로 넣으면(switch(현재 PCB, 다음 PCB)) 문맥 교환이 수행된다. 자세한 단계는 아래와 같이 진행된다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;현재 실행 중이던 process의 context를 저장&lt;/li&gt;
+  &lt;li&gt;현재  실행 중이던 process의 PCB를 갱신 (상태를 Ready, Block, Sleep, Zombie 등으로 변경)&lt;/li&gt;
+  &lt;li&gt;PCB를 os의 schedule 정책에 따른 특정 queue로 이동&lt;/li&gt;
+  &lt;li&gt;os의 schedule 정책에 따라 다음 process를 선택&lt;/li&gt;
+  &lt;li&gt;선택된 process의 PCB를 갱신 (상태를 Running으로 전환)&lt;/li&gt;
+  &lt;li&gt;선택된 process가 이전 수행에서 사용했던 context를 복원&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위에서 정리한 9단계 State를 참고하면, 아래의 경우에 대해 각각의 process 전환 이후의 상태를 특정할 수 있다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;exit() → schedule() → switch() : zombie 상태&lt;/li&gt;
+  &lt;li&gt;I /O → schedule() → switch() : block 상태&lt;/li&gt;
+  &lt;li&gt;clock interrupt → schedule() → switch() : runnable (또는 memory가 부족할 경우 suspend) 상태&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;mode-switch-vs-process-switch&quot;&gt;Mode Switch vs Process Switch&lt;/h3&gt;
+
+&lt;p&gt;mode의 전환은 Kernel mode / User mode 사이의 전환을 말한다. mode 전환은 현재 실행 중인 process의 상태 (running, runnable, zombie …)를 바꾸지 않고 수행 가능하다. context를 따로 저장할 필요도 없기 때문에 많은 연산을 요구하지 않는다. 반면 process 전환은 실제 context를 따로 저장 및 교환해야 하기 때문에 mode 전환에 비해 훨씬 더 많은 연산을 요구하게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;process-전환의-한계&quot;&gt;Process 전환의 한계&lt;/h3&gt;
+
+&lt;p&gt;기본적으로 대부분의 os는 중첩 interrupt를 금지한다. 즉, 이미 interrupt가 발생해서 처리 중인 경우에는 그 사이에 발생된 새로운 interrupt에 대해 처리하지 않는다는 것이다.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 04 Oct 2020 19:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Process-Abstraction/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Process-Abstraction/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
+        
+      </item>
+    
+      <item>
+        <title>Introduction to Operating Systems</title>
+        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;os-operating-system&quot;&gt;OS (Operating System)&lt;/h1&gt;
+
+&lt;h2 id=&quot;os의-정의&quot;&gt;OS의 정의&lt;/h2&gt;
+
+&lt;p&gt;OS는 SW의 일종이다.  ‘자원’(HW)관리’자’(SW)로 정의할 수 있다. HW를 SW로 관리해주는 역할을 수행한다. 구체적으로 CPU, Memory, Disk 등을 struct로 정의해 각각 Process, Virtual Memory, File System을 만들어낸다.  OS는 kernel 함수를 이용해 HW를 관리하며, 사용자는 kernel 함수를 직접 호출하지 않고, system call을 사용하게 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;os의-역할&quot;&gt;OS의 역할&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;사용자가 프로그램을 쉽게 사용할 수 있도록 돕는다.&lt;/p&gt;
+
+    &lt;p&gt;실제로 HW가 어떻게 작동하는지를 숨기고(가상화), 사용자가 간단하게 사용할 수 있는 관리 도구를 제공(추상화)한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;시스템이 정확하고 효율적으로 작동하는지 확인한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;추상화-vs-가상화&quot;&gt;추상화 vs 가상화&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;추상화: HW를 SW로 표현하는 것
+    &lt;ul&gt;
+      &lt;li&gt;CPU → Process&lt;/li&gt;
+      &lt;li&gt;Memory → Virtual Memory&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;가상화: 실제 생김새나 기능을 사용자에게 숨겨 구조 등을 착각하게 만듦
+    &lt;ul&gt;
+      &lt;li&gt;CPU → 프로그램마다 별도의 CPU를 모두 보유한 것처럼 보이게 함 (Context Switch)&lt;/li&gt;
+      &lt;li&gt;Memory → 프로그램마다 별도의 Memory를 모두 보유한 것처럼 보이게 함 (Share Memory)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cpu-가상화&quot;&gt;CPU 가상화&lt;/h1&gt;
+
+&lt;p&gt;Context Switch(문맥 교환)이란 아주 빠른 속도(대개 10ms)로 하나의 CPU가 process들을 interleave하게 실행하는 것이다. 사용자는 각 process들이 동시에 실행되는 것으로 착각하게 된다. 이를 통해 Multi-tasking이 구현되는 것이다.&lt;/p&gt;
+
+&lt;p&gt;문맥 교환이 발생하는 시점은 3가지로 구분된다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;TQ (문맥 교환 발생하는 시간이 충족됐을 때)&lt;/li&gt;
+  &lt;li&gt;exit()&lt;/li&gt;
+  &lt;li&gt;DISK I/O&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위의 경우가 오게 되면 switchto() 함수를 호출해 문맥 교환을 수행하게 된다. 인자로는 두 task_struct를 받는다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;switchto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;현재&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;수행중인&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;의&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;task_struct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;다음&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;수행할&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;의&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;task_struct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음 수행할 process의 task_struct는 schedule() 함수의 return으로 얻을 수 있다.&lt;/p&gt;
+
+&lt;p&gt;문맥 교환은 여러 process들을 번갈아가며 수행하는데, 이 때 전환되는 process의 순서는 일정하지 않을 수 있다. 예를 들어 process가 A → B → C → D 순으로 문맥 교환이 발생했다고 하더라도, 다음에도 같은 순서로 process가 실행된다고 보장할 수 없다.&lt;/p&gt;
+
+&lt;h1 id=&quot;memory-가상화&quot;&gt;Memory 가상화&lt;/h1&gt;
+
+&lt;p&gt;같은 프로그램 파일(disk에 위치)로 두 process(memory에 위치)를 실행하게 되면 두 process가 동일한 memory 주소를 참조하는 것처럼 보이는 상황이 있을 수 있다. 이는 실제 물리적으로 같은 memory를 참조하는 것이 아니라 각각의 process가 갖고 있는 가상 memory 주소 상에서 같은 주소를 참조하는 것이다. 각 process의 가상 memory 주소는 시작 주소가 다를 것이므로, 가상 memory 주소가 같다고 하더라도 실제 물리 memory 주소는 같지 않다. OS는 이렇게 가상의 memory 주소와 물리적 memory 주소를 mapping하는 역할을 수행한다. (최근의 CPU에는 이 역할을 OS 대신 수행해주는 MMU 기능이 들어가 있다. SW인 OS보다 HW인 CPU가 처리하는 것이 더 빠르기 때문이다.) 가상 Memory 주소 공간은 register 크기에 따라 달라진다(32bit, 64bit). 한편, 가상 memory는 가상 Memory 주소 공간을 의미하는 것이 아닌, 실제 Memory + SWAP(Disk에 위치하지만 Memory로 임시로 사용되는 영역, Linked LIst로 구현됨)을 뜻한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;concurrency-동시-실행&quot;&gt;Concurrency (동시 실행)&lt;/h1&gt;
+
+&lt;p&gt;process 간 전환이 일어날 때, 항상 원자적(atomic)으로 실행되지는 않는다. 따라서 같은 조건에서 같은 횟수로 process를 실행했다고 하더라도 따라서 카운터의 값이 항상 같지는 않다. memory → register load와 ++, register→memory save의 과정이 원자적으로 일어나지 않기 때문이다.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 04 Oct 2020 19:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/operating%20system/Introduction-to-Operating-Systems/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/operating%20system/Introduction-to-Operating-Systems/</guid>
+        
+        <category>Operating System</category>
+        
+        
+        <category>Operating System</category>
         
       </item>
     
