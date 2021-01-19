@@ -1,9 +1,5 @@
 ---
 title: Neural Machine Translation By Jointly Learning To Align And Translate
----
-
-# Neural Machine Translation By Jointly Learning To Align And Translate
-title: Neural Machine Translation By Jointly Learning To Align And Translate
 subtitle: Attention seq2seq
 categories: Paper Review
 tags: NLP

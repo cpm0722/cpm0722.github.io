@@ -2,6 +2,38 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
     <url>
+      <loc>http://0.0.0.0:4000/paper/review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</loc>
+      
+        <lastmod>2021-01-19T07:01:18-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/paper/review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</loc>
+      
+        <lastmod>2021-01-19T06:59:23-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
       <loc>http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</loc>
       
         <lastmod>2021-01-19T05:58:20-06:00</lastmod>
@@ -98,22 +130,6 @@
     </url>
   
     <url>
-      <loc>http://0.0.0.0:4000/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</loc>
-      
-        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
       <loc>http://0.0.0.0:4000/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</loc>
       
         <lastmod>2021-01-19T00:00:00-06:00</lastmod>
@@ -195,22 +211,6 @@
   
     <url>
       <loc>http://0.0.0.0:4000/Attention-is-All-You-Need/</loc>
-      
-        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
-      
-
-      
-        <changefreq>weekly</changefreq>
-      
-
-      
-          <priority>0.5</priority>
-      
-
-    </url>
-  
-    <url>
-      <loc>http://0.0.0.0:4000/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</loc>
       
         <lastmod>2021-01-19T00:00:00-06:00</lastmod>
       

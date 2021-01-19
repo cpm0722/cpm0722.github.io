@@ -1,10 +1,4 @@
 var store = [{
-        "title": "An Empirical Study Of Tokenization Strategies For Various Korean Nlp Tasks",
-        "excerpt":"An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks title: An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks subtitle: Korean Tokenizing categories: Paper Review tags: NLP Korean date: 2021-01-19 12:59:23 +0000 last_modified_at: 2021-01-19 12:59:23 +0000 — Archive Link: https://arxiv.org/abs/2010.02534 Created: Oct 10, 2020 11:29 PM...","categories": [],
-        "tags": [],
-        "url": "http://0.0.0.0:4000/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/",
-        "teaser": null
-      },{
         "title": "Attention Is All You Need",
         "excerpt":"Attention is All You Need title: Attention is All You Need subtitle: Transformer categories: Paper Review tags: NLP date: 2021-01-19 13:00:41 +0000 last_modified_at: 2021-01-19 13:00:41 +0000 — Archive Link: https://arxiv.org/abs/1706.03762 Created: Sep 21, 2020 3:16 PM Field: NLP Paper Link: https://arxiv.org/pdf/1706.03762.pdf Status: completed Submit Date: Jun 12, 2017 cleanUrl: /nlp/attention-is-all-you-need...","categories": [],
         "tags": [],
@@ -41,12 +35,6 @@ var store = [{
         "url": "http://0.0.0.0:4000/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/",
         "teaser": null
       },{
-        "title": "Neural Machine Translation By Jointly Learning To Align And Translate",
-        "excerpt":"Neural Machine Translation By Jointly Learning To Align And Translate title: Neural Machine Translation By Jointly Learning To Align And Translate subtitle: Attention seq2seq categories: Paper Review tags: NLP date: 2021-01-19 13:01:18 +0000 last_modified_at: 2021-01-19 13:01:18 +0000 — Archive Link: https://arxiv.org/abs/1409.0473 Created: Sep 21, 2020 3:15 PM Field: NLP Paper...","categories": [],
-        "tags": [],
-        "url": "http://0.0.0.0:4000/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/",
-        "teaser": null
-      },{
         "title": "Roberta A Robustly Optimized Bert Pretraining Approach",
         "excerpt":"RoBERTa: A Robustly Optimized BERT Pretraining Approach title: RoBERTa: A Robustly Optimized BERT Pretraining Approach subtitle: RoBERTa categories: Paper Review tags: NLP date: 2021-01-19 13:00:33 +0000 last_modified_at: 2021-01-19 13:00:33 +0000 — Archive Link: https://arxiv.org/abs/1907.11692 Created: Oct 5, 2020 1:08 AM Field: NLP Paper Link: https://arxiv.org/pdf/1907.11692.pdf Status: completed Submit Date: Jul...","categories": [],
         "tags": [],
@@ -71,7 +59,7 @@ var store = [{
         "url": "http://0.0.0.0:4000/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/",
         "teaser": null
       },{
-        "title": "test title v5",
+        "title": "test title v1",
         "excerpt":"\\[\\sum^N_{i=1}i\\] ","categories": [],
         "tags": [],
         "url": "http://0.0.0.0:4000/test/",
@@ -81,5 +69,17 @@ var store = [{
         "excerpt":"Archive Link: https://arxiv.org/abs/1508.07909 Created: Sep 21, 2020 3:12 PM Field: NLP Paper Link: https://arxiv.org/pdf/1508.07909.pdf Status: completed Submit Date: Aug 15, 2015 Backgrounds BLEU Score (Bilingual Evaluation Understudy) score \\[BLEU=min\\left(1,\\frac{\\text{output length}}{\\text{reference_length}}\\right)\\left(\\prod_{i=1}^4precision_i\\right)^{\\frac{1}{4}}\\] reference sentence와 output sentence의 일치율을 나타내는 score이다. 3단계 절차를 거쳐 최종 BLEU Score를 도출해낸다. n-gram에서 순서쌍의 겹치는 정도 (Precision) Example...","categories": ["Paper Review"],
         "tags": ["NLP"],
         "url": "http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/",
+        "teaser": null
+      },{
+        "title": "An Empirical Study Of Tokenization Strategies For Various Korean Nlp Tasks",
+        "excerpt":"Archive Link: https://arxiv.org/abs/2010.02534 Created: Oct 10, 2020 11:29 PM Field: NLP Paper Link: https://arxiv.org/pdf/2010.02534.pdf Status: completed Submit Date: Oct 6, 2020 Introduction NLP에서 Tokenization은 전처리 과정에서 가장 중요한 issue 중 하나이다. 가장 적절한 Tokenization 전략을 찾기 위한 연구는 수도 없이 이루어져 왔다. 그 중 가장 대표적인 방식이 BPE이다. BPE는 많은...","categories": ["Paper","Review"],
+        "tags": ["NLP","Korean"],
+        "url": "http://0.0.0.0:4000/paper/review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/",
+        "teaser": null
+      },{
+        "title": "Neural Machine Translation By Jointly Learning To Align And Translate",
+        "excerpt":"Archive Link: https://arxiv.org/abs/1409.0473 Created: Sep 21, 2020 3:15 PM Field: NLP Paper Link: https://arxiv.org/pdf/1409.0473.pdf Status: completed Submit Date: Sep 1, 2014 Abstract 기존의 seq2seq model에서 사용된 LSTM을 사용한 encoder-decoder model은 sequential problem에서 뛰어난 성능을 보였다. 하지만 encoder에서 생성해낸 context vector를 decoder에서 sentence로 만들어내는 위와 같은 방식에서 고정된 vector size는 긴...","categories": ["Paper","Review"],
+        "tags": ["NLP"],
+        "url": "http://0.0.0.0:4000/paper/review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/",
         "teaser": null
       }]

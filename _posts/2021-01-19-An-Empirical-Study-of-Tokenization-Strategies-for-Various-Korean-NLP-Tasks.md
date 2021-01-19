@@ -1,9 +1,6 @@
 ---
+layout: archive
 title: An Empirical Study Of Tokenization Strategies For Various Korean Nlp Tasks
----
-
-# An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks
-title: An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks
 subtitle: Korean Tokenizing
 categories: Paper Review
 tags: NLP Korean
