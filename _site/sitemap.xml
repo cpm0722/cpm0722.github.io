@@ -1,80 +1,228 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-<loc>http://0.0.0.0:4000/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/Attention-is-All-You-Need/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/Deep-contextualized-word-representations/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/Sequence-to-Sequence-Learning-with-Neural-Networks/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/Subword-level-Word-Vector-Representation-for-Korean/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/</loc>
-<lastmod>2021-01-19T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</loc>
-<lastmod>2021-01-19T05:58:20-06:00</lastmod>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/about/</loc>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/categories/</loc>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/</loc>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/tags/</loc>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/years/</loc>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/page2/</loc>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/page3/</loc>
-</url>
-<url>
-<loc>http://0.0.0.0:4000/google38a77fb8b9e9ac2a.html</loc>
-<lastmod>2021-01-14T19:29:03-06:00</lastmod>
-</url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</loc>
+      
+        <lastmod>2021-01-19T05:58:20-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/test/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/Subword-level-Word-Vector-Representation-for-Korean/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/Sequence-to-Sequence-Learning-with-Neural-Networks/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/Deep-contextualized-word-representations/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/Attention-is-All-You-Need/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</loc>
+      
+        <lastmod>2021-01-19T00:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
 </urlset>
