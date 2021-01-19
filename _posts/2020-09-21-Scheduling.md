@@ -33,11 +33,11 @@ Scheduling에 대해 알아보기 전에 우선 preemption에 대한 개념을 �
 
 1. Turn around time (반환 시간)
 
-    $T_{turn\_around} = T_{completion} - T_{arrival}$
+    $$T_{turn\_around} = T_{completion} - T_{arrival}$$
 
 2. Response time (응답 시간)
 
-    $T_{response} = T_{start}-T_{arrival}$
+    $$T_{response} = T_{start}-T_{arrival}$$
 
 3. Fairness
 
@@ -57,31 +57,31 @@ Queue를 이용한 non-preemption 방식이다. 대기 시간을 기준으로 Sc
 
 평균 반환 시간을 계산해보자.
 
-$A's\ T_{arround\_time} : 3-0 = 3$
+$$A's\ T_{arround\_time} : 3-0 = 3$$
 
-$B's\ T_{arround\_time} : 9-2 = 7$
+$$B's\ T_{arround\_time} : 9-2 = 7$$
 
-$C's\ T_{arround\_time} : 13-4 = 9$
+$$C's\ T_{arround\_time} : 13-4 = 9$$
 
-$D's\ T_{arround\_time} : 18-6 = 12$
+$$D's\ T_{arround\_time} : 18-6 = 12$$
 
-$E's\ T_{arround\_time} : 20-8 = 12$
+$$E's\ T_{arround\_time} : 20-8 = 12$$
 
-$Avr\ T_{arround\_time}=\frac{3+7+9+12+12}{5}\\=\frac{43}{5}=8.6$
+$$Avr\ T_{arround\_time}=\frac{3+7+9+12+12}{5}\\=\frac{43}{5}=8.6$$
 
 평균 응답 시간을 계산해보자.
 
-$A's\ T_{response\_time} : 0-0 = 0$
+$$A's\ T_{response\_time} : 0-0 = 0$$
 
-$B's\ T_{response\_time} : 3-2=1$
+$$B's\ T_{response\_time} : 3-2=1$$
 
-$C's\ T_{response\_time} : 9-4=5$
+$$C's\ T_{response\_time} : 9-4=5$$
 
-$D's\ T_{response\_time} : 13-6=7$
+$$D's\ T_{response\_time} : 13-6=7$$
 
-$E's\ T_{response\_time} : 18-8=10$
+$$E's\ T_{response\_time} : 18-8=10$$
 
-$Avr\ T_{arround\_time}=\frac{0+1+5+7+10}{5}\\=\frac{23}{5}=4.6$
+$$Avr\ T_{arround\_time}=\frac{0+1+5+7+10}{5}\\=\frac{23}{5}=4.6$$
 
 FIFO 방식은 Convoy Effect (홍위병 효과)라는 치명적인 단점이 존재한다. E를 예시로 들어볼 수 있는데, 실행 시간이 2로 매우 짧음에도 불구하고 늦게 들어왔다는 이유만으로 가장 나중에 실행되어 평균 반환, 응답 시간이 길어지게 되었다.
 
@@ -95,31 +95,31 @@ SJF 방식은 FIFO와 동일하게 non-preemption  방식이다. 그런데 먼�
 
 평균 반환 시간을 계산해보자.
 
-$A's\ T_{arround\_time} : 3-0 = 3$
+$$A's\ T_{arround\_time} : 3-0 = 3$$
 
-$B's\ T_{arround\_time} : 9-2 = 7$
+$$B's\ T_{arround\_time} : 9-2 = 7$$
 
-$C's\ T_{arround\_time} : 15-4 = 11$
+$$C's\ T_{arround\_time} : 15-4 = 11$$
 
-$D's\ T_{arround\_time} : 20-6 = 14$
+$$D's\ T_{arround\_time} : 20-6 = 14$$
 
-$E's\ T_{arround\_time} : 11-8 = 3$
+$$E's\ T_{arround\_time} : 11-8 = 3$$
 
-$Avr\ T_{arround\_time}=\frac{3+7+11+14+3}{5}\\=\frac{38}{5}=7.6$
+$$Avr\ T_{arround\_time}=\frac{3+7+11+14+3}{5}\\=\frac{38}{5}=7.6$$
 
 평균 응답 시간을 계산해보자.
 
-$A's\ T_{response\_time} : 0-0 = 0$
+$$A's\ T_{response\_time} : 0-0 = 0$$
 
-$B's\ T_{response\_time} : 3-2=1$
+$$B's\ T_{response\_time} : 3-2=1$$
 
-$C's\ T_{response\_time} : 11-4=7$
+$$C's\ T_{response\_time} : 11-4=7$$
 
-$D's\ T_{response\_time} : 15-6=9$
+$$D's\ T_{response\_time} : 15-6=9$$
 
-$E's\ T_{response\_time} : 9-8=1$
+$$E's\ T_{response\_time} : 9-8=1$$
 
-$Avr\ T_{arround\_time}=\frac{0+1+7+9+1}{5}\\=\frac{18}{5}=3.6$
+$$Avr\ T_{arround\_time}=\frac{0+1+7+9+1}{5}\\=\frac{18}{5}=3.6$$
 
 평균 응답, 반환 시간이 FIFO에 비해 줄어든 것을 확인할 수 있다. Convey Effect를 해결한 것이다. 구체적인 예시로, B가 끝난 직후의 상황에서 C나 D 대신 가장 실행 시간이 짧은 E가 선택됨으로써 E의 평균 반환, 응답 시간이 FIFO에 비해 획기적으로 줄어들게 되었다.
 
@@ -133,31 +133,31 @@ STCF는 위의 scheduling들과는 달리 preemption 방식이다. 즉, 이미 �
 
 평균 반환 시간을 계산해보자.
 
-$A's\ T_{arround\_time} : 3-0 = 3$
+$$A's\ T_{arround\_time} : 3-0 = 3$$
 
-$B's\ T_{arround\_time} : 15-2 = 13$
+$$B's\ T_{arround\_time} : 15-2 = 13$$
 
-$C's\ T_{arround\_time} : 8-4 = 4$
+$$C's\ T_{arround\_time} : 8-4 = 4$$
 
-$D's\ T_{arround\_time} : 20-6 = 14$
+$$D's\ T_{arround\_time} : 20-6 = 14$$
 
-$E's\ T_{arround\_time} : 10-8 = 2$
+$$E's\ T_{arround\_time} : 10-8 = 2$$
 
-$Avr\ T_{arround\_time}=\frac{3+13+4+14+2}{5}\\=\frac{36}{5}=7.2$
+$$Avr\ T_{arround\_time}=\frac{3+13+4+14+2}{5}\\=\frac{36}{5}=7.2$$
 
 평균 응답 시간을 계산해보자.
 
-$A's\ T_{response\_time} : 0-0 = 0$
+$$A's\ T_{response\_time} : 0-0 = 0$$
 
-$B's\ T_{response\_time} : 3-2=1$
+$$B's\ T_{response\_time} : 3-2=1$$
 
-$C's\ T_{response\_time} : 4-4=0$
+$$C's\ T_{response\_time} : 4-4=0$$
 
-$D's\ T_{response\_time} : 15-6=9$
+$$D's\ T_{response\_time} : 15-6=9$$
 
-$E's\ T_{response\_time} : 8-8=0$
+$$E's\ T_{response\_time} : 8-8=0$$
 
-$Avr\ T_{arround\_time}=\frac{0+1+0+9+0}{5}\\=\frac{10}{5}=2$
+$$Avr\ T_{arround\_time}=\frac{0+1+0+9+0}{5}\\=\frac{10}{5}=2$$
 
 C가 가장 큰 혜택을 보게 되었다. 4time이 지난 시점에 C가 새로 들어오게 되는데, 이미 수행중이던 B의 잔여 시간은 5초인 반면 C의 전체 수행 시간은 4초이기에 수행 중이던 B에게서 preemption을 해 C가 수행되게 된다. 하지만 STCF 역시 Starvation Effect를 해결하지는 못한다. 전체 수행 시간이 긴 process의 경우 계속 새로 들어온 작업들에 밀려 수행될 수 없게 된다.
 
@@ -165,7 +165,7 @@ C가 가장 큰 혜택을 보게 되었다. 4time이 지난 시점에 C가 새�
 
 HRNN은 다시 non-preemption 방식이다. 대신 이전의 일률적인 기준 (FIFO: 대기 시간, SJF: 수행 시간)이 아닌 두 기준을 결합한 수식을 사용하기로 했다. 
 
-$(T_{wait}+T_{service})/T_{service}$
+$$(T_{wait}+T_{service})/T_{service}$$
 
 대기 시간과 실행 시간을 더한 값을 대기 시간으로 나눈 값이 큰 process를 먼저 선택한다.
 
@@ -173,39 +173,39 @@ $(T_{wait}+T_{service})/T_{service}$
 
 평균 반환 시간을 계산해보자.
 
-$A's\ T_{arround\_time} : 3-0 = 3$
+$$A's\ T_{arround\_time} : 3-0 = 3$$
 
-$B's\ T_{arround\_time} : 9-2 = 11$
+$$B's\ T_{arround\_time} : 9-2 = 11$$
 
-$C's\ T_{arround\_time} : 13-4 = 9$
+$$C's\ T_{arround\_time} : 13-4 = 9$$
 
-$D's\ T_{arround\_time} : 20-6 = 14$
+$$D's\ T_{arround\_time} : 20-6 = 14$$
 
-$E's\ T_{arround\_time} : 15-8 = 7$
+$$E's\ T_{arround\_time} : 15-8 = 7$$
 
-$Avr\ T_{arround\_time}=\frac{3+11+9+14+7}{5}\\=\frac{44}{5}=8.8$
+$$Avr\ T_{arround\_time}=\frac{3+11+9+14+7}{5}\\=\frac{44}{5}=8.8$$
 
 평균 응답 시간을 계산해보자.
 
-$A's\ T_{response\_time} : 0-0 = 0$
+$$A's\ T_{response\_time} : 0-0 = 0$$
 
-$B's\ T_{response\_time} : 3-2=1$
+$$B's\ T_{response\_time} : 3-2=1$$
 
-$C's\ T_{response\_time} : 9-4=0$
+$$C's\ T_{response\_time} : 9-4=0$$
 
-$D's\ T_{response\_time} : 15-6=9$
+$$D's\ T_{response\_time} : 15-6=9$$
 
-$E's\ T_{response\_time} : 13-8=5$
+$$E's\ T_{response\_time} : 13-8=5$$
 
-$Avr\ T_{arround\_time}=\frac{0+1+0+9+5}{5}\\=\frac{15}{5}=3$
+$$Avr\ T_{arround\_time}=\frac{0+1+0+9+5}{5}\\=\frac{15}{5}=3$$
 
 B가 수행이 끝난 9time 직후를 보면 C, D, E 중 선택을 하는 상황이다. 각각의 time을 계산해보자.
 
-$C: \frac{(9-4)+4}{4}=\frac{9}{4}=2.25$
+$$C: \frac{(9-4)+4}{4}=\frac{9}{4}=2.25$$
 
-$D: \frac{(9-6)+5}{5}=\frac{8}{5}=1.6$
+$$D: \frac{(9-6)+5}{5}=\frac{8}{5}=1.6$$
 
-$E: \frac{(9-8)+2}{2}=\frac{3}{2}=1.5$
+$$E: \frac{(9-8)+2}{2}=\frac{3}{2}=1.5$$
 
 이 중 가장 큰 값인 C를 선택하게 된다. SJF에서는  C가 E에 밀려 더 나중에 수행됐다면, 여기서는 C가 E보다 대기 시간에서의 보정을 받아 더 먼저 수행된 것이다.
 
@@ -217,31 +217,31 @@ preemption 방식이다. 일정 시간마다 서로 돌아가면서 공정하게
 
 평균 반환 시간을 계산해보자.
 
-$A's\ T_{arround\_time} : 4-0 = 4$
+$$A's\ T_{arround\_time} : 4-0 = 4$$
 
-$B's\ T_{arround\_time} : 18-2 = 16$
+$$B's\ T_{arround\_time} : 18-2 = 16$$
 
-$C's\ T_{arround\_time} : 17-4 = 13$
+$$C's\ T_{arround\_time} : 17-4 = 13$$
 
-$D's\ T_{arround\_time} : 20-6 = 14$
+$$D's\ T_{arround\_time} : 20-6 = 14$$
 
-$E's\ T_{arround\_time} : 15-8 = 7$
+$$E's\ T_{arround\_time} : 15-8 = 7$$
 
-$Avr\ T_{arround\_time}=\frac{4+16+13+14+7}{5}\\=\frac{54}{5}=10.8$
+$$Avr\ T_{arround\_time}=\frac{4+16+13+14+7}{5}\\=\frac{54}{5}=10.8$$
 
 평균 응답 시간을 계산해보자.
 
-$A's\ T_{response\_time} : 0-0 = 0$
+$$A's\ T_{response\_time} : 0-0 = 0$$
 
-$B's\ T_{response\_time} : 2-2=0$
+$$B's\ T_{response\_time} : 2-2=0$$
 
-$C's\ T_{response\_time} : 5-4=1$
+$$C's\ T_{response\_time} : 5-4=1$$
 
-$D's\ T_{response\_time} : 7-6=1$
+$$D's\ T_{response\_time} : 7-6=1$$
 
-$E's\ T_{response\_time} : 10-8=2$
+$$E's\ T_{response\_time} : 10-8=2$$
 
-$Avr\ T_{arround\_time}=\frac{0+0+1+1+2}{5}\\=\frac{4}{5}=0.8$
+$$Avr\ T_{arround\_time}=\frac{0+0+1+1+2}{5}\\=\frac{4}{5}=0.8$$
 
 ### MLFQ (Multi-level Feedback Queue)
 

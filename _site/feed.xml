@@ -5,8 +5,8 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Jan 2021 05:22:05 -0600</pubDate>
-    <lastBuildDate>Tue, 19 Jan 2021 05:22:05 -0600</lastBuildDate>
+    <pubDate>Tue, 19 Jan 2021 05:25:07 -0600</pubDate>
+    <lastBuildDate>Tue, 19 Jan 2021 05:25:07 -0600</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -1409,26 +1409,26 @@
   &lt;li&gt;
     &lt;p&gt;자원: system에 존재하는 자원의 전체 개수&lt;/p&gt;
 
-    &lt;p&gt;$R = (R_1,R_2, …,R_m)$&lt;/p&gt;
+\[R = (R_1,R_2, ...,R_m)\]
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;가용: system에 존재하는 자원 중 현재 사용 가능한 자원의 개수&lt;/p&gt;
 
-    &lt;p&gt;$V=(V_1,V_2,…,V_m)$&lt;/p&gt;
+\[V=(V_1,V_2,...,V_m)\]
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;요청: process가 요청하고 있는 자원의 개수&lt;/p&gt;
 
-    &lt;p&gt;$C=\begin{pmatrix}C_{11}&amp;amp;…&amp;amp;C_{1m}\&amp;amp;…&amp;amp;\C_{n1}&amp;amp;…&amp;amp;C_{nm}\end{pmatrix}$&lt;/p&gt;
+\[C=\begin{pmatrix}C_{11}&amp;amp;...&amp;amp;C_{1m}\\&amp;amp;...&amp;amp;\\C_{n1}&amp;amp;...&amp;amp;C_{nm}\end{pmatrix}\]
 
-    &lt;p&gt;$C_{ij}$: process $i$가 자원 $j$를 $C_{ij}$만큼 요청&lt;/p&gt;
+    &lt;p&gt;\(C_{ij}\): process \(i\)가 자원 \(j\)를 \(C_{ij}\)만큼 요청&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;할당: process가 할당받고 있는 자원의 개수&lt;/p&gt;
 
-    &lt;p&gt;$A=\begin{pmatrix}A_{11}&amp;amp;…&amp;amp;A_{1m}\&amp;amp;…&amp;amp;\A_{n1}&amp;amp;…&amp;amp;A_{nm}\end{pmatrix}$&lt;/p&gt;
+\[A=\begin{pmatrix}A_{11}&amp;amp;...&amp;amp;A_{1m}\\&amp;amp;...&amp;amp;\\A_{n1}&amp;amp;...&amp;amp;A_{nm}\end{pmatrix}\]
 
-    &lt;p&gt;$A_{ij}$: process $i$가 자원 $j$를 $A_{ij}$만큼 할당받음&lt;/p&gt;
+    &lt;p&gt;\(A_{ij}\): process \(i\)가 자원 \(j\)를 \(A_{ij}\)만큼 할당받음&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
@@ -1438,23 +1438,23 @@
   &lt;li&gt;
     &lt;p&gt;전체 자원의 개수는 가용 가능한 자원과 전체 process들에게서 사용중인 자원의 합이다.&lt;/p&gt;
 
-    &lt;p&gt;$R_j=V_j+\sum_{j=1}^m{A_{ij}}$&lt;/p&gt;
+\[R_j=V_j+\sum_{j=1}^m{A_{ij}}\]
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;요청 자원은 전체 자원의 양보다 많을 수 없다.&lt;/p&gt;
 
-    &lt;p&gt;$C_{ij}\le R_j$&lt;/p&gt;
+\[C_{ij}\le R_j\]
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;할당 자원은 요청 자원보다 많을 수 없다.&lt;/p&gt;
 
-    &lt;p&gt;$A_{ij}\le C_{ij}$&lt;/p&gt;
+\[A_{ij}\le C_{ij}\]
   &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;process 시작 거부 방식은 모든 자원들에 대해 아래의 수식을 만족할 때에만 해당 process를 시작한다.&lt;/p&gt;
 
-&lt;p&gt;$R_j\ge C_{(n+1)j}+\sum_{i=1}^n{C_{ij}}\ \ \ for\ all\ j$&lt;/p&gt;
+\[R_j\ge C_{(n+1)j}+\sum_{i=1}^n{C_{ij}}\ \ \ for\ all\ j\]
 
 &lt;p&gt;모든 자원들에 대해 process가 요청하는 전체 자원의 합과 새로운 process가 요청하는 자원을 더한 값이 실제 자원의 양보다 작을 때에만 process를 시작하는 것이다. 이는 최악의 경우에도 실행됨을 보장하기 위함이다. 최악의 경우라는 것은 모든 process들이 동시에 자신이 요청할 수 있는 최대 자원량을 한꺼번에 요청하는 상황을 뜻한다. 이러한 보수적인 조건을 만족했을 때에만 process가 실행되는 것이기에 현실에서 사용할 수 없는 방식이다.&lt;/p&gt;
 
@@ -1466,7 +1466,7 @@
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2020-11-17-Concurrency/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;$C-A$는 추가적으로 할당해야 할 자원들의 matrix이다. $V$와 비교해 더 작은 값들을 갖는 $C-A$의 row를 찾은 뒤 해당 process를 실행시키게 된다. 이후 $A$에서 해당 process의 값들이 $V$에 더해지게 된다. 해당 process의 값들은 $C$와 $A$, $C-A$에서 모두 0이 된다.&lt;/p&gt;
+&lt;p&gt;\(C-A\)는 추가적으로 할당해야 할 자원들의 matrix이다. \(V\)와 비교해 더 작은 값들을 갖는 \(C-A\)의 row를 찾은 뒤 해당 process를 실행시키게 된다. 이후 \(A\)에서 해당 process의 값들이 \(V\)에 더해지게 된다. 해당 process의 값들은 \(C\)와 \(A\), \(C-A\)에서 모두 0이 된다.&lt;/p&gt;
 
 &lt;p&gt;아래는 unsafe state에 대한 예시이다. 실행할 수 있는 process가 없는 경우이다.&lt;/p&gt;
 
@@ -1483,9 +1483,9 @@
 &lt;p&gt;deadlock prevention과 비슷하게 동작한다. algorithm은 다음과 같다.&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;임시 vector $W$를 생성해 초기 값으로 $V$를 복사한다.&lt;/li&gt;
-  &lt;li&gt;$Q$의 row를 탐색하며 모든 자원이 $W$보다 작은 process가 있을 경우 해당 process를 mark한다. 그러한 process가 없을 경우 deadlock이 발생한 것이므로 algorithm을 종료한다.&lt;/li&gt;
-  &lt;li&gt;process를 찾았을 경우 $W$에 $A$에서의 process의 값을 더한다. 2단계로 돌아가 다시 수행한다.&lt;/li&gt;
+  &lt;li&gt;임시 vector \(W\)를 생성해 초기 값으로 \(V\)를 복사한다.&lt;/li&gt;
+  &lt;li&gt;\(Q\)의 row를 탐색하며 모든 자원이 \(W\)보다 작은 process가 있을 경우 해당 process를 mark한다. 그러한 process가 없을 경우 deadlock이 발생한 것이므로 algorithm을 종료한다.&lt;/li&gt;
+  &lt;li&gt;process를 찾았을 경우 \(W\)에 \(A\)에서의 process의 값을 더한다. 2단계로 돌아가 다시 수행한다.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h3 id=&quot;deadlock-solution&quot;&gt;Deadlock Solution&lt;/h3&gt;
@@ -2582,12 +2582,12 @@
   &lt;li&gt;
     &lt;p&gt;Turn around time (반환 시간)&lt;/p&gt;
 
-    &lt;p&gt;$T_{turn_around} = T_{completion} - T_{arrival}$&lt;/p&gt;
+\[T_{turn\_around} = T_{completion} - T_{arrival}\]
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Response time (응답 시간)&lt;/p&gt;
 
-    &lt;p&gt;$T_{response} = T_{start}-T_{arrival}$&lt;/p&gt;
+\[T_{response} = T_{start}-T_{arrival}\]
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Fairness&lt;/p&gt;
@@ -2610,31 +2610,31 @@
 
 &lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+\[A's\ T_{arround\_time} : 3-0 = 3\]
 
-&lt;p&gt;$B’s\ T_{arround_time} : 9-2 = 7$&lt;/p&gt;
+\[B's\ T_{arround\_time} : 9-2 = 7\]
 
-&lt;p&gt;$C’s\ T_{arround_time} : 13-4 = 9$&lt;/p&gt;
+\[C's\ T_{arround\_time} : 13-4 = 9\]
 
-&lt;p&gt;$D’s\ T_{arround_time} : 18-6 = 12$&lt;/p&gt;
+\[D's\ T_{arround\_time} : 18-6 = 12\]
 
-&lt;p&gt;$E’s\ T_{arround_time} : 20-8 = 12$&lt;/p&gt;
+\[E's\ T_{arround\_time} : 20-8 = 12\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+7+9+12+12}{5}\=\frac{43}{5}=8.6$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{3+7+9+12+12}{5}\\=\frac{43}{5}=8.6\]
 
 &lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+\[A's\ T_{response\_time} : 0-0 = 0\]
 
-&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+\[B's\ T_{response\_time} : 3-2=1\]
 
-&lt;p&gt;$C’s\ T_{response_time} : 9-4=5$&lt;/p&gt;
+\[C's\ T_{response\_time} : 9-4=5\]
 
-&lt;p&gt;$D’s\ T_{response_time} : 13-6=7$&lt;/p&gt;
+\[D's\ T_{response\_time} : 13-6=7\]
 
-&lt;p&gt;$E’s\ T_{response_time} : 18-8=10$&lt;/p&gt;
+\[E's\ T_{response\_time} : 18-8=10\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+5+7+10}{5}\=\frac{23}{5}=4.6$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{0+1+5+7+10}{5}\\=\frac{23}{5}=4.6\]
 
 &lt;p&gt;FIFO 방식은 Convoy Effect (홍위병 효과)라는 치명적인 단점이 존재한다. E를 예시로 들어볼 수 있는데, 실행 시간이 2로 매우 짧음에도 불구하고 늦게 들어왔다는 이유만으로 가장 나중에 실행되어 평균 반환, 응답 시간이 길어지게 되었다.&lt;/p&gt;
 
@@ -2648,31 +2648,31 @@
 
 &lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+\[A's\ T_{arround\_time} : 3-0 = 3\]
 
-&lt;p&gt;$B’s\ T_{arround_time} : 9-2 = 7$&lt;/p&gt;
+\[B's\ T_{arround\_time} : 9-2 = 7\]
 
-&lt;p&gt;$C’s\ T_{arround_time} : 15-4 = 11$&lt;/p&gt;
+\[C's\ T_{arround\_time} : 15-4 = 11\]
 
-&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+\[D's\ T_{arround\_time} : 20-6 = 14\]
 
-&lt;p&gt;$E’s\ T_{arround_time} : 11-8 = 3$&lt;/p&gt;
+\[E's\ T_{arround\_time} : 11-8 = 3\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+7+11+14+3}{5}\=\frac{38}{5}=7.6$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{3+7+11+14+3}{5}\\=\frac{38}{5}=7.6\]
 
 &lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+\[A's\ T_{response\_time} : 0-0 = 0\]
 
-&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+\[B's\ T_{response\_time} : 3-2=1\]
 
-&lt;p&gt;$C’s\ T_{response_time} : 11-4=7$&lt;/p&gt;
+\[C's\ T_{response\_time} : 11-4=7\]
 
-&lt;p&gt;$D’s\ T_{response_time} : 15-6=9$&lt;/p&gt;
+\[D's\ T_{response\_time} : 15-6=9\]
 
-&lt;p&gt;$E’s\ T_{response_time} : 9-8=1$&lt;/p&gt;
+\[E's\ T_{response\_time} : 9-8=1\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+7+9+1}{5}\=\frac{18}{5}=3.6$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{0+1+7+9+1}{5}\\=\frac{18}{5}=3.6\]
 
 &lt;p&gt;평균 응답, 반환 시간이 FIFO에 비해 줄어든 것을 확인할 수 있다. Convey Effect를 해결한 것이다. 구체적인 예시로, B가 끝난 직후의 상황에서 C나 D 대신 가장 실행 시간이 짧은 E가 선택됨으로써 E의 평균 반환, 응답 시간이 FIFO에 비해 획기적으로 줄어들게 되었다.&lt;/p&gt;
 
@@ -2686,31 +2686,31 @@
 
 &lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+\[A's\ T_{arround\_time} : 3-0 = 3\]
 
-&lt;p&gt;$B’s\ T_{arround_time} : 15-2 = 13$&lt;/p&gt;
+\[B's\ T_{arround\_time} : 15-2 = 13\]
 
-&lt;p&gt;$C’s\ T_{arround_time} : 8-4 = 4$&lt;/p&gt;
+\[C's\ T_{arround\_time} : 8-4 = 4\]
 
-&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+\[D's\ T_{arround\_time} : 20-6 = 14\]
 
-&lt;p&gt;$E’s\ T_{arround_time} : 10-8 = 2$&lt;/p&gt;
+\[E's\ T_{arround\_time} : 10-8 = 2\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+13+4+14+2}{5}\=\frac{36}{5}=7.2$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{3+13+4+14+2}{5}\\=\frac{36}{5}=7.2\]
 
 &lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+\[A's\ T_{response\_time} : 0-0 = 0\]
 
-&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+\[B's\ T_{response\_time} : 3-2=1\]
 
-&lt;p&gt;$C’s\ T_{response_time} : 4-4=0$&lt;/p&gt;
+\[C's\ T_{response\_time} : 4-4=0\]
 
-&lt;p&gt;$D’s\ T_{response_time} : 15-6=9$&lt;/p&gt;
+\[D's\ T_{response\_time} : 15-6=9\]
 
-&lt;p&gt;$E’s\ T_{response_time} : 8-8=0$&lt;/p&gt;
+\[E's\ T_{response\_time} : 8-8=0\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+0+9+0}{5}\=\frac{10}{5}=2$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{0+1+0+9+0}{5}\\=\frac{10}{5}=2\]
 
 &lt;p&gt;C가 가장 큰 혜택을 보게 되었다. 4time이 지난 시점에 C가 새로 들어오게 되는데, 이미 수행중이던 B의 잔여 시간은 5초인 반면 C의 전체 수행 시간은 4초이기에 수행 중이던 B에게서 preemption을 해 C가 수행되게 된다. 하지만 STCF 역시 Starvation Effect를 해결하지는 못한다. 전체 수행 시간이 긴 process의 경우 계속 새로 들어온 작업들에 밀려 수행될 수 없게 된다.&lt;/p&gt;
 
@@ -2718,7 +2718,7 @@
 
 &lt;p&gt;HRNN은 다시 non-preemption 방식이다. 대신 이전의 일률적인 기준 (FIFO: 대기 시간, SJF: 수행 시간)이 아닌 두 기준을 결합한 수식을 사용하기로 했다.&lt;/p&gt;
 
-&lt;p&gt;$(T_{wait}+T_{service})/T_{service}$&lt;/p&gt;
+\[(T_{wait}+T_{service})/T_{service}\]
 
 &lt;p&gt;대기 시간과 실행 시간을 더한 값을 대기 시간으로 나눈 값이 큰 process를 먼저 선택한다.&lt;/p&gt;
 
@@ -2726,39 +2726,39 @@
 
 &lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{arround_time} : 3-0 = 3$&lt;/p&gt;
+\[A's\ T_{arround\_time} : 3-0 = 3\]
 
-&lt;p&gt;$B’s\ T_{arround_time} : 9-2 = 11$&lt;/p&gt;
+\[B's\ T_{arround\_time} : 9-2 = 11\]
 
-&lt;p&gt;$C’s\ T_{arround_time} : 13-4 = 9$&lt;/p&gt;
+\[C's\ T_{arround\_time} : 13-4 = 9\]
 
-&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+\[D's\ T_{arround\_time} : 20-6 = 14\]
 
-&lt;p&gt;$E’s\ T_{arround_time} : 15-8 = 7$&lt;/p&gt;
+\[E's\ T_{arround\_time} : 15-8 = 7\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{3+11+9+14+7}{5}\=\frac{44}{5}=8.8$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{3+11+9+14+7}{5}\\=\frac{44}{5}=8.8\]
 
 &lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+\[A's\ T_{response\_time} : 0-0 = 0\]
 
-&lt;p&gt;$B’s\ T_{response_time} : 3-2=1$&lt;/p&gt;
+\[B's\ T_{response\_time} : 3-2=1\]
 
-&lt;p&gt;$C’s\ T_{response_time} : 9-4=0$&lt;/p&gt;
+\[C's\ T_{response\_time} : 9-4=0\]
 
-&lt;p&gt;$D’s\ T_{response_time} : 15-6=9$&lt;/p&gt;
+\[D's\ T_{response\_time} : 15-6=9\]
 
-&lt;p&gt;$E’s\ T_{response_time} : 13-8=5$&lt;/p&gt;
+\[E's\ T_{response\_time} : 13-8=5\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+1+0+9+5}{5}\=\frac{15}{5}=3$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{0+1+0+9+5}{5}\\=\frac{15}{5}=3\]
 
 &lt;p&gt;B가 수행이 끝난 9time 직후를 보면 C, D, E 중 선택을 하는 상황이다. 각각의 time을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$C: \frac{(9-4)+4}{4}=\frac{9}{4}=2.25$&lt;/p&gt;
+\[C: \frac{(9-4)+4}{4}=\frac{9}{4}=2.25\]
 
-&lt;p&gt;$D: \frac{(9-6)+5}{5}=\frac{8}{5}=1.6$&lt;/p&gt;
+\[D: \frac{(9-6)+5}{5}=\frac{8}{5}=1.6\]
 
-&lt;p&gt;$E: \frac{(9-8)+2}{2}=\frac{3}{2}=1.5$&lt;/p&gt;
+\[E: \frac{(9-8)+2}{2}=\frac{3}{2}=1.5\]
 
 &lt;p&gt;이 중 가장 큰 값인 C를 선택하게 된다. SJF에서는  C가 E에 밀려 더 나중에 수행됐다면, 여기서는 C가 E보다 대기 시간에서의 보정을 받아 더 먼저 수행된 것이다.&lt;/p&gt;
 
@@ -2770,31 +2770,31 @@
 
 &lt;p&gt;평균 반환 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{arround_time} : 4-0 = 4$&lt;/p&gt;
+\[A's\ T_{arround\_time} : 4-0 = 4\]
 
-&lt;p&gt;$B’s\ T_{arround_time} : 18-2 = 16$&lt;/p&gt;
+\[B's\ T_{arround\_time} : 18-2 = 16\]
 
-&lt;p&gt;$C’s\ T_{arround_time} : 17-4 = 13$&lt;/p&gt;
+\[C's\ T_{arround\_time} : 17-4 = 13\]
 
-&lt;p&gt;$D’s\ T_{arround_time} : 20-6 = 14$&lt;/p&gt;
+\[D's\ T_{arround\_time} : 20-6 = 14\]
 
-&lt;p&gt;$E’s\ T_{arround_time} : 15-8 = 7$&lt;/p&gt;
+\[E's\ T_{arround\_time} : 15-8 = 7\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{4+16+13+14+7}{5}\=\frac{54}{5}=10.8$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{4+16+13+14+7}{5}\\=\frac{54}{5}=10.8\]
 
 &lt;p&gt;평균 응답 시간을 계산해보자.&lt;/p&gt;
 
-&lt;p&gt;$A’s\ T_{response_time} : 0-0 = 0$&lt;/p&gt;
+\[A's\ T_{response\_time} : 0-0 = 0\]
 
-&lt;p&gt;$B’s\ T_{response_time} : 2-2=0$&lt;/p&gt;
+\[B's\ T_{response\_time} : 2-2=0\]
 
-&lt;p&gt;$C’s\ T_{response_time} : 5-4=1$&lt;/p&gt;
+\[C's\ T_{response\_time} : 5-4=1\]
 
-&lt;p&gt;$D’s\ T_{response_time} : 7-6=1$&lt;/p&gt;
+\[D's\ T_{response\_time} : 7-6=1\]
 
-&lt;p&gt;$E’s\ T_{response_time} : 10-8=2$&lt;/p&gt;
+\[E's\ T_{response\_time} : 10-8=2\]
 
-&lt;p&gt;$Avr\ T_{arround_time}=\frac{0+0+1+1+2}{5}\=\frac{4}{5}=0.8$&lt;/p&gt;
+\[Avr\ T_{arround\_time}=\frac{0+0+1+1+2}{5}\\=\frac{4}{5}=0.8\]
 
 &lt;h3 id=&quot;mlfq-multi-level-feedback-queue&quot;&gt;MLFQ (Multi-level Feedback Queue)&lt;/h3&gt;
 

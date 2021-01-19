@@ -345,41 +345,41 @@ deadlock을 해결하는 방법은 크게 2가지가 있다. deadlock이 발생�
 
 - 자원: system에 존재하는 자원의 전체 개수
 
-     $R = (R_1,R_2, ...,R_m)$
+     $$R = (R_1,R_2, ...,R_m)$$
 
 - 가용: system에 존재하는 자원 중 현재 사용 가능한 자원의 개수
 
-     $V=(V_1,V_2,...,V_m)$
+     $$V=(V_1,V_2,...,V_m)$$
 
 - 요청: process가 요청하고 있는 자원의 개수
 
-     $C=\begin{pmatrix}C_{11}&...&C_{1m}\\&...&\\C_{n1}&...&C_{nm}\end{pmatrix}$
+     $$C=\begin{pmatrix}C_{11}&...&C_{1m}\\&...&\\C_{n1}&...&C_{nm}\end{pmatrix}$$
 
-    $C_{ij}$: process $i$가 자원 $j$를 $C_{ij}$만큼 요청
+    $$C_{ij}$$: process $$i$$가 자원 $$j$$를 $$C_{ij}$$만큼 요청
 
 - 할당: process가 할당받고 있는 자원의 개수
 
-    $A=\begin{pmatrix}A_{11}&...&A_{1m}\\&...&\\A_{n1}&...&A_{nm}\end{pmatrix}$
+    $$A=\begin{pmatrix}A_{11}&...&A_{1m}\\&...&\\A_{n1}&...&A_{nm}\end{pmatrix}$$
 
-    $A_{ij}$: process $i$가 자원 $j$를 $A_{ij}$만큼 할당받음
+    $$A_{ij}$$: process $$i$$가 자원 $$j$$를 $$A_{ij}$$만큼 할당받음
 
 위의 vector와 matrix는 정의에 따라 아래와 같은 수식들이 성립된다.
 
 - 전체 자원의 개수는 가용 가능한 자원과 전체 process들에게서 사용중인 자원의 합이다.
 
-    $R_j=V_j+\sum_{j=1}^m{A_{ij}}$
+    $$R_j=V_j+\sum_{j=1}^m{A_{ij}}$$
 
 - 요청 자원은 전체 자원의 양보다 많을 수 없다.
 
-    $C_{ij}\le R_j$
+    $$C_{ij}\le R_j$$
 
 - 할당 자원은 요청 자원보다 많을 수 없다.
 
-    $A_{ij}\le C_{ij}$
+    $$A_{ij}\le C_{ij}$$
 
 process 시작 거부 방식은 모든 자원들에 대해 아래의 수식을 만족할 때에만 해당 process를 시작한다.
 
-$R_j\ge C_{(n+1)j}+\sum_{i=1}^n{C_{ij}}\ \ \ for\ all\ j$
+$$R_j\ge C_{(n+1)j}+\sum_{i=1}^n{C_{ij}}\ \ \ for\ all\ j$$
 
 모든 자원들에 대해 process가 요청하는 전체 자원의 합과 새로운 process가 요청하는 자원을 더한 값이 실제 자원의 양보다 작을 때에만 process를 시작하는 것이다. 이는 최악의 경우에도 실행됨을 보장하기 위함이다. 최악의 경우라는 것은 모든 process들이 동시에 자신이 요청할 수 있는 최대 자원량을 한꺼번에 요청하는 상황을 뜻한다. 이러한 보수적인 조건을 만족했을 때에만 process가 실행되는 것이기에 현실에서 사용할 수 없는 방식이다.
 
@@ -391,7 +391,7 @@ $R_j\ge C_{(n+1)j}+\sum_{i=1}^n{C_{ij}}\ \ \ for\ all\ j$
 
 ![07.png](/assets/images/2020-11-17-Concurrency/07.png)
 
-$C-A$는 추가적으로 할당해야 할 자원들의 matrix이다. $V$와 비교해 더 작은 값들을 갖는 $C-A$의 row를 찾은 뒤 해당 process를 실행시키게 된다. 이후 $A$에서 해당 process의 값들이 $V$에 더해지게 된다. 해당 process의 값들은 $C$와 $A$, $C-A$에서 모두 0이 된다.
+$$C-A$$는 추가적으로 할당해야 할 자원들의 matrix이다. $$V$$와 비교해 더 작은 값들을 갖는 $$C-A$$의 row를 찾은 뒤 해당 process를 실행시키게 된다. 이후 $$A$$에서 해당 process의 값들이 $$V$$에 더해지게 된다. 해당 process의 값들은 $$C$$와 $$A$$, $$C-A$$에서 모두 0이 된다.
 
 아래는 unsafe state에 대한 예시이다. 실행할 수 있는 process가 없는 경우이다.
 
@@ -407,9 +407,9 @@ deadlock detection은 deadlock prevention에 비해 상대적으로 낙관적인
 
 deadlock prevention과 비슷하게 동작한다. algorithm은 다음과 같다.
 
-1. 임시 vector $W$를 생성해 초기 값으로 $V$를 복사한다.
-2. $Q$의 row를 탐색하며 모든 자원이 $W$보다 작은 process가 있을 경우 해당 process를 mark한다. 그러한 process가 없을 경우 deadlock이 발생한 것이므로 algorithm을 종료한다.
-3. process를 찾았을 경우 $W$에 $A$에서의 process의 값을 더한다. 2단계로 돌아가 다시 수행한다.
+1. 임시 vector $$W$$를 생성해 초기 값으로 $$V$$를 복사한다.
+2. $$Q$$의 row를 탐색하며 모든 자원이 $$W$$보다 작은 process가 있을 경우 해당 process를 mark한다. 그러한 process가 없을 경우 deadlock이 발생한 것이므로 algorithm을 종료한다.
+3. process를 찾았을 경우 $$W$$에 $$A$$에서의 process의 값을 더한다. 2단계로 돌아가 다시 수행한다.
 
 ### Deadlock Solution
 
