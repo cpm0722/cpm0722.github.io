@@ -5,8 +5,8 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 20 Jan 2021 04:57:30 -0600</pubDate>
-    <lastBuildDate>Wed, 20 Jan 2021 04:57:30 -0600</lastBuildDate>
+    <pubDate>Wed, 20 Jan 2021 05:02:48 -0600</pubDate>
+    <lastBuildDate>Wed, 20 Jan 2021 05:02:48 -0600</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -154,7 +154,9 @@
     
       <item>
         <title>[운영체제] Disk</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h1 id=&quot;hard-disk&quot;&gt;Hard Disk&lt;/h1&gt;
 
@@ -436,7 +438,9 @@
     
       <item>
         <title>[운영체제] File System</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h2 id=&quot;block&quot;&gt;Block&lt;/h2&gt;
 
@@ -676,7 +680,9 @@
     
       <item>
         <title>[운영체제] Semaphore</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h1 id=&quot;semaphore&quot;&gt;Semaphore&lt;/h1&gt;
 
@@ -1347,7 +1353,9 @@
     
       <item>
         <title>[운영체제] Concurrency</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h1 id=&quot;thread&quot;&gt;Thread&lt;/h1&gt;
 
@@ -2281,7 +2289,9 @@
     
       <item>
         <title>[운영체제] Paging Mechanism</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h1 id=&quot;paging-mechanism&quot;&gt;Paging Mechanism&lt;/h1&gt;
 
@@ -2990,7 +3000,9 @@
     
       <item>
         <title>[운영체제] Scheduling: MLFQ(Multi Level Feedback Queue)</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h2 id=&quot;rr과-mlfq&quot;&gt;RR과 MLFQ&lt;/h2&gt;
 
@@ -3491,7 +3503,9 @@
     
       <item>
         <title>[운영체제] Scheduling</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h2 id=&quot;단기-scheduling&quot;&gt;단기 Scheduling&lt;/h2&gt;
 
@@ -4439,7 +4453,9 @@
     
       <item>
         <title>[운영체제] Process Abstraction</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h2 id=&quot;process--program&quot;&gt;Process / Program&lt;/h2&gt;
 
@@ -4623,7 +4639,9 @@
     
       <item>
         <title>[운영체제] Introduction to Operating Systems</title>
-        <description>&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
+        <description>&lt;hr /&gt;
+
+&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
 &lt;h1 id=&quot;os-operating-system&quot;&gt;OS (Operating System)&lt;/h1&gt;
 
