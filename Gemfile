@@ -4,3 +4,4 @@ gemspec
 
 gem 'minima'
 gem 'jekyll-tagging-related_posts'
+gem 'kramdown-syntax-coderay'

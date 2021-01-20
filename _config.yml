@@ -174,7 +174,13 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
-  enable_coderay: false
+  use_coderay: true
+
+  coderay:
+    coderay_line_numbers: true
+    coderay_bold_every: 10
+    coderay_tab_width: 2
+    coderay_wrap: div
 
 
 # Sass/SCSS

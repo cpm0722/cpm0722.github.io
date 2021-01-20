@@ -328,7 +328,34 @@
 
 <p>기본적인 pseudo code는 다음과 같다.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
 	<span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
 	<span class="n">queue</span> <span class="n">waitQueue</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">semaphore</span><span class="p">;</span>
@@ -355,7 +382,7 @@
 		<span class="c1">//pop한 thread의 상태를 runnable로 변경 후 OS의 readyQueue에 push</span>
 	<span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>count 변수는 값이 음수인 경우에 그 절대값은 대기 queue의 길이를 의미한다.</p>
 
@@ -371,7 +398,36 @@
 
 <p>pseudo code는 다음과 같다.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
 	<span class="kt">_Bool</span> <span class="n">value</span><span class="p">;</span>
 	<span class="n">queue</span> <span class="n">waitQueue</span><span class="p">;</span>
 <span class="p">}</span><span class="n">binary_semaphore</span><span class="p">;</span>
@@ -400,7 +456,7 @@
 		<span class="c1">//pop한 thread의 상태를 runnable로 변경 후 OS의 readyQueue에 push</span>
 	<span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>binary semahpore는 일반 범용 semaphore에 비해 구현이 간단하다는 장점이 있다. 둘 모두 waitQueue를 운용한다는 점에서 공통적이다.</p>
 
@@ -416,7 +472,25 @@
 
 <p>범용 semaphore를 사용해 상호 배제 문제를 해결해보자. 상호 배제 문제란 동일한 자원에 접근하려는 n개의 thread의 병행성을 처리하는 문제이다. semInit()에서 count 변수를 0이 아닌 변수로 초기화한다. count 변수의 초기값은 자원의 개수를 의미한다. 따라서 count 변수는 0으로 초기화 되어서는 안된다. 모든 thread가 무한히 block될 것이기 때문이다. 각 thread에서 critical section(임계 영역)을 생성하게 되는데, critical section이란 한 번에 최대 1개의 thread만이 접근할 수 있는 영역이다. semWait()~semSignal() 사이의 영역이 된다. pseudo code는 다음과 같다.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>
 
 <span class="kt">void</span> <span class="nf">thread_execute</span><span class="p">(</span><span class="kt">int</span> <span class="n">thread_no</span><span class="p">)</span>
 <span class="p">{</span>
@@ -434,7 +508,7 @@
 	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_threads</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>thread가 1, 2, 3 순서대로 실행된다고 가정했을 때 각 thread는 아래와 같은 형태로 실행된다.</p>
 
@@ -444,7 +518,62 @@
 
 <p>생산자-소비자 문제를 mutex를 이용해 해결해보자. 생산자-소비자 문제는 다수의 생산자 thread가 각자 자원을 생성해 공용 buffer에 저장하고, 다수의 소비자 thread가 공용 buffer에서 자원을 1개씩 소비하는 상황의 병행성을 처리하는 문제이다. 공용 buffer에는 한 번에 1개의 thread만 접근 가능하다(critical section)는 조건이 있다. 우선 공용 buffer가 무한한 크기를 갖는다고 가정한다. 이 때 in과 out이라는 pointer 변수를 사용하는데, in은 다음에 생산자가 생성한 자원이 저장될 buffer에서의 위치이며, out은 다음에 소비자가 소비할 자원이 저장된 buffer에서의 위치이다. 따라서 out&lt;in인 경우에만 소비자가 소비할 자원이 있는 것이다. 전체 pseudo code는 다음과 같다.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span><span class="p">;</span>                     <span class="c1">//in-out의 값</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="n">n</span><span class="p">;</span>                     <span class="c1">//in-out의 값</span>
 <span class="n">binary_semaphore</span> <span class="n">s</span><span class="p">;</span>        <span class="c1">//buffer의 접근을 제어하는 mutex</span>
 <span class="n">binary_semaphore</span> <span class="n">delay</span><span class="p">;</span>    <span class="c1">//buffer가 비었는지를 확인해 소비를 제어하는 mutex</span>
 
@@ -499,13 +628,70 @@
 	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>위의 code는 producer와 consumer 내의 while문이 매 번 atomic하게 전체가 함께 실행되면 정상적으로 작동할 것이다. 하지만 while loop가 1번 도는 사이에 scheduling이 발생하지 않을 것이라는 보장이 없다. 만약 consumer에서 semSignalB(s)와 if(n==0) 사이에서 scheduling이 발생해 producer가 실행된다면 n은 0에서 1로 변경될 것이고, 그렇다면 다시 scheduling이 되어 consumer로 돌아왔을 때 if(n==0)을 만족하지 못하므로 semWaitB(delay)가 실행되지 않을 것이다. 이는 소비자가 한 개의 thread라면 큰 문제가 되지 않지만, 다수의 thread일 경우에는 문제 상황이 된다. empty임에도 여러 소비자 thread 모두 block되지 않을 수 있기 때문이다.</p>
 
 <h3 id="solution-1-보조-변수-사용">solution 1: 보조 변수 사용</h3>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span><span class="p">;</span>                     <span class="c1">//in-out의 값</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="n">n</span><span class="p">;</span>                     <span class="c1">//in-out의 값</span>
 <span class="n">binary_semaphore</span> <span class="n">s</span><span class="p">;</span>        <span class="c1">//buffer의 접근을 제어하는 mutex</span>
 <span class="n">binary_semaphore</span> <span class="n">delay</span><span class="p">;</span>    <span class="c1">//buffer가 비었는지를 확인해 소비를 제어하는 mutex</span>
 
@@ -562,7 +748,7 @@
 	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>n의 값이 변경되는 것을 막기 위해 critical section 내에서 보조 변수 m에 현재 n의 값을 임시로 저장한다. 이후 critical section 밖의 if문에서 n 대신 m이 0인지를 확인하게 된다.</p>
 
@@ -570,7 +756,54 @@
 
 <p>binary semaphore가 아닌 범용 semaphore를 사용하면 애초에 위의 문제 상황이 발생하지 않는다.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>               <span class="c1">//buffer의 접근을 제어하는 semaphore</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+</pre></td><td class="rouge-code"><pre><span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>               <span class="c1">//buffer의 접근을 제어하는 semaphore</span>
 <span class="n">semaphore</span> <span class="n">n</span><span class="p">;</span>               <span class="c1">//buffer에 들어있는 자원의 개수를 제어하는 semaphore</span>
 
 <span class="kt">void</span> <span class="nf">producer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
@@ -617,7 +850,7 @@
 	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="err">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>공용 변수 n과 delay를 통합해 하나의 범용 semaphore n으로 운용한다. n의 값에 따라 delay를 wait 또는 signal하지 않고 무조건적으로 producer에서는 semSignal(n), consumer에서는 semWait(n)하게 된다. n은 buffer에 들어가 있는 자원의 개수(음수일 경우 그 절댓값은 waitQueue에 들어있는 thread의 수)임과 동시에 thread의 실행 순서를 제어하는 역할을 하게 된다. consumer thread들은 매 번 실행될 때마다 semWait(n)을 하게 된다. 따라서 producer에서 semSignal(n)과 semSignal(s)가 서로 순서가 바뀌어 semSignal(n)이 critical section 밖에서 수행된다고 하더라도 동일하게 실행된다. 왜냐하면 어차피 consumer들은 semWait(n)을 통해 block된 상태이기에 semSignal(n)이 호출되어야 수행될 수 있기 때문이다.</p>
 
@@ -625,7 +858,61 @@
 
 <p>위의 모든 solution은 무한한 buffer를 사용한다는 가정 하에서 이루어졌다. 하지만 실제로 무한한 buffer는 존재하지 않으므로 유한한 buffer를 사용하게 된다. 대개 circular queue를 사용하게 된다. pseudo code는 다음과 같다.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+</pre></td><td class="rouge-code"><pre>
 <span class="n">semaphore</span> <span class="n">s</span><span class="p">;</span>               <span class="c1">//buffer의 접근을 제어하는 semaphore</span>
 <span class="n">semaphore</span> <span class="n">n</span><span class="p">;</span>               <span class="c1">//buffer에 들어있는 자원의 개수를 제어하는 semaphore</span>
 <span class="n">semaphore</span> <span class="n">b</span><span class="p">;</span>               <span class="c1">//유한 buffer를 관리하는 semaphore</span>
@@ -679,7 +966,7 @@
 	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_of_consumers</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="n">thread_start</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="err">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
         
       </section>

@@ -14,6 +14,7 @@ GEM
   specs:
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    coderay (1.1.3)
     colorator (1.1.0)
     concurrent-ruby (1.1.7)
     em-websocket (0.5.2)
@@ -69,6 +70,9 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
+    kramdown-syntax-coderay (1.0.1)
+      coderay (~> 1.1)
+      kramdown (~> 2.0)
     liquid (4.0.3)
     listen (3.4.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -109,6 +113,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   jekyll-tagging-related_posts
+  kramdown-syntax-coderay
   minima
   minimal-mistakes-jekyll!
   rake (>= 12.3.3)

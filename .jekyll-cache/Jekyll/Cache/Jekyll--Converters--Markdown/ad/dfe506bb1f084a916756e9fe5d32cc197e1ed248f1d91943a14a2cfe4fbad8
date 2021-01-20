@@ -1,4 +1,4 @@
-I"Q<h2 id="paper-info">Paper Info</h2>
+I"�T<h2 id="paper-info">Paper Info</h2>
 
 <p><a href="https://arxiv.org/abs/1508.07909">Archive Link</a></p>
 
@@ -177,7 +177,40 @@
 
 <h2 id="byte-pair-encoding-bpe">Byte Pair Encoding (BPE)</h2>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">re</span><span class="p">,</span> <span class="n">collections</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">re</span><span class="p">,</span> <span class="n">collections</span>
 
 <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="n">vocab</span><span class="p">):</span>
 	<span class="n">pairs</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -210,7 +243,7 @@
 # l o  -&gt;  lo
 # lo w -&gt;  low
 # e r. -&gt;  er.
-</span></code></pre></div></div>
+</span></pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>BPE는 가장 빈도가 높은 pair of bytes부터 하나의 single byte로 치환해 저장하는 압축 algorithm이다.</p>
 
@@ -230,40 +263,58 @@
       <li>
         <p>train sentences</p>
 
-        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">sentence</span> <span class="o">=</span> <span class="p">[</span> 
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre> <span class="n">sentence</span> <span class="o">=</span> <span class="p">[</span> 
  <span class="s">'black bug bit a black bear but is the black bear that the big black bug bit'</span><span class="p">,</span>
  <span class="s">'a big bug bit the little beetle but the little beetle bit the big bug back'</span><span class="p">.</span>
  <span class="s">'the better with the butter is the batter that is better'</span>
  <span class="p">]</span>
-</code></pre></div>        </div>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
       </li>
       <li>
         <p>count segments</p>
 
-        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">[(</span><span class="s">'t h e &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s">'b l a c k &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'b i t &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre> <span class="p">[(</span><span class="s">'t h e &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s">'b l a c k &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'b i t &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
   <span class="p">(</span><span class="s">'i s &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'b i g &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'b e a r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
   <span class="p">(</span><span class="s">'b u t &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'t h a t &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'l i t t l e &lt;/w&gt;'</span><span class="p">,</span> <span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
   <span class="p">(</span><span class="s">'b e e t l e &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'b e t t e r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'b a c k &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
   <span class="p">(</span><span class="s">'w i t h &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'b u t t e r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'b a t t e r &lt;/w&gt;'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
-</code></pre></div>        </div>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
       </li>
       <li>
         <p>count bi-grams</p>
 
-        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">[((</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'h'</span><span class="p">),</span> <span class="mi">11</span><span class="p">),</span>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre> <span class="p">[((</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'h'</span><span class="p">),</span> <span class="mi">11</span><span class="p">),</span>
   <span class="p">((</span><span class="s">'h'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">),</span> <span class="mi">8</span><span class="p">).</span>
   <span class="p">((</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span>
   <span class="p">((</span><span class="s">'g'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">),</span> <span class="mi">7</span><span class="p">)]</span>
-</code></pre></div>        </div>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
       </li>
       <li>
         <p>add merge-rules</p>
 
-        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">(</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'h'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">th</span>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre> <span class="p">(</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'h'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">th</span>
  <span class="p">(</span><span class="s">'h'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">he</span>
  <span class="p">(</span><span class="s">'t'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">&lt;/</span><span class="n">w</span><span class="o">&gt;</span>
  <span class="p">(</span><span class="s">'g'</span><span class="p">,</span> <span class="s">'&lt;/w&gt;'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">g</span><span class="o">&lt;/</span><span class="n">w</span><span class="o">&gt;</span>
-</code></pre></div>        </div>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
       </li>
     </ol>
   </li>
