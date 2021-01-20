@@ -64,17 +64,17 @@ layout: default
     {% if jekyll.environment == 'production' and site.comments.provider and page.comments %}
       {% include comments.html %}
     {% endif %}
+  	{% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
+  	{% if page.id and page.related and site.related_posts.size >= 1 %}
+			<div>
+				<h3>Related Posts</h3>
+				<ul>
+				{% for related_post in site.related_posts limit: 5 %}
+					<li><a href="{{ related_post.url }}">{{ related_post.title }}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+  	{% endif %}
   </article>
 
-  {% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
-  {% if page.id and page.related and site.related_posts.size >= 1 %}
-	<div>
-		<h3>Related Posts</h3>
-		<ul>
-		{% for related_post in site.related_posts limit: 5 %}
-			<li><a href="{{ related_post.url }}">{{ related_post.title }}</a></li>
-		{% endfor %}
-		</ul>
-	</div>
-  {% endif %}
 </div>
