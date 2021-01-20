@@ -5,13 +5,8 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-<<<<<<< HEAD
-    <pubDate>Wed, 20 Jan 2021 03:18:14 -0600</pubDate>
-    <lastBuildDate>Wed, 20 Jan 2021 03:18:14 -0600</lastBuildDate>
-=======
     <pubDate>Wed, 20 Jan 2021 03:17:18 -0600</pubDate>
     <lastBuildDate>Wed, 20 Jan 2021 03:17:18 -0600</lastBuildDate>
->>>>>>> 8db18894fa5dd86ea52f52fba18727b8efdb5f21
     <generator>Jekyll v4.2.0</generator>
     
       <item>
