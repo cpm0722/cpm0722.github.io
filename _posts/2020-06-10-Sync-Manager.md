@@ -1,19 +1,15 @@
 ---
-title: sync manager
-subtitle: [System Programming] 동기화 프로그램 구현
-categories: System Programming
-tags: System Programming
-date: 2021-01-20 19:22:46 +0000
-last_modified_at: 2021-01-20 19:22:46 +0000
+
+title: "[System Programming] 동기화 프로그램 구현"
+subtitle: "sync manager"
+categories: [System Programming, UNIX]
+tags: [System Programming]
+date: 2020-06-10 00:00:00 +0000
+last_modified_at: 2020-06-10 00:00:00 +0000
+
 ---
 
-Env: Ubuntu 18.04 LTS, gcc 7.5.0
-GitHub: https://github.com/cpm0722/LSP/tree/master/rsync
-
-```yaml
-cleanUrl: /lsp/sync-manager
-disqus: true
-```
+[GitHub Link](https://github.com/cpm0722/LSP/tree/master/rsync)
 
 ## 개요
 
@@ -37,19 +33,19 @@ $ make rsync
 
 1. 파일 동기화
 
-    ![sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.33.24.jpg](sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.33.24.jpg)
+    ![01.jpg](01.jpg)
 
 2. -m 옵션 사용한 동기화
 
-    ![sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.34.42.jpg](sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.34.42.jpg)
+    ![02.jpg](02.jpg)
 
 3. -r 옵션 사용한 디렉터리 동기화
 
-    ![sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.38.35.jpg](sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.38.35.jpg)
+    ![03.jpg](03.jpg)
 
 4. -t 옵션 사용한 압축 동기화
 
-    ![sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.39.57.jpg](sync%20manager%20cb99b96ddea344bbbabcb1f58d2c386a/10-04-2020-22.39.57.jpg)
+    ![04.jpg](04.jpg)
 
 ## 구현 방법
 
@@ -60,7 +56,3 @@ $ make rsync
 3. 최종 수정 시각
 
 두 파일에 대한 경로를 인자로 받아 같은 파일인지를 return하는 is_same_file 함수를 정의해 사용했다. -r 옵션을 위해 동기화 함수를 재귀적으로 호출 가능하도록 작성했다. -t 옵션에서는 압축 및 해제를 수행하는데, system() 함수를 사용해 tar 명령어를 호출했다.
-
-## 소스 코드
-
-[cpm0722/LSP](https://github.com/cpm0722/LSP/tree/master/rsync)

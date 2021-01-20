@@ -1,19 +1,15 @@
 ---
-title: ttop
-subtitle: [System Programming] top 명령어 구현
-categories: System Programming
-tags: System Programming
-date: 2021-01-20 19:23:36 +0000
-last_modified_at: 2021-01-20 19:23:36 +0000
+
+title: "[System Programming] top 명령어 구현"
+subtitle: "top command"
+categories: [System Programming, UNIX]
+tags: [System Programming]
+date: 2020-09-23 00:00:00 +0000
+last_modified_at: 2020-09-23 00:00:00 +0000
+
 ---
 
-Env: Ubuntu 18.04 LTS, gcc 7.5.0, libncurses5-dev
-GitHub: https://github.com/cpm0722/LSP/tree/master/ttop
-
-```yaml
-cleanUrl: /lsp/ttop
-disqus: true
-```
+[GitHub Link](https://github.com/cpm0722/LSP/tree/master/ttop)
 
 ## 개요
 
@@ -30,15 +26,15 @@ $make ttop
 
 1. 기본 실행
 
-    ![ttop%20a9723ef0bd1d41e3aea940f260a03c8e/10-05-2020-00.41.56.jpg](ttop%20a9723ef0bd1d41e3aea940f260a03c8e/10-05-2020-00.41.56.jpg)
+    ![01.jpg](01.jpg)
 
 2. 상하 방향키 입력 통한 Row 이동
 
-    ![ttop%20a9723ef0bd1d41e3aea940f260a03c8e/10-05-2020-00.42.11.jpg](ttop%20a9723ef0bd1d41e3aea940f260a03c8e/10-05-2020-00.42.11.jpg)
+    ![02.jpg](02.jpg)
 
 3. 좌우 방향키 입력 통한 Column 이동
 
-    ![ttop%20a9723ef0bd1d41e3aea940f260a03c8e/10-05-2020-00.42.22.jpg](ttop%20a9723ef0bd1d41e3aea940f260a03c8e/10-05-2020-00.42.22.jpg)
+    ![03.jpg](03.jpg)
 
 ## 구현 방법
 
@@ -219,7 +215,3 @@ typedef struct{
 
 12. COMMAND: 프로세스 실행 시 입력된 명령어
     - proc/pid/cmdline
-
-## 소스 코드
-
-[cpm0722/LSP](https://github.com/cpm0722/LSP/tree/master/ttop)

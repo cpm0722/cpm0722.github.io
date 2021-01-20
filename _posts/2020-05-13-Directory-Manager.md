@@ -1,19 +1,15 @@
 ---
-title: Directory Manager
-subtitle: [System programming] 디렉터리 관리 프로그램 구현
-categories: System Programming
-tags: System Programming
-date: 2021-01-20 19:22:23 +0000
-last_modified_at: 2021-01-20 19:22:23 +0000
+
+title: "[System programming] 디렉터리 관리 프로그램 구현"
+subtitle: "Directory Manager"
+categories: [System Programming, UNIX]
+tags: [System Programming]
+date: 2020-05-13 00:00:00 +0000
+last_modified_at: 2020-05-13 00:00:00 +0000
+
 ---
 
-Env: Ubuntu 18.04 LTS, gcc 7.5.0
-GitHub: https://github.com/cpm0722/LSP/tree/master/dir_manager
-
-```yaml
-cleanUrl: /lsp/directory-manager
-disqus: true
-```
+[GitHub Link](https://github.com/cpm0722/LSP/tree/master/dir_manager)
 
 ## 개요
 
@@ -36,9 +32,9 @@ $ make dir_manager
 
     - 실행 예시
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-20.43.52.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-20.43.52.jpg)
+        ![01.jpg](01.jpg)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-20.44.01.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-20.44.01.jpg)
+        ![02.jpg](02.jpg)
 
 2. 휴지통
 
@@ -46,9 +42,9 @@ $ make dir_manager
 
     - 실행 예시 (trash/info가 2KB를 초과해 1.txt가 trash에서 삭제됨)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.15.33.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.15.33.jpg)
+        ![03.jpg](03.jpg)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.16.37.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.16.37.jpg)
+        ![04.jpg](04.jpg)
 
 3. DELETE
 
@@ -67,9 +63,9 @@ $ make dir_manager
             - -r : 지정한 시각에 삭제 여부 확인 메세지 출력
     - 실행 예시
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.08.51.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.08.51.jpg)
+        ![05.jpg](05.jpg)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.09.37.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.09.37.jpg)
+        ![06.jpg](06.jpg)
 
 4. SIZE
 
@@ -86,9 +82,9 @@ $ make dir_manager
             - -d [NUMBER] : NUMBER 단계 만큼의 하위 디렉터리까지 출력
     - 실행 예시
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.20.07.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.20.07.jpg)
+        ![07.jpg](07.jpg)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.21.51.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.21.51.jpg)
+        ![08.jpg](08.jpg)
 
 5. RECOVER
 
@@ -105,9 +101,9 @@ $ make dir_manager
             - -l : trash 디렉터리에 보관된 파일들을 삭제 시각이 오래된 순으로 출력 후 명령어 수행
     - 실행 예
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.36.15.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.36.15.jpg)
+        ![09.jpg](09.jpg)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.36.54.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.36.54.jpg)
+        ![10.jpg](10.jpg)
 
 6. TREE
 
@@ -121,7 +117,7 @@ $ make dir_manager
 
     - 실행 예시
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.33.09.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.33.09.jpg)
+        ![11.jpg](11.jpg)
 
 7. EXIT
 
@@ -135,9 +131,9 @@ $ make dir_manager
 
     - 실행 예시 (데몬 프로세스 및 모든 자식 프로세스 종료)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.30.33.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.30.33.jpg)
+        ![12.jpg](12.jpg)
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.30.48.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.30.48.jpg)
+        ![13.jpg](13.jpg)
 
 8. HELP
 
@@ -151,7 +147,7 @@ $ make dir_manager
 
     - 실행 예시
 
-        ![Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.22.46.jpg](Directory%20Manager%203a34cde100484bbfba6ad240e08358e8/10-04-2020-21.22.46.jpg)
+        ![14.jpg](14.jpg)
 
 ## 구현 방법
 
@@ -190,7 +186,3 @@ typedef struct Node {
     struct Node *next;
 }Node;
 ```
-
-## 소스 코드
-
-[cpm0722/LSP](https://github.com/cpm0722/LSP/tree/master/dir_manager)

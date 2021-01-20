@@ -1,25 +1,21 @@
 ---
-title: pps
-subtitle: [System Programming] ps 명령어 구현
-categories: System Programming
-tags: System Programming
-date: 2021-01-20 19:21:34 +0000
-last_modified_at: 2021-01-20 19:21:34 +0000
+
+title: "[System Programming] ps 명령어 구현"
+subtitle: "ps command"
+categories: [System Programming, UNIX]
+tags: [System Programming]
+date: 2020-09-16 00:00:00 +0000
+last_modified_at: 2020-09-16 00:00:00 +0000
+
 ---
 
-Env: Ubuntu 18.04 LTS, gcc 7.5.0, libncurses5-dev
-GitHub: https://github.com/cpm0722/LSP/tree/master/pps
-
-```yaml
-cleanUrl: /lsp/pps
-disqus: true
-```
+[GitHub Link](https://github.com/cpm0722/LSP/tree/master/pps)
 
 ## 개요
 
 리눅스 내장 명령어 ps를 구현한 프로그램이다. ps 명령어의 a, u, x 옵션을 사용할 수 있다.
 
-![pps%20c1631e200eb944e3959930dd564ef30b/pps.jpg](pps%20c1631e200eb944e3959930dd564ef30b/pps.jpg)
+![01.jpg](01.jpg)
 
 ## 실행 방법
 
@@ -32,35 +28,35 @@ $make pps
 
 1. pps
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.12.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.12.jpg)
+    ![02.jpg](02.jpg)
 
 2. pps a
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.27.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.27.jpg)
+    ![03.jpg](03.jpg)
 
 3. pps u
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.48.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.48.jpg)
+    ![04.jpg](04.jpg)
 
 4. pps x
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.58.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.53.58.jpg)
+    ![05.jpg](05.jpg)
 
 5. pps au
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.11.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.11.jpg)
+    ![06.jpg](06.jpg)
 
 6. pps ax
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.29.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.29.jpg)
+    ![07.jpg](07.jpg)
 
 7. pps ux
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.45.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.45.jpg)
+    ![08.jpg](08.jpg)
 
 8. pps aux
 
-    ![pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.58.jpg](pps%20c1631e200eb944e3959930dd564ef30b/10-05-2020-00.54.58.jpg)
+    ![09.jpg](09.jpg)
 
 ## 구현 방법
 
@@ -210,7 +206,3 @@ typedef struct{
     - /proc/pid/stat의 2번째 token
 12. COMMAND: 프로세스 실행 시 입력된 명령어
     - proc/pid/cmdline
-
-## 소스 코드
-
-[cpm0722/LSP](https://github.com/cpm0722/LSP/tree/master/pps)
