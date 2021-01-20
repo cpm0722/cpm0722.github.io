@@ -9,7 +9,7 @@ author_profile: true
 
 # Who am I??
 
-![who_am_i.jpg](/assets/images/about/who_am_i.jpg)
+![who_am_i.jpg](/assets/images/about-me/who_am_i.jpg)
 
 머신러닝, 특히 NLP 분야에 관심이 많은 개발자입니다.
 
