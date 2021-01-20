@@ -1,4 +1,6 @@
 source "https://rubygems.org"
+
 gemspec
-#gem 'jekyll-admin', group: :jekyll_plugins
+
 gem 'minima'
+gem 'jekyll-tagging-related_posts'

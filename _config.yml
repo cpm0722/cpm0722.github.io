@@ -197,6 +197,8 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll/tagging
+  - jekyll-tagging-related_posts
 
 # mimic GitHub Pages with --safe
 whitelist:
@@ -253,7 +255,7 @@ defaults:
     values:
       layout: single
       author_profile: true
-      read_time: true
+      read_time: false
       comments: true
       share: true
       related: true
