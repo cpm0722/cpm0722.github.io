@@ -33,19 +33,19 @@ $ make rsync
 
 1. 파일 동기화
 
-    ![01.jpg](01.jpg)
+    ![01.jpg](/assets/images/2020-06-10-Sync-Manager/01.jpg)
 
 2. -m 옵션 사용한 동기화
 
-    ![02.jpg](02.jpg)
+    ![02.jpg](/assets/images/2020-06-10-Sync-Manager/02.jpg)
 
 3. -r 옵션 사용한 디렉터리 동기화
 
-    ![03.jpg](03.jpg)
+    ![03.jpg](/assets/images/2020-06-10-Sync-Manager/03.jpg)
 
 4. -t 옵션 사용한 압축 동기화
 
-    ![04.jpg](04.jpg)
+    ![04.jpg](/assets/images/2020-06-10-Sync-Manager/04.jpg)
 
 ## 구현 방법
 

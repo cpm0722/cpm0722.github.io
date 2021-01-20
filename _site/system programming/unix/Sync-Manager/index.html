@@ -1,0 +1,637 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[System Programming] 동기화 프로그램 구현 | Hansu Kim’s Dev Blog</title>
+<meta name="description" content="GitHub Link">
+
+
+  <meta name="author" content="Hansu Kim">
+  
+  <meta property="article:author" content="Hansu Kim">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Hansu Kim's Dev Blog">
+<meta property="og:title" content="[System Programming] 동기화 프로그램 구현">
+<meta property="og:url" content="http://0.0.0.0:4000/system%20programming/unix/Sync-Manager/">
+
+
+  <meta property="og:description" content="GitHub Link">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-06-09T19:00:00-05:00">
+
+
+
+  <meta property="article:modified_time" content="2020-06-09T19:00:00-05:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://0.0.0.0:4000/system%20programming/unix/Sync-Manager/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Hansu Kim",
+      "url": "http://0.0.0.0:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Hansu Kim's Dev Blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Hansu Kim's Dev Blog
+          <span class="site-subtitle">기술 블로그</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/machine-learning/">Machine Learning</a>
+            </li><li class="masthead__menu-item">
+              <a href="/operating-system/">Operating System</a>
+            </li><li class="masthead__menu-item">
+              <a href="/system-programming/">System Programming</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about-me/">About Me</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/profile.jpg" alt="Hansu Kim" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Hansu Kim</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>ML, NLP를 주로 공부하는 학부생입니다.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Republic of Korea</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:cpm0722@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.facebook.com/profile.php?id=100003380546271" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i><span class="label">Facebook</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/cpm0722" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:cpm0722@gmail.com">
+            <meta itemprop="email" content="cpm0722@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[System Programming] 동기화 프로그램 구현">
+    <meta itemprop="description" content="GitHub Link">
+    <meta itemprop="datePublished" content="2020-06-09T19:00:00-05:00">
+    <meta itemprop="dateModified" content="2020-06-09T19:00:00-05:00">
+
+		<script type="text/javascript" async
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">[System Programming] 동기화 프로그램 구현
+</h1>
+          
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><a href="https://github.com/cpm0722/LSP/tree/master/rsync">GitHub Link</a></p>
+
+<h2 id="개요">개요</h2>
+
+<p>파일 및 디렉터리 간 동기화를 수행하는 프로그램이다. 동기화시킬 대상인 src는 파일, 디렉터리 모두 가능하지만, 동기화될 대상인 dst는 디렉터리만 가능하다. 만약 dst 디렉터리 내에 이미 src 내의 파일과 동일한 파일이 있을 경우 동기화를 수행하지 않는다. 동기화가 완료될 경우 log.txt파일에 동기화 과정에서 추가된 파일, 삭제된 파일이 기록된다.</p>
+
+<h2 id="실행-방법">실행 방법</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nv">$ </span>make rsync
+./rsync <span class="o">[</span>SOURCE_FILE_OR_DIRECTORY_PATH] <span class="o">[</span>DESTINATION_DIRECTORY_PATH] <span class="o">[</span>OPTION]
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>SOURCE_FILE_OR_DIRECTORY_PATH: 동기화시킬 대상인 파일 또는 디렉터리의 절대/상대 경로</li>
+  <li>DESTINATION_DIRECTORY_PATH: 동기화될 대상인 디렉터리의 절대/상대 경로</li>
+  <li>OPTION
+    <ul>
+      <li>-r : src 디렉터리의 서브 디렉터리 내의 파일에 대해서도 동기화 수행</li>
+      <li>-m : src 디렉터리 내에 존재하지 않는 파일 또는 디렉터리가 dst 디렉터리에 존재할 경우 삭제</li>
+      <li>-t : 동기화 대상들을 tar을 이용해 압축해 dst 디렉터리로 전송 후 압축 해제</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="기능">기능</h2>
+
+<ol>
+  <li>
+    <p>파일 동기화</p>
+
+    <p><img src="/assets/images/2020-06-10-Sync-Manager/01.jpg" alt="01.jpg" /></p>
+  </li>
+  <li>
+    <p>-m 옵션 사용한 동기화</p>
+
+    <p><img src="/assets/images/2020-06-10-Sync-Manager/02.jpg" alt="02.jpg" /></p>
+  </li>
+  <li>
+    <p>-r 옵션 사용한 디렉터리 동기화</p>
+
+    <p><img src="/assets/images/2020-06-10-Sync-Manager/03.jpg" alt="03.jpg" /></p>
+  </li>
+  <li>
+    <p>-t 옵션 사용한 압축 동기화</p>
+
+    <p><img src="/assets/images/2020-06-10-Sync-Manager/04.jpg" alt="04.jpg" /></p>
+  </li>
+</ol>
+
+<h2 id="구현-방법">구현 방법</h2>
+
+<p>두 파일이 동일한 파일인지는 아래의 3가지 기준으로 판단한다.</p>
+
+<ol>
+  <li>파일명</li>
+  <li>파일 크기</li>
+  <li>최종 수정 시각</li>
+</ol>
+
+<p>두 파일에 대한 경로를 인자로 받아 같은 파일인지를 return하는 is_same_file 함수를 정의해 사용했다. -r 옵션을 위해 동기화 함수를 재귀적으로 호출 가능하도록 작성했다. -t 옵션에서는 압축 및 해제를 수행하는데, system() 함수를 사용해 tar 명령어를 호출했다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#system-programming" class="page__taxonomy-item" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#system-programming" class="page__taxonomy-item" rel="tag">System Programming</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#unix" class="page__taxonomy-item" rel="tag">UNIX</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-06-10">June 10, 2020</time></p>
+
+
+      </footer>
+
+      <!--<section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BSystem+Programming%5D+%EB%8F%99%EA%B8%B0%ED%99%94+%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8+%EA%B5%AC%ED%98%84%20http%3A%2F%2F0.0.0.0%3A4000%2Fsystem%2520programming%2Funix%2FSync-Manager%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F0.0.0.0%3A4000%2Fsystem%2520programming%2Funix%2FSync-Manager%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2F0.0.0.0%3A4000%2Fsystem%2520programming%2Funix%2FSync-Manager%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+-->
+
+      
+<nav class="pagination">
+	
+		<a href="/machine%20learning/paper%20review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/" class="pagination--pager" title="[NLP 논문 리뷰] Neural Machine Translation By Jointly Learning To Align And Translate (Attention Seq2Seq)
+">이전</a>
+	
+	
+		<a href="/machine%20learning/paper%20review/Attention-is-All-You-Need/" class="pagination--pager" title="[NLP 논문 리뷰] Attention Is All You Need (Transformer)
+">다음</a>
+	
+</nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">최근 포스트</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/system%20programming/unix/TOP-Command/" rel="permalink">[System Programming] top 명령어 구현
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Link
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/system%20programming/unix/PS-Command/" rel="permalink">[System Programming] ps 명령어 구현
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Link
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/system%20programming/unix/Shell/" rel="permalink">[System Programming] Shell 구현
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">GihHub Link
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/system%20programming/unix/Directory-Manager/" rel="permalink">[System programming] 디렉터리 관리 프로그램 구현
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Link
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우</strong></li>
+    
+
+    
+      
+        
+          <li><a href="mailto:cpm0722@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://www.facebook.com/profile.php?id=100003380546271" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+        
+      
+        
+          <li><a href="https://github.com/cpm0722" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> RSS</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Hansu Kim. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://0.0.0.0:4000/system%20programming/unix/Sync-Manager/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/system%20programming/unix/Sync-Manager"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://cpm0722.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

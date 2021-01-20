@@ -1,0 +1,276 @@
+I"�2<p><a href="https://github.com/cpm0722/LSP/tree/master/dir_manager">GitHub Link</a></p>
+
+<h2 id="개요">개요</h2>
+
+<p>디렉터리 관리 프로그램이다. 지정한 특정 디렉터리를 지속적으로 모니터링하고, 해당 디렉터리의 하위 디렉터리 및 파일들의 변경 사항을 로그 파일에 기록한다. 삭제(trash 디렉터리로 이동), 복구(trash 디렉터리에서 복원), 디렉터리 크기 출력, 디렉터리 전체 구조 출력 등의 기능으로 이루어져 있다.</p>
+
+<h2 id="실행-방법">실행 방법</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nv">$ </span>make dir_manager
+./dir_manager <span class="o">[</span>TARGET_DIRECTORY_PATH]
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>TARGET_DIRECTORY_PATH: 모니터링을 수행할 타겟 디렉터리의 절대/상대 경로</li>
+</ul>
+
+<h2 id="기능">기능</h2>
+
+<ol>
+  <li>
+    <p>로그 기록</p>
+
+    <p>데몬 프로세스를 사용해 프로그램 실행 시 인자로 입력받은 디렉터리에 대해 지속적으로 모니터링을 수행한다. 모니터링 내역은 현재 작업 디렉터리의 log.txt 파일에 기록한다.</p>
+
+    <ul>
+      <li>
+        <p>실행 예시</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/01.jpg" alt="01.jpg" /></p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/02.jpg" alt="02.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>휴지통</p>
+
+    <p>‘휴지통’ 역할의 trash 디렉터리를 현제 작업 디렉터리에 생성한다. trash 디렉터리 하위에 files, info의 2개의 서브 디렉터리가 생성되고, files 디렉터리는 dir_manager의 DELETE 명령어로 삭제한 파일을 저장한다. info 디렉터리는 dir_manager의 DELETE 명령어로 삭제한 파일의 상세 정보(절대 경로, 삭제 시각, 최종 수정 시각)을 저장한다. info 디렉터리의 크기가 2KB를 초과할 경우 가장 오래된 파일부터 삭제를 진행하게 되는데, 이 때 trash/files 디렉터리의 파일도 함께 삭제된다.</p>
+
+    <ul>
+      <li>
+        <p>실행 예시 (trash/info가 2KB를 초과해 1.txt가 trash에서 삭제됨)</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/03.jpg" alt="03.jpg" /></p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/04.jpg" alt="04.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>DELETE</p>
+
+    <p>타겟 디렉터리 내의 파일을 지정한 시각에 삭제하는 명령어이다.</p>
+
+    <ul>
+      <li>
+        <p>명령어</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="nv">$ </span>DELETE <span class="o">[</span>FILENAME] <span class="o">[</span>END_TIME] <span class="o">[</span>OPTION]
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+
+        <ul>
+          <li>FILENAME: 삭제할 파일의 절대/상대 경로</li>
+          <li>END_TIME: 파일을 삭제할 예정 시각 (형식: YYYY-MM-DD HH:MM), 생략 시 바로 삭제</li>
+          <li>OPTION
+            <ul>
+              <li>-i : trash 디렉터리를 거치지 않고 바로 삭제</li>
+              <li>-r : 지정한 시각에 삭제 여부 확인 메세지 출력</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>실행 예시</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/05.jpg" alt="05.jpg" /></p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/06.jpg" alt="06.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>SIZE</p>
+
+    <p>타겟 디렉터리 내 파일의 상대 경로 및 크기를 출력하는 명령어이다.</p>
+
+    <ul>
+      <li>
+        <p>명령어</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="nv">$ </span>SIZE <span class="o">[</span>FILENAME] <span class="o">[</span>OPTION]
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+
+        <ul>
+          <li>FILENAME: 확인할 파일의 절대/상대 경로</li>
+          <li>OPTION
+            <ul>
+              <li>-d [NUMBER] : NUMBER 단계 만큼의 하위 디렉터리까지 출력</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>실행 예시</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/07.jpg" alt="07.jpg" /></p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/08.jpg" alt="08.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>RECOVER</p>
+
+    <p>trash 디렉터리에 보관된 파일을 타겟 디렉터리 내 원래 경로로 복원하는 명령어이다.</p>
+
+    <ul>
+      <li>
+        <p>명령어</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="nv">$ </span>RECOVER <span class="o">[</span>FILENAME] <span class="o">[</span>OPTION]
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+
+        <ul>
+          <li>FILENAME: 복구할 파일의 절대/상대 경로</li>
+          <li>OPTION
+            <ul>
+              <li>-l : trash 디렉터리에 보관된 파일들을 삭제 시각이 오래된 순으로 출력 후 명령어 수행</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>실행 예</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/09.jpg" alt="09.jpg" /></p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/10.jpg" alt="10.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>TREE</p>
+
+    <p>타겟 디렉터리의 구조를 tree 형태로 출력하는 명령어이다.</p>
+
+    <ul>
+      <li>
+        <p>명령어</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="nv">$ </span>TREE
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li>
+        <p>실행 예시</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/11.jpg" alt="11.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>EXIT</p>
+
+    <p>dir_manager 프로그램을 종료하는 명령어이다.</p>
+
+    <ul>
+      <li>
+        <p>명령어</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="nv">$ </span>EXIT
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li>
+        <p>실행 예시 (데몬 프로세스 및 모든 자식 프로세스 종료)</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/12.jpg" alt="12.jpg" /></p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/13.jpg" alt="13.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>HELP</p>
+
+    <p>dir_manager의 명령어들의 사용법을 출력하는 명령어이다. 잘못된 명령어를 입력했을 시에도 수행된다.</p>
+
+    <ul>
+      <li>
+        <p>명령어</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="nv">$ </span>HELP
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li>
+        <p>실행 예시</p>
+
+        <p><img src="/assets/images/2020-05-13-Directory-Manager/14.jpg" alt="14.jpg" /></p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="구현-방법">구현 방법</h2>
+
+<p>UNIX의 디렉터리 구조는 Tree 형태로 이루어져 있기 때문에, Tree 자료 구조를 구현했다. 자기 참조형 구조체를 정의해 Node로 사용했다. 각 Node는 Parent와 Child로 이동할 수 있는 자기참조 변수를 갖는데, 이 때 Child의 개수는 정해져 있지 않다. 따라서 자식 Node를 저장하는 포인터 변수는 2차원 포인터로 생성해, 동적 할당을 사용했다. 이렇게 생성한 Tree를 데몬 프로세스가 매 초 마다 새로운 Tree를 생성해 이전에 생성된 Tree와 비교하며 변경사항을 찾아낸다. 또한 DELETE/RECOVER 시 타겟 디렉터리 및 trash 디렉터리에서의 중복 파일 탐색, SIZE 명령어에서의 -d옵션, TREE 명령어에서 디렉터리 계층 구조 출력 등에서도 모두 직접 구현한 Tree를 사용했다.</p>
+
+<p>DELETE 명령어에서는 fork()를 통해 자식 프로세스를 생성한다. 만약 동일한 파일에 대해서 여러 번 DELETE가 예약되었을 경우 그 중 가장 빠른 시각에 삭제되고, 이후에는 무시되도록 하기 위해 Linked List를 생성해 삭제 예정 파일 리스트를 관리했다. fork()를 통해 생성된 자식 프로세스들은 매 초마다 예약 시각에 도달했는지 판단하고, 예약 시각에 도달했을 경우 exit()되어 부모 프로세스에게 SIGCHLD 시그널을 송신한다. 부모 프로세스의 SIGCHILD 시그널 핸들러 함수에서는 DELETE Linked LIst에서 가장 앞의 Node의 파일(가장 빠른 시각의 파일)을 제거한다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre><span class="c1">//파일 정보 저장하는 Tree Node</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">FileNode</span><span class="p">{</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="n">NAME_LEN</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">childCnt</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">FileNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">FileNode</span> <span class="o">**</span> <span class="n">child</span><span class="p">;</span>
+    <span class="kt">time_t</span> <span class="n">mtime</span><span class="p">;</span>
+    <span class="kt">off_t</span> <span class="n">size</span><span class="p">;</span>
+<span class="p">}</span><span class="n">FileNode</span><span class="p">;</span>
+
+<span class="c1">//시간 정보 저장하는 구조체</span>
+<span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">year</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">month</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">day</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">hour</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">min</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">sec</span><span class="p">;</span>
+<span class="p">}</span><span class="n">customTime</span><span class="p">;</span>
+ 
+<span class="c1">//DELETE 목록 Linked List의 Node</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">Node</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="n">PATH_LEN</span><span class="p">];</span>
+    <span class="n">customTime</span> <span class="n">ct</span><span class="p">;</span>
+    <span class="n">bool</span> <span class="n">iOption</span><span class="p">;</span>
+    <span class="n">bool</span> <span class="n">rOption</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">Node</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">Node</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">}</span><span class="n">Node</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

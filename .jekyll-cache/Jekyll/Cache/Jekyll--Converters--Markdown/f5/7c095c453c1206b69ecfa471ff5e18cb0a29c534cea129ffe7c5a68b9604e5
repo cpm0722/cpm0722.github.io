@@ -1,0 +1,406 @@
+I"�@<p><a href="https://github.com/cpm0722/LSP/tree/master/ttop">GitHub Link</a></p>
+
+<h2 id="개요">개요</h2>
+
+<p>리눅스 내장 명령어 top를 구현한 프로그램이다. top 명령어와 동일하게 3초 단위로 새로 갱신되며, 방향키 및 q 입력으로 Column / Row 이동 및 종료를 할 수 있다.</p>
+
+<h2 id="실행-방법">실행 방법</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nv">$make</span> ttop
+./ttop
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="기능">기능</h2>
+
+<ol>
+  <li>
+    <p>기본 실행</p>
+
+    <p><img src="/assets/images/2020-09-23-TOP-Command/01.jpg" alt="01.jpg" /></p>
+  </li>
+  <li>
+    <p>상하 방향키 입력 통한 Row 이동</p>
+
+    <p><img src="/assets/images/2020-09-23-TOP-Command/02.jpg" alt="02.jpg" /></p>
+  </li>
+  <li>
+    <p>좌우 방향키 입력 통한 Column 이동</p>
+
+    <p><img src="/assets/images/2020-09-23-TOP-Command/03.jpg" alt="03.jpg" /></p>
+  </li>
+</ol>
+
+<h2 id="구현-방법">구현 방법</h2>
+
+<p>top 명령어의 모든 정보들은 Linux File System에서 얻을 수 있다. 아래는 각각의 항목들에 대한 설명과 값의 출처(Linux File System에서의 파일)들을 작성한 것이다. 프로세스를 추상화한 myProc 구조체를 정의하고, 얻어낸 정보들을 통해 각 프로세스 당 하나의 myProc 인스턴스를 생성했다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="c1">//process를 추상화 한 myProc 구조체</span>
+<span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pid</span><span class="p">;</span>
+	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">uid</span><span class="p">;</span>			<span class="c1">//USER 구하기 위한 uid</span>
+	<span class="kt">char</span> <span class="n">user</span><span class="p">[</span><span class="n">UNAME_LEN</span><span class="p">];</span>		<span class="c1">//user명</span>
+	<span class="kt">long</span> <span class="kt">double</span> <span class="n">cpu</span><span class="p">;</span>			  <span class="c1">//cpu 사용률</span>
+	<span class="kt">long</span> <span class="kt">double</span> <span class="n">mem</span><span class="p">;</span>			  <span class="c1">//메모리 사용률</span>
+	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">vsz</span><span class="p">;</span>			<span class="c1">//가상 메모리 사용량</span>
+	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">rss</span><span class="p">;</span>			<span class="c1">//실제 메모리 사용량</span>
+	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">shr</span><span class="p">;</span>			<span class="c1">//공유 메모리 사용량</span>
+	<span class="kt">int</span> <span class="n">priority</span><span class="p">;</span>		    		<span class="c1">//우선순위</span>
+	<span class="kt">int</span> <span class="n">nice</span><span class="p">;</span>					      <span class="c1">//nice 값</span>
+	<span class="kt">char</span> <span class="n">tty</span><span class="p">[</span><span class="n">TTY_LEN</span><span class="p">];</span>			<span class="c1">//터미널</span>
+	<span class="kt">char</span> <span class="n">stat</span><span class="p">[</span><span class="n">STAT_LEN</span><span class="p">];</span>		<span class="c1">//상태</span>
+	<span class="kt">char</span> <span class="n">start</span><span class="p">[</span><span class="n">TIME_LEN</span><span class="p">];</span>		<span class="c1">//프로세스 시작 시각</span>
+	<span class="kt">char</span> <span class="n">time</span><span class="p">[</span><span class="n">TIME_LEN</span><span class="p">];</span>		<span class="c1">//총 cpu 사용 시간</span>
+	<span class="kt">char</span> <span class="n">cmd</span><span class="p">[</span><span class="n">CMD_LEN</span><span class="p">];</span>			<span class="c1">//option 없을 경우에만 출력되는 command (short)</span>
+	<span class="kt">char</span> <span class="n">command</span><span class="p">[</span><span class="n">CMD_LEN</span><span class="p">];</span>	<span class="c1">//option 있을 경우에 출력되는 command (long)</span>
+<span class="p">}</span><span class="n">myProc</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="1행">1행</h3>
+
+<ol>
+  <li>boot time: OS 부팅 시각
+    <ul>
+      <li>/proc/stat의 5행 2번째 token + 1970년 1월 1일</li>
+    </ul>
+  </li>
+  <li>uptime: OS 부팅 이후 지난 시각
+    <ul>
+      <li>/proc/uptime의 1번째 token</li>
+    </ul>
+  </li>
+  <li>
+    <p>User 수: active login session (터미널에 로그인한 active user의 수)</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre> <span class="cp">#include &lt;utmp.h&gt;
+</span>
+ <span class="k">struct</span> <span class="n">utmp</span> <span class="o">*</span><span class="n">ut</span><span class="p">;</span>
+ <span class="kt">int</span> <span class="n">userCnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ <span class="n">setutmp</span><span class="p">();</span>    <span class="c1">// /proc/utmp 처음부터 읽기</span>
+ <span class="k">while</span><span class="p">((</span><span class="n">ut</span> <span class="o">=</span> <span class="n">getutent</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>  <span class="c1">// /var/usr/utmp에서 utent 읽어들이기</span>
+ 	<span class="k">if</span><span class="p">(</span><span class="n">ut</span><span class="o">-&gt;</span><span class="n">ut_type</span> <span class="o">==</span> <span class="n">USER_PROCESS</span><span class="p">)</span> <span class="c1">// /ut_type이 USER일 경우에만 count</span>
+ 		<span class="n">userCnt</span><span class="o">++</span><span class="p">;</span>
+    	
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>load average: 최근 1분/5분/15분 간 평균 실행/대기 중 프로세스 수의 비율
+    <ul>
+      <li>/.proc/loadavg의 1,2,3번째 token</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="2행">2행</h3>
+
+<ul>
+  <li>각 State를 갖는 프로세스 수</li>
+</ul>
+
+<h2 id="3행-cpu">3행 (CPU)</h2>
+
+<ul>
+  <li>가장 최근 refresh 이후로부터의 CPU 사용률 (첫 실행 시에는 OS 시작 이후)
+    <ol>
+      <li>us (user): time running un-niced user processes</li>
+    </ol>
+    <ul>
+      <li>/proc/stat의 1행 1번째 token
+        <ol>
+          <li>sy (system): time running kernel processes</li>
+        </ol>
+      </li>
+      <li>/proc/stat의 1행 3번째 token
+        <ol>
+          <li>ni (nice): time running niced user processes</li>
+        </ol>
+      </li>
+      <li>/proc/stat의 1행 2번째 token
+        <ol>
+          <li>id (idle): time spent in the kernel idle handler</li>
+        </ol>
+      </li>
+      <li>/proc/stat의 1행 4번째 token
+        <ol>
+          <li>wa (IO-wait): time waiting for I/O completion</li>
+        </ol>
+      </li>
+      <li>/proc/stat의 1행 5번째 token
+        <ol>
+          <li>hi (hardware interrupts): time spent servicing hardware interrupts</li>
+        </ol>
+      </li>
+      <li>/proc/stat의 1행 6번째 token
+        <ol>
+          <li>si (software interrupts): time spent servicing software interrupts</li>
+        </ol>
+      </li>
+      <li>/proc/stat의 1행 7번째 token
+        <ol>
+          <li>st (stolen time): time stolen from this vm by the hypervisor</li>
+        </ol>
+      </li>
+      <li>/proc/stat의 1행 8번째 token</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="45행-memory">4~5행 (Memory)</h2>
+
+<ul>
+  <li>Memory 사용량</li>
+  <li>/proc/meminfo의 단위는 모두 kb(1000byte)인 반면, 출력해야 하는 단위는 kib(1024byte)이기 때문에 단위 변환을 수행해야 한다.
+    <ol>
+      <li>Mem total: 전체 물리 메모리 크기</li>
+    </ol>
+    <ul>
+      <li>/proc/meminfo의 MemTotal (1행)
+        <ol>
+          <li>Mem free: Free된 메모리 크기</li>
+        </ol>
+      </li>
+      <li>/proc/meminfo의 MemFree(2행)
+        <ol>
+          <li>Mem used: 사용 중인 메모리 크기</li>
+        </ol>
+      </li>
+      <li>/proc/meminfo의 MemTotal(1행)-MemFree(2행)-Buffers(4행)-Cached(5행)-SReclaimable(24행)
+        <ol>
+          <li>buff/cache: buffer / Cache 메모리 크기</li>
+        </ol>
+      </li>
+      <li>/proc/meminfo의 Buffers(4행)+Cache(5행)+SReclaimable(24행)
+        <ol>
+          <li>Swap total: 전체 Swap 메모리 크기</li>
+        </ol>
+      </li>
+      <li>/proc/meminfo의 SwapTotal(15행)
+        <ol>
+          <li>Swap free: Swap에서 Free된 메모리 크기</li>
+        </ol>
+      </li>
+      <li>/proc/meminfo의 SwapFree(16행)
+        <ol>
+          <li>Swap used: Swap에서 사용중인 메모리 크기</li>
+        </ol>
+      </li>
+      <li>SwapTotal(14행)-SwapFree(16행)
+        <ol>
+          <li>avail Mem: 사용 가능한 메모리 크기</li>
+        </ol>
+      </li>
+      <li>/proc/meminfo의 MemAvailable(3행)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="process">Process</h2>
+
+<ul>
+  <li>각 프로세스의 pid를 이름으로 하는 디렉터리가 /proc에 존재한다. 해당 디렉터리 내에서 정보를 획득한다.
+    <ol>
+      <li>PID: 프로세스 ID</li>
+    </ol>
+    <ul>
+      <li>/proc/pid/stat의 1번째 token
+        <ol>
+          <li>USER: 프로세스 소유자명</li>
+        </ol>
+      </li>
+      <li>
+        <p>/proc/pid/stat 파일의 uid 알아낸 뒤 uid에서 유저명 획득</p>
+
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>  <span class="cp">#include &lt;sys/types.h&gt;
+</span>  <span class="cp">#include &lt;pwd.h&gt;
+</span>
+  <span class="k">struct</span> <span class="n">stat</span> <span class="n">statbuf</span><span class="p">;</span>
+  <span class="n">stat</span><span class="p">(</span><span class="s">"/proc/pid/stat"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">statbuf</span><span class="p">);</span>
+  <span class="k">struct</span> <span class="n">passwd</span> <span class="o">*</span><span class="n">upasswd</span> <span class="o">=</span> <span class="n">getpwuid</span><span class="p">(</span><span class="n">statbuf</span><span class="p">.</span><span class="n">st_uid</span><span class="p">);</span>
+  <span class="kt">char</span> <span class="n">user</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+  <span class="n">strcpy</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">upasswd</span><span class="o">-&gt;</span><span class="n">pwd_name</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ol>
+  <li>PR: 실행 우선 순위(Priority)
+    <ul>
+      <li>/proc/pid/stat의 18번째 token</li>
+    </ul>
+  </li>
+  <li>NI: 실행 우선 순위 관련 NICE 값
+    <ul>
+      <li>/proc/pid/stat의 19번째 token</li>
+    </ul>
+  </li>
+  <li>VIRT: 가상 메모리 사용량 (SWAP+RES)
+    <ul>
+      <li>/proc/pid/status의 VmSize(18행)</li>
+    </ul>
+  </li>
+  <li>RES: 물리 메모리 사용량
+    <ul>
+      <li>/proc/pid/status의 VmHWM(21행)</li>
+    </ul>
+  </li>
+  <li>SHR :공유 메모리 사용량
+    <ul>
+      <li>/proc/pid/status의 RssFile(24행)</li>
+    </ul>
+  </li>
+  <li>S: 프로세스 상태(State)
+    <ul>
+      <li>/proc/pid/stat 3번째 token</li>
+      <li>
+        <p>각 문자 별 상세 정보</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre>  D    uninterruptible sleep (usually IO)
+  R    running or runnable (on run queue)
+  S    interruptible sleep (waiting for an event to complete)
+  T    stopped by job control signal
+  t    stopped by debugger during the tracing
+  W    paging (not valid since the 2.6.xx kernel)
+  X    dead (should never be seen)
+  Z    defunct ("zombie") process, terminated but not reaped by its parent
+
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>%CPU: CPU 사용률
+    <ul>
+      <li>((utime+stime) / hertz) / (uptime-(startTime/hertz)) * 100</li>
+      <li>utime: User Mode에서 프로세스가 사용한 jiffies(clock ticks)
+        <ul>
+          <li>/proc/pid/stat의 14번째 token</li>
+        </ul>
+      </li>
+      <li>stime: Kernel Mode에서 프로세스가 사용한 jiffies(clock ticks)
+        <ul>
+          <li>/proc/pid/stat의 15번째 token</li>
+        </ul>
+      </li>
+      <li>startTime: OS 부팅 후 프로세스 시작까지의 jiffies(clock ticks)
+        <ul>
+          <li>/proc/pid/stat의 22번째 token</li>
+        </ul>
+      </li>
+      <li>uptime: OS 부팅 후 지난 시간(second)
+        <ul>
+          <li>/proc/uptime의 1번째 token</li>
+        </ul>
+      </li>
+      <li>
+        <p>hertz: 1초 간 일어나는 문맥교환 횟수</p>
+
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>  <span class="cp">#include &lt;unistd.h&gt;
+</span>
+  <span class="kt">int</span> <span class="n">hertz</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sysconf</span><span class="p">(</span><span class="n">_SC_CLK_TCK</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>%MEM: 메모리 사용률
+    <ul>
+      <li>RES / memTotal
+        <ul>
+          <li>RES: 물리 메모리 사용량
+            <ul>
+              <li>/proc/pid/status의 VmHWM(21행)</li>
+            </ul>
+          </li>
+          <li>memTotal: 전체 메모리 크기
+            <ul>
+              <li>/proc/meminfo의 1행 (kib를 kb로 변환해 사용)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>TIME+: CPU 사용 시간 (0.01초 단위)
+    <ul>
+      <li>(utime+stime) / (hertz / 100)
+        <ul>
+          <li>utime: User Mode에서 프로세스가 사용한 jiffies(clock ticks)
+            <ul>
+              <li>/proc/pid/stat의 14번째 token</li>
+            </ul>
+          </li>
+          <li>stime: Kernel Mode에서 프로세스가 사용한 jiffies(clock ticks)
+            <ul>
+              <li>/proc/pid/stat의 15번째 token</li>
+            </ul>
+          </li>
+          <li>
+            <p>hertz: 1초 간 일어나는 문맥교환 횟수</p>
+
+            <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>  <span class="cp">#include &lt;unistd.h&gt;
+</span>
+  <span class="kt">int</span> <span class="n">hertz</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sysconf</span><span class="p">(</span><span class="n">_SC_CLK_TCK</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>COMMAND: 프로세스 실행 시 입력된 명령어
+    <ul>
+      <li>proc/pid/cmdline</li>
+    </ul>
+  </li>
+</ol>
+:ET

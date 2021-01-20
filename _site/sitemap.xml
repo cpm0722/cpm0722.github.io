@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/Deep-contextualized-word-representations/</loc>
+      
+        <lastmod>2021-01-01T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Disk/</loc>
+      
+        <lastmod>2020-12-17T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</loc>
+      
+        <lastmod>2020-12-11T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/File-System/</loc>
+      
+        <lastmod>2020-11-30T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Semaphore/</loc>
+      
+        <lastmod>2020-11-23T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Concurrency/</loc>
+      
+        <lastmod>2020-11-16T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</loc>
+      
+        <lastmod>2020-11-12T18:00:00-06:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Paging-Mechanism/</loc>
+      
+        <lastmod>2020-10-19T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</loc>
+      
+        <lastmod>2020-10-09T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</loc>
+      
+        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Address-Memory/</loc>
+      
+        <lastmod>2020-10-04T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Scheduling-MLFQ/</loc>
+      
+        <lastmod>2020-09-27T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/system%20programming/unix/TOP-Command/</loc>
+      
+        <lastmod>2020-09-22T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Scheduling/</loc>
+      
+        <lastmod>2020-09-20T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/</loc>
+      
+        <lastmod>2020-09-19T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/system%20programming/unix/PS-Command/</loc>
+      
+        <lastmod>2020-09-15T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Process-Abstraction/</loc>
+      
+        <lastmod>2020-09-13T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/system%20programming/unix/Shell/</loc>
+      
+        <lastmod>2020-09-08T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/operating%20system/Introduction-to-Operating-Systems/</loc>
+      
+        <lastmod>2020-09-06T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</loc>
+      
+        <lastmod>2020-09-05T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/</loc>
+      
+        <lastmod>2020-08-15T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</loc>
+      
+        <lastmod>2020-07-18T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/Attention-is-All-You-Need/</loc>
+      
+        <lastmod>2020-07-04T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/system%20programming/unix/Sync-Manager/</loc>
+      
+        <lastmod>2020-06-09T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</loc>
+      
+        <lastmod>2020-05-16T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/system%20programming/unix/Directory-Manager/</loc>
+      
+        <lastmod>2020-05-12T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/Sequence-to-Sequence-Learning-with-Neural-Networks/</loc>
+      
+        <lastmod>2020-05-09T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+    <url>
+      <loc>http://0.0.0.0:4000/machine%20learning/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</loc>
+      
+        <lastmod>2020-05-02T19:00:00-05:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+    </url>
+  
+</urlset>

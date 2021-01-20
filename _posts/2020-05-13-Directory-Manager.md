@@ -32,9 +32,9 @@ $ make dir_manager
 
     - 실행 예시
 
-        ![01.jpg](01.jpg)
+        ![01.jpg](/assets/images/2020-05-13-Directory-Manager/01.jpg)
 
-        ![02.jpg](02.jpg)
+        ![02.jpg](/assets/images/2020-05-13-Directory-Manager/02.jpg)
 
 2. 휴지통
 
@@ -42,9 +42,9 @@ $ make dir_manager
 
     - 실행 예시 (trash/info가 2KB를 초과해 1.txt가 trash에서 삭제됨)
 
-        ![03.jpg](03.jpg)
+        ![03.jpg](/assets/images/2020-05-13-Directory-Manager/03.jpg)
 
-        ![04.jpg](04.jpg)
+        ![04.jpg](/assets/images/2020-05-13-Directory-Manager/04.jpg)
 
 3. DELETE
 
@@ -63,9 +63,9 @@ $ make dir_manager
             - -r : 지정한 시각에 삭제 여부 확인 메세지 출력
     - 실행 예시
 
-        ![05.jpg](05.jpg)
+        ![05.jpg](/assets/images/2020-05-13-Directory-Manager/05.jpg)
 
-        ![06.jpg](06.jpg)
+        ![06.jpg](/assets/images/2020-05-13-Directory-Manager/06.jpg)
 
 4. SIZE
 
@@ -82,9 +82,9 @@ $ make dir_manager
             - -d [NUMBER] : NUMBER 단계 만큼의 하위 디렉터리까지 출력
     - 실행 예시
 
-        ![07.jpg](07.jpg)
+        ![07.jpg](/assets/images/2020-05-13-Directory-Manager/07.jpg)
 
-        ![08.jpg](08.jpg)
+        ![08.jpg](/assets/images/2020-05-13-Directory-Manager/08.jpg)
 
 5. RECOVER
 
@@ -101,9 +101,9 @@ $ make dir_manager
             - -l : trash 디렉터리에 보관된 파일들을 삭제 시각이 오래된 순으로 출력 후 명령어 수행
     - 실행 예
 
-        ![09.jpg](09.jpg)
+        ![09.jpg](/assets/images/2020-05-13-Directory-Manager/09.jpg)
 
-        ![10.jpg](10.jpg)
+        ![10.jpg](/assets/images/2020-05-13-Directory-Manager/10.jpg)
 
 6. TREE
 
@@ -117,7 +117,7 @@ $ make dir_manager
 
     - 실행 예시
 
-        ![11.jpg](11.jpg)
+        ![11.jpg](/assets/images/2020-05-13-Directory-Manager/11.jpg)
 
 7. EXIT
 
@@ -131,9 +131,9 @@ $ make dir_manager
 
     - 실행 예시 (데몬 프로세스 및 모든 자식 프로세스 종료)
 
-        ![12.jpg](12.jpg)
+        ![12.jpg](/assets/images/2020-05-13-Directory-Manager/12.jpg)
 
-        ![13.jpg](13.jpg)
+        ![13.jpg](/assets/images/2020-05-13-Directory-Manager/13.jpg)
 
 8. HELP
 
@@ -147,7 +147,7 @@ $ make dir_manager
 
     - 실행 예시
 
-        ![14.jpg](14.jpg)
+        ![14.jpg](/assets/images/2020-05-13-Directory-Manager/14.jpg)
 
 ## 구현 방법
 

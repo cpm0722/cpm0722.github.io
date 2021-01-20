@@ -26,15 +26,15 @@ $make ttop
 
 1. 기본 실행
 
-    ![01.jpg](01.jpg)
+    ![01.jpg](/assets/images/2020-09-23-TOP-Command/01.jpg)
 
 2. 상하 방향키 입력 통한 Row 이동
 
-    ![02.jpg](02.jpg)
+    ![02.jpg](/assets/images/2020-09-23-TOP-Command/02.jpg)
 
 3. 좌우 방향키 입력 통한 Column 이동
 
-    ![03.jpg](03.jpg)
+    ![03.jpg](/assets/images/2020-09-23-TOP-Command/03.jpg)
 
 ## 구현 방법
 

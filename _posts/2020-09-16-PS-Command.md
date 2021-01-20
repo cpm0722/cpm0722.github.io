@@ -15,7 +15,7 @@ last_modified_at: 2020-09-16 00:00:00 +0000
 
 리눅스 내장 명령어 ps를 구현한 프로그램이다. ps 명령어의 a, u, x 옵션을 사용할 수 있다.
 
-![01.jpg](01.jpg)
+![01.jpg](/assets/images/2020-09-16-PS-Command/01.jpg)
 
 ## 실행 방법
 
@@ -28,35 +28,35 @@ $make pps
 
 1. pps
 
-    ![02.jpg](02.jpg)
+    ![02.jpg](/assets/images/2020-09-16-PS-Command/02.jpg)
 
 2. pps a
 
-    ![03.jpg](03.jpg)
+    ![03.jpg](/assets/images/2020-09-16-PS-Command/03.jpg)
 
 3. pps u
 
-    ![04.jpg](04.jpg)
+    ![04.jpg](/assets/images/2020-09-16-PS-Command/04.jpg)
 
 4. pps x
 
-    ![05.jpg](05.jpg)
+    ![05.jpg](/assets/images/2020-09-16-PS-Command/05.jpg)
 
 5. pps au
 
-    ![06.jpg](06.jpg)
+    ![06.jpg](/assets/images/2020-09-16-PS-Command/06.jpg)
 
 6. pps ax
 
-    ![07.jpg](07.jpg)
+    ![07.jpg](/assets/images/2020-09-16-PS-Command/07.jpg)
 
 7. pps ux
 
-    ![08.jpg](08.jpg)
+    ![08.jpg](/assets/images/2020-09-16-PS-Command/08.jpg)
 
 8. pps aux
 
-    ![09.jpg](09.jpg)
+    ![09.jpg](/assets/images/2020-09-16-PS-Command/09.jpg)
 
 ## 구현 방법
 

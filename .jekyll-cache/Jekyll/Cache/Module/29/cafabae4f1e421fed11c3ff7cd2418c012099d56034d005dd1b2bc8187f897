@@ -1,0 +1,31 @@
+I" 
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Hansu Kim's Dev Blog
+          <span class="site-subtitle">기술 블로그</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/machine-learning/">Machine Learning</a>
+            </li><li class="masthead__menu-item">
+              <a href="/operating-system/">Operating System</a>
+            </li><li class="masthead__menu-item">
+              <a href="/system-programming/">System Programming</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about-me/">About Me</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+:ET

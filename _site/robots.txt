@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: http://cpm0722.github.io/sitemap.xml
