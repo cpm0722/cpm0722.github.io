@@ -1,7 +1,9 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gemspec
+gem 'jekyll'
 
 gem 'minima'
 gem 'jekyll-tagging-related_posts'
 gem 'kramdown-syntax-coderay'
+
+gemspec
