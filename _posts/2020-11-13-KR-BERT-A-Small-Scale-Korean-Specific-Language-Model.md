@@ -2,8 +2,8 @@
 
 title: "[NLP 논문 리뷰] KR-BERT: A Small Scale Korean Specific Language Model"
 subtitle: KR-BERT
-category: Paper Review
-tags: NLP Korean
+categories: [Machine Learning, Paper Review]
+tags: [NLP, Korean]
 date: 2020-11-13 00:00:00 +0000
 last_modified_at: 2020-11-13 00:00:00 +0000
 

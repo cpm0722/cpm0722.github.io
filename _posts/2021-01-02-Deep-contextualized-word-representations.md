@@ -2,8 +2,8 @@
 
 title: "[NLP 논문 리뷰] Deep Contextualized Word Representations (ELMo)"
 subtitle: ELMo
-category: Paper Review
-tags: NLP
+categories: [Machine Learning, Paper Review]
+tags: [NLP]
 date: 2021-01-02 00:00:00 +0000
 last_modified_at: 2021-01-02 00:00:00 +0000
 

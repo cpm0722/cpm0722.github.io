@@ -2,8 +2,8 @@
 
 title: "[운영체제] Address & Memory"
 subtitle: Address & Memory
-category: Operating System
-tag: Operating System
+categories: [Operating System]
+tags: [Operating System]
 date: 2020-10-05 00:00:00 +0000
 last_modified_at: 2020-10-05 00:00:00 +0000
 

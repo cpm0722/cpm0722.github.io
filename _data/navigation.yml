@@ -1,10 +1,8 @@
 # main links
 main:
-  - title: "Categories"
-    url: /categories/
-  - title: "Years"
-    url: /years/
-  - title: "Tags"
-    url: /tags/
+  - title: "Machine Learning"
+    url: /machine-learning/
+  - title: "Operating System"
+    url: /operating-system/
   - title: "About"
     url: /about/

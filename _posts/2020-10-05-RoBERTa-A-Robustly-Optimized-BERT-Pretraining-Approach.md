@@ -2,8 +2,8 @@
 
 title: "[NLP 논문 리뷰] RoBERTa: A Robustly Optimized BERT Pretraining Approach"
 subtitle: RoBERTa
-category: Paper Review
-tags: NLP
+categories: [Machine Learning, Paper Review]
+tags: [NLP]
 date: 2020-10-05 00:00:00 +0000
 last_modified_at: 2020-10-05 00:00:00 +0000
 

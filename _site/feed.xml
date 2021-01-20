@@ -5,8 +5,8 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Jan 2021 05:34:11 -0600</pubDate>
-    <lastBuildDate>Tue, 19 Jan 2021 05:34:11 -0600</lastBuildDate>
+    <pubDate>Tue, 19 Jan 2021 22:45:31 -0600</pubDate>
+    <lastBuildDate>Tue, 19 Jan 2021 22:45:31 -0600</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -140,11 +140,13 @@
 &lt;p&gt;biLM을 사용해 높은 수준의 context를 학습하는 ELMo model을 제안했다. ELMo model을 사용하면 대부분의 NLP task에서 성능이 향상되었다. 또한 layer의 층이 올라갈수록 syntax보다는 semantic한 정보를 담아낸다는 사실도 발견해냈다. 때문에 어느 한 layer를 사용하는 것보다는 모든 layer의 representation을 결합해 사용하는 것이 전반적인 성능 향상에 도움이 된다는 결론을 내릴 수 있다.&lt;/p&gt;
 </description>
         <pubDate>Fri, 01 Jan 2021 18:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/Deep-contextualized-word-representations/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/Deep-contextualized-word-representations/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/Deep-contextualized-word-representations/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/Deep-contextualized-word-representations/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -420,11 +422,13 @@
 &lt;p&gt;CBOW와 skip-gram이라는 새로운 word embedding 학습 방법을 제안했다. 기존의 여러 model들에 비해 연산량이 현저히 적고, 간단한 model임에도 매우 높은 성능을 보였다. 또한 word embedding vector의 syntax, semantic 성능을 측정할 수 있는 새로운 dataset을 제시했다.&lt;/p&gt;
 </description>
         <pubDate>Fri, 11 Dec 2020 18:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -1755,13 +1759,15 @@
 &lt;p&gt;Korean-specific BERT model인 KR-BERT model을 제안했다. 기존의 Korean-specific model에 비해 더 작은 규모에서 더 적은 dataset으로 동등하거나 더 좋은 성능을 보여줬다. 이 과정에서 sub-character level tokenizing, Bidirectional BPE를 사용해 Korean의 문법적 특성을 잡아냈다.&lt;/p&gt;
 </description>
         <pubDate>Thu, 12 Nov 2020 18:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/</guid>
         
         <category>NLP</category>
         
         <category>Korean</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -2063,13 +2069,15 @@
 &lt;p&gt;여러 Korean NLP task에 대해서 다양한 tokenization 전략을 사용한 model들의 성능을 비교했다. Korean-English NMT task에서는 BPE에 언어론적 특성(형태소)를 더한 Morpheme-aware Subword Model이 가장 높은 성능을 보여줬다. NLU task의 KorQuAD를 제외한 모든 task에서 역시 Morpheme-aware Subword Model이 가장 좋은 수치를 달성했다. 이를 통해 각 language의 unique한 linguistic awareness가 model 성능 향상에 매우 큰 영향을 미친다는 사실을 도출해냈다.&lt;/p&gt;
 </description>
         <pubDate>Fri, 09 Oct 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/</guid>
         
         <category>NLP</category>
         
         <category>Korean</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -2274,11 +2282,13 @@
 &lt;p&gt;이를 종합한 RoBERTa는 GLUE, SQuAD, RACE에서 SOTA를 달성했다.&lt;/p&gt;
 </description>
         <pubDate>Sun, 04 Oct 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -3101,13 +3111,15 @@
 &lt;p&gt;한국어를 ‘jamo’-level로 분해하는 방식은 syntatic, semantic의 양 측면에 있어서 모두 긍정적이다. inter-character ‘jamo’-level로 분해해 각종 조사 및 어미에 대해서 syntatic한 feature를 잡아낼 수 있었다. (주어 뒤의 조사 ~은, 동사 뒤의 조사 ~고~, 과거 시제 ~었, 경어체 ~시~ 등) 심지어 더 같은 의미의 더 짧은 character로 축약도 가능했다. (되었다 → 됐다) character level n-gram은 word의 semantic한 feature를 잡아낼 수 있도록 했다. 이러한 방식 덕분에 기존의 word vector보다 더 좋은 성능을 보일 수 있었다.&lt;/p&gt;
 </description>
         <pubDate>Sat, 19 Sep 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/Subword-level-Word-Vector-Representation-for-Korean/</guid>
         
         <category>NLP</category>
         
         <category>Korean</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -3523,11 +3535,13 @@
 &lt;p&gt;MASS는 Dataset이 적은 경우(또는 Dataset이 아예 없는 경우)의 Language Generation task에서 기존의 SOTA를 능가하는 성능을 보였다. 특히나 Unsupervised NMT에서 비약적인 성능 향상을 이뤄냈다.&lt;/p&gt;
 </description>
         <pubDate>Sat, 05 Sep 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/MASS-Masked-Sequence-to-Sequence-Pre-training-for-Language-Generation/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -3728,11 +3742,13 @@
 &lt;p&gt;Permutation을 사용한 Autoregressive Pretraining 방식을 개척했다는 점에서 의의가 있다.&lt;/p&gt;
 </description>
         <pubDate>Sat, 15 Aug 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/XLNet-Generalized-Autoregressive-Pretraining-for-Language-Understanding/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -3934,11 +3950,13 @@
 &lt;p&gt;Masking Rate를 다르게 하며 성능을 비교해보자. MASK는 실제로 [MASK] token으로 변경된 비율을, SAME은 동일한 word로 남아있는 비율을, RND는 random한 다른 word로 변경된 비율을 뜻한다. BERT는 각각 80%, 10%, 10%를 채택했다. MASK가 100%나 RND가 100%인 경우에 성능이 최악이라는 것을 알 수 있다.&lt;/p&gt;
 </description>
         <pubDate>Sat, 18 Jul 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -3994,11 +4012,13 @@
 &lt;p&gt;Decoder는 Encoder와 매우 비슷한 구조를 갖는다. 동일한 6개의 Decoder Layer를 Stack 구조로 쌓아올린 형태이고, 각각의 Decoder Layer에는 Encoder Layer와 같은 Self Attention Layer와 Feed Forward Layer가 존재한다. Encoder와의 차이점은 Self Attention Layer 이전에 Masked Layer가 있다는 점이다. 6개의 Decoder Layer를 거친 최종 output 값을 softmax를 사용해 확률값으로 구하는데, 이는 i번째 output word에 대한 조건부 확률값이다. 6개의 Decoder Layer는 모두 마지막 Encoder Layer의 output인 context vector를 input으로 받고, 동시에 이전 단계의 Decoder Layer에서 생성된 attention vector도 input으로 받는다. Masked Attention Layer에서는 현재 word의 기준으로 이후 word에 mask를 씌운 vector값이다. 현재 시점의 attention을 생성할 때 이후 word들의 영향을 없애기 위함이다.&lt;/p&gt;
 </description>
         <pubDate>Sat, 04 Jul 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/Attention-is-All-You-Need/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/Attention-is-All-You-Need/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/Attention-is-All-You-Need/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/Attention-is-All-You-Need/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -4069,11 +4089,13 @@
 &lt;p&gt;위는 \(a_{ij}\)를 시각화한 그림인데, 대체로 monotonic한 match를 볼 수 있다. English-French translate이기에 그렇다. 하지만 (a)를 보면 조사나 명사에 대해서 monotonic하지 않은 case가 있음에도 불구하고 정확히 align을 했다는 사실을 확인 가능하다. (d)에서는 본 model에서 채택한 soft-align 방식의 이점이 드러난다. soft-align이란 가장 높은 확률값을 가진 token pair 1개만을 채택해 align하는 것이 아니라 여러 token에 대해 각각의 align probability를 적용해 soft하게 align했다는 의미이다. 만약 soft-align이 아닌 hard-align을 했다면 [the man]의 2개의 token을 각각 [l’ homme]의 두 token 중 하나에 align해야 하는데 이러한 작업은 translation에 결코 도움이 되지 않는다. 따라서 soft-align을 사용해 여러 token에 대한 align을 모두 고려하는 방식이 적합하다는 것을 알 수 있다.&lt;/p&gt;
 </description>
         <pubDate>Sat, 16 May 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/Neural-Machine-Translation-By-Jointly-Learning-To-Align-And-Translate/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -4128,11 +4150,13 @@
 &lt;p&gt;&lt;img src=&quot;/assets/images/2020-05-10-Sequence-to-Sequence-Learning-with-Neural-Networks/05.jpg&quot; alt=&quot;05.jpg&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 09 May 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/Sequence-to-Sequence-Learning-with-Neural-Networks/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/Sequence-to-Sequence-Learning-with-Neural-Networks/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/Sequence-to-Sequence-Learning-with-Neural-Networks/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/Sequence-to-Sequence-Learning-with-Neural-Networks/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         
@@ -4464,11 +4488,13 @@
 &lt;p&gt;OOV 문제를 해결해 NMT와 같은 open-vocabulary translation에서 좋은 성능을 보였다. 기존에 OOV를 해결하기 위해 사용되던 back-off translation model보다 더 좋은 성능을 보였다.&lt;/p&gt;
 </description>
         <pubDate>Sat, 02 May 2020 19:00:00 -0500</pubDate>
-        <link>http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</guid>
+        <link>http://0.0.0.0:4000/machine%20learning/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/machine%20learning/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/</guid>
         
         <category>NLP</category>
         
+        
+        <category>Machine Learning</category>
         
         <category>Paper Review</category>
         

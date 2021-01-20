@@ -2,8 +2,8 @@
 
 title: "[운영체제] Scheduling"
 subtitle: Scheduling
-category: Operating System
-tag: Operating System
+categories: [Operating System]
+tags: [Operating System]
 date: 2020-09-21 00:00:00 +0000
 last_modified_at: 2020-09-21 00:00:00 +0000
 
