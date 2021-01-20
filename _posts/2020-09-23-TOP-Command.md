@@ -9,8 +9,6 @@ last_modified_at: 2020-09-23 00:00:00 +0000
 
 ---
 
-[GitHub Link](https://github.com/cpm0722/LSP/tree/master/ttop)
-
 ## 개요
 
 리눅스 내장 명령어 top를 구현한 프로그램이다. top 명령어와 동일하게 3초 단위로 새로 갱신되며, 방향키 및 q 입력으로 Column / Row 이동 및 종료를 할 수 있다.
@@ -215,3 +213,5 @@ typedef struct{
 
 12. COMMAND: 프로세스 실행 시 입력된 명령어
     - proc/pid/cmdline
+
+## [GitHub Link](https://github.com/cpm0722/LSP/tree/master/ttop)

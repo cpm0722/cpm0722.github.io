@@ -9,8 +9,6 @@ last_modified_at: 2020-09-16 00:00:00 +0000
 
 ---
 
-[GitHub Link](https://github.com/cpm0722/LSP/tree/master/pps)
-
 ## 개요
 
 리눅스 내장 명령어 ps를 구현한 프로그램이다. ps 명령어의 a, u, x 옵션을 사용할 수 있다.
@@ -206,3 +204,5 @@ typedef struct{
     - /proc/pid/stat의 2번째 token
 12. COMMAND: 프로세스 실행 시 입력된 명령어
     - proc/pid/cmdline
+
+## [GitHub Link](https://github.com/cpm0722/LSP/tree/master/pps)

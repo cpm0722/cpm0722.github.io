@@ -5,8 +5,8 @@
     <description>Hansu Kim's Dev Blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 20 Jan 2021 04:54:43 -0600</pubDate>
-    <lastBuildDate>Wed, 20 Jan 2021 04:54:43 -0600</lastBuildDate>
+    <pubDate>Wed, 20 Jan 2021 04:57:30 -0600</pubDate>
+    <lastBuildDate>Wed, 20 Jan 2021 04:57:30 -0600</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -3070,9 +3070,7 @@
     
       <item>
         <title>[System Programming] top 명령어 구현</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/ttop&quot;&gt;GitHub Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
 &lt;p&gt;리눅스 내장 명령어 top를 구현한 프로그램이다. top 명령어와 동일하게 3초 단위로 새로 갱신되며, 방향키 및 q 입력으로 Column / Row 이동 및 종료를 할 수 있다.&lt;/p&gt;
 
@@ -3475,6 +3473,8 @@
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h2 id=&quot;github-link&quot;&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/ttop&quot;&gt;GitHub Link&lt;/a&gt;&lt;/h2&gt;
 </description>
         <pubDate>Tue, 22 Sep 2020 19:00:00 -0500</pubDate>
         <link>http://0.0.0.0:4000/system%20programming/unix/TOP-Command/</link>
@@ -4054,9 +4054,7 @@
     
       <item>
         <title>[System Programming] ps 명령어 구현</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/pps&quot;&gt;GitHub Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
 &lt;p&gt;리눅스 내장 명령어 ps를 구현한 프로그램이다. ps 명령어의 a, u, x 옵션을 사용할 수 있다.&lt;/p&gt;
 
@@ -4423,6 +4421,8 @@
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h2 id=&quot;github-link&quot;&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/pps&quot;&gt;GitHub Link&lt;/a&gt;&lt;/h2&gt;
 </description>
         <pubDate>Tue, 15 Sep 2020 19:00:00 -0500</pubDate>
         <link>http://0.0.0.0:4000/system%20programming/unix/PS-Command/</link>
@@ -4570,9 +4570,7 @@
     
       <item>
         <title>[System Programming] Shell 구현</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/shell&quot;&gt;GihHub Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
 &lt;p&gt;Linux 내장 명령어를 실행하는 쉘 프로그램이다. 기본 쉘과 동일하게 대화식 명령어 입력이 가능하고, 프로그램 실행 시 인자로 파일을 넘겨줄 경우 배치식 모드로 쉘을 실행하게 된다. 배치식 모드는 넘겨받은 텍스트 파일 내에 있는 명령어들을 순서대로 실행한다. 쉘 프로그램은 다중 파이프 기능을 지원한다.&lt;/p&gt;
 
@@ -4607,6 +4605,8 @@
 &lt;h2 id=&quot;구현-방법&quot;&gt;구현 방법&lt;/h2&gt;
 
 &lt;p&gt;명령어를 실행하기 위해 execvp함수를 사용했다. fork()를 통해 자식 프로세스를 생성한 후 자식 프로세스에서 execvp 함수를 호출해 쉘의 환경 변수 PATH에 등록된 디렉터리에 위치한 실행 파일들을 실행하도록 했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;gihhub-link&quot;&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/shell&quot;&gt;GihHub Link&lt;/a&gt;&lt;/h2&gt;
 </description>
         <pubDate>Tue, 08 Sep 2020 19:00:00 -0500</pubDate>
         <link>http://0.0.0.0:4000/system%20programming/unix/Shell/</link>
@@ -5392,9 +5392,7 @@
     
       <item>
         <title>[System Programming] 동기화 프로그램 구현</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/rsync&quot;&gt;GitHub Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
 &lt;p&gt;파일 및 디렉터리 간 동기화를 수행하는 프로그램이다. 동기화시킬 대상인 src는 파일, 디렉터리 모두 가능하지만, 동기화될 대상인 dst는 디렉터리만 가능하다. 만약 dst 디렉터리 내에 이미 src 내의 파일과 동일한 파일이 있을 경우 동기화를 수행하지 않는다. 동기화가 완료될 경우 log.txt파일에 동기화 과정에서 추가된 파일, 삭제된 파일이 기록된다.&lt;/p&gt;
 
@@ -5454,6 +5452,8 @@
 &lt;/ol&gt;
 
 &lt;p&gt;두 파일에 대한 경로를 인자로 받아 같은 파일인지를 return하는 is_same_file 함수를 정의해 사용했다. -r 옵션을 위해 동기화 함수를 재귀적으로 호출 가능하도록 작성했다. -t 옵션에서는 압축 및 해제를 수행하는데, system() 함수를 사용해 tar 명령어를 호출했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;github-link&quot;&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/rsync&quot;&gt;GitHub Link&lt;/a&gt;&lt;/h2&gt;
 </description>
         <pubDate>Tue, 09 Jun 2020 19:00:00 -0500</pubDate>
         <link>http://0.0.0.0:4000/system%20programming/unix/Sync-Manager/</link>
@@ -5547,9 +5547,7 @@
     
       <item>
         <title>[System programming] 디렉터리 관리 프로그램 구현</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/dir_manager&quot;&gt;GitHub Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
 
 &lt;p&gt;디렉터리 관리 프로그램이다. 지정한 특정 디렉터리를 지속적으로 모니터링하고, 해당 디렉터리의 하위 디렉터리 및 파일들의 변경 사항을 로그 파일에 기록한다. 삭제(trash 디렉터리로 이동), 복구(trash 디렉터리에서 복원), 디렉터리 크기 출력, 디렉터리 전체 구조 출력 등의 기능으로 이루어져 있다.&lt;/p&gt;
 
@@ -5822,6 +5820,8 @@
     &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;github-link&quot;&gt;&lt;a href=&quot;https://github.com/cpm0722/LSP/tree/master/dir_manager&quot;&gt;GitHub Link&lt;/a&gt;&lt;/h2&gt;
 </description>
         <pubDate>Tue, 12 May 2020 19:00:00 -0500</pubDate>
         <link>http://0.0.0.0:4000/system%20programming/unix/Directory-Manager/</link>

@@ -12,7 +12,7 @@ var store = [{
         "teaser": null
       },{
         "title": "[System programming] 디렉터리 관리 프로그램 구현",
-        "excerpt":"GitHub Link 개요 디렉터리 관리 프로그램이다. 지정한 특정 디렉터리를 지속적으로 모니터링하고, 해당 디렉터리의 하위 디렉터리 및 파일들의 변경 사항을 로그 파일에 기록한다. 삭제(trash 디렉터리로 이동), 복구(trash 디렉터리에서 복원), 디렉터리 크기 출력, 디렉터리 전체 구조 출력 등의 기능으로 이루어져 있다. 실행 방법 1 2 $ make dir_manager ./dir_manager [TARGET_DIRECTORY_PATH] TARGET_DIRECTORY_PATH: 모니터링을...","categories": ["System Programming","UNIX"],
+        "excerpt":"개요 디렉터리 관리 프로그램이다. 지정한 특정 디렉터리를 지속적으로 모니터링하고, 해당 디렉터리의 하위 디렉터리 및 파일들의 변경 사항을 로그 파일에 기록한다. 삭제(trash 디렉터리로 이동), 복구(trash 디렉터리에서 복원), 디렉터리 크기 출력, 디렉터리 전체 구조 출력 등의 기능으로 이루어져 있다. 실행 방법 1 2 $ make dir_manager ./dir_manager [TARGET_DIRECTORY_PATH] TARGET_DIRECTORY_PATH: 모니터링을 수행할 타겟...","categories": ["System Programming","UNIX"],
         "tags": ["System Programming"],
         "url": "http://0.0.0.0:4000/system%20programming/unix/Directory-Manager/",
         "teaser": null
@@ -24,7 +24,7 @@ var store = [{
         "teaser": null
       },{
         "title": "[System Programming] 동기화 프로그램 구현",
-        "excerpt":"GitHub Link 개요 파일 및 디렉터리 간 동기화를 수행하는 프로그램이다. 동기화시킬 대상인 src는 파일, 디렉터리 모두 가능하지만, 동기화될 대상인 dst는 디렉터리만 가능하다. 만약 dst 디렉터리 내에 이미 src 내의 파일과 동일한 파일이 있을 경우 동기화를 수행하지 않는다. 동기화가 완료될 경우 log.txt파일에 동기화 과정에서 추가된 파일, 삭제된 파일이 기록된다. 실행 방법...","categories": ["System Programming","UNIX"],
+        "excerpt":"개요 파일 및 디렉터리 간 동기화를 수행하는 프로그램이다. 동기화시킬 대상인 src는 파일, 디렉터리 모두 가능하지만, 동기화될 대상인 dst는 디렉터리만 가능하다. 만약 dst 디렉터리 내에 이미 src 내의 파일과 동일한 파일이 있을 경우 동기화를 수행하지 않는다. 동기화가 완료될 경우 log.txt파일에 동기화 과정에서 추가된 파일, 삭제된 파일이 기록된다. 실행 방법 1 2...","categories": ["System Programming","UNIX"],
         "tags": ["System Programming"],
         "url": "http://0.0.0.0:4000/system%20programming/unix/Sync-Manager/",
         "teaser": null
@@ -60,7 +60,7 @@ var store = [{
         "teaser": null
       },{
         "title": "[System Programming] Shell 구현",
-        "excerpt":"GihHub Link 개요 Linux 내장 명령어를 실행하는 쉘 프로그램이다. 기본 쉘과 동일하게 대화식 명령어 입력이 가능하고, 프로그램 실행 시 인자로 파일을 넘겨줄 경우 배치식 모드로 쉘을 실행하게 된다. 배치식 모드는 넘겨받은 텍스트 파일 내에 있는 명령어들을 순서대로 실행한다. 쉘 프로그램은 다중 파이프 기능을 지원한다. 실행방법 1 2 $ make shell...","categories": ["System Programming","UNIX"],
+        "excerpt":"개요 Linux 내장 명령어를 실행하는 쉘 프로그램이다. 기본 쉘과 동일하게 대화식 명령어 입력이 가능하고, 프로그램 실행 시 인자로 파일을 넘겨줄 경우 배치식 모드로 쉘을 실행하게 된다. 배치식 모드는 넘겨받은 텍스트 파일 내에 있는 명령어들을 순서대로 실행한다. 쉘 프로그램은 다중 파이프 기능을 지원한다. 실행방법 1 2 $ make shell ./shell 기능...","categories": ["System Programming","UNIX"],
         "tags": ["System Programming"],
         "url": "http://0.0.0.0:4000/system%20programming/unix/Shell/",
         "teaser": null
@@ -72,7 +72,7 @@ var store = [{
         "teaser": null
       },{
         "title": "[System Programming] ps 명령어 구현",
-        "excerpt":"GitHub Link 개요 리눅스 내장 명령어 ps를 구현한 프로그램이다. ps 명령어의 a, u, x 옵션을 사용할 수 있다. 실행 방법 1 2 $make pps ./pps 기능 pps pps a pps u pps x pps au pps ax pps ux pps aux 구현 방법 a u x 옵션 a: 다른 사용자들의...","categories": ["System Programming","UNIX"],
+        "excerpt":"개요 리눅스 내장 명령어 ps를 구현한 프로그램이다. ps 명령어의 a, u, x 옵션을 사용할 수 있다. 실행 방법 1 2 $make pps ./pps 기능 pps pps a pps u pps x pps au pps ax pps ux pps aux 구현 방법 a u x 옵션 a: 다른 사용자들의 프로세스도 보여준다....","categories": ["System Programming","UNIX"],
         "tags": ["System Programming"],
         "url": "http://0.0.0.0:4000/system%20programming/unix/PS-Command/",
         "teaser": null
@@ -90,7 +90,7 @@ var store = [{
         "teaser": null
       },{
         "title": "[System Programming] top 명령어 구현",
-        "excerpt":"GitHub Link 개요 리눅스 내장 명령어 top를 구현한 프로그램이다. top 명령어와 동일하게 3초 단위로 새로 갱신되며, 방향키 및 q 입력으로 Column / Row 이동 및 종료를 할 수 있다. 실행 방법 1 2 $make ttop ./ttop 기능 기본 실행 상하 방향키 입력 통한 Row 이동 좌우 방향키 입력 통한 Column...","categories": ["System Programming","UNIX"],
+        "excerpt":"개요 리눅스 내장 명령어 top를 구현한 프로그램이다. top 명령어와 동일하게 3초 단위로 새로 갱신되며, 방향키 및 q 입력으로 Column / Row 이동 및 종료를 할 수 있다. 실행 방법 1 2 $make ttop ./ttop 기능 기본 실행 상하 방향키 입력 통한 Row 이동 좌우 방향키 입력 통한 Column 이동 구현...","categories": ["System Programming","UNIX"],
         "tags": ["System Programming"],
         "url": "http://0.0.0.0:4000/system%20programming/unix/TOP-Command/",
         "teaser": null

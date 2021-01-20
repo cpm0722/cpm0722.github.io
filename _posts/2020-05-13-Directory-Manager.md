@@ -9,8 +9,6 @@ last_modified_at: 2020-05-13 00:00:00 +0000
 
 ---
 
-[GitHub Link](https://github.com/cpm0722/LSP/tree/master/dir_manager)
-
 ## 개요
 
 디렉터리 관리 프로그램이다. 지정한 특정 디렉터리를 지속적으로 모니터링하고, 해당 디렉터리의 하위 디렉터리 및 파일들의 변경 사항을 로그 파일에 기록한다. 삭제(trash 디렉터리로 이동), 복구(trash 디렉터리에서 복원), 디렉터리 크기 출력, 디렉터리 전체 구조 출력 등의 기능으로 이루어져 있다.
@@ -186,3 +184,5 @@ typedef struct Node {
     struct Node *next;
 }Node;
 ```
+
+## [GitHub Link](https://github.com/cpm0722/LSP/tree/master/dir_manager)

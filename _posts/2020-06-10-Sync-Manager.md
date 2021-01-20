@@ -9,8 +9,6 @@ last_modified_at: 2020-06-10 00:00:00 +0000
 
 ---
 
-[GitHub Link](https://github.com/cpm0722/LSP/tree/master/rsync)
-
 ## 개요
 
 파일 및 디렉터리 간 동기화를 수행하는 프로그램이다. 동기화시킬 대상인 src는 파일, 디렉터리 모두 가능하지만, 동기화될 대상인 dst는 디렉터리만 가능하다. 만약 dst 디렉터리 내에 이미 src 내의 파일과 동일한 파일이 있을 경우 동기화를 수행하지 않는다. 동기화가 완료될 경우 log.txt파일에 동기화 과정에서 추가된 파일, 삭제된 파일이 기록된다.
@@ -56,3 +54,5 @@ $ make rsync
 3. 최종 수정 시각
 
 두 파일에 대한 경로를 인자로 받아 같은 파일인지를 return하는 is_same_file 함수를 정의해 사용했다. -r 옵션을 위해 동기화 함수를 재귀적으로 호출 가능하도록 작성했다. -t 옵션에서는 압축 및 해제를 수행하는데, system() 함수를 사용해 tar 명령어를 호출했다.
+
+## [GitHub Link](https://github.com/cpm0722/LSP/tree/master/rsync)
