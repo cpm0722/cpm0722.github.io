@@ -1,6 +1,6 @@
 ---
 
-title: "[NLP 논문 구현] Attention is All You Need (Transformer)"
+title: "[NLP 논문 구현] pytorch로 구현하는 Transformer (Attention is All You Need)"
 subtitle: Transformer_pytorch
 categories: [Machine Learning, Paper Review, Pytorch]
 tags: [NLP, Pytorch]
@@ -9,11 +9,7 @@ last_modified_at: 2021-01-28 00:00:00 +0000
 
 ---
 
-# pytorch로 구현하는 Transformer (Attention is All You Need)
-
-- Paper Link
-
-    [](https://arxiv.org/pdf/1706.03762.pdf)
+### [Paper Link](https://arxiv.org/pdf/1706.03762.pdf)
 
 # Why Transformer?
 
