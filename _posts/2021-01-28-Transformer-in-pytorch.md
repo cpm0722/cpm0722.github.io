@@ -769,3 +769,15 @@ def make_model(
     
     return model
 ```
+
+# 전체 구현 Code
+
+- 본 포스트 내에서의 code와 세부적인 부분에서 다소 차이가 있을 수 있다.
+
+- #### [GitHub Link](https://github.com/cpm0722/NLP/tree/main/transformer)
+
+# Reference
+
+- #### [Harvard NLP](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
+
+- #### [WikiDocs](https://wikidocs.net/31379)
