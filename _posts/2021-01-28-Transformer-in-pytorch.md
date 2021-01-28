@@ -1,3 +1,14 @@
+---
+
+title: "[NLP 논문 구현] Attention is All You Need (Transformer)"
+subtitle: Transformer_pytorch
+categories: [Machine Learning, Paper Review, Pytorch]
+tags: [NLP, Pytorch]
+date: 2021-01-28 00:00:00 +0000
+last_modified_at: 2021-01-28 00:00:00 +0000
+
+---
+
 # pytorch로 구현하는 Transformer (Attention is All You Need)
 ![.png](/assets/images/2021-01-28-Transformer-in-pytorch/.png)
 
@@ -19,7 +30,7 @@ Machine Learning에 대한 기본적인 지식(Back Propagation, Activation Func
 
 # Model of Transformer
 
-# Transformer의 개괄적인 구조
+## Transformer의 개괄적인 구조
 
 Transformer는 input sentence를 넣어 output sentence를 생성해내는 model이다. input과 동일한 sentence를 만들어낼 수도, input의 역방향 sentence를 만들어낼 수도, 같은 의미의 다른 언어로 된 sentence를 만들어낼 수도 있다. 이는 model의 train 과정에서 정해지는 것으로, label을 어떤 sentence로 정할 것인가에 따라 달라진다. 결국 Transformer는 sentence 형태의 input을 사용해 sentence 형태의 output을 만들어내는 함수로 이해할 수 있다.
 
@@ -65,7 +76,7 @@ class Transformer(nn.Module):
 		return y
 ```
 
-# Encoder
+## Encoder
 
 ![encoder.png](/assets/images/2021-01-28-Transformer-in-pytorch/encoder.png)
 
@@ -93,7 +104,7 @@ class Encoder(nn.Module):
 
 forward 함수를 주목해보자. Encoder Layer들을 순서대로 실행하면서, 이전 layer의 output을 이후 layer의 input으로 넣는다. 첫 layer의 input은 Encoder 전체의 input인 x가 된다. 이후 가장 마지막 layer의 output (context)를 return한다.
 
-## Encoder Layer
+### Encoder Layer
 
 ![encoder_layer.png](/assets/images/2021-01-28-Transformer-in-pytorch/encoder_layer.png)
 
@@ -113,7 +124,7 @@ class EncoderLayer(nn.Module):
 		return out
 ```
 
-## What is Self-Attention?
+### What is Self-Attention?
 
 Multi-Head Attention은 Self-Attention을 병렬적으로 여러 개 수행하는 layer이다. 때문에 Multi-Head Attention을 이해하기 위해서는 Self-Attention에 대해 먼저 알아야만 한다. Attention이라는 것은 넓은 범위의 전체 data에서 특정한 부분에 집중한다는 의미이다. 다음의 문장을 통해 Attention의 개념을 이해해보자.
 
@@ -121,14 +132,14 @@ Multi-Head Attention은 Self-Attention을 병렬적으로 여러 개 수행하�
 
  위 문장에서 'it'은 무엇을 지칭하는 것일까? 사람이라면 직관적으로 'animal'과 연결지을 수 있지만, 컴퓨터는 'it'이 'animal'을 가리키는지, 'street'를 가리키는지 알지 못한다. Self-Attention은 이러한 문제를 해결하기 위해 같은 문장 내에서 두 token 사이의 연관성을 찾아내는 방법론이다. Self가 붙는 이유는 문장 내에서 (같은 문장 내의 다른 token에 대한) Attention을 구하기 때문이다.
 
-### RNN vs Self-Attention
+#### RNN vs Self-Attention
 
  Transformer에서 벗어나, 이전 RNN의 개념을 다시 생각해보자. RNN은 이전 시점까지 나온 token들에 대한 hidden state 내부에 이전 정보들을 저장했다. RNN의 경우 hidden state를 활용해 이번에 등장한 'it'이 이전의 'The Animal'을 가리킨다는 것을 알아낼 것이다. Self-Attention 역시 동일한 효과를 내는 것을 목적으로 하나, Recurrent Network에 비해 크게 아래와 같은 2가지 장점을 갖는다.
 
 1. Recurrent Network는 $$i$$시점의 hidden state $$h_i$$를 구하기 위해서는 $$h_{i-1}$$가 필요했다. 결국, 앞에서부터 순차 계산을 해나가 $$h_0, h_1, ... , h_n$$을 구하는 방법밖에 없었기에 병렬 처리가 불가능했다. 하지만 Self-Attention은 모든 token 쌍 사이의 attention을 한 번의 행렬 곱으로 구해내기 때문에 손쉽게 병렬 처리가 가능하다.
 2. Recurrent Network는 시간이 진행될수록 오래된 시점의 token에 대한 정보가 점차 희미해져간다. 위 문장의 예시에서 현재 'didn't'의 시점에서 hidden state를 구한다고 했을 때, 바로 직전의 token인 'animal'에 대한 정보는 뚜렷하게 남아있다. 하지만 점차 앞으로 나아갈수록, 'because'나 'it'의 시점에서는 'didn't' 시점보다는 'animal'에 대한 정보가 희미하게 남게 된다. 결국, 서로 거리가 먼 token 사이의 관계에 대한 정보가 제대로 반영되지 못하는 것이다. 반면, Self-Attention은 문장에 token이 $$n$$개 있다고 가정할 경우, $$n \times n$$ 번 연산을 수행해 모든 token들 사이의 관계를 직접 구해낸다. 중간의 다른 token들을 거치지 않고 바로 direct한 관계를 구하는 것이기 때문에 Recurrent Network에 비해 더 명확하게 관계를 잡아낼 수 있다.
 
-### Query, Key, Value
+#### Query, Key, Value
 
 지금까지는 추상적으로 Self-Attention에 대한 개념 및 장단점을 살펴봤다. 이제 구체적으로 어떤 방식으로 행렬 곱셈을 사용해 Self-Attention이 수행되는지 알아보자. 우선은 matrix level이 아닌 token 단위의 vector-level에서 이해해보자.
 
@@ -142,7 +153,7 @@ Self-Attention에서는 총 3개의 vector가 새로 등장한다. Query, Key, V
 
  Query, Key, Value가 각각 어떤 token을 가리키는지는 이해가 됐을 것이다. 하지만, 그래서 각 vector의 값은 어떻게 만들어지는지는 우리는 아직 알지 못한다. 정말 간단하게도, input으로 들어오는 token embedding vector를 fully connected layer에 넣어 세 vector를 만들어낸다. 세 vector를 생성해내는 FC layer는 모두 다르기 때문에, 결국 self-attention에서는 Query, Key, Value를 구하기 위해 3개의 서로 다른 FC layer가 존재한다. 이 FC layer들은 모두 같은 input dimension, output dimension을 갖는다. input dimension이 같은 이유는 당연하게도 모두 다 token embedding vector를 input으로 받기 때문이다. output dimension이 같다는 것은 각각 별개의 FC layer로 구해진 Query, Key, Value가 값은 다를지언정 같은 dimension을 갖는 vector가 된다는 것을 알 수 있다. 즉, **Query, Key, Value의 shape는 모두 동일**하다. 앞으로 이 세 vector의 dimension을 $$d_k$$로 명명한다. 여기서 $$k$$는 Key를 의미하는데, 굳이 Query, Key, Value 중 Key를 이름으로 채택한 이유는 특별히 있지 않고, 단지 논문의 notation에서 이를 채택했기 때문이다. 정리하자면, Query, Key, Value는 모두 $$d_k$$의 dimension을 갖는 vector이다. 이제 위에서 얘기했던 Key, Value가 다른 값을 갖는 이유를 이해할 수 있다. input은 같은 token embedding vector였을지라도 서로 다른 FC layer를 통해서 각각 Key, Value가 구해지기 때문에 같은 token을 가리키면서 다른 값을 갖는 것이다.
 
-### How to Calculate?
+#### How to Calculate?
 
 이제 Query, Key, Value를 활용해 Attention을 계산해보자. Attention이라고 한다면 어떤 것에 대한 Attention인지 불명확하다. 구체적으로, Query에 대한 Attention이다. 이 점을 꼭 인지하고 넘어가자. 이후부터는 Query, Key, Value를 각각 $$Q$$, $$K$$, $$V$$로 축약해 부른다. Query의 Attention은 다음과 같은 수식으로 계산된다.
 
@@ -196,7 +207,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
 ![qkv_fc_layer.png](/assets/images/2021-01-28-Transformer-in-pytorch/qkv_fc_layer.png)
 
-### Pad Masking
+#### Pad Masking
 
  뜬금없이 masking이 왜 나오는 것일까? 사실 논문의 figure에 따르면 Attention 계산에는 masking 과정이 포함되어 있다.
 
@@ -210,7 +221,7 @@ pad는 무엇을 의미하는 것일까? 예시 문장을 다시 가져와보자
 
 문장을 word 단위로 tokenize(단순히 python의 split() 사용)한다면 token의 개수는 총 11개이다. 만약의 각 token의 embedding dimension이 $$d_{embed}$$라고 한다면, 문장 전체의 embedding matrix는 ($$11 \times d_{embed}$$)일 것이다. 그런데 문장의 길이가 더 길거나 짧다면 그 때마다 input의 shape는 바뀌게 된다. 실제 model 학습 과정에서는 한 문장 씩이 아닌 mini-batch씩 여러 문장와야 하는데 각 문장 마다의 length가 다를 경우 batch를 만들어낼 수 없다. 이러한 문제를 해결하기 위해 $$\text{seq\_len}$$(해당 mini-batch 내 token 개수의 최대 값)을 지정하게 되는데, 만약 $$\text{seq\_len}$$이 20이라고 한다면 위 문장에서는 9개의 빈 token이 있게 된다. 이러한 빈 token을 pad token이라고 한다. 그런데, 이러한 pad token에는 attention이 부여되어서는 안된다. 실제로는 존재하지도 않는 token과 다른 token 사이의 attention을 찾아서 계산하고, 이를 반영하는 것은 직관적으로도 말이 안된다는 것을 알 수 있다. 따라서 이러한 pad token들에 대해 attention이 부여되지 않도록 처리하는 것이 pad masking이다. masking은 $$(\text{seq\_len} \times \text{seq\_len})$$ shape의 matrix를 곱하는 방식으로 이뤄지는데 masking matrix에서 pad token에 해당하는 row, column의 모든 값은 $$-\inf$$이다. 그 외에는 모두 1이다. 이러한 연산은 scaling과 softmax 사이에 수행하게 되는데, 사실은 scaling 이전, 이후 언제 적용하든 차이는 없다. scaling은 단순히 모든 값을 $$d_k$$로 일괄 나누는 작업이기 때문이다. 대신 반드시 $$Q$$와 $$K$$의 행렬곱 이후, softmax 이전에 적용되어야 한다. masking matrix와 같은 shape는 $$Q$$와 $$K$$의 행렬곱 연산 이후에나 등장하기 때문이다. 또한 softmax는 등장하는 모든 값들을 반영해 확률값을 계산하게 되는데, 이 때 pad token의 값이 반영되어서는 안되므로 softmax 이전에는 반드시 masking이 수행되어야 한다.
 
-### Self-Attention Code in Pytorch
+#### Self-Attention Code in Pytorch
 
  Self-Attention을 pytorch code로 구현해보자. Self-Attention은 Transformer에서의 가장 핵심적인 code이므로 반드시 이해하고 넘어가자. 여기서 주의해야 할 점은 실제 model에 들어오는 input은 한 개의 문장이 아니라 mini-batch이기 때문에 $$Q$$, $$K$$, $$V$$의 shape가 $$\text{n\_batch} \times \text{seq\_len} \times d_k$$라는 것이다.
 
@@ -229,7 +240,7 @@ def calculate_attention(self, query, key, value, mask):
 
 함수의 인자로 query, key, value, mask를 받는다. mask는 pad masking matrix일 것이다. query, key, value는 서로 다른 FC Layer를 거쳐 $$\text{n\_batch} \times \text{max\_seq\_len} \times d_k$$로 변형되었다.
 
-## Multi-Head Attention Layer
+### Multi-Head Attention Layer
 
 ![multi_head_attention_in_paper.png](/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png)
 
@@ -251,7 +262,7 @@ def calculate_attention(self, query, key, value, mask):
 
 ![multi_head_attention.png](/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention.png)
 
-### Multi-Head Attention Code in Pytorch
+#### Multi-Head Attention Code in Pytorch
 
  Multi-Head Attention Layer를 실제 code로 구현해보자. 위에서 구현했던 calculate_attention 함수를 사용한다.
 
@@ -378,7 +389,7 @@ class Transformer(nn.Module):
 		return out
 ```
 
-## Position-wise Feed Forward Layer
+### Position-wise Feed Forward Layer
 
  단순하게 2개의 FC Layer를 갖는 Layer이다. 각 FC Layer는 ($$d_{embed} \times d_{ff}$$), ($$d_{ff} \times d_{embed}$$)의 weight matrix를 갖는다. 즉, Feed Forward Layer 역시 input의 shape를 그대로 유지한다. 다음 Encoder Layer에 shape를 유지한 채 넘겨줘야 하기 때문이다. 정리하자면, Feed Forward Layer는 Multi-Head Attention Layer의 output을 input으로 받아 연산을 수행하고, 다음 Encoder에게 output을 넘겨준다. 논문에서의 수식을 참고하면 첫번째 FC Layer의 output에 ReLU를 적용하게 된다.
 
@@ -402,7 +413,7 @@ class PositionWiseFeedForwardLayer(nn.Module):
 
 생성자의 인자로 받는 두 FC Layer는 ($$d_{embed} \times d_{ff}$$), ($$d_{ff} \times d_{embed}$$)의 shape를 가져야만 한다.
 
-## Norm Layer(Residual Connection)
+### Norm Layer(Residual Connection)
 
  Encoder Layer의 구조를 다시 가져와 살펴보자.
 
@@ -443,7 +454,7 @@ class EncoderLayer(nn.Module):
 
 ResidualConnectionLayer의 forward 함수에 sub_layer를 전달할 때에는 lambda 식의 형태로 전달한다.
 
-# Decoder
+## Decoder
 
 Transformer의 Decoder는 Encoder를 완벽히 이해했다면 큰 무리없이 이해할 수 있다. Encoder의 Layer를 그대로 가져와 사용하고, 몇몇 변경만 가해주는 정도이기 때문이다. 우선 Decoder를 이해하기 위해서는 Decoder의 input과 output이 무엇인지부터 명확히 해 무엇을 하는 module인지 파악하는 것이 최우선이다.
 
@@ -453,13 +464,13 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 가장 처음에 Transformer의 전체 구조를 이야기할 때 봤던 Decoder의 구조이다. Context와 Some Sentence를 input으로 받아 Output Sentence를 출력한다. Context는 Encoder의 output이라는 것은 이해했다. Transformer model의 목적을 다시 상기시켜 보자. input sentence를 받아와 output sentence를 만들어내는 model이다. 대표적으로 번역과 같은 task를 처리할 수 있을 것이다. 번역이라고 가정한다면, Encoder는 Context를 생성해내는 것, 즉 input sentence의 정보를 압축해 담아내는 것을 목적으로 하고, Decoder는 Context를 활용해 output sentence를 만들어내는 것을 목적으로 한다. 그렇다면 Decoder는 input으로 Context만 받아야 하지, 왜 다른 추가적인 sentence를 받을까? 또 이 sentence는 도대체 무엇일까? 이에 대해 알아보자.
 
-## Decoder's Input
+### Decoder's Input
 
-### Context
+#### Context
 
  위에서 언급했듯이, Decoder의 input으로는 Context와 sentence가 있다. Context는 Encoder에서 생성된 것이다. Encoder 내부에서 Multi-Head Attention Layer나 Position-wise Feed-Forward Layer 모두 input의 shape를 보존했음을 주목하자. 때문에 Encoder Layer 자체도 input의 shape를 보존할 것이고, Encoder Layer가 쌓인 Encoder 전체도 input의 shape를 보존한다. 따라서 Encoder의 output인 Context는 Encoder의 input인 sentence embedding과 동일한 shape를 갖는다. 이 점만 기억하고 넘어가면, 이후 Decoder에서 Context를 사용할 때 이해가 훨씬 수월하다. 이제 Decoder input 중 Context가 아닌 sentence에 대해서 알아보자.
 
-### Teacher Forcing
+#### Teacher Forcing
 
  Decoder의 input에 추가적으로 들어오는 sentence를 이해하기 위해서는 Teacher Forcing라는 개념에 대해 알고 있어야 한다. RNN 계열이든, Transformer 계얼이든 번역 model이 있다고 생각해보자. 결국에는 새로운 sentence를 생성해내야만 한다. 힘들게 만들어낸 model이 초창기 학습을 진행하는 상황이다. random하게 초기화된 parameter들의 값 때문에 엉터리 결과가 나올 것이다. RNN으로 생각을 해봤을 때, 첫번째 token을 생성해내고 이를 다음 token을 생성할 때의 input으로 활용하게 된다. 즉, 현재 token을 생성할 때 이전 token들을 활용하는 것이다. 그런데 model의 학습 초반 성능은 말그대로 엉터리 결과일 것이기 떄문에, model이 도출해낸 엉터리 token을 이후 학습에 사용하게 되면 점점 결과물은 미궁으로 빠질 것이다. 엉터리 token으로 유추해낸 다음 token, 또 그들을 사용해 다음 token을 만들어내면 학습이 불가능하다. 이를 위해서 Teacher Forcing을 사용하게 된다. Teacher Forcing이란, Supervised Learning에서 label data를 input으로 활용하는 것이다. RNN으로 번역 model을 만든다고 할 때, 학습 과정에서 model이 생성해낸 token을 다음 token 생성 때 사용하는 것이 아닌, 실제 label data의 token을 사용하게 되는 것이다. 우선 정확도 100%를 달성하는 이상적인 model이라고 생각해보자.
 
@@ -479,7 +490,7 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 이처럼 학습 과정과 실제 사용에서의 괴리가 발생하기는 하지만, model의 학습 성능을 비약적으로 향상시킬 수 있다는 점에서 대부분의 NLP model에서 필수적으로 사용하는 기법이다.
 
-### Teacher Forcing in Transformer (Subsequent Masking)
+#### Teacher Forcing in Transformer (Subsequent Masking)
 
  Teacher Forcing 개념을 이해하고 나면 Transformer Decoder에 input으로 들어오는 sentence가 어떤 것인지 이해할 수 있다. ground truth[:-1]의 sentence embedding일 것이다. 하지만 이러한 방식으로 Teacher Forcing이 Transformer에 그대로 적용될 수 있을까? 결론부터 말하자면 그래서는 안된다. 위에서 Teacher Forcing에서 예시를 든 RNN Model은 이전 cell의 output을 이후 cell에서 사용할 수 있었다. 앞에서부터 순선대로 RNN cell이 실행되기 때문에 이러한 방식이 가능했다. 하지만 Transformer가 RNN에 비해 갖는 가장 큰 장점은 병렬 연산이 가능하다는 것이었다. ground truth의 embedding을 matrix로 만들어 input으로 그대로 사용하게 되면, Decoder에서 Self-Attention 연산을 수행하게 될 때 현재 출력해내야 하는 token의 정답까지 알고 있는 상황이 발생한다. 따라서 masking을 적용해야 한다. $$i$$번째 token이라고 한다면, $$1 \thicksim i-1$$의 token은 보이지 않도록 처리를 해야 하는 것이다. 이러한 masking 기법을 subsequent masking이라고 한다. pytorch code로 구현해보자.
 
@@ -512,7 +523,7 @@ class Transformer(nn.Module):
 		return out
 ```
 
-## Decoder Layer
+### Decoder Layer
 
  Decoder 역시 Encoder와 마찬가지로 $$N$$개의 Decoder Layer가 겹겹이 쌓인 구조이다. 이 때 주목해야 하는 점은 Encoder에서 넘어오는 Context가 각 Decoder Layer마다 input으로 들어간다는 것이다. 그 외에는 Encoder와 차이가 전혀 없다.
 
@@ -524,11 +535,11 @@ class Transformer(nn.Module):
 
  Decoder Layer는 Encoder Layer와 달리 Multi-Head Attention Layer가 2개가 존재한다. 첫번째 layer는 **Masked** Multi-Head Attention Layer라고 부르는데, 이는 위에서 언급했던 subsequent masking이 적용되기 떄문이다. 두번째 layer는 특징이 Encoder에서 넘어온 Context를 input으로 받아 사용한다는 것이다. 즉, Encoder의 Context는 Decoder 내 각 Decoder Layer의 두번째 Multi-Head Attention Layer에서 사용되게 된다. 마지막 Position-wise Feed-Forward Layer는 Encoder Layer의 것과 완전히 동일하므로 설명을 생략한다. 이제 두 Multi-Head Attention Layer에 대해서 Encoder의 것과 비교하며 특징을 살펴보자.
 
-## Masked Multi-Head Attention Layer
+### Masked Multi-Head Attention Layer
 
  Masked Multi-Head Attention Layer에 대한 설명은 특별한 것이 없다. Encoder의 것과 완전히 동일한데 다만 mask로 들어오는 인자가 일반적인 pad masking에 더해 subsequent masking까지 적용되어 있다는 점만이 차이일 뿐이다. 즉, 이 layer는 Self-Attention을 수행하는 layer이다. '**Self**'에 주목하자. **같은** sentence 내 token들 사이의 attention을 찾는 것이다. 이는 다음 Multi-Head Attention Layer와 가장 큰 차이점이다.
 
-## Multi-Head Attention Layer
+### Multi-Head Attention Layer
 
  Decoder의 가장 핵심적인 부분이다. Decoder Layer 내 이전 Masked Multi-Head Attention Layer에서 넘어온 output을 input으로 받는다. 여기에 추가적으로 Encoder에서 도출된 Context도 input으로 받는다. 두 input의 사용 용도는 완전히 다르다. **Decoder Layer 내부에서 전달된 input**(teacher forcing으로 넘어온 input)**은 Query로써 사용**하고, Encoder에서 넘어온 **Context는 Key, Value로써 사용**하게 된다. 이 점을 반드시 기억하고 넘어가자. 정리하자면 Decoder Layer의 2번째 layer는 Decoder에서 넘어온 input과 Encoder에서 넘어온 input 사이의 Attention을 계산하는 것이다. 따라서 Self-Attention이 아니다. 우리가 Decoder에서 도출해내고자 하는 최종 output은 teacher forcing으로 넘어온 sentence와 최대한 유사한 sentence이다. 따라서 Decoder Layer 내 이전 layer에서 넘어오는 input이 Query가 되고, 이에 상응하는 Encoder에서의 Attention을 찾기 위해 Context를 Key, Value로 두게 된다. 번역 task를 생각했을 때 가장 직관적으로 와닿는다. 만약 English를 French로 번역하고자 한다면, Encoder의 input은 English sentence일 것이고, Encoder가 도출해낸 Context는 English에 대한 Context일 것이다. Decoder의 input(teacher forcing)과 output은 French sentence일 것이다. 따라서 이 경우에는 Query가 French, Key와 Value는 English가 되어야 한다.
 
@@ -544,7 +555,7 @@ class Transformer(nn.Module):
 		...
 ```
 
-## Decoder Code in Pytorch
+### Decoder Code in Pytorch
 
 이제 Decoder와 Decoder Layer에 대한 code를 완성해보자. Position-wise Feed Forward Network와 Residual Connection Layer는 모두 동일하게 사용한다.
 
@@ -598,7 +609,7 @@ class Transformer(nn.Module):
 		return out
 ```
 
-# Transformer's Input (Positional Encoding)
+## Transformer's Input (Positional Encoding)
 
 지금까지 Encoder와 Decoder의 내부 구조가 어떻게 이루어져 있는지 분석하고 code로 구현까지 마쳤다. 이번에는 Encoder와 Decoder의 input으로는 sentence는 어떤 형태인지 알아보자. Transformer의 input은 단순한 sentence embedding에 더해 Positional Encoding이 추가되게 된다. 전체 TransformerEmbedding은 단순 Embedding과 PositionalEncoding의 sequential이다. code는 단순하다.
 
@@ -671,7 +682,7 @@ class Transformer(nn.Module):
 		return out
 ```
 
-# After Decoder (Generator)
+## After Decoder (Generator)
 
 Decoder의 output이 그대로 Transformer의 최종 output이 되는 것은 아니다. 추가적인 layer를 거쳐간다. 이 layer들을 generator라고 부른다.
 
@@ -700,7 +711,7 @@ class Transformer(nn.Module):
 
 log_softmax에서는 dim=-1이 되는데, 마지막 dimension인 len(vocab)에 대한 확률값을 구해야 하기 때문이다.
 
-# Make Model
+## Make Model
 
 Transformer를 생성하는 예제 함수는 다음과 같이 작성할 수 있다.
 
