@@ -344,8 +344,8 @@ class EncoderLayer(nn.Module):
 		self.multi_head_attention_layer = multi_head_attention_layer
 		self.position_wise_feed_forward_layer = position_wise_feed_forward_layer
 
-	def forward(self, x, **mask**):
-		out = self.multi_head_attention_layer(**x, x, x, mask**)
+	def forward(self, x, mask):
+		out = self.multi_head_attention_layer(x, x, x, mask)
 		out = self.position_wise_feed_forward_layer(out)
 		return out
 ```
@@ -361,10 +361,10 @@ class Encoder(nn.Module):
 		for i in range(n_layer):
 			self.layers.append(copy.deepcopy(encoder_layer))
 
-	def forward(self, x, **mask**):
+	def forward(self, x, mask):
 		out = x
 		for layer in self.layers:
-			out = layer(out, **mask**)
+			out = layer(out, mask)
 		return out
 ```
 
@@ -378,8 +378,8 @@ class Transformer(nn.Module):
 		self.encoder = encoder
 		self.decoder = decoder
 
-	def forward(self, src, trg, **mask**):
-		encoder_output = self.encoder(src, **mask**)
+	def forward(self, src, trg, mask):
+		encoder_output = self.encoder(src, mask)
 		out = self.decoder(trg, encoder_output)
 		return out
 ```
@@ -439,11 +439,11 @@ class EncoderLayer(nn.Module):
 		super(EncoderLayer, self).__init__()
 		self.multi_head_attention_layer = multi_head_attention_layer
 		self.position_wise_feed_forward_layer = position_wise_feed_forward_layer
-		**self.residual_connection_layers = [ResidualConnectionLayer(copy.deepcopy(norm_layer)) for i in range(2)]**
+		self.residual_connection_layers = [ResidualConnectionLayer(copy.deepcopy(norm_layer)) for i in range(2)]
 
 	def forward(self, x, mask):
-		out = **self.residual_connection_layers[0](x, lambda x: self.multi_head_attention_layer(x, x, x, mask))**
-		out = **self.residual_connection_layers[1](x, lambda x: self.position_wise_feed_forward_layer(x))**
+		out = self.residual_connection_layers[0](x, lambda x: self.multi_head_attention_layer(x, x, x, mask))
+		out = self.residual_connection_layers[1](x, lambda x: self.position_wise_feed_forward_layer(x))
 		return out
 ```
 
@@ -512,7 +512,7 @@ class Transformer(nn.Module):
 		self.encoder = encoder
 		self.decoder = decoder
 
-	def forward(self, src, trg, src_mask, **trg_mask**):
+	def forward(self, src, trg, src_mask, trg_mask):
 		encoder_output = self.encoder(src, mask)
 		out = self.decoder(trg, encoder_output)
 		return out
@@ -528,7 +528,7 @@ class Transformer(nn.Module):
 
 ![decoder_layer.png](/assets/images/2021-01-28-Transformer-in-pytorch/decoder_layer.png)
 
- Decoder Layer는 Encoder Layer와 달리 Multi-Head Attention Layer가 2개가 존재한다. 첫번째 layer는 **Masked** Multi-Head Attention Layer라고 부르는데, 이는 위에서 언급했던 subsequent masking이 적용되기 떄문이다. 두번째 layer는 특징이 Encoder에서 넘어온 Context를 input으로 받아 사용한다는 것이다. 즉, Encoder의 Context는 Decoder 내 각 Decoder Layer의 두번째 Multi-Head Attention Layer에서 사용되게 된다. 마지막 Position-wise Feed-Forward Layer는 Encoder Layer의 것과 완전히 동일하므로 설명을 생략한다. 이제 두 Multi-Head Attention Layer에 대해서 Encoder의 것과 비교하며 특징을 살펴보자.
+ Decoder Layer는 Encoder Layer와 달리 Multi-Head Attention Layer가 2개가 존재한다. 첫번째 layer는 Masked Multi-Head Attention Layer라고 부르는데, 이는 위에서 언급했던 subsequent masking이 적용되기 떄문이다. 두번째 layer는 특징이 Encoder에서 넘어온 Context를 input으로 받아 사용한다는 것이다. 즉, Encoder의 Context는 Decoder 내 각 Decoder Layer의 두번째 Multi-Head Attention Layer에서 사용되게 된다. 마지막 Position-wise Feed-Forward Layer는 Encoder Layer의 것과 완전히 동일하므로 설명을 생략한다. 이제 두 Multi-Head Attention Layer에 대해서 Encoder의 것과 비교하며 특징을 살펴보자.
 
 ### Masked Multi-Head Attention Layer
 
@@ -545,7 +545,7 @@ class Transformer(nn.Module):
 
 		...
 
-	def forward(self, **query, key, value**, mask=None):
+	def forward(self, query, key, value, mask=None):
 		
 		...
 ```
@@ -562,10 +562,10 @@ class Decoder(nn.Module):
 		for i in range(n_layer):
 			self.layers.append(copy.deepcopy(sub_layer))
 
-	def forward(self, **x, mask, encoder_output, encoder_mask**):
+	def forward(self, x, mask, encoder_output, encoder_mask):
 		out = x
 		for layer in self.layers:
-			out = layer(**x, mask, encoder_output, encoder_mask**)
+			out = layer(x, mask, encoder_output, encoder_mask)
 		return out
 ```
 
@@ -579,9 +579,9 @@ class DecoderLayer(nn.Module):
 		self.multi_head_attention_layer = ResidualConnectionLayer(multi_head_attention_layer, copy.deepcopy(norm_layer))
 		self.position_wise_feed_forward_layer = ResidualConnectionLayer(position_wise_feed_forward_layer, copy.deepcopy(norm_layer))
 
-	def forward(self, **x, mask, encoder_output, encoder_mask**):
-		out = self.masked_multi_head_attention_layer(**query=x, key=x, value=x, mask=mask**)
-		out = self.multi_head_attention_layer(**query=out, key=encoder_output, value=encoder_output, mask=encoder_mask**)
+	def forward(self, x, mask, encoder_output, encoder_mask):
+		out = self.masked_multi_head_attention_layer(query=x, key=x, value=x, mask=mask)
+		out = self.multi_head_attention_layer(query=out, key=encoder_output, value=encoder_output, mask=encoder_mask)
 		out = self.position_wise_feed_forward_layer(x=out)
 		return out
 ```
@@ -598,9 +598,9 @@ class Transformer(nn.Module):
 		self.encoder = encoder
 		self.decoder = decoder
 
-	def forward(self, src, trg, src_mask, **trg_mask**):
+	def forward(self, src, trg, src_mask, trg_mask):
 		encoder_output = self.encoder(src, src_mask)
-		out = self.decoder(**trg, trg_mask, encoder_output, src_mask**)
+		out = self.decoder(trg, trg_mask, encoder_output, src_mask)
 		return out
 ```
 
@@ -664,16 +664,16 @@ code가 난해한데, 직관적으로 작동 원리만 이해하고 넘어가도
 ```python
 class Transformer(nn.Module):
 
-	def __init__(self, **src_embed, trg_embed**, encoder, decoder):
+	def __init__(self, src_embed, trg_embed, encoder, decoder):
 		super(Transformer, self).__init__()
-		**self.src_embed = src_embed
-		self.trg_embed = trg_embed**
+		self.src_embed = src_embed
+		self.trg_embed = trg_embed
 		self.encoder = encoder
 		self.decoder = decoder
 
-	def forward(self, src, trg, src_mask, ****trg_mask):
-		encoder_output = self.encoder(**self.src_embed(src)**, src_mask)
-		out = self.decoder(**self.trg_embed(trg)**, trg_mask, encoder_output, src_mask)
+	def forward(self, src, trg, src_mask, trg_mask):
+		encoder_output = self.encoder(self.src_embed(src), src_mask)
+		out = self.decoder(self.trg_embed(trg), trg_mask, encoder_output, src_mask)
 		return out
 ```
 
@@ -688,7 +688,7 @@ Decoder의 output이 그대로 Transformer의 최종 output이 되는 것은 아
 ```python
 class Transformer(nn.Module):
 
-	def __init__(self, src_embed, trg_embed, encoder, decoder, **fc_layer**):
+	def __init__(self, src_embed, trg_embed, encoder, decoder, fc_layer):
 		super(Transformer, self).__init__()
 		self.src_embed = src_embed
 		self.trg_embed = trg_embed
@@ -696,11 +696,11 @@ class Transformer(nn.Module):
 		self.decoder = decoder
 		self.fc_layer = fc_layer
 
-	def forward(self, src, trg, src_mask, ****trg_mask):
+	def forward(self, src, trg, src_mask, trg_mask):
 		encoder_output = self.encoder(self.src_embed(src), src_mask)
 		out = self.decoder(self.trg_embed(trg), trg_mask, encoder_output, src_mask)
-		**out = self.fc_layer(out)
-		out = F.log_softmax(out, dim=-1)**
+		out = self.fc_layer(out)
+		out = F.log_softmax(out, dim=-1)
 		return out
 ```
 

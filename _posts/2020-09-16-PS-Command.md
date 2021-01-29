@@ -6,6 +6,7 @@ categories: [System Programming, UNIX]
 tags: [System Programming]
 date: 2020-09-16 00:00:00 +0000
 last_modified_at: 2020-09-16 00:00:00 +0000
+project: true
 
 ---
 

@@ -1,10 +1,4 @@
-# main links
-main:
-  - title: "Machine Learning"
-    url: /machine-learning/
-  - title: "Operating System"
-    url: /operating-system/
-  - title: "System Programming"
-    url: /system-programming/
-  - title: "About Me"
-    url: /about-me/
+# Site navigation links
+
+- title: Projects
+  url: /projects/
