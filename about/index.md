@@ -1,68 +1,37 @@
 ---
-
-title: "About Me"
-layout: about
-permalink: /about-me/
-author_profile: true
-
+layout: page
+title: About the Theme
+tags: [about, Jekyll, theme, moon]
+date: 2016-03-21
+comments: false
 ---
+    
+<center><a href="http://taylantatli.github.io/Moon"><b>Moon</b></a> is a minimal, one column jekyll theme.</center>
 
-![who_am_i.jpg](/assets/images/about-me/who_am_i.jpg)
+## Features
+* Minimal, you can focus on your content
+* Responsive
+* Disqus integration
+* Syntax highlighting
+* Optional post image
+* Social icons
+* Page for sharing projects
+* Optional background image
+* Simple navigation menu
+* MathJax support
 
-머신러닝, 특히 NLP 분야에 관심이 많은 개발자입니다.
+## Preview
 
-프로그래밍에 흥미를 느껴 인문 계열에서 교차 지원을 통해 대학에 입학했습니다.
+{% capture images %}
+    https://cloud.githubusercontent.com/assets/754514/14509720/61c61058-01d6-11e6-93ab-0918515ecd56.png
+    https://cloud.githubusercontent.com/assets/754514/14509716/61ac6c8e-01d6-11e6-879f-8308883de790.png
+{% endcapture %}
+{% include gallery images=images caption="Screenshots of Moon Theme" cols=2 %}
 
-새로운 분야를 접하는 것, 개발하는 것에 큰 즐거움을 느낍니다.
+See a [live version of Moon](http://taylantatli.github.io/Moon) hosted on GitHub.
 
----
+## Getting Started
 
-## Skills
-
-- C / C++
-- Python
-- Pytorch
-- Unix
-- Bash
-- Docker
-
----
-
-## 소속
-
-### 숭실대학교 컴퓨터학부
-
-### 숭실대학교 커뮤니티 어플리케이션 개발 동아리 YourSSU 리서치팀
-
-### 숭실대학교 IT대학 머신러닝 소모임 SSUML
-
----
-
-## Development Environment
-
-macOS Big Sur 11.1
-
-Ubuntu 20.04 LTS (with SSH connection)
-
-Windows 10 (with RDP connection)
-
-MacBook Air 13, 2020(Apple Silicon M1)
-
-LG 27UL850 4K
-
-HHKB-BT (PD-KB600WNS)
-
-Vim editor 8.2
-
----
-
-## Interested in
-
-여행 다니는 것을 좋아합니다.
-
-패션/운동에 관심이 많습니다.
-
-IU, BTS를 좋아합니다.
-
-IT 기기에 관심이 많습니다.
-
+To learn how to install and use this theme check out the [Setup Guide](http://taylantatli.me/Moon/moon-theme/) for more information.
+      
+[Install Moon](https://github.com/TaylanTatli/Moon){: .btn}
