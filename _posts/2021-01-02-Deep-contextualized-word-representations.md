@@ -41,7 +41,7 @@ backward LSTM은 $$t_{k+1}, t_{k+2}, ... ,t_N$$이 주어졌을 때 $$t_k$$를 �
 
 $$j$$번째 LSTM layer에서 $$k$$번째 token에 대한 backward LSTM output은 $$\overleftarrow{h}_{k,j}$$이다. 마지막 LSTM layer의 output인 $$\overleftarrow{h}_{k,L}$$을 softmax에 넣어 최종적으로 $$t_{k-1}$$을 예측하게 된다.
 
-$$$$p(t_1, t_2, ... , t_N) = \prod^N_{k=1}{p(t_k \vert t_{k+1}, t_{k+2}, ..., t_{N})}$$$$
+$$p(t_1, t_2, ... , t_N) = \prod^N_{k=1}{p(t_k \vert t_{k+1}, t_{k+2}, ..., t_{N})}$$
 
 biLM은 위의 두 LSTM을 결합한 것이다. 두 방향에 대한 log likelihood를 최대화하는 것을 목표로 한다.
 
@@ -53,7 +53,7 @@ $$\Theta_x$$는 token representation($$t_1, ... , t_N$$)에 대한 parameter이�
 
 ELMo에서는 새로운 representation을 사용하는데, 이를 얻기 위해서는 LSTM layer의 개수를 $$L$$이라고 했을 때 총 $$2L+1$$개의 representation을 concatenate해야 한다. input representation layer 1개와 forward, backward LSTM 각각 $$L$$개이다.
 
-$$$$R_k = \{x_k, \overrightarrow{h}_{k,j}, \overleftarrow{h}_{k,j} \vert j=1, ... , L\}$$$$
+$$R_k = \{x_k, \overrightarrow{h}_{k,j}, \overleftarrow{h}_{k,j} \vert j=1, ... , L\}$$
 
 input representation layer를 $$j=0$$으로, $$\overrightarrow{h}_{k,j}$$와 $$\overleftarrow{h}_{k,j}$$의 concatenation을 $$h_{k,j}$$로 표현한다면 다음과 같은 일반화된 수식으로 ELMO representation을 표현할 수 있다.
 
