@@ -9,6 +9,7 @@ background:         'assets/images/placeholder-big.jpg'
 tiled_bg:           false   # Set this true if you want to tile your background image, otherwise it will be covered
 locale:             ko-KR
 url:                https://cpm0722.github.io
+#url:                http://192.168.50.41:4000
 
 # Jekyll
 permalink:          /:categories/:title/
