@@ -11,7 +11,7 @@ locale:             ko-KR
 url:                https://cpm0722.github.io
 
 # Jekyll
-permalink:          /:title/
+permalink:          /:categories/:title/
 markdown:           kramdown
 highlighter:        rouge
 kramdown:
