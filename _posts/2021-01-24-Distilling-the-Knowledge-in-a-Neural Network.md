@@ -4,8 +4,8 @@ title: "[NLP 논문 리뷰] Distilling the Knowledge in a Neural Network"
 subtitle: Distilling
 categories: [Machine Learning, Paper Review]
 tags: [ML General]
-date: 2021-01-28 00:00:00 +0000
-last_modified_at: 2021-01-28 00:00:00 +0000
+date: 2021-01-24 00:00:00 +0000
+last_modified_at: 2021-01-24 00:00:00 +0000
 
 ---
 
