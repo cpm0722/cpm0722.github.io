@@ -1,6 +1,6 @@
 ---
 layout: paper-review
-title: All Projects
+title: Projects
 excerpt: "A List of Projects"
 comments: false
 ---
