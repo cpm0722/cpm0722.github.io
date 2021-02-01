@@ -2,7 +2,7 @@
 
 title: "[NLP 논문 리뷰] Neural Machine Translation of Rare Words with Subword Units (BPE)"
 subtitle: BPE
-categories: [Paper Review]
+categories: [Paper]
 tags: [NLP]
 permalink: /paper-review/neural-machine-translation-of-rare-words-with-subword-units
 date: '2020-05-03 00:00:00 +0000'
