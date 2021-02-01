@@ -22,16 +22,20 @@ layout: compress
                     </a>
                 </div>
                 <div class="post-list">
-                	{% for post in site.categories.paper %} 
-										{% if post.url %}
-                  		<ul>
-                    		<li class="wow fadeInLeft" data-wow-duration="1.5s">
-                      		<a class="zoombtn" href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
-													<p> </p>
-                        	<!--<p>{{ post.excerpt }}</p>-->
-                       		<a href="{{ site.url }}{{ post.url }}" class="btn zoombtn">Read Post</a>
-                    		</li>
-                  		</ul>
+                	{% for category in site.categories %} 
+										{% if category[0] == "Paper Review" %}
+											{% for post in category[1] %}
+												{% if post.url %}
+                  				<ul>
+                    				<li class="wow fadeInLeft" data-wow-duration="1.5s">
+                     	 				<a class="zoombtn" href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
+															<p> </p>
+                        			<!--<p>{{ post.excerpt }}</p>-->
+                       				<a href="{{ site.url }}{{ post.url }}" class="btn zoombtn">Read Post</a>
+                    				</li>
+                  				</ul>
+												{% endif %}
+											{% endfor %}
 										{% endif %}
                 	{% endfor %}
                 </div>
