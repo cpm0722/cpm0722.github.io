@@ -12,7 +12,7 @@ url:                https://cpm0722.github.io
 #url:                http://192.168.50.41:4000
 
 # Jekyll
-permalink:          /:categories/:title/
+permalink:          /:category/:title/
 markdown:           kramdown
 highlighter:        rouge
 kramdown:
