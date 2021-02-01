@@ -1,7 +1,7 @@
 # Site navigation links
 
-- title: Paper-Review
-	url: /paper-review/
+- title: PaperReview
+  url: /paper-review/
 
 - title: Projects
   url: /projects/
