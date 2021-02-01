@@ -3,7 +3,7 @@
 title: "[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks"
 subtitle: Korean Tokenizing
 categories: [Machine Learning, Paper Review]
-tags: [NLP, Korean]
+tags: [NLP, Korean NLP]
 permalink: /paper-review/an-empirical-study-of-tokenization-strategies-for-various-korean-nlp-tasks
 date: 2020-10-10 00:00:00 +0000
 last_modified_at: 2020-10-10 00:00:00 +0000

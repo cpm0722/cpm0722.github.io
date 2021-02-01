@@ -3,7 +3,7 @@
 title: "[NLP 논문 리뷰] Subword-level Word Vector Representation for Korean"
 subtitle: Korean BPE
 categories: [Machine Learning, Paper Review]
-tags: [NLP, Korean]
+tags: [NLP, Korean NLP]
 permalink: /paper-review/subword-level-word-vector-representation-for-korean
 date: 2020-09-20 00:00:00 +0000
 last_modified_at: 2020-09-20 00:00:00 +0000
