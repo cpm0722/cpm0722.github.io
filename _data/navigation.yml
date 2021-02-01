@@ -1,7 +1,10 @@
 # Site navigation links
 
-- title: "Paper Review"
-  url: /paper-review/
+- title: "Machine Learning"
+  url: /machine-learning/
 
-- title: Projects
-  url: /projects/
+- title: "Operating System"
+  url: /operating-system/
+
+- title: "System Programming"
+  url: /system-programming/

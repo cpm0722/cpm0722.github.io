@@ -1,6 +1,6 @@
 ---
 
-title: "[NLP 논문 리뷰] Distilling the Knowledge in a Neural Network"
+title: "[ML 논문 리뷰] Distilling the Knowledge in a Neural Network"
 subtitle: Distilling
 categories: [Machine Learning, Paper Review]
 tags: [ML General]
