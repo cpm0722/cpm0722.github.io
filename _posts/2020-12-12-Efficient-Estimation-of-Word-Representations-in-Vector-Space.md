@@ -4,6 +4,7 @@ title: "[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vect
 subtitle: Word2Vec
 categories: [Machine Learning, Paper Review]
 tags: [NLP]
+permalink: /paper-review/efficient-estimation-of-word-representations-in-vector-space
 date: 2020-12-12 00:00:00 +0000
 last_modified_at: 2020-12-12 00:00:00 +0000
 

@@ -4,6 +4,7 @@ title: "[NLP 논문 리뷰] Attention Is All You Need (Transformer)"
 subtitle: Transformer
 categories: [Machine Learning, Paper Review]
 tags: [NLP]
+permalink: /paper-review/attention-is-all-you-need
 date: 2020-07-05 00:00:00 +0000
 last_modified_at: 2020-07-05 00:00:00 +0000
 

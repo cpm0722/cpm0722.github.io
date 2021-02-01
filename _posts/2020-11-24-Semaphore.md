@@ -4,6 +4,7 @@ title: "[운영체제] Semaphore"
 subtitle: Semaphore
 categories: [Operating System]
 tags: [Operating System]
+permalink: /operating-system/semaphore
 date: 2020-11-24 00:00:00 +0000
 last_modified_at: 2020-11-24 00:00:00 +0000
 

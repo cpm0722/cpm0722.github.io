@@ -4,6 +4,7 @@ title: "[NLP 논문 리뷰] Sequence To Sequence Learning With Neural Networks (
 subtitle: Seq2Seq
 categories: [Machine Learning, Paper Review]
 tags: [NLP]
+permalink: /paper-review/sequence-to-sequence-learning-with-neural-networks
 date: 2020-05-10 00:00:00 +0000
 last_modified_at: 2020-05-10 00:00:00 +0000
 

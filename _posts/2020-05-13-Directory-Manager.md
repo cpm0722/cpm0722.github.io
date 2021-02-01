@@ -4,6 +4,7 @@ title: "[System programming] 디렉터리 관리 프로그램 구현"
 subtitle: "Directory Manager"
 categories: [System Programming, UNIX]
 tags: [System Programming]
+permalink: /system-programming/directory-manager
 date: 2020-05-13 00:00:00 +0000
 last_modified_at: 2020-05-13 00:00:00 +0000
 project: true

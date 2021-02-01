@@ -4,6 +4,7 @@ title: "[운영체제] Paging Mechanism"
 subtitle: Paging Mechanism
 categories: [Operating System]
 tags: [Operating System]
+permalink: /operating-system/paging-mechanism
 date: 2020-10-20 00:00:00 +0000
 last_modified_at: 2020-10-20 00:00:00 +0000
 

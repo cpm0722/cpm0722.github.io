@@ -4,6 +4,7 @@ title: "[System Programming] top 명령어 구현"
 subtitle: "top command"
 categories: [System Programming, UNIX]
 tags: [System Programming]
+permalink: /system-programming/top-command
 date: 2020-09-23 00:00:00 +0000
 last_modified_at: 2020-09-23 00:00:00 +0000
 project: true

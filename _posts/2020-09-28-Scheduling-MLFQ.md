@@ -4,6 +4,7 @@ title: "[운영체제] Scheduling: MLFQ(Multi Level Feedback Queue)"
 subtitle: MLFQ Scheduling
 categories: [Operating System]
 tags: [Operating System]
+permalink: /operating-system/scheduling-mlfq-multi-level-feedback-queue
 date: 2020-09-28 00:00:00 +0000
 last_modified_at: 2020-09-28 00:00:00 +0000
 

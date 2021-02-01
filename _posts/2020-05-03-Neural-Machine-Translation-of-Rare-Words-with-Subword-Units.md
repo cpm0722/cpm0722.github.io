@@ -4,6 +4,7 @@ title: "[NLP 논문 리뷰] Neural Machine Translation of Rare Words with Subwor
 subtitle: BPE
 categories: [Machine Learning, Paper Review]
 tags: [NLP]
+permalink: /paper-review/neural-machine-translation-of-rare-words-with-subword-units
 date: '2020-05-03 00:00:00 +0000'
 last_modified_at: '2020-05-03 00:00:00 +0000'
 

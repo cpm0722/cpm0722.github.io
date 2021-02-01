@@ -4,6 +4,7 @@ title: "[NLP 논문 리뷰] BERT: Pre-Training of Deep Bidirectional Transformer
 subtitle: BERT
 categories: [Machine Learning, Paper Review]
 tags: [NLP]
+permalink: /paper-review/bert-pre-training-of-deep-bidirectional-transformers-for-language-understanding
 date: 2020-07-19 00:00:00 +0000
 last_modified_at: 2020-07-19 00:00:00 +0000
 

@@ -2,8 +2,9 @@
 
 title: "[NLP 논문 구현] pytorch로 구현하는 Transformer (Attention is All You Need)"
 subtitle: Transformer_pytorch
-categories: [Machine Learning, Paper Review, Pytorch]
+categories: [Machine Learning, Paper Review, Pytorch Implementation]
 tags: [NLP, Pytorch]
+permalink: /pytorch-implementation/transformer
 date: 2021-01-28 00:00:00 +0000
 last_modified_at: 2021-01-28 00:00:00 +0000
 

@@ -4,6 +4,7 @@ title: "[운영체제] File System"
 subtitle: File System
 categories: [Operating System]
 tags: [Operating System]
+permalink: /operating-system/file-system
 date: 2020-12-01 00:00:00 +0000
 last_modified_at: 2020-12-01 00:00:00 +0000
 

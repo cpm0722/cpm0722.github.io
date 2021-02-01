@@ -4,6 +4,7 @@ title: "[System Programming] 동기화 프로그램 구현"
 subtitle: "sync manager"
 categories: [System Programming, UNIX]
 tags: [System Programming]
+permalink: /system-programming/sync-manager
 date: 2020-06-10 00:00:00 +0000
 last_modified_at: 2020-06-10 00:00:00 +0000
 project: true

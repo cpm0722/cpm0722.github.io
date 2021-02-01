@@ -4,6 +4,7 @@ title: "[운영체제] Concurrency"
 subtitle: Concurrency
 categories: [Operating System]
 tags: [Operating System]
+permalink: /operating-system/concurrency
 date: 2020-11-17 00:00:00 +0000
 last_modified_at: 2020-11-17 00:00:00 +0000
 

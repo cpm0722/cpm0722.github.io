@@ -4,6 +4,7 @@ title: "[NLP 논문 리뷰] Xlnet: Generalized Autoregressive Pretraining for La
 subtitle: XLNet
 categories: [Machine Learning, Paper Review]
 tags: [NLP]
+permalink: /paper-review/xlnet-generalized-autoregressive-pretraining-for-language-understanding
 date: 2020-08-16 00:00:00 +0000
 last_modified_at: 2020-08-16 00:00:00 +0000
 
