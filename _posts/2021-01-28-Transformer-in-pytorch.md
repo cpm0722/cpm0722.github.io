@@ -157,7 +157,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
 그림으로 계산의 흐름을 표현하면 다음과 같다.
 
-<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" width="250">
+<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" height="250">
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pd](https://arxiv.org/pdf/1706.03762.pdf)f]
 
@@ -207,7 +207,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
  뜬금없이 masking이 왜 나오는 것일까? 사실 논문의 figure에 따르면 Attention 계산에는 masking 과정이 포함되어 있다.
 
-<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" width="250">
+<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" height="250">
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pd](https://arxiv.org/pdf/1706.03762.pdf)f]
 
@@ -238,7 +238,7 @@ def calculate_attention(self, query, key, value, mask):
 
 ### Multi-Head Attention Layer
 
-<img src="/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png" width="250">
+<img src="/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png" height="250">
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pdf](https://arxiv.org/pdf/1706.03762.pdf)]
 
