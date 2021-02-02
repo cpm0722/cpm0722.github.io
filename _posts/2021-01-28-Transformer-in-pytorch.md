@@ -14,9 +14,9 @@ last_modified_at: 2021-01-28 00:00:00 +0000
 
 # Why Transformer?
 
- Transformer는 2017년에 등장해 NLP 분야에서 혁신적인 성과를 이끌어낸 논문이다. 비단 NLP뿐만이 아니라 다른 ML Domain 내에서도 많은 insight를 주어 활용되고 있다.
+ Transformer는 2017년에 등장해 NLP 분야에서 혁신적인 성과를 이끌어낸 논문이다. 비단 NLP뿐만이 아니라 다른 ML Domain 내에서도 수없이 활용되고 있다.
 
- Transformer의 가장 큰 contribution은 이전의 RNN(Recurrent Neural Network) model이 불가능했던 병렬 처리를 가능케 했다는 점이다. GPU를 사용함으로써 얻는 가장 큰 이점은 병렬 처리를 한다는 것인데, RNN과 같은 model은 GPU 발전의 혜택을 제대로 누리지 못했다. 앞으로 GPU의 발전은 더욱 가속화될 것이기에, Recurrent network의 한계는 점점 더 두드러질 것이다. Recurrent network를 사용하는 이유는 텍스트, 음성 등의 sequential한 data를 처리하기 위함인데, sequential하다는 것은 등장 시점(또는 위치)을 정보로 취급한다는 의미이다. 따라서 context vector를 앞에서부터 순차적으로 생성해내고, 그 context vector를 이후 시점에서 활용하게 방식으로 구현한다. 즉, 이후 시점의 연산은 앞 시점의 연산에 의존적이다. 따라서 앞 시점의 연산이 끝나지 않을 경우, 그 뒤의 연산을 수행할 수 없다. 이러한 이유로 RNN 계열의 model은 병렬 처리를 제대로 수행할 수 없다.
+ Transformer의 가장 큰 contribution은 이전의 RNN(Recurrent Neural Network) model이 불가능했던 병렬 처리를 가능케 했다는 점이다. GPU를 사용함으로써 얻는 가장 큰 이점은 병렬 처리를 한다는 것인데, RNN과 같은 model은 GPU 발전의 혜택을 제대로 누리지 못했다. 앞으로 GPU의 발전은 더욱 가속화될 것이기에, Recurrent network의 한계는 점점 더 두드러질 것이다. Recurrent network를 사용하는 이유는 텍스트, 음성 등의 sequential한 data를 처리하기 위함인데, sequential하다는 것은 등장 시점(또는 위치)을 정보로 취급한다는 의미이다. 따라서 context vector를 앞에서부터 순차적으로 생성해내고, 그 context vector를 이후 시점에서 활용하는 방식으로 구현한다. 즉, 이후 시점의 연산은 앞 시점의 연산에 의존적이다. 따라서 앞 시점의 연산이 끝나지 않을 경우, 그 뒤의 연산을 수행할 수 없다. 이러한 이유로 RNN 계열의 model은 병렬 처리를 제대로 수행할 수 없다.
 
  Transformer는 이를 극복했다. Attention 개념을 도입해 어떤 특정 시점에 집중하고, Positional Encoding을 사용해 sequential한 위치 정보를 보존했으며, 이후 시점에 대해 masking을 적용해 이전 시점의 값만이 이후에 영향을 미치도록 제한했다. 그러면서도 모든 과정을 병렬처리 가능하도록 구현했다. Transformer를 직접 pytorch를 사용해 구현하고, 학습시키며 이러한 특징들을 이해해보자. 본 포스트의 모든 code는 본인이 직접 작성했으나, 다소 참조한 부분의 출처는 포스트 하단의 Reference에 명시한다.
 
@@ -137,7 +137,7 @@ Multi-Head Attention은 Self-Attention을 병렬적으로 여러 개 수행하�
 
 #### Query, Key, Value
 
-지금까지는 추상적으로 Self-Attention에 대한 개념 및 장단점을 살펴봤다. 이제 구체적으로 어떤 방식으로 행렬 곱셈을 사용해 Self-Attention이 수행되는지 알아보자. 우선은 matrix level이 아닌 token 단위의 vector-level에서 이해해보자.
+지금까지는 추상적으로 Self-Attention에 대한 개념 및 장단점을 살펴봤다. 이제 구체적으로 어떤 방식으로 행렬 곱셈을 사용해 Self-Attention이 수행되는지 알아보자. 우선은 matrix-level이 아닌 token 단위의 vector-level에서 이해해보자.
 
 Self-Attention에서는 총 3개의 vector가 새로 등장한다. Query, Key, Value이다. 각각의 역할은 다음과 같다.
 
@@ -147,7 +147,7 @@ Self-Attention에서는 총 3개의 vector가 새로 등장한다. Query, Key, V
 
  위의 예시 문장으로 다시 되돌아가보자. 'it'이 어느 것을 지칭하는지 알아내고자 한다. 그렇다면 'it' token과 문장 내 다른 모든 token들에 대해 attention을 구해야 한다. 이 경우에는 Query는 'it'으로 고정이다. Key, Value는 서로 완전히 같은 token을 가리키는데, 문장의 시작부터 끝까지 모든 token들 중 하나가 될 것이다. Key와 Value가 'The'를 가리킬 경우 'it'과 'The' 사이의 attention을 구하는 것이고, Key와 Value가 마지막 'tired'를 가리킬 경우 'it'과 'tired' 사이의 attention을 구하는 것이 된다. 즉, Key와 Value는 문장의 처음부터 끝까지 탐색한다고 이해하면 된다. Query는 고정되어 하나의 token을 가리키고, Query와 가장 부합하는 (Attention이 높은) token을 찾기 위해서 Key, Value를 문장의 처음부터 끝까지 탐색시키는 것이다. 각각의 의미는 이해했으나, Key와 Value가 완전히 같은 token을 가리킨다면 왜 두 개가 따로 존재하는지 의문이 들 수 있다. 이는 이후에 다룰 것이나, 결론부터 말하자면 Key와 Value의 실제 값은 다르지만 의미적으로는 여전히 같은 token을 의미한다. Key와 Value는 이후 Attention 계산 과정에서 별개로 사용된다.
 
- Query, Key, Value가 각각 어떤 token을 가리키는지는 이해가 됐을 것이다. 하지만, 그래서 각 vector의 값은 어떻게 만들어지는지는 우리는 아직 알지 못한다. 정말 간단하게도, input으로 들어오는 token embedding vector를 fully connected layer에 넣어 세 vector를 만들어낸다. 세 vector를 생성해내는 FC layer는 모두 다르기 때문에, 결국 self-attention에서는 Query, Key, Value를 구하기 위해 3개의 서로 다른 FC layer가 존재한다. 이 FC layer들은 모두 같은 input dimension, output dimension을 갖는다. input dimension이 같은 이유는 당연하게도 모두 다 token embedding vector를 input으로 받기 때문이다. output dimension이 같다는 것은 각각 별개의 FC layer로 구해진 Query, Key, Value가 값은 다를지언정 같은 dimension을 갖는 vector가 된다는 것을 알 수 있다. 즉, **Query, Key, Value의 shape는 모두 동일**하다. 앞으로 이 세 vector의 dimension을 $$d_k$$로 명명한다. 여기서 $$k$$는 Key를 의미하는데, 굳이 Query, Key, Value 중 Key를 이름으로 채택한 이유는 특별히 있지 않고, 단지 논문의 notation에서 이를 채택했기 때문이다. 정리하자면, Query, Key, Value는 모두 $$d_k$$의 dimension을 갖는 vector이다. 이제 위에서 얘기했던 Key, Value가 다른 값을 갖는 이유를 이해할 수 있다. input은 같은 token embedding vector였을지라도 서로 다른 FC layer를 통해서 각각 Key, Value가 구해지기 때문에 같은 token을 가리키면서 다른 값을 갖는 것이다.
+ Query, Key, Value가 각각 어떤 token을 가리키는지는 이해가 됐을 것이다. 하지만, 그래서 Query, Key, Value라는 세 vector의 구체적인 값은 어떻게 만들어지는지는 우리는 아직 알지 못한다. 정말 간단하게도, input으로 들어오는 token embedding vector를 fully connected layer에 넣어 세 vector를 만들어낸다. 세 vector를 생성해내는 FC layer는 모두 다르기 때문에, 결국 self-attention에서는 Query, Key, Value를 구하기 위해 3개의 서로 다른 FC layer가 존재한다. 이 FC layer들은 모두 같은 input dimension, output dimension을 갖는다. input dimension이 같은 이유는 당연하게도 모두 다 token embedding vector를 input으로 받기 때문이다. 한편, 세 FC layer의 output dimension이 같다는 것을 통해 각각 별개의 FC layer로 구해진 Query, Key, Value가 구체적인 값은 다를지언정 같은 dimension을 갖는 vector가 된다는 것을 알 수 있다. 즉, **Query, Key, Value의 shape는 모두 동일**하다. 앞으로 이 세 vector의 dimension을 $$d_k$$로 명명한다. 여기서 $$k$$는 Key를 의미하는데, 굳이 Query, Key, Value 중 Key를 이름으로 채택한 이유는 특별히 있지 않고, 단지 논문의 notation에서 이를 채택했기 때문이다. 정리하자면, Query, Key, Value는 모두 $$d_k$$의 dimension을 갖는 vector이다. 이제 위에서 얘기했던 Key, Value가 다른 값을 갖는 이유를 이해할 수 있다. input은 같은 token embedding vector였을지라도 서로 다른 FC layer를 통해서 각각 Key, Value가 구해지기 때문에 같은 token을 가리키면서 다른 값을 갖는 것이다.
 
 #### How to Calculate?
 
@@ -157,7 +157,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
 그림으로 계산의 흐름을 표현하면 다음과 같다.
 
-![scaled_dot_production_in_paper.png](/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png)
+<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" width="250">
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pd](https://arxiv.org/pdf/1706.03762.pdf)f]
 
@@ -165,7 +165,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
 ![qkv_vector.png](/assets/images/2021-01-28-Transformer-in-pytorch/qkv_vector.png)
 
-그렇다면 $$Q$$와 $$K$$를 MatMul(행렬곱)한다는 의미는 어떤 의미일까? 이 둘을 곱한다는 것은 둘의 Attention Score를 구한다는 것이다. $$Q$$와 $$K$$의 shape를 생각해보면, 둘 모두 $$d_k$$를 dimension으로 갖는 vector이다. 이 둘을 곱한다고 했을 때(정확히는 $$K$$를 transpose한 뒤 곱함, 즉 두 vector의 내적), 결과값은 어떤 scalar 값이 나오게 될 것이다. 이 값을 Attention Score라고 한다. 이후 scaling을 수행하는데, 값의 크기가 너무 커지지 않도록 $$\sqrt{d_k}$$로 나눠준다. 값이 너무 클 경우 gradient vanishing이 발생할 수 있기 때문이다. scaling을 제외한 연산 과정을 아래와 같다.
+그렇다면 $$Q$$와 $$K$$를 MatMul(행렬곱)한다는 의미는 어떤 의미일까? 이 둘을 곱한다는 것은 둘의 Attention Score를 구한다는 것이다. $$Q$$와 $$K$$의 shape를 생각해보면, 둘 모두 $$d_k$$를 dimension으로 갖는 vector이다. 이 둘을 곱한다고 했을 때(정확히는 $$K$$를 transpose한 뒤 곱함, 즉 두 vector의 내적), 결과값은 어떤 scalar 값이 나오게 될 것이다. 이 값을 Attention Score라고 한다. 이후 scaling을 수행하는데, 값의 크기가 너무 커지지 않도록 $$\sqrt{d_k}$$로 나눠준다. 값이 너무 클 경우 gradient vanishing이 발생할 수 있기 때문이다. scaling을 제외한 연산 과정은 아래와 같다.
 
 ![attention_score_scalar.png](/assets/images/2021-01-28-Transformer-in-pytorch/attention_score_scalar.png)
 
@@ -179,7 +179,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
 그 결과 Attention Score는 $$1 \times n$$의 matrix가 되는데, 이는 $$Q$$의 token과 문장 내 모든 token들 사이의 Attention Score를 각각 계산한 뒤 concatenate한 것과 동일하다. 이를 행렬곱 1회로 수행한 것이다.
 
- 이렇게 구한 Attention Scores를 softmax를 사용해 확률값으로 변환하게 된다. 그 결과 각 Attention Score는 모두 더하면 1인 확률값이 된다. 이 값들의 의미는 $$Q$$의 token과 해당 token이 얼마나 Attention을 갖는지(얼마나 연관성이 짙은지)에 대한 비율(확률값)이 된다. 임의로 Attention Probability라고 부른다(논문에서 사용하는 표현은 아니고, 이해를 돕기 위해 임의로 붙인 명칭이다). Attention Probability를 최종적으로 $$V$$와 곱하게 되는데, $$V$$(Attention을 구하고자 하는 대상 token, 다시 한 번 강조하지만 $$K$$와 $$V$$는 같은 token을 의미한다.)를 Attention Probability만큼만 반영하겠다는 의미이다. 연산은 다음과 같이 이루어진다.
+ 이렇게 구한 Attention Score는 softmax를 사용해 확률값으로 변환하게 된다. 그 결과 각 Attention Score는 모두 더하면 1인 확률값이 된다. 이 값들의 의미는 $$Q$$의 token과 해당 token이 얼마나 Attention을 갖는지(얼마나 연관성이 짙은지)에 대한 비율(확률값)이 된다. 임의로 Attention Probability라고 부른다(논문에서 사용하는 표현은 아니고, 이해를 돕기 위해 임의로 붙인 명칭이다). 이후 Attention Probability를 최종적으로 $$V$$와 곱하게 되는데, $$V$$(Attention을 구하고자 하는 대상 token, 다시 한 번 강조하지만 $$K$$와 $$V$$는 같은 token을 의미한다.)를 각각 Attention Probability만큼만 반영하겠다는 의미이다. 연산은 다음과 같이 이루어진다.
 
 ![attention_vector.png](/assets/images/2021-01-28-Transformer-in-pytorch/attention_vector.png)
 
@@ -199,7 +199,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
 ![self_attention.png](/assets/images/2021-01-28-Transformer-in-pytorch/self_attention.png)
 
- 그렇다면 $$Q$$, $$K$$, $$V$$는 어떻게 구해지는 것일까? Self-Attention 개념 이전에 설명했듯이, 각각 서로 다른 FC layer에 의해 구해진다. FC layer의 input은 word embedding vector들이고, output은 각각 $$Q$$, $$K$$, $$V$$이다. word embedding의 dimension이 $$d_{e}$$라고 한다면, input의 shape는 $$n \times d_e$$이고, output의 shape는 $$n \times d_k$$이다. 각각의 FC layer는 서로 다른 weight matrix ($$d_{embed} \times d_k$$)를 갖고 있기 때문에 output의 shape는 모두 동일할지라도, $$Q$$, $$K$$, $$V$$의 실제 값들은 모두 다르다.
+ 그렇다면 $$Q$$, $$K$$, $$V$$는 어떻게 구해지는 것일까? Self-Attention 개념 이전에 설명했듯이, 각각 서로 다른 FC layer에 의해 구해진다. FC layer의 input은 word embedding vector들이고, output은 각각 $$Q$$, $$K$$, $$V$$이다. word embedding의 dimension이 $$d_{embed}$$라고 한다면, input의 shape는 $$n \times d_{embed}$$이고, output의 shape는 $$n \times d_k$$이다. 각각의 FC layer는 서로 다른 weight matrix ($$d_{embed} \times d_k$$)를 갖고 있기 때문에 output의 shape는 모두 동일할지라도, $$Q$$, $$K$$, $$V$$의 실제 값들은 모두 다르다.
 
 ![qkv_fc_layer.png](/assets/images/2021-01-28-Transformer-in-pytorch/qkv_fc_layer.png)
 
@@ -207,7 +207,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
  뜬금없이 masking이 왜 나오는 것일까? 사실 논문의 figure에 따르면 Attention 계산에는 masking 과정이 포함되어 있다.
 
-![scaled_dot_production_in_paper.png](/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png)
+<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" width="250">
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pd](https://arxiv.org/pdf/1706.03762.pdf)f]
 
@@ -238,7 +238,7 @@ def calculate_attention(self, query, key, value, mask):
 
 ### Multi-Head Attention Layer
 
-![multi_head_attention_in_paper.png](/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png)
+<img src="/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png" width="250">
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pdf](https://arxiv.org/pdf/1706.03762.pdf)]
 
