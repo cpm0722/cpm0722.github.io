@@ -76,7 +76,7 @@ class Transformer(nn.Module):
 
 ![encoder.png](/assets/images/2021-01-28-Transformer-in-pytorch/encoder.png)
 
- Encoder는 위와 같은 구조로 이루어져 있다. Encoder Layer가 $$N$$개 쌓여진 형태이다. 논문에서는 $$N=6$$을 사용했다. Encoder Layer는 input과 output의 형태가 동일하다. 어떤 matrix를 input으로 받는다고 했을 때, Encoder Layer가 도출해내는 output은 input과 완전히 동일한 shape를 갖는 matrix가 된다. Encoder Layer $$N$$개가 쌓여 Encoder를 이룬다고 했을 때, 첫번째 Encoder Layer의 input은 전체 Encoder의 input으로 들어오는 문장 embdding이 된다. 첫번째 layer가 output을 생성해내면 이를 두번째 layer가 input으로 사용하고, 또 그 output을 세번째 layer가 사용하는 식으로 연결되며, 가장 마지막 $$N$$번째 layer의 output이 전체 Encoder의 output, 즉, context가 된다. 이러한 방식으로 layer들이 연결되기 때문에, Encoder Layer의 input과 output의 shape는 필연적으로 반드시 동일해야만 한다. 여기서 주목해야 하는 지점은 위에서 계속 언급했던 context 역시 Encoder의 input sentence embedding과 동일한 shape를 가진다는 것이다. 즉, 어떤 matrix가 Encoder를 거쳐간다 하더라도 최종 matrix의 shape는 처음의 것과 반드시 같다.
+ Encoder는 위와 같은 구조로 이루어져 있다. Encoder Layer가 $$N$$개 쌓여진 형태이다. 논문에서는 $$N=6$$을 사용했다. Encoder Layer는 input과 output의 형태가 동일하다. 어떤 matrix를 input으로 받는다고 했을 때, Encoder Layer가 도출해내는 output은 input과 완전히 동일한 shape를 갖는 matrix가 된다. Encoder Layer $$N$$개가 쌓여 Encoder를 이룬다고 했을 때, 첫번째 Encoder Layer의 input은 전체 Encoder의 input으로 들어오는 문장 embdding이 된다. 첫번째 layer가 output을 생성해내면 이를 두번째 layer가 input으로 사용하고, 또 그 output을 세번째 layer가 사용하는 식으로 연결되며, 가장 마지막 $$N$$번째 layer의 output이 전체 Encoder의 output, 즉, context가 된다. 이러한 방식으로 layer들이 연결되기 때문에, Encoder Layer의 input과 output의 shape는 필연적으로 반드시 동일해야만 한다. 여기서 주목해야 하는 지점은 위에서 계속 언급했던 context 역시 Encoder의 input sentence와 동일한 shape를 가진다는 것이다. 즉, 어떤 matrix가 Encoder를 거쳐간다 하더라도 최종 matrix의 shape는 처음의 것과 반드시 같다.
 
  Encoder는 왜 여러 개의 layer를 겹쳐 쌓는 것일까? 각 Encoder Layer의 역할은 무엇일까? 결론부터 말하자면, 각 Encoder Layer는 input으로 들어오는 vector에 대해 더 높은 차원(넓은 관점)에서의 context를 담는다. 높은 차원에서의 context라는 것은 더 추상적인 정보라는 의미이다. Encoder Layer는 내부적으로 어떠한 Mechanism을 사용해 context를 담아내는데, Encoder Layer가 겹겹이 쌓이다 보니 처음에는 원본 문장에 대한 낮은 수준의 context였겠지만 이후 context에 대한 context, context의 context에 대한 context ... 와 같은 식으로 점차 높은 차원의 context가 저장되게 된다. Encoder Layer의 내부적인 작동 방식은 곧 살펴볼 것이기에, 여기서는 직관적으로 Encoder Layer의 역할, Encoder 내부의 전체적인 구조만 이해하고 넘어가자.
 
@@ -98,7 +98,7 @@ class Encoder(nn.Module):
 		return out
 ```
 
-forward 함수를 주목해보자. Encoder Layer들을 순서대로 실행하면서, 이전 layer의 output을 이후 layer의 input으로 넣는다. 첫 layer의 input은 Encoder 전체의 input인 x가 된다. 이후 가장 마지막 layer의 output (context)를 return한다.
+forward()를 주목해보자. Encoder Layer들을 순서대로 실행하면서, 이전 layer의 output을 이후 layer의 input으로 넣는다. 첫 layer의 input은 Encoder 전체의 input인 x가 된다. 이후 가장 마지막 layer의 output (context)를 return한다.
 
 ### Encoder Layer
 
@@ -215,7 +215,7 @@ pad는 무엇을 의미하는 것일까? 예시 문장을 다시 가져와보자
 
 > The animal didn't cross the street, because it was too tired.
 
-문장을 word 단위로 tokenize(단순히 python의 split() 사용)한다면 token의 개수는 총 11개이다. 만약의 각 token의 embedding dimension이 $$d_{embed}$$라고 한다면, 문장 전체의 embedding matrix는 ($$11 \times d_{embed}$$)일 것이다. 그런데 문장의 길이가 더 길거나 짧다면 그 때마다 input의 shape는 바뀌게 된다. 실제 model 학습 과정에서는 한 문장 씩이 아닌 mini-batch씩 여러 문장와야 하는데 각 문장 마다의 length가 다를 경우 batch를 만들어낼 수 없다. 이러한 문제를 해결하기 위해 $$\text{seq_len}$$(해당 mini-batch 내 token 개수의 최대 값)을 지정하게 되는데, 만약 $$\text{seq_len}$$이 20이라고 한다면 위 문장에서는 9개의 빈 token이 있게 된다. 이러한 빈 token을 pad token이라고 한다. 그런데, 이러한 pad token에는 attention이 부여되어서는 안된다. 실제로는 존재하지도 않는 token과 다른 token 사이의 attention을 찾아서 계산하고, 이를 반영하는 것은 직관적으로도 말이 안된다는 것을 알 수 있다. 따라서 이러한 pad token들에 대해 attention이 부여되지 않도록 처리하는 것이 pad masking이다. masking은 $$(\text{seq_len} \times \text{seq_len})$$ shape의 matrix를 곱하는 방식으로 이뤄지는데 masking matrix에서 pad token에 해당하는 row, column의 모든 값은 $$-\inf$$이다. 그 외에는 모두 1이다. 이러한 연산은 scaling과 softmax 사이에 수행하게 되는데, 사실은 scaling 이전, 이후 언제 적용하든 차이는 없다. scaling은 단순히 모든 값을 $$d_k$$로 일괄 나누는 작업이기 때문이다. 대신 반드시 $$Q$$와 $$K$$의 행렬곱 이후, softmax 이전에 적용되어야 한다. masking matrix와 같은 shape는 $$Q$$와 $$K$$의 행렬곱 연산 이후에나 등장하기 때문이다. 또한 softmax는 등장하는 모든 값들을 반영해 확률값을 계산하게 되는데, 이 때 pad token의 값이 반영되어서는 안되므로 softmax 이전에는 반드시 masking이 수행되어야 한다.
+문장을 word 단위로 tokenize(단순히 python의 split() 사용)한다면 token의 개수는 총 11개이다. 만약의 각 token의 embedding dimension이 $$d_{embed}$$라고 한다면, 문장 전체의 embedding matrix는 ($$11 \times d_{embed}$$)일 것이다. 그런데 문장의 길이가 더 길거나 짧다면 그 때마다 input의 shape는 바뀌게 된다. 실제 model 학습 과정에서는 한 문장 씩이 아닌 mini-batch씩 여러 문장와야 하는데 각 문장 마다의 length가 다를 경우 batch를 만들어낼 수 없다. 이러한 문제를 해결하기 위해 $$\text{seq_len}$$(해당 mini-batch 내 token 개수의 최대 값)을 지정하게 되는데, 만약 $$\text{seq_len}$$이 20이라고 한다면 위 문장에서는 9개의 빈 token이 있게 된다. 이러한 빈 token을 pad token이라고 한다. 그런데, 이러한 pad token에는 attention이 부여되어서는 안된다. 실제로는 존재하지도 않는 token과 다른 token 사이의 attention을 찾아서 계산하고, 이를 반영하는 것은 직관적으로도 말이 안된다는 것을 알 수 있다. 따라서 이러한 pad token들에 대해 attention이 부여되지 않도록 처리하는 것이 pad masking이다. masking은 $$(\text{seq_len} \times \text{seq_len})$$ shape의 mask matrix를 곱하는 방식으로 이뤄지는데 mask matrix에서 pad token에 해당하는 row, column의 모든 값은 $$-\inf$$이다. 그 외에는 모두 1이다. 이러한 연산은 scaling과 softmax 사이에 수행하게 되는데, 사실은 scaling 이전, 이후 언제 적용하든 차이는 없다. scaling은 단순히 모든 값을 $$d_k$$로 일괄 나누는 작업이기 때문이다. 대신 반드시 $$Q$$와 $$K$$의 행렬곱 이후, softmax 이전에 적용되어야 한다. mask matrix와 같은 shape는 $$Q$$와 $$K$$의 행렬곱 연산 이후에나 등장하기 때문이다. 또한 softmax는 등장하는 모든 값들을 반영해 확률값을 계산하게 되는데, 이 때 pad token의 값이 반영되어서는 안되므로 softmax 이전에는 반드시 masking이 수행되어야 한다.
 
 #### Self-Attention Code in Pytorch
 
@@ -234,7 +234,7 @@ def calculate_attention(self, query, key, value, mask):
 	return out
 ```
 
-함수의 인자로 query, key, value, mask를 받는다. mask는 pad masking matrix일 것이다. pad masking은 Transformer 외부 (대개 Batch class)에서 생성되어 Transformer에 인자로 들어오게 된다. query, key, value는 서로 다른 FC Layer를 거쳐 $$\text{n_batch} \times \text{max_seq_len} \times d_k$$로 변형되었다.
+calculate_attention()의 인자로 query, key, value, mask를 받는다. mask는 pad mask matrix일 것이다. pad mask matrix는 Transformer 외부 (대개 Batch class)에서 생성되어 Transformer에 인자로 들어오게 된다. query, key, value는 서로 다른 FC Layer를 거쳐 $$\text{n_batch} \times \text{max_seq_len} \times d_k$$로 변형되었다.
 
 ### Multi-Head Attention Layer
 
@@ -260,7 +260,7 @@ def calculate_attention(self, query, key, value, mask):
 
 #### Multi-Head Attention Code in Pytorch
 
- Multi-Head Attention Layer를 실제 code로 구현해보자. 위에서 구현했던 calculate_attention 함수를 사용한다.
+ Multi-Head Attention Layer를 실제 code로 구현해보자. 위에서 구현했던 calculate_attention()을 사용한다.
 
 ```python
 class MultiHeadAttentionLayer(nn.Module):
@@ -280,7 +280,7 @@ class MultiHeadAttentionLayer(nn.Module):
 
 우선 생성자를 살펴보자. qkv_fc_layer 인자로 $$d_{embed} \times d_{model}$$의 weight matrix를 갖는 FC Layer를 받아 멤버 변수로 $$Q$$, $$K$$, $$V$$에 대해 각각 copy.deepcopy를 호출해 저장한다. deepcopy를 호출하는 이유는 실제로는 서로 다른 weight를 갖고 별개로 운용되게 하기 위함이다. copy 없이 하나의 FC Layer로 $$Q$$, $$K$$, $$V$$를 모두 구하게 되면 $$Q$$, $$K$$, $$V$$가 모두 같은 값일 것이다. fc_layer는 attention 계산 이후 거쳐가는 FC Layer로, $$d_{model} \times d_{embed}$$의 weight matrix를 갖는다.
 
-가장 중요한 forward 함수이다. Transformer 구현에서 가장 핵심적인 부분이므로 반드시 이해하고 넘어가자.
+가장 중요한 forward()이다. Transformer 구현에서 가장 핵심적인 부분이므로 반드시 이해하고 넘어가자.
 
 ```python
  class MultiHeadAttentionLayer(nn.Module):
@@ -312,9 +312,9 @@ class MultiHeadAttentionLayer(nn.Module):
 		return out
 ```
 
- 인자로 받은 query, key, value는 실제 $$Q$$, $$K$$, $$V$$ matrix가 아니다. $$Q$$, $$K$$, $$V$$ 계산을 위해서는 각각 FC Layer 에 input으로 sentence(실제로는 mini-batch이므로 다수의 sentence)를 넣어줘야 하는데, 이 sentence를 의미하는 것이다. Self-Attention이기에 당연히 $$Q$$, $$K$$, $$V$$는 같은 sentence embedding에서 나오게 되는데 왜 별개의 인자로 받는지 의문일 수 있다. 이는 Decoder의 작동 원리를 알고 나면 이해할 수 있을 것이다. 인자로 받은 query, key, value는 sentence이므로 shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이다. masking은 기본적으로 한 문장에 대해 ($$\text{seq_len} \times \text{seq_len}$$)의 shape를 갖는데, mini-batch이므로 ($$\text{n_batch} \times \text{seq_len} \times \text{seq_len}$$)의 shape를 갖는다.
+ 인자로 받은 query, key, value는 실제 $$Q$$, $$K$$, $$V$$ matrix가 아니다. $$Q$$, $$K$$, $$V$$ 계산을 위해서는 각각 FC Layer 에 input으로 sentence(실제로는 mini-batch이므로 다수의 sentence)를 넣어줘야 하는데, 이 sentence를 의미하는 것이다. Self-Attention이기에 당연히 $$Q$$, $$K$$, $$V$$는 같은 sentence에서 나오게 되는데 왜 별개의 인자로 받는지 의문일 수 있다. 이는 Decoder의 작동 원리를 알고 나면 이해할 수 있을 것이다. 인자로 받은 query, key, value는 sentence이므로 shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이다. mask matrix는 기본적으로 한 문장에 대해 ($$\text{seq_len} \times \text{seq_len}$$)의 shape를 갖는데, mini-batch이므로 ($$\text{n_batch} \times \text{seq_len} \times \text{seq_len}$$)의 shape를 갖는다.
 
- transform은 $$Q$$, $$K$$, $$V$$를 구해주는 함수이다. 따라서 input shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이고, output shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{model}$$)이어야 한다. 하지만 실제로는 단순히 FC Layer만 거쳐가는 것이 아닌 추가적인 변형이 일어난다. 우선 $$d_{model}$$을 $$h$$와 $$d_k$$로 분리하고, 각각을 하나의 dimension으로 분리한다(```transform()```). 따라서 shape는 ($$\text{n_batch} \times \text{seq_len} \times h \times d_k$$)가 된다. 이후 이를 transpose해 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)로 변환한다. 이러한 작업을 수행하는 이유는 위에서 작성했던 calculate_attention 함수가 input으로 받고자 하는 shape가 ($$\text{n_batch} \times ... \times \text{seq_len} \times d_k$$)이기 때문이다. 아래에서 calculate_attention의 code를 다시 살펴보자.
+ transform()은 $$Q$$, $$K$$, $$V$$를 구해주는 함수이다. 따라서 input shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이고, output shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{model}$$)이어야 한다. 하지만 실제로는 단순히 FC Layer만 거쳐가는 것이 아닌 추가적인 변형이 일어난다. 우선 $$d_{model}$$을 $$h$$와 $$d_k$$로 분리하고, 각각을 하나의 dimension으로 분리한다(```transform()```). 따라서 shape는 ($$\text{n_batch} \times \text{seq_len} \times h \times d_k$$)가 된다. 이후 이를 transpose해 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)로 변환한다. 이러한 작업을 수행하는 이유는 위에서 작성했던 calculate_attention()이 input으로 받고자 하는 shape가 ($$\text{n_batch} \times ... \times \text{seq_len} \times d_k$$)이기 때문이다. 아래에서 calculate_attention()의 code를 다시 살펴보자.
 
 ```python
 def calculate_attention(self, query, key, value, mask):
@@ -331,9 +331,9 @@ def calculate_attention(self, query, key, value, mask):
 
  우선 $$d_k$$를 중심으로 $$Q$$와 $$K$$ 사이 행렬곱 연산을 수행하기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 dimension은 반드시 $$d_k$$여야만 한다. 또한 attention_score의 shape는 마지막 두 dimension이 반드시 ($$\text{seq_len} \times \text{seq_len}$$)이어야만 masking이 적용될 수 있기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 직전 dimension(```.shape[-2]```)은 반드시 $$\text{seq_len}$$이어야만 한다.
 
- 다시 forward 함수로 되돌아와서, transform 함수를 사용해 query, key, value를 구하고 나면 mask 역시 변형을 가해야 한다. ($$\text{n_batch} \times \text{seq_len} \times \text{seq_len}$$) 형태를 ($$\text{n_batch} \times 1 \times \text{seq_len} \times \text{seq_len}$$)로 변경하게 된다. 이는 calculate_attention 함수 내에서 masking을 수행할 때 broadcasting이 제대로 수행되게 하기 위함이다.
+ 다시 forward()로 되돌아와서, transform()을 사용해 query, key, value를 구하고 나면 mask 역시 변형을 가해야 한다. ($$\text{n_batch} \times \text{seq_len} \times \text{seq_len}$$) 형태를 ($$\text{n_batch} \times 1 \times \text{seq_len} \times \text{seq_len}$$)로 변경하게 된다. 이는 calculate_attention() 내에서 masking을 수행할 때 broadcasting이 제대로 수행되게 하기 위함이다.
 
- calculate_attention 함수를 사용해 attention을 계산하고 나면 그 shape는 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)이다. Multi-Head Attention Layer의 최종 output은 input의 것과 같은 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)여야만 하기 때문에 shape를 맞춰줘야 한다. 이를 위해 $$h$$와 $$\text{seq_len}$$의 순서를 뒤바꾸고(```.transpose(1, 2)```) 다시 $$h$$와 $$d_k$$를 $$d_{model}$$로 결합한다. 이후 FC Layer를 거쳐 $$d_{model}$$을 $$d_{embed}$$로 변환하게 된다.
+ calculate_attention()을 사용해 attention을 계산하고 나면 그 shape는 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)이다. Multi-Head Attention Layer의 최종 output은 input의 것과 같은 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)여야만 하기 때문에 shape를 맞춰줘야 한다. 이를 위해 $$h$$와 $$\text{seq_len}$$의 순서를 뒤바꾸고(```.transpose(1, 2)```) 다시 $$h$$와 $$d_k$$를 $$d_{model}$$로 결합한다. 이후 FC Layer를 거쳐 $$d_{model}$$을 $$d_{embed}$$로 변환하게 된다.
 
  Encoder Layer로 다시 되돌아가보자. pad mask는 Transformer model 외부에서(mini-batch 생성할 때) 생성되게 될 것이므로 EncoderLayer의 forward()에서 인자로 받는다. 따라서 forward()의 최종 인자는 ```x, mask```가 된다. 한편, 이전에는 Multi-Head Attention Layer의 forward()의 인자가 1개(```x```)일 것으로 가정하고 code를 작성했는데, 실제로는 query, key, value를 받아야 하므로 이를 수정해준다. 이에 더해 mask 역시 인자로 받게 될 것이다. 따라서 multi_head_attention_layer의 forward()의 인자는 최종적으로 ```x, x, x, mask```가 된다.
 
@@ -429,7 +429,7 @@ class ResidualConnectionLayer(nn.Module):
 		return out
 ```
 
-forward 함수에서 sub_layer까지 인자로 받는다.
+forward()에서 sub_layer까지 인자로 받는다.
 
 따라서 EncoderLayer의 코드가 아래와 같이 변경되게 된다. residual_connection_layers에 ResidualConnectionLayer를 2개 생성해 저장하고, 0번째는 multi_head_attention_layer를 감싸고, 1번째는 position_wise_feed_forward_layer를 감싸게 된다.
 
@@ -448,7 +448,7 @@ class EncoderLayer(nn.Module):
 		return out
 ```
 
-ResidualConnectionLayer의 forward 함수에 sub_layer를 전달할 때에는 lambda 식의 형태로 전달한다.
+ResidualConnectionLayer의 forward()에 sub_layer를 전달할 때에는 lambda 식의 형태로 전달한다.
 
 ## Decoder
 
@@ -464,7 +464,7 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 #### Context
 
- 위에서 언급했듯이, Decoder의 input으로는 Context와 sentence가 있다. Context는 Encoder에서 생성된 것이다. Encoder 내부에서 Multi-Head Attention Layer나 Position-wise Feed-Forward Layer 모두 input의 shape를 보존했음을 주목하자. 때문에 Encoder Layer 자체도 input의 shape를 보존할 것이고, Encoder Layer가 쌓인 Encoder 전체도 input의 shape를 보존한다. 따라서 Encoder의 output인 Context는 Encoder의 input인 sentence embedding과 동일한 shape를 갖는다. 이 점만 기억하고 넘어가면, 이후 Decoder에서 Context를 사용할 때 이해가 훨씬 수월하다. 이제 Decoder input 중 Context가 아닌 추가적인 sentence에 대해서 알아보자.
+ 위에서 언급했듯이, Decoder의 input으로는 Context와 sentence가 있다. Context는 Encoder에서 생성된 것이다. Encoder 내부에서 Multi-Head Attention Layer나 Position-wise Feed-Forward Layer 모두 input의 shape를 보존했음을 주목하자. 때문에 Encoder Layer 자체도 input의 shape를 보존할 것이고, Encoder Layer가 쌓인 Encoder 전체도 input의 shape를 보존한다. 따라서 Encoder의 output인 Context는 Encoder의 input인 sentence와 동일한 shape를 갖는다. 이 점만 기억하고 넘어가면, 이후 Decoder에서 Context를 사용할 때 이해가 훨씬 수월하다. 이제 Decoder input 중 Context가 아닌 추가적인 sentence에 대해서 알아보자.
 
 #### Teacher Forcing
 
@@ -488,7 +488,7 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 #### Teacher Forcing in Transformer (Subsequent Masking)
 
- Teacher Forcing 개념을 이해하고 나면 Transformer Decoder에 input으로 들어오는 sentence가 어떤 것인지 이해할 수 있다. ground truth[:-1]의 sentence embedding일 것이다. 하지만 이러한 방식으로 Teacher Forcing이 Transformer에 그대로 적용될 수 있을까? 결론부터 말하자면 그래서는 안된다. 위에서 Teacher Forcing에서 예시를 든 RNN Model은 이전 cell의 output을 이후 cell에서 사용할 수 있었다. 앞에서부터 순서대로 RNN cell이 실행되기 때문에 이러한 방식이 가능했다. 하지만 Transformer가 RNN에 비해 갖는 가장 큰 장점은 병렬 연산이 가능하다는 것이었다. 병렬 연산을 위해 ground truth의 embedding을 matrix로 만들어 input으로 그대로 사용하게 되면, Decoder에서 Self-Attention 연산을 수행하게 될 때 현재 출력해내야 하는 token의 정답까지 알고 있는 상황이 발생한다. 따라서 masking을 적용해야 한다. $$i$$번째 token을 생성해낼 때, $$1 \thicksim i-1$$의 token은 보이지 않도록 처리를 해야 하는 것이다. 이러한 masking 기법을 subsequent masking이라고 한다. pytorch code로 구현해보자.
+ Teacher Forcing 개념을 이해하고 나면 Transformer Decoder에 input으로 들어오는 sentence가 어떤 것인지 이해할 수 있다. ground truth[:-1]의 sentence일 것이다. 하지만 이러한 방식으로 Teacher Forcing이 Transformer에 그대로 적용될 수 있을까? 결론부터 말하자면 그래서는 안된다. 위에서 Teacher Forcing에서 예시를 든 RNN Model은 이전 cell의 output을 이후 cell에서 사용할 수 있었다. 앞에서부터 순서대로 RNN cell이 실행되기 때문에 이러한 방식이 가능했다. 하지만 Transformer가 RNN에 비해 갖는 가장 큰 장점은 병렬 연산이 가능하다는 것이었다. 병렬 연산을 위해 ground truth의 embedding을 matrix로 만들어 input으로 그대로 사용하게 되면, Decoder에서 Self-Attention 연산을 수행하게 될 때 현재 출력해내야 하는 token의 정답까지 알고 있는 상황이 발생한다. 따라서 masking을 적용해야 한다. $$i$$번째 token을 생성해낼 때, $$1 \thicksim i-1$$의 token은 보이지 않도록 처리를 해야 하는 것이다. 이러한 masking 기법을 subsequent masking이라고 한다. pytorch code로 구현해보자.
 
 ```python
 def subsequent_mask(size):
@@ -503,7 +503,7 @@ def make_std_mask(tgt, pad):
 	return tgt_mask
 ```
 
- make_std_mask()는 subsequent_mask()를 호출해 subsequent masking을 생성하고, 이를 pad masking과 결합한다. 위의 code는 Transformer 내부가 아닌 Batch class 내에서 실행되는 것이 바람직할 것이다. masking 생성은 Transformer 내부 작업이 아닌 전처리 과정에 포함되기 때문이다. 따라서 Encoder에 적용되는 pad masking과 동일하게 Batch class 내에서 생성될 것이다. 이는 결국 Transformer 외부에서 넘어와야 하기 때문에 Transformer code가 수정되어야 한다. 기존에는 Encoder에서 사용하는 pad mask(```src_mask```)만이 forward()의 인자로 들어왔다면, 이제는 Decoder에서 사용할 subsequent mask (```trg_mask```)도 함께 주어진다. 따라서 forward()의 최종 인자는 ```src, trg, src_mask, trg_mask```이다. 각각 Encoder의 input, Decoder의 input, Encoder의 mask, Decoder의 mask이다. forward() 내부에서 decoder의 forward()를 호출할 때 역시 변경되는데, ```trg_mask```가 추가적으로 인자로 넘어가게 된다.
+ make_std_mask()는 subsequent_mask()를 호출해 subsequent mask을 생성하고, 이를 pad mask와 결합한다. 위의 code는 Transformer 내부가 아닌 Batch class 내에서 실행되는 것이 바람직할 것이다. mask 생성은 Transformer 내부 작업이 아닌 전처리 과정에 포함되기 때문이다. 따라서 Encoder에 적용되는 pad mask와 동일하게 Batch class 내에서 생성될 것이다. 이는 결국 Transformer 외부에서 넘어와야 하기 때문에 Transformer code가 수정되어야 한다. 기존에는 Encoder에서 사용하는 pad mask(```src_mask```)만이 forward()의 인자로 들어왔다면, 이제는 Decoder에서 사용할 subsequent mask (```trg_mask```)도 함께 주어진다. 따라서 forward()의 최종 인자는 ```src, trg, src_mask, trg_mask```이다. 각각 Encoder의 input, Decoder의 input, Encoder의 mask, Decoder의 mask이다. forward() 내부에서 decoder의 forward()를 호출할 때 역시 변경되는데, ```trg_mask```가 추가적으로 인자로 넘어가게 된다.
 
 ```python
 class Transformer(nn.Module):
@@ -570,7 +570,7 @@ class Decoder(nn.Module):
 		return out
 ```
 
- 주목해야 할 점은 encoder_mask (encoder에서 사용한 pad masking)는 decoder에서도 사용된다는 것이다. 결국 Decoder의 forward함수는 Decoder의 input sentence (```x```), Decoder의 subsequent mask(```mask```), encoder의 Context (```encoder_output```), encoder의 mask (```encoder_mask```)를 모두 인자로 받아야 한다.
+ 주목해야 할 점은 encoder_mask (encoder에서 사용한 pad masking)는 decoder에서도 사용된다는 것이다. 결국 Decoder의 forward()는 Decoder의 input sentence (```x```), Decoder의 subsequent mask(```mask```), encoder의 Context (```encoder_output```), encoder의 mask (```encoder_mask```)를 모두 인자로 받아야 한다.
 
 ```python
 class DecoderLayer(nn.Module):
@@ -607,7 +607,7 @@ class Transformer(nn.Module):
 
 ## Transformer's Input (Positional Encoding)
 
-지금까지 Encoder와 Decoder의 내부 구조가 어떻게 이루어져 있는지 분석하고 code로 구현까지 마쳤다. 이번에는 Encoder와 Decoder의 input으로 들어오는 sentence는 어떤 형태인지 알아보자. Transformer의 input은 단순한 sentence embedding에 더해 Positional Encoding이 추가되게 된다. 전체 TransformerEmbedding은 단순 Embedding과 PositionalEncoding의 sequential이다. code는 단순하다.
+지금까지 Encoder와 Decoder의 내부 구조가 어떻게 이루어져 있는지 분석하고 code로 구현까지 마쳤다. 이번에는 Encoder와 Decoder의 input으로 들어오는 sentence는 어떤 형태인지 알아보자. Transformer의 input은 단순한 sentence(token embedding sequence)에 더해 Positional Encoding이 추가되게 된다. 전체 TransformerEmbedding은 단순 Embedding과 PositionalEncoding의 sequential이다. code는 단순하다.
 
 ```python
 class TransformerEmbedding(nn.Module):
@@ -635,7 +635,7 @@ class Embedding(nn.Module):
 		return out
 ```
 
-vocabulary와 $$d_{embed}$$를 사용해 embedding을 생성해낸다. 주목할 점은 embedding에도 scaling을 적용한다는 점이다. forward 함수에서 $$\sqrt{d_{embed}}$$를 곱해주게 된다.
+vocabulary와 $$d_{embed}$$를 사용해 embedding을 생성해낸다. 주목할 점은 embedding에도 scaling을 적용한다는 점이다. forward()에서 $$\sqrt{d_{embed}}$$를 곱해주게 된다.
 
 마지막으로 PositionalEncoding을 살펴보자.
 
@@ -709,7 +709,7 @@ log_softmax에서는 ```dim=-1```이 되는데, 마지막 dimension인 len(vocab
 
 ## Make Model
 
-Transformer를 생성하는 예제 함수는 다음과 같이 작성할 수 있다. 실제 논문 상에서는 $$d_{embed}$$와 $$d_{model}$$을 구분하지 않고 통합해서 $$d_{model}$$로 사용했지만, 이해를 돕기 위해 지금까지 분리해 사용했다.
+Transformer를 생성하는 예제 함수 make_model()은 다음과 같이 작성할 수 있다. 실제 논문 상에서는 $$d_{embed}$$와 $$d_{model}$$을 구분하지 않고 통합해서 $$d_{model}$$로 사용했지만, 이해를 돕기 위해 지금까지 분리해 사용했다.
 
 ```python
 def make_model(
@@ -721,24 +721,24 @@ def make_model(
     h = 8, 
     d_ff = 2048):
 
-		cp = lambda x: copy.deepcopy(x)
+        cp = lambda x: copy.deepcopy(x)
 
-		# multi_head_attention_layer 생성한 뒤 copy해 사용
+        # multi_head_attention_layer 생성한 뒤 copy해 사용
     multi_head_attention_layer = MultiHeadAttentionLayer(
                                     d_model = d_model,
                                     h = h,
                                     qkv_fc_layer = nn.Linear(d_embed, d_model),
                                     fc_layer = nn.Linear(d_model, d_embed))
 
-		# position_wise_feed_forward_layer 생성한 뒤 copy해 사용    
+        # position_wise_feed_forward_layer 생성한 뒤 copy해 사용    
     position_wise_feed_forward_layer = PositionWiseFeedForwardLayer(
-                                         first_fc_layer = nn.Linear(d_embed, d_ff),
-                                         second_fc_layer = nn.Linear(d_ff, d_embed))
+                                        first_fc_layer = nn.Linear(d_embed, d_ff),
+                                        second_fc_layer = nn.Linear(d_ff, d_embed))
     
-		# norm_layer 생성한 뒤 copy해 사용
+        # norm_layer 생성한 뒤 copy해 사용
     norm_layer = nn.LayerNorm(d_embed, eps=1e-6)
 
-		# 실제 model 생성
+        # 실제 model 생성
     model = Transformer(
                 src_embed = TransformerEmbedding(    # SRC embedding 생성
                                 embedding = Embedding(
