@@ -1,10 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://192.168.50.41:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.2.1">Jekyll</generator><link href="http://192.168.50.41:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://192.168.50.41:4000/" rel="alternate" type="text/html" /><updated>2021-01-30T08:22:41-06:00</updated><id>http://192.168.50.41:4000/</id><title type="html">Hansu Kim</title><subtitle>Hansu Kim's Development Blog</subtitle><entry><title type="html">[NLP 논문 구현] pytorch로 구현하는 Transformer (Attention is All You Need)</title><link href="http://192.168.50.41:4000/machine%20learning/paper%20review/pytorch/Transformer-in-pytorch/" rel="alternate" type="text/html" title="[NLP 논문 구현] pytorch로 구현하는 Transformer (Attention is All You Need)" /><published>2021-01-27T18:00:00-06:00</published><updated>2021-01-27T18:00:00-06:00</updated><id>http://192.168.50.41:4000/machine%20learning/paper%20review/pytorch/Transformer-in-pytorch</id><content type="html" xml:base="http://192.168.50.41:4000/machine%20learning/paper%20review/pytorch/Transformer-in-pytorch/">&lt;h3 id=&quot;paper-link&quot;&gt;&lt;a href=&quot;https://arxiv.org/pdf/1706.03762.pdf&quot;&gt;Paper Link&lt;/a&gt;&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://192.168.50.41:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.2.1">Jekyll</generator><link href="http://192.168.50.41:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://192.168.50.41:4000/" rel="alternate" type="text/html" /><updated>2021-02-03T01:09:01-06:00</updated><id>http://192.168.50.41:4000/</id><title type="html">Hansu Kim</title><subtitle>Hansu Kim's Development Blog</subtitle><entry><title type="html">[NLP 논문 리뷰] DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter</title><link href="http://192.168.50.41:4000/paper-review/distilbert-a-distilled-version-of-bert-smaller-faster-cheaper-and-lighter" rel="alternate" type="text/html" title="[NLP 논문 리뷰] DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter" /><published>2021-01-30T18:00:00-06:00</published><updated>2021-01-30T18:00:00-06:00</updated><id>http://192.168.50.41:4000/paper-review/DistilBERT-a-distilled-version-of-BERT</id><content type="html" xml:base="http://192.168.50.41:4000/paper-review/distilbert-a-distilled-version-of-bert-smaller-faster-cheaper-and-lighter">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1910.01108&quot;&gt;Archive Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1910.01108&quot;&gt;Paper Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Submit Date: Oct 02, 2019&lt;/p&gt;
+
+&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
+
+&lt;p&gt;본 논문에서는 Distilling Knowledge기법을 기존의 BERT model에 적용해 훨씬 작은 크기, 빠른 속도를 가지면서 비슷한 성능을 보이는 DistilBERT model을 제안한다. 이전의 knowledge distillation은 task-specific한 model(대개 supervised learning)에 적용되었다면, 본 논문에서는 BERT model의 pre-train(unsupervised learning)에 이를 적용했다. 그 결과 기존의 BERT model보다 40% 작은 크기를 가지면서 97%의 capability를 보존하고, 60% 빠른 model을 개발했다. 이 과정에서 language modeling, distillation, cosine-distance loss의 3개의 loss를 결합해 사용했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-31-DistilBERT-a-distilled-version-of-BERT/01.jpg&quot; alt=&quot;01.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;최근 NLP domain에서는 BERT를 기반으로 한 대규모 pre-train model이 기본이 되었다. 그 결과 비약적인 성능 향상이 있었지만, 동시에 model의 크기도 함께 급속도로 증가했다. 이러한 대규모 model은 on-device에서 real-time에 service되어야 하는 경우에는 사용하기 곤란하다는 치명적인 단점이 있다. 본 논문에서는 이를 해결하고자 BERT model에 knowledge distillation을 적용해 규모는 줄이고, 속도는 향상시키면서 성능은 보존하고자 한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;knowledge-distillation&quot;&gt;Knowledge distillation&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cpm0722.github.io/machine%20learning/paper%20review/Distilling-the-Knowledge-in-a-Neural-Network/&quot;&gt;Distilling the Knowledge in a Neural Network&lt;/a&gt;를 참고하자.&lt;/p&gt;
+
+&lt;h1 id=&quot;distilbert-a-distilled-version-of-bert&quot;&gt;DistilBERT: a distilled version of BERT&lt;/h1&gt;
+
+&lt;h2 id=&quot;student-architecture&quot;&gt;Student architecture&lt;/h2&gt;
+
+&lt;p&gt;Student BERT model은 BERT에서 NSP를 완전히 제거한 것이다. 따라서 token type embedding(segment embedding)을 제거하고, 마지막 pooler 역시 제거한다. 그리고 layer의 수 역시 절반으로 줄인다. Transformer architecture에서 사용하는 layer normalisation이나 linear layer는 modern linear algebra framework에 의해 최적화되어 있기 때문에 dimension을 줄이는 것은 생각보다 성능에 큰 영향을 미치지 않는다. 따라서 layer의 수를 줄이는 것이 직접적으로 연산량을 줄일 수 있기에 이 방법을 사용했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;distillation&quot;&gt;Distillation&lt;/h2&gt;
+
+&lt;p&gt;training에서 3가지의 loss를 사용해 학습한다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;soft target loss (&lt;script type=&quot;math/tex&quot;&gt;L_{ce}&lt;/script&gt;)
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;수식&lt;/p&gt;
+
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{ce}=\sum_i{t_i *\log{(s_i)}}&lt;/script&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;t_i&lt;/script&gt;: teacher model의 output(soft target), &lt;script type=&quot;math/tex&quot;&gt;s_i&lt;/script&gt;: student model의 output&lt;/li&gt;
+          &lt;li&gt;temperature &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt; 사용&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;hard target loss (&lt;script type=&quot;math/tex&quot;&gt;L_{mlm}&lt;/script&gt;)
+    &lt;ul&gt;
+      &lt;li&gt;BERT에서 사용하는 일반적인 MLM(Masked Language Model) loss&lt;/li&gt;
+      &lt;li&gt;dynamic masking 사용&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;cosine embedding loss (&lt;script type=&quot;math/tex&quot;&gt;L_{cos}&lt;/script&gt;)
+    &lt;ul&gt;
+      &lt;li&gt;teacher model과 student model의 hidden vector들의 direction을 align하는 효과&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;data-and-compute-power&quot;&gt;Data and compute power&lt;/h2&gt;
+
+&lt;p&gt;original BERT와 동일한 corpus를 사용해 학습했다. 16GB V100 GPU 8개를 사용해 90시간동안 학습을 수행했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;experiments&quot;&gt;Experiments&lt;/h1&gt;
+
+&lt;h2 id=&quot;glue&quot;&gt;GLUE&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-31-DistilBERT-a-distilled-version-of-BERT/02.jpg&quot; alt=&quot;02.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2개의 BiLSTM을 사용한 ELMo model과 original BERT와 GLUE로 성능을 비교했다. 9가지 task의 평균 성능은 BERT-base와 DistilBERT가 모두 ELMo보다 훨씬 좋은 수치를 보여줬고, DistilBERT는 BERT-base에 비해 2.5% 낮은 성능을 달성했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;dowmstream-task-benchmark&quot;&gt;Dowmstream task benchmark&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-31-DistilBERT-a-distilled-version-of-BERT/03.jpg&quot; alt=&quot;03.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;IMDb와 SQuAD를 사용해 downstream task에서의 성능을 비교했다. DistilBERT는 두 task 모두에서 BERT-base에 거의 근접한 accuracy와 F1 Score를 달성했다. 특히 SQuAD에 대해서는 fine-tuning 단계에서도 fine-tuning된 BERT-base model을 teacher model로 해 추가적으로 knowledge distillation을 수행했는데 추가적인 성능 향상이 발생했다.&lt;/p&gt;
+
+&lt;p&gt;실제로 inference time을 비교했는데 batch size=1인 상황에서 DistilBERT는 BERT-base보다 60% 빠른 성능을 보였다. on-device에서의 성능도 비교했는데, iPhone 7 Plus에서 실험을 진행한 결과 tokenization을 제외한 시간을 DistilBERT가 71% 더 빨랐다. 전체 model의 size는 총 207MB로 mobile device의 memory에 올리기 충분했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;ablation-study&quot;&gt;Ablation study&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-31-DistilBERT-a-distilled-version-of-BERT/04.jpg&quot; alt=&quot;04.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;triple loss의 세 요소를 제거하며 실험을 진행했다. &lt;script type=&quot;math/tex&quot;&gt;L_{mlm}&lt;/script&gt;(hard target loss)가 제일 영향이 적었고, &lt;script type=&quot;math/tex&quot;&gt;L_{cos}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L_{ce}&lt;/script&gt; 순서로 영향력이 작었다. 또한 weight initialization을 random하게 수행할 경우에는 성능 하락이 제일 크게 발생했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;DistilBERT는 original BERT model보다 40% 작고, 60% 빠르면서도 97%의 capability를 보존했다. 기존의 knowledgd distillation에 cosine loss를 추가한 triple loss를 사용해 추가적인 성능 향상도 달성했다.&lt;/p&gt;</content><category term="NLP" /><summary type="html">Paper Info</summary></entry><entry><title type="html">[NLP 논문 구현] pytorch로 구현하는 Transformer (Attention is All You Need)</title><link href="http://192.168.50.41:4000/pytorch-implementation/transformer" rel="alternate" type="text/html" title="[NLP 논문 구현] pytorch로 구현하는 Transformer (Attention is All You Need)" /><published>2021-01-27T18:00:00-06:00</published><updated>2021-01-27T18:00:00-06:00</updated><id>http://192.168.50.41:4000/pytorch-implementation/Transformer-in-pytorch</id><content type="html" xml:base="http://192.168.50.41:4000/pytorch-implementation/transformer">&lt;h3 id=&quot;paper-link&quot;&gt;&lt;a href=&quot;https://arxiv.org/pdf/1706.03762.pdf&quot;&gt;Paper Link&lt;/a&gt;&lt;/h3&gt;
 
 &lt;h1 id=&quot;why-transformer&quot;&gt;Why Transformer?&lt;/h1&gt;
 
-&lt;p&gt;Transformer는 2017년에 등장해 NLP 분야에서 혁신적인 성과를 이끌어낸 논문이다. 비단 NLP뿐만이 아니라 다른 ML Domain 내에서도 많은 insight를 주어 활용되고 있다.&lt;/p&gt;
+&lt;p&gt;Transformer는 2017년에 등장해 NLP 분야에서 혁신적인 성과를 이끌어낸 논문이다. 비단 NLP뿐만이 아니라 다른 ML Domain 내에서도 수없이 활용되고 있다.&lt;/p&gt;
 
-&lt;p&gt;Transformer의 가장 큰 contribution은 이전의 RNN(Recurrent Neural Network) model이 불가능했던 병렬 처리를 가능케 했다는 점이다. GPU를 사용함으로써 얻는 가장 큰 이점은 병렬 처리를 한다는 것인데, RNN과 같은 model은 GPU 발전의 혜택을 제대로 누리지 못했다. 앞으로 GPU의 발전은 더욱 가속화될 것이기에, Recurrent network의 한계는 점점 더 두드러질 것이다. Recurrent network를 사용하는 이유는 텍스트, 음성 등의 sequential한 data를 처리하기 위함인데, sequential하다는 것은 등장 시점(또는 위치)을 정보로 취급한다는 의미이다. 따라서 context vector를 앞에서부터 순차적으로 생성해내고, 그 context vector를 이후 시점에서 활용하게 방식으로 구현한다. 즉, 이후 시점의 연산은 앞 시점의 연산에 의존적이다. 따라서 앞 시점의 연산이 끝나지 않을 경우, 그 뒤의 연산을 수행할 수 없다. 이러한 이유로 RNN 계열의 model은 병렬 처리를 제대로 수행할 수 없다.&lt;/p&gt;
+&lt;p&gt;Transformer의 가장 큰 contribution은 이전의 RNN(Recurrent Neural Network) model이 불가능했던 병렬 처리를 가능케 했다는 점이다. GPU를 사용함으로써 얻는 가장 큰 이점은 병렬 처리를 한다는 것인데, RNN과 같은 model은 GPU 발전의 혜택을 제대로 누리지 못했다. 앞으로 GPU의 발전은 더욱 가속화될 것이기에, Recurrent network의 한계는 점점 더 두드러질 것이다. Recurrent network를 사용하는 이유는 텍스트, 음성 등의 sequential한 data를 처리하기 위함인데, sequential하다는 것은 등장 시점(또는 위치)을 정보로 취급한다는 의미이다. 따라서 context vector를 앞에서부터 순차적으로 생성해내고, 그 context vector를 이후 시점에서 활용하는 방식으로 구현한다. 즉, 이후 시점의 연산은 앞 시점의 연산에 의존적이다. 따라서 앞 시점의 연산이 끝나지 않을 경우, 그 뒤의 연산을 수행할 수 없다. 이러한 이유로 RNN 계열의 model은 병렬 처리를 제대로 수행할 수 없다.&lt;/p&gt;
 
 &lt;p&gt;Transformer는 이를 극복했다. Attention 개념을 도입해 어떤 특정 시점에 집중하고, Positional Encoding을 사용해 sequential한 위치 정보를 보존했으며, 이후 시점에 대해 masking을 적용해 이전 시점의 값만이 이후에 영향을 미치도록 제한했다. 그러면서도 모든 과정을 병렬처리 가능하도록 구현했다. Transformer를 직접 pytorch를 사용해 구현하고, 학습시키며 이러한 특징들을 이해해보자. 본 포스트의 모든 code는 본인이 직접 작성했으나, 다소 참조한 부분의 출처는 포스트 하단의 Reference에 명시한다.&lt;/p&gt;
 
@@ -129,7 +217,7 @@
 
 &lt;h4 id=&quot;query-key-value&quot;&gt;Query, Key, Value&lt;/h4&gt;
 
-&lt;p&gt;지금까지는 추상적으로 Self-Attention에 대한 개념 및 장단점을 살펴봤다. 이제 구체적으로 어떤 방식으로 행렬 곱셈을 사용해 Self-Attention이 수행되는지 알아보자. 우선은 matrix level이 아닌 token 단위의 vector-level에서 이해해보자.&lt;/p&gt;
+&lt;p&gt;지금까지는 추상적으로 Self-Attention에 대한 개념 및 장단점을 살펴봤다. 이제 구체적으로 어떤 방식으로 행렬 곱셈을 사용해 Self-Attention이 수행되는지 알아보자. 우선은 matrix-level이 아닌 token 단위의 vector-level에서 이해해보자.&lt;/p&gt;
 
 &lt;p&gt;Self-Attention에서는 총 3개의 vector가 새로 등장한다. Query, Key, Value이다. 각각의 역할은 다음과 같다.&lt;/p&gt;
 
@@ -141,7 +229,7 @@
 
 &lt;p&gt;위의 예시 문장으로 다시 되돌아가보자. ‘it’이 어느 것을 지칭하는지 알아내고자 한다. 그렇다면 ‘it’ token과 문장 내 다른 모든 token들에 대해 attention을 구해야 한다. 이 경우에는 Query는 ‘it’으로 고정이다. Key, Value는 서로 완전히 같은 token을 가리키는데, 문장의 시작부터 끝까지 모든 token들 중 하나가 될 것이다. Key와 Value가 ‘The’를 가리킬 경우 ‘it’과 ‘The’ 사이의 attention을 구하는 것이고, Key와 Value가 마지막 ‘tired’를 가리킬 경우 ‘it’과 ‘tired’ 사이의 attention을 구하는 것이 된다. 즉, Key와 Value는 문장의 처음부터 끝까지 탐색한다고 이해하면 된다. Query는 고정되어 하나의 token을 가리키고, Query와 가장 부합하는 (Attention이 높은) token을 찾기 위해서 Key, Value를 문장의 처음부터 끝까지 탐색시키는 것이다. 각각의 의미는 이해했으나, Key와 Value가 완전히 같은 token을 가리킨다면 왜 두 개가 따로 존재하는지 의문이 들 수 있다. 이는 이후에 다룰 것이나, 결론부터 말하자면 Key와 Value의 실제 값은 다르지만 의미적으로는 여전히 같은 token을 의미한다. Key와 Value는 이후 Attention 계산 과정에서 별개로 사용된다.&lt;/p&gt;
 
-&lt;p&gt;Query, Key, Value가 각각 어떤 token을 가리키는지는 이해가 됐을 것이다. 하지만, 그래서 각 vector의 값은 어떻게 만들어지는지는 우리는 아직 알지 못한다. 정말 간단하게도, input으로 들어오는 token embedding vector를 fully connected layer에 넣어 세 vector를 만들어낸다. 세 vector를 생성해내는 FC layer는 모두 다르기 때문에, 결국 self-attention에서는 Query, Key, Value를 구하기 위해 3개의 서로 다른 FC layer가 존재한다. 이 FC layer들은 모두 같은 input dimension, output dimension을 갖는다. input dimension이 같은 이유는 당연하게도 모두 다 token embedding vector를 input으로 받기 때문이다. output dimension이 같다는 것은 각각 별개의 FC layer로 구해진 Query, Key, Value가 값은 다를지언정 같은 dimension을 갖는 vector가 된다는 것을 알 수 있다. 즉, &lt;strong&gt;Query, Key, Value의 shape는 모두 동일&lt;/strong&gt;하다. 앞으로 이 세 vector의 dimension을 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;로 명명한다. 여기서 &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;는 Key를 의미하는데, 굳이 Query, Key, Value 중 Key를 이름으로 채택한 이유는 특별히 있지 않고, 단지 논문의 notation에서 이를 채택했기 때문이다. 정리하자면, Query, Key, Value는 모두 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;의 dimension을 갖는 vector이다. 이제 위에서 얘기했던 Key, Value가 다른 값을 갖는 이유를 이해할 수 있다. input은 같은 token embedding vector였을지라도 서로 다른 FC layer를 통해서 각각 Key, Value가 구해지기 때문에 같은 token을 가리키면서 다른 값을 갖는 것이다.&lt;/p&gt;
+&lt;p&gt;Query, Key, Value가 각각 어떤 token을 가리키는지는 이해가 됐을 것이다. 하지만, 그래서 Query, Key, Value라는 세 vector의 구체적인 값은 어떻게 만들어지는지는 우리는 아직 알지 못한다. 정말 간단하게도, input으로 들어오는 token embedding vector를 fully connected layer에 넣어 세 vector를 만들어낸다. 세 vector를 생성해내는 FC layer는 모두 다르기 때문에, 결국 self-attention에서는 Query, Key, Value를 구하기 위해 3개의 서로 다른 FC layer가 존재한다. 이 FC layer들은 모두 같은 input dimension, output dimension을 갖는다. input dimension이 같은 이유는 당연하게도 모두 다 token embedding vector를 input으로 받기 때문이다. 한편, 세 FC layer의 output dimension이 같다는 것을 통해 각각 별개의 FC layer로 구해진 Query, Key, Value가 구체적인 값은 다를지언정 같은 dimension을 갖는 vector가 된다는 것을 알 수 있다. 즉, &lt;strong&gt;Query, Key, Value의 shape는 모두 동일&lt;/strong&gt;하다. 앞으로 이 세 vector의 dimension을 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;로 명명한다. 여기서 &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;는 Key를 의미하는데, 굳이 Query, Key, Value 중 Key를 이름으로 채택한 이유는 특별히 있지 않고, 단지 논문의 notation에서 이를 채택했기 때문이다. 정리하자면, Query, Key, Value는 모두 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;의 dimension을 갖는 vector이다. 이제 위에서 얘기했던 Key, Value가 다른 값을 갖는 이유를 이해할 수 있다. input은 같은 token embedding vector였을지라도 서로 다른 FC layer를 통해서 각각 Key, Value가 구해지기 때문에 같은 token을 가리키면서 다른 값을 갖는 것이다.&lt;/p&gt;
 
 &lt;h4 id=&quot;how-to-calculate&quot;&gt;How to Calculate?&lt;/h4&gt;
 
@@ -151,7 +239,7 @@
 
 &lt;p&gt;그림으로 계산의 흐름을 표현하면 다음과 같다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png&quot; alt=&quot;scaled_dot_production_in_paper.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png&quot; alt=&quot;scaled_dot_production_in_paper.png&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;출처: Attention is All You Need [&lt;a href=&quot;https://arxiv.org/pdf/1706.03762.pdf&quot;&gt;https://arxiv.org/pdf/1706.03762.pd&lt;/a&gt;f]&lt;/p&gt;
 
@@ -159,7 +247,7 @@
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/qkv_vector.png&quot; alt=&quot;qkv_vector.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;그렇다면 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;를 MatMul(행렬곱)한다는 의미는 어떤 의미일까? 이 둘을 곱한다는 것은 둘의 Attention Score를 구한다는 것이다. &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;의 shape를 생각해보면, 둘 모두 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;를 dimension으로 갖는 vector이다. 이 둘을 곱한다고 했을 때(정확히는 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;를 transpose한 뒤 곱함, 즉 두 vector의 내적), 결과값은 어떤 scalar 값이 나오게 될 것이다. 이 값을 Attention Score라고 한다. 이후 scaling을 수행하는데, 값의 크기가 너무 커지지 않도록 &lt;script type=&quot;math/tex&quot;&gt;\sqrt{d_k}&lt;/script&gt;로 나눠준다. 값이 너무 클 경우 gradient vanishing이 발생할 수 있기 때문이다. scaling을 제외한 연산 과정을 아래와 같다.&lt;/p&gt;
+&lt;p&gt;그렇다면 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;를 MatMul(행렬곱)한다는 의미는 어떤 의미일까? 이 둘을 곱한다는 것은 둘의 Attention Score를 구한다는 것이다. &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;의 shape를 생각해보면, 둘 모두 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;를 dimension으로 갖는 vector이다. 이 둘을 곱한다고 했을 때(정확히는 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;를 transpose한 뒤 곱함, 즉 두 vector의 내적), 결과값은 어떤 scalar 값이 나오게 될 것이다. 이 값을 Attention Score라고 한다. 이후 scaling을 수행하는데, 값의 크기가 너무 커지지 않도록 &lt;script type=&quot;math/tex&quot;&gt;\sqrt{d_k}&lt;/script&gt;로 나눠준다. 값이 너무 클 경우 gradient vanishing이 발생할 수 있기 때문이다. scaling을 제외한 연산 과정은 아래와 같다.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/attention_score_scalar.png&quot; alt=&quot;attention_score_scalar.png&quot; /&gt;&lt;/p&gt;
 
@@ -173,7 +261,7 @@
 
 &lt;p&gt;그 결과 Attention Score는 &lt;script type=&quot;math/tex&quot;&gt;1 \times n&lt;/script&gt;의 matrix가 되는데, 이는 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;의 token과 문장 내 모든 token들 사이의 Attention Score를 각각 계산한 뒤 concatenate한 것과 동일하다. 이를 행렬곱 1회로 수행한 것이다.&lt;/p&gt;
 
-&lt;p&gt;이렇게 구한 Attention Scores를 softmax를 사용해 확률값으로 변환하게 된다. 그 결과 각 Attention Score는 모두 더하면 1인 확률값이 된다. 이 값들의 의미는 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;의 token과 해당 token이 얼마나 Attention을 갖는지(얼마나 연관성이 짙은지)에 대한 비율(확률값)이 된다. 임의로 Attention Probability라고 부른다(논문에서 사용하는 표현은 아니고, 이해를 돕기 위해 임의로 붙인 명칭이다). Attention Probability를 최종적으로 &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;와 곱하게 되는데, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;(Attention을 구하고자 하는 대상 token, 다시 한 번 강조하지만 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;는 같은 token을 의미한다.)를 Attention Probability만큼만 반영하겠다는 의미이다. 연산은 다음과 같이 이루어진다.&lt;/p&gt;
+&lt;p&gt;이렇게 구한 Attention Score는 softmax를 사용해 확률값으로 변환하게 된다. 그 결과 각 Attention Score는 모두 더하면 1인 확률값이 된다. 이 값들의 의미는 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;의 token과 해당 token이 얼마나 Attention을 갖는지(얼마나 연관성이 짙은지)에 대한 비율(확률값)이 된다. 임의로 Attention Probability라고 부른다(논문에서 사용하는 표현은 아니고, 이해를 돕기 위해 임의로 붙인 명칭이다). 이후 Attention Probability를 최종적으로 &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;와 곱하게 되는데, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;(Attention을 구하고자 하는 대상 token, 다시 한 번 강조하지만 &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;는 같은 token을 의미한다.)를 각각 Attention Probability만큼만 반영하겠다는 의미이다. 연산은 다음과 같이 이루어진다.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/attention_vector.png&quot; alt=&quot;attention_vector.png&quot; /&gt;&lt;/p&gt;
 
@@ -193,7 +281,7 @@
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/self_attention.png&quot; alt=&quot;self_attention.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;그렇다면 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;는 어떻게 구해지는 것일까? Self-Attention 개념 이전에 설명했듯이, 각각 서로 다른 FC layer에 의해 구해진다. FC layer의 input은 word embedding vector들이고, output은 각각 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;이다. word embedding의 dimension이 &lt;script type=&quot;math/tex&quot;&gt;d_{e}&lt;/script&gt;라고 한다면, input의 shape는 &lt;script type=&quot;math/tex&quot;&gt;n \times d_e&lt;/script&gt;이고, output의 shape는 &lt;script type=&quot;math/tex&quot;&gt;n \times d_k&lt;/script&gt;이다. 각각의 FC layer는 서로 다른 weight matrix (&lt;script type=&quot;math/tex&quot;&gt;d_{embed} \times d_k&lt;/script&gt;)를 갖고 있기 때문에 output의 shape는 모두 동일할지라도, &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;의 실제 값들은 모두 다르다.&lt;/p&gt;
+&lt;p&gt;그렇다면 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;는 어떻게 구해지는 것일까? Self-Attention 개념 이전에 설명했듯이, 각각 서로 다른 FC layer에 의해 구해진다. FC layer의 input은 word embedding vector들이고, output은 각각 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;이다. word embedding의 dimension이 &lt;script type=&quot;math/tex&quot;&gt;d_{embed}&lt;/script&gt;라고 한다면, input의 shape는 &lt;script type=&quot;math/tex&quot;&gt;n \times d_{embed}&lt;/script&gt;이고, output의 shape는 &lt;script type=&quot;math/tex&quot;&gt;n \times d_k&lt;/script&gt;이다. 각각의 FC layer는 서로 다른 weight matrix (&lt;script type=&quot;math/tex&quot;&gt;d_{embed} \times d_k&lt;/script&gt;)를 갖고 있기 때문에 output의 shape는 모두 동일할지라도, &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;의 실제 값들은 모두 다르다.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/qkv_fc_layer.png&quot; alt=&quot;qkv_fc_layer.png&quot; /&gt;&lt;/p&gt;
 
@@ -201,7 +289,7 @@
 
 &lt;p&gt;뜬금없이 masking이 왜 나오는 것일까? 사실 논문의 figure에 따르면 Attention 계산에는 masking 과정이 포함되어 있다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png&quot; alt=&quot;scaled_dot_production_in_paper.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png&quot; alt=&quot;scaled_dot_production_in_paper.png&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;출처: Attention is All You Need [&lt;a href=&quot;https://arxiv.org/pdf/1706.03762.pdf&quot;&gt;https://arxiv.org/pdf/1706.03762.pd&lt;/a&gt;f]&lt;/p&gt;
 
@@ -234,7 +322,7 @@
 
 &lt;h3 id=&quot;multi-head-attention-layer&quot;&gt;Multi-Head Attention Layer&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png&quot; alt=&quot;multi_head_attention_in_paper.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png&quot; alt=&quot;multi_head_attention_in_paper.png&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;출처: Attention is All You Need [&lt;a href=&quot;https://arxiv.org/pdf/1706.03762.pdf&quot;&gt;https://arxiv.org/pdf/1706.03762.pdf&lt;/a&gt;]&lt;/p&gt;
 
@@ -246,7 +334,7 @@
 
 &lt;p&gt;사실 위의 설명은 개념 상의 이해를 돕기 위한 것이고, 실제 연산은 병렬 처리를 위해 더 효율적인 방식으로 수행된다. 기존의 설명에서 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;를 구하기 위한 FC layer는 &lt;script type=&quot;math/tex&quot;&gt;d_{embed}&lt;/script&gt;를 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;로 변환했다. 이렇게 구해낸 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;로 각각의 Self-Attention을 계산해 concatenate하는 방식은 별개의 Self-Attention 연산을 총 &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt;회 수행해야 한다는 점에서 매우 비효율적이다. 따라서 실제로는 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; 자체를 &lt;script type=&quot;math/tex&quot;&gt;n \times d_k&lt;/script&gt;가 아닌, &lt;script type=&quot;math/tex&quot;&gt;n \times d_{model}&lt;/script&gt;로 생성해내서 한 번의 Self-Attention 계산으로 &lt;script type=&quot;math/tex&quot;&gt;n \times d_{model}&lt;/script&gt;의 output을 만들어내게 된다. 때문에 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt;를 생성해내기 위한 &lt;script type=&quot;math/tex&quot;&gt;d_{embed} \times d_k&lt;/script&gt;의 weight matrix를 갖는 FC layer를 &lt;script type=&quot;math/tex&quot;&gt;3*h&lt;/script&gt;개 운용할 필요 없이 &lt;script type=&quot;math/tex&quot;&gt;d_{embed} \times d_{model}&lt;/script&gt;의 weight matrix를 갖는 FC layer를 &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;개만 운용하면 된다.&lt;/p&gt;
 
-&lt;p&gt;여기서 우리가 알 수 있는 것은 여러 Attention을 반영한다는 Multi-Head Attention Layer의 개념적인 의미는 사실 단지 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;의 크기를 &lt;script type=&quot;math/tex&quot;&gt;d_{model}&lt;/script&gt;로 확장시키는 단순한 구현으로 끝나는 것이다. &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; vector에는 담을 수 있는 정보의 양이 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;의 dimension으로는 작기 때문에 더 많은 정보(Attention)을 담아내기 위해 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; vector의 dimension을 늘린 것으로 이해하면 된다.&lt;/p&gt;
+&lt;p&gt;여기서 우리가 알 수 있는 것은 여러 Attention을 반영한다는 Multi-Head Attention Layer의 개념적인 의미는 사실 단지 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;의 크기를 &lt;script type=&quot;math/tex&quot;&gt;d_{model}&lt;/script&gt;로 확장시키는 단순한 구현으로 끝난다는 점이다. &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; vector에는 담을 수 있는 정보의 양이 &lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;의 dimension으로는 작기 때문에 더 많은 정보(Attention)을 담아내기 위해 &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; vector의 dimension을 늘린 것으로 이해하면 된다.&lt;/p&gt;
 
 &lt;p&gt;다시 본론으로 되돌아와서 최종적으로 생성해된 matrix를 FC layer에 넣어 multi-head attention의 input과 같은 shape(&lt;script type=&quot;math/tex&quot;&gt;n \times d_{embed}&lt;/script&gt;)의 matrix로 변환하는 과정이 필요하다. 따라서 마지막 FC layer의 input dimension은 &lt;script type=&quot;math/tex&quot;&gt;d_{model}&lt;/script&gt;, output dimension은 &lt;script type=&quot;math/tex&quot;&gt;d_{embed}&lt;/script&gt;가 된다. 이는 multi-head attention layer도 하나의 함수라고 생각했을 때, input의 shape와 output의 shape가 동일하게 하기 위함이다.&lt;/p&gt;
 
@@ -787,7 +875,52 @@
   &lt;li&gt;
     &lt;h4 id=&quot;wikidocs&quot;&gt;&lt;a href=&quot;https://wikidocs.net/31379&quot;&gt;WikiDocs&lt;/a&gt;&lt;/h4&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><category term="NLP" /><category term="Pytorch" /><summary type="html">Paper Link</summary></entry><entry><title type="html">[NLP 논문 리뷰] Deep Contextualized Word Representations (ELMo)</title><link href="http://192.168.50.41:4000/machine%20learning/paper%20review/Deep-contextualized-word-representations/" rel="alternate" type="text/html" title="[NLP 논문 리뷰] Deep Contextualized Word Representations (ELMo)" /><published>2021-01-01T18:00:00-06:00</published><updated>2021-01-01T18:00:00-06:00</updated><id>http://192.168.50.41:4000/machine%20learning/paper%20review/Deep-contextualized-word-representations</id><content type="html" xml:base="http://192.168.50.41:4000/machine%20learning/paper%20review/Deep-contextualized-word-representations/">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
+&lt;/ul&gt;</content><category term="NLP" /><category term="Pytorch" /><summary type="html">Paper Link</summary></entry><entry><title type="html">[ML 논문 리뷰] Distilling the Knowledge in a Neural Network</title><link href="http://192.168.50.41:4000/paper-review/distilling-the-knowledge-in-a-neural-network" rel="alternate" type="text/html" title="[ML 논문 리뷰] Distilling the Knowledge in a Neural Network" /><published>2021-01-23T18:00:00-06:00</published><updated>2021-01-23T18:00:00-06:00</updated><id>http://192.168.50.41:4000/paper-review/Distilling-the-Knowledge-in-a-Neural-Network</id><content type="html" xml:base="http://192.168.50.41:4000/paper-review/distilling-the-knowledge-in-a-neural-network">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1503.02531&quot;&gt;Archive Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1503.02531&quot;&gt;Paper Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Submit Date: Mar 09, 2015&lt;/p&gt;
+
+&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
+
+&lt;p&gt;Machine Learning이 발전하면서 model의 크기는 급격하게 커지는 경향을 보여왔다. 특히나 ensemble과 같은 기법을 사용할 경우에는 더욱 심하다. 그러나 이러한 대규모 model은 연산이 비용이 과도하게 크다는 문제점 때문에 실시간으로 수행되어야 하는 작업에 있어서는 적용되기 힘들다. 본 논문에서는 이러한 대규모 model을 하나의 작은 model로 압축해 동등한 수준의 성능을 내는 방법론을 제시했다.&lt;/p&gt;
+
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;많은 사람에게 실시간으로 제공되어야 하는 service에는 대규모 model을 사용하기 곤란하다. latency도 높고, computing 자원을 많이 소모하기 때문이다. 이를 해결하기 위해 대규모 model을 작은 model로 축소시키는 연구가 과거부터 수행되어왔는데, 특히나 대규모 ensemble model의 결과를 하나의 small model로 transfer하는 연구가 주목할 만 하다. 많은 연구자들이 이러한 접근이 불가능하다고 생각했지만, 이는 model이 도출해내는 knowledge와 model의 parameter value를 완전히 동일시 여기는 관점이 가로막은 것이지, 실제로는 model의 form을 변형하더라도 같은 knowlege를 도출해낼 수 있다.&lt;/p&gt;
+
+&lt;p&gt;model을 학습하는 목적은 무엇일까? 결국 real data (unseen data)에 대해서 좋은 성능을 내기 위함이다. 이를 위해서는 training data에서 general한 특성을 뽑아내 학습해야 한다. 하지만 실제로는 model은 train data 내부의 special한 특성까지 학습을 하려 한다. 이를 차단하는 것이 좋은 학습이라고 할 수 있다. classification task를 생각해봤을 때, 마지막의 softmax logit의 값은 대개 정답 category의 값만이 높은 확률값을, 나머지 category 값들은 모두 낮은 확률값을 갖는다. 그러나 정답이 아닌 category 값들 역시 충분한 의미를 갖는데, 모두 다 동일하게 작은 값이 아닌, 그 중에서도 어떠한 category의 값은 다른 수치에 비해 높은 값을 가질 것이다. 그렇다면 그 data는 해당 category가 정답은 아닐지언정, 해당 category와 어느정도의 유사성을 갖는다고 이해할 수 있다. 이렇게 data 사이의 상관 관계를 찾아내는 것이 data의 general한 특성을 학습하는 것인데, 안타깝게도 실제로 model을 학습할 때에는 해당 값들은 0에 가까운 값이기에 여타 다른 값들과 함께 사실상 무시되고는 한다.  본 논문에서는 이를 해결하기 위해 &lt;strong&gt;temperature&lt;/strong&gt; 개념을 도입한다. softmax 함수에 값을 그대로 넣지 않고 temperature &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;로 나눈 값을 넣는 것이다. &lt;script type=&quot;math/tex&quot;&gt;T=1&lt;/script&gt;일 때에는 기존 softmax와 완전히 동일하지만, &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;가 점차 증가할수록 더 soft한 값이 나오게 된다.&lt;/p&gt;
+
+&lt;p&gt;구체적으로 large model의 knowledge를 small model로 distilling하는 방법은 large model의 최종 softmax output을 ‘&lt;strong&gt;soft target&lt;/strong&gt;‘으로 지정해 small model의 학습 과정에서 사용하는 것이다. 결론적으로 small model은 2개의 target을 갖는데, large model의 output인 soft target과, 원래의 label 값인 &lt;strong&gt;hard target&lt;/strong&gt;이다. 두 가지 target에 대해 loss를 계산하며 학습을 해나가게 된다. soft target과 hard target를 직관적으로 이해해보면 hard target은 ‘&lt;strong&gt;이상향&lt;/strong&gt;‘이고, soft target은 ‘&lt;strong&gt;현실&lt;/strong&gt;‘이다. classification task라고 가정했을 때 hard target은 대개 one-hot encoding 방식일 것이다. 가장 완벽한 이상적인 model은 모든 data에 대해 정답 category는 1, 그 외 category는 모두 0으로 예측해내겠지만 이는 현실에는 존재할 수 없다. 결국 hard target은 현실적이지 않은 objective인 것이다. 반면, soft target은 실제로 model이 학습을 통해 도출해낸 결과값이다. 즉, model이 충분히 도출해낼 수 있는 수준의 값이다. 그렇기에 새로운 model(본 논문에서는 small model)을 학습시킬 때 현실적인 objective로 채택할 수 있는 것이다.&lt;/p&gt;
+
+&lt;h1 id=&quot;distillation&quot;&gt;Distillation&lt;/h1&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;q_i=\frac{exp\left(z_i/T\right)}{\sum_j{exp\left(z_j/T\right)}}&lt;/script&gt;
+
+&lt;p&gt;본 논문에서 사용하는 모든 softmax 함수는 temperature &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;가 도입된 위와 같은 형태로 변경한다. 학습 과정은 다음과 같이 이루어진다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;training set (x, hard target)을 사용해 large model을 학습한다.&lt;/li&gt;
+  &lt;li&gt;large model이 충분히 학습된 뒤에, large model의 output을 soft target으로 하는 transfer set(x, soft target)을 생성해낸다. 이 때 soft target의 &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;는 1이 아닌 높은 값을 사용한다.&lt;/li&gt;
+  &lt;li&gt;transfer set을 사용해 small model을 학습한다.  &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;는 soft target을 생성할 때와 같은 값을 사용한다.&lt;/li&gt;
+  &lt;li&gt;training set을 사용해 small model을 학습한다. &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;는 1로 고정한다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;각각의 loss function은 모두 Cross-Entropy-Loss를 사용한다. 결국, small model의 최종 loss function은 soft target과의 Cross-Entropy-Loss + hard target과의 Cross-Entropy-Loss가 된다.&lt;/p&gt;
+
+&lt;h1 id=&quot;preliminary-experiments-on-mnist&quot;&gt;Preliminary experiments on MNIST&lt;/h1&gt;
+
+&lt;p&gt;간단한 MNIST 대규모 model을 만들고, 이를 통해 transfer set을 생성해 small model을 학습시켜 실험을 진행했다. large model은 각각 #unit=1200인 2개의 hidden layer를 포함한 간단한 FC model으로, drop out을 포함한다. 60,000개의 training set을 사용해 학습을 진행했다. small model은 #unit=800인 hidden layer 2개로 구성되고, drop-out을 수행하지 않는 model이다. large model은 test set에서 67개의 error가 발생한 반면, small model은 146개의 error가 발생했다. 하지만 여기서 small model에 transfer set을 사용해 추가적인 학습을 진행하면 74개의 error로 대폭 감소했다. 이 때 &lt;script type=&quot;math/tex&quot;&gt;T=20&lt;/script&gt;을 채택했다.&lt;/p&gt;
+
+&lt;p&gt;model의 크기를 줄여가며 추가적인 실험을 진행했는데, #unit=300일 때에는 &lt;script type=&quot;math/tex&quot;&gt;T\geq8&lt;/script&gt;일 때에, #unit=30일 때에는 &lt;script type=&quot;math/tex&quot;&gt;2.5\le T \le 4&lt;/script&gt;일 때에 가장 좋은 성능을 보였다. 이를 통해 model의 크기가 작아질수록 &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt; 역시 함께 작아져야 좋은 성능을 보장한다는 것을 알 수 있다. 직관적으로 생각해보면, model의 크기가 크다는 것은 #parameters가 많다는 것이고, 이는 결국 smooth하지 않은 function이라는 것이다. 따라서 generalize가 아닌 overfitting될 가능성이 더 높다는 것인데, &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;는 output을 더 soft하게 만들어주는 것이므로 overfitting을 방지하는 효과라고 이해할 수 있다. 따라서 model의 크기가 클 수록 overfitting이 발생할 가능성이 높은 것이므로 높은 &lt;script type=&quot;math/tex&quot;&gt;T&lt;/script&gt;를 줘 강하게 soft 효과를 주는 것이 좋은 성능을 낼 것이라는 것을 유추할 수 있다.&lt;/p&gt;
+
+&lt;h1 id=&quot;soft-targets-as-regularizers&quot;&gt;Soft Targets as Regularizers&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2021-01-24-Distilling-the-Knowledge-in-a-Neural Network/01.jpg&quot; alt=&quot;01.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;soft target은 regularization 효과를 낼 수 있다. soft target에는 hard target에는 담을 수 없는 유용한 정보들이 포함되어 있는데, 이 정보들이 overfitting을 방지하는 효과를 가져다준다. 위 table은 660M example을 포함하는 dataset에 대해 학습을 할 때, hard target과 soft target으로 성능을 측정한 것이다. 기본적으로 hard target으로 모든 data에 대해 학습을 수행했을 때에 최종 test accuracy는 58.9%가 도출됐다. 이후 방대한 양의 dataset 중 임의로 일부분만을 추출해 학습을 진행했는데, 3%(20M)개로 학습을 진행한 결과 최종 test accuracy는 44.5%가 도출됐다. 학습 도중 early stopping을 사용했음에도 overfitting이 발생한 것이다. 하지만 100%의 training set에서 soft target을 추출해내 그 중 3%만을 갖고 학습을 진행했을 때에는 test accuracy가 57.0%에 달했다. 심지어 이 경우에는 early stopping을 사용하지 않았음에도 자연스럽게 accuracy가 수렴했다. soft target을 사용해 overfitting이 아닌 generalize한 특성을 제대로 학습한 것이다. 이는 전체 dataset에 대해 hard target으로 학습을 진행한 성능과 비슷한 수치를 보여줬다는 사실을 통해 유추 가능하다.&lt;/p&gt;</content><category term="ML General" /><summary type="html">Paper Info</summary></entry><entry><title type="html">[NLP 논문 리뷰] Deep Contextualized Word Representations (ELMo)</title><link href="http://192.168.50.41:4000/paper-review/deep-contextualized-word-representations" rel="alternate" type="text/html" title="[NLP 논문 리뷰] Deep Contextualized Word Representations (ELMo)" /><published>2021-01-01T18:00:00-06:00</published><updated>2021-01-01T18:00:00-06:00</updated><id>http://192.168.50.41:4000/paper-review/Deep-contextualized-word-representations</id><content type="html" xml:base="http://192.168.50.41:4000/paper-review/deep-contextualized-word-representations">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1802.05365&quot;&gt;Archive Link&lt;/a&gt;&lt;/p&gt;
 
@@ -913,7 +1046,7 @@
 
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-&lt;p&gt;biLM을 사용해 높은 수준의 context를 학습하는 ELMo model을 제안했다. ELMo model을 사용하면 대부분의 NLP task에서 성능이 향상되었다. 또한 layer의 층이 올라갈수록 syntax보다는 semantic한 정보를 담아낸다는 사실도 발견해냈다. 때문에 어느 한 layer를 사용하는 것보다는 모든 layer의 representation을 결합해 사용하는 것이 전반적인 성능 향상에 도움이 된다는 결론을 내릴 수 있다.&lt;/p&gt;</content><category term="NLP" /><summary type="html">Paper Info</summary></entry><entry><title type="html">[운영체제] Disk</title><link href="http://192.168.50.41:4000/operating%20system/Disk/" rel="alternate" type="text/html" title="[운영체제] Disk" /><published>2020-12-17T18:00:00-06:00</published><updated>2020-12-17T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating%20system/Disk</id><content type="html" xml:base="http://192.168.50.41:4000/operating%20system/Disk/">&lt;hr /&gt;
+&lt;p&gt;biLM을 사용해 높은 수준의 context를 학습하는 ELMo model을 제안했다. ELMo model을 사용하면 대부분의 NLP task에서 성능이 향상되었다. 또한 layer의 층이 올라갈수록 syntax보다는 semantic한 정보를 담아낸다는 사실도 발견해냈다. 때문에 어느 한 layer를 사용하는 것보다는 모든 layer의 representation을 결합해 사용하는 것이 전반적인 성능 향상에 도움이 된다는 결론을 내릴 수 있다.&lt;/p&gt;</content><category term="NLP" /><summary type="html">Paper Info</summary></entry><entry><title type="html">[운영체제] Disk</title><link href="http://192.168.50.41:4000/operating-system/disk" rel="alternate" type="text/html" title="[운영체제] Disk" /><published>2020-12-17T18:00:00-06:00</published><updated>2020-12-17T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating-system/Disk</id><content type="html" xml:base="http://192.168.50.41:4000/operating-system/disk">&lt;hr /&gt;
 
 &lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
@@ -1021,7 +1154,7 @@
 
 &lt;p&gt;서로 다른 parity 연산을 수행해 2개의 disk를 추가로 사용하는 방식이다. 최대 2개의 disk의 crash까지 복구 가능하다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/13.png&quot; alt=&quot;13.png&quot; /&gt;&lt;/p&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)</title><link href="http://192.168.50.41:4000/machine%20learning/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/" rel="alternate" type="text/html" title="[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)" /><published>2020-12-11T18:00:00-06:00</published><updated>2020-12-11T18:00:00-06:00</updated><id>http://192.168.50.41:4000/machine%20learning/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space</id><content type="html" xml:base="http://192.168.50.41:4000/machine%20learning/paper%20review/Efficient-Estimation-of-Word-Representations-in-Vector-Space/">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-12-18-Disk/13.png&quot; alt=&quot;13.png&quot; /&gt;&lt;/p&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)</title><link href="http://192.168.50.41:4000/paper-review/efficient-estimation-of-word-representations-in-vector-space" rel="alternate" type="text/html" title="[NLP 논문 리뷰] Efficient Estimation Of Word Representations In Vector Space (Word2Vec)" /><published>2020-12-11T18:00:00-06:00</published><updated>2020-12-11T18:00:00-06:00</updated><id>http://192.168.50.41:4000/paper-review/Efficient-Estimation-of-Word-Representations-in-Vector-Space</id><content type="html" xml:base="http://192.168.50.41:4000/paper-review/efficient-estimation-of-word-representations-in-vector-space">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1301.3781&quot;&gt;Archive Link&lt;/a&gt;&lt;/p&gt;
 
@@ -1165,7 +1298,7 @@
 
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-&lt;p&gt;CBOW와 skip-gram이라는 새로운 word embedding 학습 방법을 제안했다. 기존의 여러 model들에 비해 연산량이 현저히 적고, 간단한 model임에도 매우 높은 성능을 보였다. 또한 word embedding vector의 syntax, semantic 성능을 측정할 수 있는 새로운 dataset을 제시했다.&lt;/p&gt;</content><category term="NLP" /><summary type="html">Paper Info</summary></entry><entry><title type="html">[운영체제] File System</title><link href="http://192.168.50.41:4000/operating%20system/File-System/" rel="alternate" type="text/html" title="[운영체제] File System" /><published>2020-11-30T18:00:00-06:00</published><updated>2020-11-30T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating%20system/File-System</id><content type="html" xml:base="http://192.168.50.41:4000/operating%20system/File-System/">&lt;hr /&gt;
+&lt;p&gt;CBOW와 skip-gram이라는 새로운 word embedding 학습 방법을 제안했다. 기존의 여러 model들에 비해 연산량이 현저히 적고, 간단한 model임에도 매우 높은 성능을 보였다. 또한 word embedding vector의 syntax, semantic 성능을 측정할 수 있는 새로운 dataset을 제시했다.&lt;/p&gt;</content><category term="NLP" /><summary type="html">Paper Info</summary></entry><entry><title type="html">[운영체제] File System</title><link href="http://192.168.50.41:4000/operating-system/file-system" rel="alternate" type="text/html" title="[운영체제] File System" /><published>2020-11-30T18:00:00-06:00</published><updated>2020-11-30T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating-system/File-System</id><content type="html" xml:base="http://192.168.50.41:4000/operating-system/file-system">&lt;hr /&gt;
 
 &lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
@@ -1392,7 +1525,7 @@
 
 &lt;h2 id=&quot;journaling-wal-write-ahead-logging&quot;&gt;Journaling (WAL: Write-Ahead Logging)&lt;/h2&gt;
 
-&lt;p&gt;Journaling은 disk I/O, 특히 write 연산 시에 log를 기록해 저장했다가 이를 crash inconsistency를 해결하는데 사용하는 방식이다. write 요청이 올 경우 disk는 이를 즉시 갱신하지 않고 write 작업 중 수행할 연산들에 대한  log를 미리 작성한다. 이후 만약 write 도중 disk crash가 발생할 경우, 해당 log를 확인해 다시 write를 수행한다. 이러한 log를 저장하는 용도로 disk에 journal block을 새로 추가한다. log의 저장 단위는 transaction이다.&lt;/p&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[운영체제] Semaphore</title><link href="http://192.168.50.41:4000/operating%20system/Semaphore/" rel="alternate" type="text/html" title="[운영체제] Semaphore" /><published>2020-11-23T18:00:00-06:00</published><updated>2020-11-23T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating%20system/Semaphore</id><content type="html" xml:base="http://192.168.50.41:4000/operating%20system/Semaphore/">&lt;hr /&gt;
+&lt;p&gt;Journaling은 disk I/O, 특히 write 연산 시에 log를 기록해 저장했다가 이를 crash inconsistency를 해결하는데 사용하는 방식이다. write 요청이 올 경우 disk는 이를 즉시 갱신하지 않고 write 작업 중 수행할 연산들에 대한  log를 미리 작성한다. 이후 만약 write 도중 disk crash가 발생할 경우, 해당 log를 확인해 다시 write를 수행한다. 이러한 log를 저장하는 용도로 disk에 journal block을 새로 추가한다. log의 저장 단위는 transaction이다.&lt;/p&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[운영체제] Semaphore</title><link href="http://192.168.50.41:4000/operating-system/semaphore" rel="alternate" type="text/html" title="[운영체제] Semaphore" /><published>2020-11-23T18:00:00-06:00</published><updated>2020-11-23T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating-system/Semaphore</id><content type="html" xml:base="http://192.168.50.41:4000/operating-system/semaphore">&lt;hr /&gt;
 
 &lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
@@ -1770,7 +1903,7 @@
 		&lt;span class=&quot;n&quot;&gt;thread_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[운영체제] Concurrency</title><link href="http://192.168.50.41:4000/operating%20system/Concurrency/" rel="alternate" type="text/html" title="[운영체제] Concurrency" /><published>2020-11-16T18:00:00-06:00</published><updated>2020-11-16T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating%20system/Concurrency</id><content type="html" xml:base="http://192.168.50.41:4000/operating%20system/Concurrency/">&lt;hr /&gt;
+&lt;/div&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[운영체제] Concurrency</title><link href="http://192.168.50.41:4000/operating-system/concurrency" rel="alternate" type="text/html" title="[운영체제] Concurrency" /><published>2020-11-16T18:00:00-06:00</published><updated>2020-11-16T18:00:00-06:00</updated><id>http://192.168.50.41:4000/operating-system/Concurrency</id><content type="html" xml:base="http://192.168.50.41:4000/operating-system/concurrency">&lt;hr /&gt;
 
 &lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
 
@@ -2312,7 +2445,7 @@ A=\begin{pmatrix}A_{11}&amp;...&amp;A_{1m}\\&amp;...&amp;\\A_{n1}&amp;...&amp;A_
 	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[NLP 논문 리뷰] KR-BERT: A Small Scale Korean Specific Language Model</title><link href="http://192.168.50.41:4000/machine%20learning/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/" rel="alternate" type="text/html" title="[NLP 논문 리뷰] KR-BERT: A Small Scale Korean Specific Language Model" /><published>2020-11-12T18:00:00-06:00</published><updated>2020-11-12T18:00:00-06:00</updated><id>http://192.168.50.41:4000/machine%20learning/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model</id><content type="html" xml:base="http://192.168.50.41:4000/machine%20learning/paper%20review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model/">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
+&lt;/div&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[NLP 논문 리뷰] KR-BERT: A Small Scale Korean Specific Language Model</title><link href="http://192.168.50.41:4000/paper-review/kr-bert-a-small-scale-korean-specific-language-model" rel="alternate" type="text/html" title="[NLP 논문 리뷰] KR-BERT: A Small Scale Korean Specific Language Model" /><published>2020-11-12T18:00:00-06:00</published><updated>2020-11-12T18:00:00-06:00</updated><id>http://192.168.50.41:4000/paper-review/KR-BERT-A-Small-Scale-Korean-Specific-Language-Model</id><content type="html" xml:base="http://192.168.50.41:4000/paper-review/kr-bert-a-small-scale-korean-specific-language-model">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/2008.03979&quot;&gt;Archive Link&lt;/a&gt;&lt;/p&gt;
 
@@ -2463,282 +2596,4 @@ A=\begin{pmatrix}A_{11}&amp;...&amp;A_{1m}\\&amp;...&amp;\\A_{n1}&amp;...&amp;A_
 
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-&lt;p&gt;Korean-specific BERT model인 KR-BERT model을 제안했다. 기존의 Korean-specific model에 비해 더 작은 규모에서 더 적은 dataset으로 동등하거나 더 좋은 성능을 보여줬다. 이 과정에서 sub-character level tokenizing, Bidirectional BPE를 사용해 Korean의 문법적 특성을 잡아냈다.&lt;/p&gt;</content><category term="NLP" /><category term="Korean" /><summary type="html">Paper Info</summary></entry><entry><title type="html">[운영체제] Paging Mechanism</title><link href="http://192.168.50.41:4000/operating%20system/Paging-Mechanism/" rel="alternate" type="text/html" title="[운영체제] Paging Mechanism" /><published>2020-10-19T19:00:00-05:00</published><updated>2020-10-19T19:00:00-05:00</updated><id>http://192.168.50.41:4000/operating%20system/Paging-Mechanism</id><content type="html" xml:base="http://192.168.50.41:4000/operating%20system/Paging-Mechanism/">&lt;hr /&gt;
-
-&lt;p&gt;숭실대학교 컴퓨터학부 홍지만 교수님의 2020-2학기 운영체제 강의를 정리 및 재구성했다.&lt;/p&gt;
-
-&lt;h1 id=&quot;paging-mechanism&quot;&gt;Paging Mechanism&lt;/h1&gt;
-
-&lt;p&gt;paging 기법에 대해 자세히 알아보자. 위에서 살펴본 고정 분할 및 가변 분할 기법은 각각 내부 단편화, 외부 단편화의 문제점이 존재했다. paging은 이러한 단점들을 해결하기 위해 고안된 방식이다. paging을 사용하면 결론적으로 외부 단편화는 발생하지 않으며, 내부 단편화는 아주 적은 횟수 (대개 process 당 1회) 발생하게 된다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/01.png&quot; alt=&quot;01.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;paging이란 memory 가상화에서 가상 주소와 물리 주소를 mapping시킬 때에 page frame을 단위로 하는 방식이다. page table에는 가상 주소, 물리 주소 뿐만 아니라 P, M, U bit 등의 control bit도 담겨져 있다. P(present) bit는 해당 page가 memory에 위치하는가에 대한 bit로, 1일 경우 가리키는 물리 주소가 물리 memory 영역이라는 의미이고 0일 경우에는 가리키는 물리 주소가 memory가 아닌 disk의 swap 영역이라는 뜻이다. 즉, P bit가 0일 경우에는 swap 영역에 있는 page를 memory로 불러와야 한다. 이러한 과정을 &lt;strong&gt;page fault&lt;/strong&gt;라고 한다. page fault는 결국 disk I/O를 호출하는 것이기에 schedule() 함수를 호출한다. 한편 M(modify) bit는 해당 page가 수정된 적이 있는지에 대한 bit이고, W(write) bit, D(dirty) bit라고도 불린다. U(used) bit는 해당 page를 read한 적이 있는지에 대한 bit로, R(read) bit라고도 불린다. page table은 OS가 각각의 process에게 개별적으로 부여하게 되며,  task_struct와 같은 PCB들은 멤버 변수로 page table을 가리키는 포인터 값을 저장한다. 한편, 대부분의 가상 memory 기법은 page table을 실제 memory가 아닌 가상 memory에 저장하게 된다. process가 running 상태라면, 최소한 해당 process의 page table 중 일부분은 memory에 존재해야 하고, 전체 page table이 memory에 존재하는 것이 가장 바람직할 것이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;virtual-address&quot;&gt;Virtual Address&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/02.png&quot; alt=&quot;02.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;page table을 통해 사용되는 가상 주소와 물리 주소는 모두 number + offset의 구조를 갖는다. page number를 통해 page table의 몇 번째 row에 접근할 지를 파악하고, register에 저장된 page table의 포인터 값과 page number를 더해 해당 page table의 row에 접근한다. 이후 얻은 frame number를 통해 실제 물리 memory에 접근하게 된다. 하지만 frame number는 결국 물리 memory에서의 시작 주소를 뜻하는 값이기 때문에 얼마나 data를 읽어들일지에 대한 정보는 알지 못한다. 이 때 사용하는 것이 offset이다. 가상 주소에서의 offset을 그대로 물리 주소에서 사용하게 된다. 이러한 모든 작업은 대개 HW(CPU의 Memory Management Unit)가 수행하게 된다. 과거에는 OS에서 SW를 통해 구현해 사용하기도 했으나 속도가 HW를 이용하는 것에 비해 많이 느리다.&lt;/p&gt;
-
-&lt;p&gt;가상 주소의 bit 사용량을 통해 역으로 OS의 각종 변수 값을 유추할 수도 있다. 가상 주소에서 offset이 차지하는 bit수가 $o$라면, 해당 OS의 page frame size는 $2^o$가 된다. 한편, 가상 주소에서 page number가 사용하는 bit 수가 $p$라면, 해당 OS의 page table의 최대 크기(가질 수 있는 최대 항목 수)는 $2^p$가 된다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/03.png&quot; alt=&quot;03.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;과도한-크기의-page-table-문제-해결&quot;&gt;과도한 크기의 Page Table 문제 해결&lt;/h1&gt;
-
-&lt;h2 id=&quot;계층-구조-page-table-사용&quot;&gt;계층 구조 Page Table 사용&lt;/h2&gt;
-
-&lt;p&gt;page table의 크기는 page table entry의 size * page table가 가질 수 있는 최대 항목 수로 계산할 수 있다. 즉, page table이 가질 수 있는 최대 항목 수가 클 수록 page table의 크기도 커진다는 것이다. 너무 큰 page table을 운용하게 되면 memory 낭비가 심해진다. 각 process마다 page table 운용을 위해 여러 page frame을 사용하지만 그 중 실제로 page table의 극히 일부만 사용하는 상황이 대표적인 예시이다. 이를 해결하기 위한 대표적인 방법이 계층 구조 page table이다. 주로 2단계 계층 구조, 3단계 계층 구조 등이 있다. 우선 page directory가 있어 각각의 항목이 page table을 가리키도록 한다. page directory가 가리키는 page table이 꽉 찼을 경우에만 page directory의 다음 항목에서 새로운 page table을 가리키도록 동적으로 운용하는 방식이다. 아래는 2단계 계층 구조 page table의 예시이다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/04.png&quot; alt=&quot;04.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;inverted-page-table-사용&quot;&gt;Inverted Page Table 사용&lt;/h2&gt;
-
-&lt;p&gt;Page Number를 그대로 사용하지 않고 hash function을 이용해 얻은 hash value로 사용하게 된다. hash value는 hash table에서의 인덱스이다. hash table의 항목 수는 물리 memory의 page frame의 개수와 동일하다. 즉, hash table은 모든 process가 공용으로 사용하는 것이다. 따라서 hash table entry에는 page number뿐만 아니라 pid까지 함께 담겨져 있다. hash table에서의 collision을 해결하기 위해 linked list로 다음 entry를 연결하게 된다. 이렇게 찾은 hash table entry의 hash table에서의 인덱스를 이용해 page frame을 찾아가게 된다. hash table에서의 인덱스가 $i$라면, mapping된 page frame도 실제 물리 memory에서 $i$번째 page frame이 된다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/05.png&quot; alt=&quot;05.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;tlb-translation-look-aside-buffer-사용&quot;&gt;TLB (Translation Look-aside Buffer) 사용&lt;/h2&gt;
-
-&lt;p&gt;translation look-aside buffer란 page table 항목들을 저장하기 위한 특수한 고속 cache 장치이다. 가장 최근에 참조된 n개의 page table entry항목들을 저장하게 된다. page table은 기존과 동일하게 control bits와 frame number를 저장하고 있으며, page number를 page table에서의 인덱스로 사용한다. 하지만 TLB에서는 page number를 인덱스로 사용해 각 항목에 접근할 수 없기 때문에 page table의 항목들이 가진 정보에 더해 page number를 추가적으로 저장해야 한다. 이를 &lt;strong&gt;연관 사상(Assosiative Mapping)&lt;/strong&gt;이라고 한다.&lt;/p&gt;
-
-&lt;p&gt;실제 가상 주소를 물리 주소로 변환하는 과정을 따라가보자. 가상 주소가 주어지면 우선 TLB에서 해당 page number가 있는지 확인한다. page number가 TLB에 있을 경우 TLB Hit으로, 바로 frame number를 얻어 물리 주소를 구해낸다. 만약 TLB에 page number가 없을 경우 TLB Miss로, 기존과 동일하게 page table에서 page number를 통해 frame number를 구해낸다. 이후 해당 page number에 관련된 정보들을 TLB에 추가한다.  만약 TLB에 여유 공간이 없을 경우 가장 오래된 항목을 제거해 공간을 확보한다. 한편, 만약 page table에서 P bit가 0이라면 Page Fault로, secondary memory(swap)에 접근해 해당 page frame을 memory로 load한다. 이후 다시 page table에서 물리 주소를 찾아나선다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/06.png&quot; alt=&quot;06.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;적절한-page-frame-size&quot;&gt;적절한 Page (Frame) Size&lt;/h1&gt;
-
-&lt;p&gt;page의 크기는 HW 설계에 있어서 매우 중요한 issue 중 하나이다. 여러 관점에서 장단점을 고려해서 신중하게 결정해야만 한다. 만약 page의 크기가 작다면 내부 단편화가 적게 발생할 것이다. 대신 한 process 당 필요한 page의 수가 많아지고, 이는 결국 page table의 size를 늘리는 결과를 낳는다. page table의 size가 커지면 Multi-Programming 환경에서는 여러 활성 process 중 일부의 page table이 물리 memory가 아닌 swap 영역에 있어야 함을 의미한다. 최악의 경우에는 한 번의 memory 참조로 Page Fault가 2번(page table, page frame) 발생할 수 있는 것이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;paging-replacement-policy&quot;&gt;Paging Replacement Policy&lt;/h1&gt;
-
-&lt;p&gt;Memory의 모든 page frame이 사용 중인 상황에서 swap에 위치한 page frame을 참조하는 상황이 발생할 수 있다. 이 때에는 memory의 page frame 중 하나를 swap의 page frame과 교체해야 한다. 이러한 현상을 Page Fault라고 부른다. page fault가 다수 발생하는 현상을 thrashing이라고 한다. thrashing을 방지하기 위해 합리적인 page replacement policy를 채택해야 한다. 만약 자주 호출되는 page frame을 memory에서 빼내어 swap으로 이동시키게 되면, page fault 발생 횟수가 증가해 성능에 악영향을 미칠 것이다. page replacement 정책의 핵심은 page frame이 미래에 얼마나 참조될 지를 예측하는 것이다. 미래의 일을 완전히 예견하는 것은 불가능하나 과거의 경향을 근거로 미흡하게나마 예측할 수는 있다. 따라서 page replacement 정책은 대개 과거의 page frame 이동의 경향을 파악해 미래를 예측하고자 한다. 하지만 너무 정교한 page replacement policy를 적용하게 된다면 오히려 HW와 SW 상의 부담이 더 커지기 때문에 적절한 trade-off가 이루어져야 한다. 아래에서는 6가지 Paging Replacement 정책에 대해 살펴본다.&lt;/p&gt;
-
-&lt;h2 id=&quot;optimal&quot;&gt;Optimal&lt;/h2&gt;
-
-&lt;p&gt;미래에 참조될 page의 순서를 모두 아는 상태에서 앞으로 참조될 때까지의 시간이 가장 긴 page를 교체한다. 당연하게도 현실에서는 구현할 수 없다. optimal 정책은 어디까지나 다른 paging replacement 정책을 평가하는 기준으로써의 가치만 있을 뿐, 구현 대상이 아니다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/07.png&quot; alt=&quot;07.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;5 time에서 page 5가 삽입되는데, 이전 time 기준으로 main memory에 존재하는 page 2, 3, 1는 각각 1 time, 4 time, $\infin$ time 후에 다시 참조된다. 따라서 이후 참조되기까지의 시간이 가장 많이 남은 page 1이 교체되게 된다.&lt;/p&gt;
-
-&lt;h2 id=&quot;fifo-first-input-first-out&quot;&gt;FIFO (First Input First Out)&lt;/h2&gt;
-
-&lt;p&gt;먼저 들어온 page가 먼저 나가는 단순 Queue 방식이다. scheduling 중 RR과 비슷하다고 볼 수 있다. 가장 오래 전에 반입된 page는 memory에 가장 오래 존재했기 때문에 더이상 사용되지 않을 것이라는 논리 하에서 구현된 정책이다. 구현이 매우 간단하지만 좋은 성능을 보이지 못한다. FIFO 정책 하에서 main memory의 page frame 수를 늘릴 경우에는 page fault가 덜 발생할 것 같지만, 의외로 page fault가 더 자주 발생하기도 한다. 이를 FIFO abnormally(이상 현상)이라고 한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/08.png&quot; alt=&quot;08.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;lifo-last-input-last-out&quot;&gt;LIFO (Last Input Last Out)&lt;/h2&gt;
-
-&lt;p&gt;가장 최근에 들어온 page가 빠져나가는 Stack 방식이다. 하나의 page frame만이 지속적으로 교체되기 때문에 page fault가 매우 자주 발생할 것이다. 하지만 의외로 평균적인 성능은 FIFO와 비슷하다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/09.png&quot; alt=&quot;09.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;lru-least-recently-used&quot;&gt;LRU (Least Recently Used)&lt;/h2&gt;
-
-&lt;p&gt;가장 오랫동안 참조되지 않은 page를 교체하는 것이다. LRU는 Optimal과 가장 비슷한 성능을 보이지만 실제로는 구현이 매우 곤란하다는 단점이 있다. 각 page frame마다 가장 최근에 참조된 시각을 기록해야 하는데, 결국 물리 memory 내의 모든 page frame에 대해 int 변수를 추가하고 매 참조마다 갱신하는 형태가 될 수 밖에 없다. 이는 시스템에 큰 부하를 줘 좋은 성능을 내지 못한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/10.png&quot; alt=&quot;10.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;5 time에서 page 5가 삽입되는데, 이전 time 기준으로 memory에 존재하는 page 2, 3, 1은 각각 참조 시점이 2 time, 3 time, 1 time 전이다. 따라서 가장 오래 전에 참조된 page 3이 교체된다.&lt;/p&gt;
-
-&lt;h2 id=&quot;lfu-least-frequently-used&quot;&gt;LFU (Least Frequently Used)&lt;/h2&gt;
-
-&lt;p&gt;참조된 빈도가 가장 낮은 page를 교체하는 것이다. LRU와 동일하게 좋은 성능을 보이지만 구현하기 곤란하다. LRU와 마찬가지로 각 page frame마다 새로운 변수를 추가해야 하는데, 이 경우에는 참조 횟수일 것이다. 만약 동일한 참조 횟수를 가진다면 FIFO 정책을 채택해 먼저 들어온 page를 교체한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/11.png&quot; alt=&quot;11.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;5 time에서 page 5가 삽입되는데, 이전 time 기준으로 memory에 존재하는 page 2, 3, 1은 각각 참조 횟수 2, 1, 1을 갖는다. 따라서 page 3과 1 중 선택을 해야 하는데, FIFO 정책을 채택해 더 먼저 들어온 page 3을 교체한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;clock--nur-not-used-recently&quot;&gt;Clock = NUR (Not Used Recently)&lt;/h2&gt;
-
-&lt;p&gt;Clock 정책은 현대 OS에서 채택하고 있는 page replacement 정책이다. LRU나 LFU와 같이 추가적인 변수를 생성하지 않고, 기존에 page table에 이미 존재하던 R, W bit를 활용하게 된다. 사용하는 bit 수가 더 많아질수록 더 좋은 성능을 보인다. 아래에서는 2 bit를 사용하는 two handed clock이 아닌 one handed clock의 예시이다. 교체하는 우선 순위는 다음과 같다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;참조되지 않았으며, 수정되지 않음 (R = 0, W = 0)&lt;/li&gt;
-  &lt;li&gt;참조되었으며, 수정되지 않음 (R = 1, W = 0)&lt;/li&gt;
-  &lt;li&gt;참조되었으며, 수정됨 (R = 1, W = 1)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;우선 순위 1을 먼저 찾고, 우선 순위 1이 없을 경우 우선 순위 2를 찾아나가되 그 과정에서 지나치는 모든 page frame의 R bit를 0으로 설정한다. 만약 우선 순위 2도 없을 경우 모든 page frame을 탐색하면서 R bit를 0으로 만들었을 것이다. 그 상태에서 다시 우선 순위 1을 찾는 반복을 수행한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-20-Paging-Mechanism/12.png&quot; alt=&quot;12.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;새로운 symbol이 추가되는데, $\rightarrow$는 memory를 가리키는 pointer이다. clock 정책에서 다음에 삽입할 page가 어디인지를 가리킨다. * symbol은 참조 여부이다. *가 있을 경우 참조된 frame (R bit = 1), *가 없을 경우 참조되지 않은 frame (R bit = 0)이다.&lt;/p&gt;
-
-&lt;p&gt;5 time에서 page 5가 삽입되는데, 현재 pointer가 가리키는 page frame은 2이다. page 2는 이미 참조가 된 상태이므로 우선 순위 1에 해당되지 않는다. 따라서 우선 순위 2를 찾아 나선다. 그 과정에서 page 2, 3, 1의 R bit를 0으로 수정한다. 우선 순위 2를 찾기 실패했기 때문에 처음으로 되돌아온다. page 2가 R bit=0이 되었기 때문에 우선 순위 1에 해당한다. 따라서 page 2를 교체한다.&lt;/p&gt;
-
-&lt;p&gt;6 time에서 page 2가 삽입되는데, 현재 pointer가 가리키는 page frame은 3이다. page 3은 R bit=0이므로 우선 순위 1에 해당되기 때문에 3 page를 교체한다.&lt;/p&gt;
-
-&lt;p&gt;7 time에서 page 4가 삽입되는데, 현재 pointer가 가리키는 page frame은 1이다. page 1은 R bit=0이므로 우선 순위 1에 해당되기 때문에 1 page를 교체한다.&lt;/p&gt;
-
-&lt;p&gt;8 time에서 page 5가 삽입되는데, 이미 main memory에 존재하므로 fault가 발생하지 않는다. 따라서 pointer도 이동하지 않는다.&lt;/p&gt;
-
-&lt;p&gt;9 time에서 page 3이 삽입되는데, 현재 pointer가 가리키는 page frame은 5이다. page 5는 이미 참조가 된 상태이므로 우선 순위 1에 해당되지 않는다. 따라서 우선 순위 2를 찾아 나선다. 그 과정에서 page 5, page 2, page 4의 R bit를 0으로 수정한다. 우선 순위 2를 찾기 실패했기 때문에 처음으로 되돌아온다. page 5가 R bit=0이 되었기 때문에 우선 순위 1에 해당한다. 따라서 page 5를 교체한다.&lt;/p&gt;
-
-&lt;p&gt;10 time에서 page 2가 삽입되는데, 이미 main memory에 존재하므로  fault가 발생하지 않는다. 그런데 R bit=0이므로 R bit=1로 변경한다.&lt;/p&gt;
-
-&lt;p&gt;11 time에서 page 5가 삽입되는데, 현재 pointer가 가리키는 page frame은 2이다. page 2는 이미 참조가 된 상태이므로 우선 순위 1에 해당되지 않는다. 따라서 우선 순위 2를 찾아 나선다. 우선 순위 1에 해당하는 page 4를 찾았고, 그 과정에서 page 2의 R bit를 0으로 변경했다. page 4를 교체한다.&lt;/p&gt;
-
-&lt;p&gt;12 time에서 page 2가 삽입되는데, 이미 main memory에 존재하므로 fault가 발생하지 않는다. 그런데 page 2의 R bit=0이므로 R bit를 1로 변경한다.&lt;/p&gt;</content><category term="Operating System" /><summary type="html"></summary></entry><entry><title type="html">[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks</title><link href="http://192.168.50.41:4000/machine%20learning/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/" rel="alternate" type="text/html" title="[NLP 논문 리뷰] An Empirical Study of Tokenization Strategies for Various Korean NLP Tasks" /><published>2020-10-09T19:00:00-05:00</published><updated>2020-10-09T19:00:00-05:00</updated><id>http://192.168.50.41:4000/machine%20learning/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks</id><content type="html" xml:base="http://192.168.50.41:4000/machine%20learning/paper%20review/An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/">&lt;h2 id=&quot;paper-info&quot;&gt;Paper Info&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/2010.02534&quot;&gt;Archive Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/2010.02534.pdf&quot;&gt;Paper Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Submit Date: Oct 6, 2020&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;NLP에서 Tokenization은 전처리 과정에서 가장 중요한 issue 중 하나이다. 가장 적절한 Tokenization 전략을 찾기 위한 연구는 수도 없이 이루어져 왔다. 그 중 가장 대표적인 방식이 BPE이다. BPE는 많은 연구를 통해 보편적으로 가장 효율적인 Tokenization 기법으로 알려졌지만, 아직 language나 task에 구애받지 않고 가장 효율적인가에 대해서는 명확하지 않다. 본 논문에서는 English에 비해 언어 형태론적으로 더 난해한 언어인 Korean에 적합한 tokenization 기법을 찾아내고자 한다. BPE는 가장 보편적인 language인 English를 기준으로 연구된 방식이기에 Korean에 적합하지 않을 수 있다는 생각에서 시작된 연구이다. 본 논문에서는 Korean-English translation, natural language understanding, machine reading comprehension, natural language inference, semantic textual similarity, sentiment analysis, paraphrase identification 등 많은 task에서 실험을 진행했다.&lt;/p&gt;
-
-&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
-
-&lt;h2 id=&quot;mecab-ko-a-korean-morphological-analyzer&quot;&gt;MeCab-ko: A Korean Morphological Analyzer&lt;/h2&gt;
-
-&lt;p&gt;MeCab은 Conditional Random Fields(CRFs)를 기반으로 하는 Japanese 형태소 번역기이다. Japanese와 Korean의 형태론, 문법 상의 유사성에서 착안해 Korean에 적용시킨 것이 MeCab-ko이다. MeCab-ko는 Sejong Corpus를 통해 학습되었으며, 많은 Korean NLP task에서 사용되어 왔고 매우 좋은 성능을 보였다.&lt;/p&gt;
-
-&lt;h2 id=&quot;byte-pair-encoding&quot;&gt;Byte Pair Encoding&lt;/h2&gt;
-
-&lt;p&gt;BPE는 data에서의 등장 빈도를 기반으로 묶는 data-driven statistical alogirhtm이다.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://cpm0722.github.io/paper%20review/Neural-Machine-Translation-of-Rare-Words-with-Subword-Units/&quot;&gt;Neural Machine Translation of Rare Words with Subword Units&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;related-work&quot;&gt;Related Work&lt;/h1&gt;
-
-&lt;p&gt;몇몇 연구에서는 단순 BPE보다 해당 language의 구문에 대한 정보를 기반으로 한 segmentation 기법과 BPE를 혼합해 적용하는 것이 더 좋은 성능을 보인다고 주장해왔다. 특히 non-English language, 그 중 형태론적으로 unique한 특성을 갖는 language에 대해서 더욱 두드러진다. Hindi/Bengali, Arabic, Latvian 등에 대해서 BPE와 함께 unique한 segmentation 기법을 혼용한 연구가 진행되었으며, Korean에 있어서도 동일한 연구가 진행되었다. 하지만 Tokenization이 아닌 NMT task에 있어서 사용되는 parallel corpus filtering 전처리에 관한 연구였다는 점에서 본 논문과는 목적이 다르다.&lt;/p&gt;
-
-&lt;h1 id=&quot;tokenization-strategies&quot;&gt;Tokenization Strategies&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/01.jpg&quot; alt=&quot;01.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;consonant-and-vowel-cv&quot;&gt;Consonant and Vowel (CV)&lt;/h2&gt;
-
-&lt;p&gt;자모 단위로 tokenizing을 하는 기법이다. 공백에 대해서 special token &lt;script type=&quot;math/tex&quot;&gt;\star&lt;/script&gt;를 추가했다.&lt;/p&gt;
-
-&lt;h2 id=&quot;syllable&quot;&gt;Syllable&lt;/h2&gt;
-
-&lt;p&gt;음절 단위로 tokenizing을 하는 기법이다. 역시나 공백에 대한 special token &lt;script type=&quot;math/tex&quot;&gt;\star&lt;/script&gt;를 사용한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;morpheme&quot;&gt;Morpheme&lt;/h2&gt;
-
-&lt;p&gt;MeCab-ko의 형태소 단위 tokenizer를 사용한다. 하지만 이를 사용하면 original input에서의 공백이 제거가 되고, 따라서 original sentence로의 복원이 불가능해진다. 이를 해결하기 위해 공백 special token &lt;script type=&quot;math/tex&quot;&gt;\star&lt;/script&gt;를 추가했다.&lt;/p&gt;
-
-&lt;h2 id=&quot;subword&quot;&gt;Subword&lt;/h2&gt;
-
-&lt;p&gt;SentencePiece를 사용한 BPE를 적용했다. original sentence의 단어 단위를 구분하기 위해서 original sentence의 공백에 대응하는 token &lt;script type=&quot;math/tex&quot;&gt;\_&lt;/script&gt;를 매 단어의 시작에 삽입했다.&lt;/p&gt;
-
-&lt;h2 id=&quot;morpheme-aware-subword&quot;&gt;Morpheme-aware Subword&lt;/h2&gt;
-
-&lt;p&gt;위의 Subword 방식에서 한 발 더 나아가 언어론적 특징을 기반으로 한 segmentation 전략을 BPE와 결합한 방식이다. Morpheme 방식을 먼저 적용한 뒤, 형태소의 list에 대해서 BPE를 적용하게 된다. Morpheme를 적용한 후에 BPE를 사용하기 때문에 형태소 경계를 뛰어넘는 BPE는 발생하지 않는다. (“나랑 쇼핑하자.”에서 ‘쇼핑’, ‘하’는 각각이 별개의 형태소이기 때문에 (‘핑’,’하’)가 Pair로 묶일 수는 없다.)&lt;/p&gt;
-
-&lt;h2 id=&quot;word&quot;&gt;Word&lt;/h2&gt;
-
-&lt;p&gt;original input에서 공백을 기준으로 단어 단위로 tokenizing을 수행하는 가장 단순한 방식이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;experiments&quot;&gt;Experiments&lt;/h1&gt;
-
-&lt;h2 id=&quot;korean-tofrom-english-machine-translation&quot;&gt;Korean to/from English Machine Translation&lt;/h2&gt;
-
-&lt;h3 id=&quot;dataset&quot;&gt;Dataset&lt;/h3&gt;
-
-&lt;p&gt;AI Hub에서 제공하는 Korean-English parallel corpus를 사용했다. 800K sentences pairs의 news data를 포함하고, 784K의 train data, 8K의 dev data, 8K의 test data로 구분했다.&lt;/p&gt;
-
-&lt;h3 id=&quot;bpe-modeling&quot;&gt;BPE Modeling&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/02.jpg&quot; alt=&quot;02.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;BPE training에서 AI Hub의 data를 사용할지, Wiki의 data를 사용할지 결정하기 위해 실험을 진행한다. AI Hub의 data는 실제 task에서의 dataset과 동일하기 때문에 corpus set이 동일하다는 장점이 있는 반면, dataset의 크기가 작다. Wiki는 dataset의 크기가 크지만, news에서 사용되는 corpus set과는 차이가 있다는 단점이 있다. Korean-English Translation, English-Korean Translation으로 성능을 비교해보는데, English BPE는 동일하게 Wiki의 English data를 사용한 32K BPE model을 사용했다. 그 결과, AI Hub의 data보다 Wiki의 data가 더 좋은 성능을 보였다. 따라서 본 논문의 이후에서는 Korean BPE training을 위해 Wiki dataset을 사용한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;training&quot;&gt;Training&lt;/h3&gt;
-
-&lt;p&gt;다양한 vocabulary size의 BPE model로 AI Hub news dataset에 대해서 tokenization 기법을 테스트한다. 우선 NMT task에서 SOTA를 달성한 Transformer model을 사용한다. 가장 보편적으로 사용되는 hyperparameter 값을 채택했다. FAIRSEQ를 사용해 실험을 진행했다. 50 epochs마다 checkpoint를 저장했다.&lt;/p&gt;
-
-&lt;h3 id=&quot;results&quot;&gt;Results&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/03.jpg&quot; alt=&quot;03.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ko-En, En-Ko task에서 모두 Subword와 Syllable가 Morpheme이나 Word보다 더 좋은 성능을 보였다. 이는 OOV Rate와 큰 관련이 있다. 한국어의 형태론은 너무 복잡한 규칙을 가져 수많은 형태소가 있기 때문에 64K 이하의 vocabulary size로는 OOV가 많이 발생할 수 밖에 없다. 하지만 Subword나 Syllable은 모두 음절 단위의 model이기 때문에 OOV가 훨씬 더 적게 발생하게 된다.&lt;/p&gt;
-
-&lt;p&gt;한편 CV의 OOV Rate는 당연히 가장 적은 수치를 보여주는데, Syllable나 Subword에 비해서는 더 낮은 성능을 보여준다. 이를 통해 자모 단위는 문맥 정보를 담기에는 너무 작은 단위라는 것을 알 수 있다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/04.jpg&quot; alt=&quot;04.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Morpheme-aware Subword가 가장 높은 BLEU Scores를 보여준다. Subword와 Morpheme-aware Subword의 차이점은 BPE 이전에 Morpheme의 수행 여부인데, 이는 결국 형태소 경계를 넘어서는 BPE가 발생하는가(Token Spanning Morpheme Boundaries)에서 차이를 보인다. 위의 Table은 Subword에서 각 vocabulary size마다 발생하는 Tokens Spanning Morpheme Boundaries의 횟수를 보여준다. 6~37%의 수치를 보여준다. 이를 통해 형태소 단위의 구분은 tokenization에서 성능에 큰 영향을 미치며, 따라서 형태소 구분을 무시한 단순 BPE는 Korean Tokenizing에 적합하지 않다는 것을 알 수 있다.&lt;/p&gt;
-
-&lt;h2 id=&quot;korean-natural-language-understanding-tasks&quot;&gt;Korean Natural Language Understanding Tasks&lt;/h2&gt;
-
-&lt;p&gt;BERT model을 사용했다. KorQuAD, KorNLI, KorSTS, NSMC, PAWS의 5개 NLU downstream task에 대해서 테스트를 진행했다.&lt;/p&gt;
-
-&lt;h3 id=&quot;downstream-tasks&quot;&gt;Downstream Tasks&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Machine Reading Comprehension: KorQuAD 1.0 Dataset&lt;/p&gt;
-
-    &lt;p&gt;SQuAD를 Korean에 맞게 적용한 dataset이다. 10,645개의 지문과 66,181개의 질문이 포함되고, 각 지문에 대해 주어진 여러 질문 중 가장 적합한 질문을 선택하는 task이다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Natural Language Inference: KorNLI Dataset&lt;/p&gt;
-
-    &lt;p&gt;950,354개의 sentence pair(전제, 추론)이 있고 각 pair에 대해 두 sentence 사이의 관계가 entailment, contradiction, neutral인지 classification을 수행하는 task이다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Semantic Textual Similarity: KorSTS Dataset&lt;/p&gt;
-
-    &lt;p&gt;8628개의 sentence pair가 있고, 각 pair에 대해 0~5 사이의 semantic similarity를 도출해내는 task이다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Sentiment Analysis: NSMC Dataset&lt;/p&gt;
-
-    &lt;p&gt;네이버 영화 review에서 추출한 400K의 sentence에 대해 0(negative)~1(positive) 사이의 sentiment Analysis를 도출해내는 task이다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Paraphrase Identification: PAWS-X Dataset&lt;/p&gt;
-
-    &lt;p&gt;paraphrase identification dataset인 PAWS-X에서 Korean dataset만 추출해낸 53,338 sentence pairs에 대해 0(negative)~1(positive)의 paraphrase identification을 도출해내는 task이다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;training-1&quot;&gt;Training&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/05.jpg&quot; alt=&quot;05.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;large corpus로 pre-train된 BERT-Base model을 각 5개의 NLU task에 대해 별개로 fine-tuning시켜 실험을 진행했다. Korean Wiki Corpus(640MB)는 pre-train을 진행할 만큼 충분한 크기가 되지 못해 Namu-wiki에서 5.5GB의 corpus를 추출해내 Wiki Corpus와 함께 사용했다. hyperparameter는 batch size=1024, max sequence length=128, optimizer=AdamW, lr=5e-5, warm up steps=10K를 사용했다. pre-trained된 BERT Model을 Tensorflow에서 Pytorch로 convert한 뒤, HuggingFace Transformers를 사용해 fine-tuning을 진행했다. fine-tuning에서의 hyperparameter는 위 Table의 값을 사용했다.&lt;/p&gt;
-
-&lt;h3 id=&quot;results-1&quot;&gt;Results&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/06.jpg&quot; alt=&quot;06.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;위의 5개의 NLU task에 대해 6개의 tokenizing 기법을 사용해 각각 dev set, test set에서의 성능을 측정했다. 예외적으로 KorQuAD의 경우에는 test set이 부족해 dev set만 사용했다.&lt;/p&gt;
-
-&lt;p&gt;KorQuAD task에서는 Subword 64K model이 가장 좋은 성능을 보였다. Morpheme와 Subword에서는 vocabulary size와 Score가 비례 관계이다. 하지만 Morpheme-aware Subword에서는 32K model이 제일 높은 수치를 달성했다. 결론적으로, Morpheme-aware Subword model에서는 성능과 vocabulary size 사이의 유의미한 상관관계를 찾을 수 없었다.&lt;/p&gt;
-
-&lt;p&gt;나머지 다른 4개의 task에 대해서는 모두 Morpheme-aware Subword의 64K model이 가장 좋은 성능을 달성했다. tokenization 방식에 관계 없이 모두 다 vocabulary size와 score가 대체로 비례 관계를 보였다. 그러나 위에서 진행했던 NMT task에 있어서는 Morpheme-aware Subword에서의 높은 vocabulary size가 좋은 성능을 보장하지는 않았는데, 다소 배치되는 결과이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;discussion&quot;&gt;Discussion&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/07.jpg&quot; alt=&quot;07.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;token-length&quot;&gt;Token Length&lt;/h2&gt;
-
-&lt;p&gt;token의 길이가 성능에 얼마나 영향을 미치는지 알아본다. token length는 한 token에 포함된 음절 개수의 평균으로 정의한다. CV의 경우에는 자모 단위이기 때문에 평균 token length는 0.33~0.5 사이의 값이다. 한 음절은 2~3개의 자모로 구성되어 있기 때문이다. Syllable은 음절 단위로 tokenizing을 한 것이기 때문에 평균 token length는 1의 고정 값을 갖는다. Morpheme는 형태소 단위로 tokenizing을 수행한 것이기 때문에 평균 token length가 vocabulary size에 따라 변하지 않고 일정하다. Subword나 Morpheme-aware-Subword는 모두 BPE를 사용하는 방식이기 때문에 vocabulary size가 증가할수록 token length도 증가하게 된다. 통계적인 빈도를 기반으로 vocabulary size에 따라 상위 N개를 pair로 묶기 때문이다. 위의 figure에는 word model이 누락됐는데, word model은 Ko-En과 En-Ko에서 각각 7.07, 18.42로 매우 낮은 Score를 보여줘 공간상의 제약으로 figure에서 제외했다.&lt;/p&gt;
-
-&lt;p&gt;Figure 1을 분석해보자. 자모 단위로 tokenizing을 수행한 CV의 성능이 기준점이다. 대부분의 model은 평균 token length가 1.0~1.5인 구간에서 가장 좋은 성능을 보여준다. 평균 token length가 1.5를 넘어가기 시작하면서 점차 감소하는 경향을 보인다. 특히 평균 token length가 2.5에 달하는 word model의 경우에는 최악의 성능을 보여줬다.&lt;/p&gt;
-
-&lt;h2 id=&quot;linguistic-awareness&quot;&gt;Linguistic Awareness&lt;/h2&gt;
-
-&lt;p&gt;Figure 1에서 8K Subword model과 16K Morpheme-aware Subword model을 비교해보자. figure에서 파란 색 배경으로 강조 표시가 된 부분이다. 두 model은 평균 token length가 동일한 값이다. 두 model의 차이는 언어론적 지식을 사용했는가(형태소 경계를 넘어서는 pair를 생성했는가)에 있다. Ko-En과 En-Ko 두 task에서 모두 Morpheme-aware Subword model이 더 좋은 성능을 보여줬다는 것은 token length뿐만 아니라 linguistic awareness도 tokenization 전략 수립에 매우 중요한 factor라는 것을 보여준다.&lt;/p&gt;
-
-&lt;h2 id=&quot;under-trained-tokens&quot;&gt;Under-trained Tokens&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/2020-10-10-An-Empirical-Study-of-Tokenization-Strategies-for-Various-Korean-NLP-Tasks/08.jpg&quot; alt=&quot;08.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Figure 1에서 Morpheme model의 경우에만 예외적으로 CV보다 훨씬 못한 성능을 보여준다. 이러한 결과는 Morpheme model의 높은 OOV rate에서 비롯된다. 위의 Experiments에서 살펴본 NMT task에서의 result table을 확인해보면 Morpheme model의 OOV rate가 압도적으로 높다는 것을 확인할 수 있다(본 논의에서는 모든 task에서 최악의 성능을 보여줬던  Word model은 배제한다). OOV는 정의하자면 test set에서만 등장하고, train set에서는 등장하지 않았던 token을 의미한다. 즉, OOV rate가 높다는 것은 model 입장에서는 처음 보는 token이 test set에서 등장하는 비율을 의미한다. 완전히 처음 마주하는 token이 아닌 적게 마주한 token들의 비율에 대해서도 확인을 해보자. OOV가 아니라 하더라도 등장 빈도가 확연히 적은 token들에 대해서는 model이 under-train했을 가능성이 농후하기 때문이다. Figure 2에서는 실제로 등장 빈도가 낮은 token의 비중이 얼마나 되는지를 시각화 한 graph이다.  예상했던 바와 같이 OOV rate가 높은 Morpheme model이 훨씬 더 높은 수치를 보여준다는 것을 확인할 수 있다. 이는 결국 Morpheme model이 under-trained된 token의 비중이 높다는 것을 의미한다. 이러한 이유로 Morpheme model이 타 model 대비 확연히 낮은 성능을 보이는 것이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;여러 Korean NLP task에 대해서 다양한 tokenization 전략을 사용한 model들의 성능을 비교했다. Korean-English NMT task에서는 BPE에 언어론적 특성(형태소)를 더한 Morpheme-aware Subword Model이 가장 높은 성능을 보여줬다. NLU task의 KorQuAD를 제외한 모든 task에서 역시 Morpheme-aware Subword Model이 가장 좋은 수치를 달성했다. 이를 통해 각 language의 unique한 linguistic awareness가 model 성능 향상에 매우 큰 영향을 미친다는 사실을 도출해냈다.&lt;/p&gt;</content><category term="NLP" /><category term="Korean" /><summary type="html">Paper Info</summary></entry></feed>
+&lt;p&gt;Korean-specific BERT model인 KR-BERT model을 제안했다. 기존의 Korean-specific model에 비해 더 작은 규모에서 더 적은 dataset으로 동등하거나 더 좋은 성능을 보여줬다. 이 과정에서 sub-character level tokenizing, Bidirectional BPE를 사용해 Korean의 문법적 특성을 잡아냈다.&lt;/p&gt;</content><category term="NLP" /><category term="Korean NLP" /><summary type="html">Paper Info</summary></entry></feed>

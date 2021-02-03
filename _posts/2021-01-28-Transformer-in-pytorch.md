@@ -157,7 +157,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
 그림으로 계산의 흐름을 표현하면 다음과 같다.
 
-<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" height="250">
+![scaled_dot_production_in_paper.png](/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png){: width="50%"}
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pd](https://arxiv.org/pdf/1706.03762.pdf)f]
 
@@ -207,7 +207,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
  뜬금없이 masking이 왜 나오는 것일까? 사실 논문의 figure에 따르면 Attention 계산에는 masking 과정이 포함되어 있다.
 
-<img src="/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png" height="250">
+![scaled_dot_production_in_paper.png](/assets/images/2021-01-28-Transformer-in-pytorch/scaled_dot_production_in_paper.png){: width="50%"}
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pd](https://arxiv.org/pdf/1706.03762.pdf)f]
 
@@ -238,7 +238,7 @@ def calculate_attention(self, query, key, value, mask):
 
 ### Multi-Head Attention Layer
 
-<img src="/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png" height="250">
+![multi_head_attention_in_paper.png](/assets/images/2021-01-28-Transformer-in-pytorch/multi_head_attention_in_paper.png){: width="50%"}
 
 출처: Attention is All You Need [[https://arxiv.org/pdf/1706.03762.pdf](https://arxiv.org/pdf/1706.03762.pdf)]
 
@@ -250,7 +250,7 @@ def calculate_attention(self, query, key, value, mask):
 
  사실 위의 설명은 개념 상의 이해를 돕기 위한 것이고, 실제 연산은 병렬 처리를 위해 더 효율적인 방식으로 수행된다. 기존의 설명에서 $$Q$$, $$K$$, $$V$$를 구하기 위한 FC layer는 $$d_{embed}$$를 $$d_k$$로 변환했다. 이렇게 구해낸 $$Q$$, $$K$$, $$V$$로 각각의 Self-Attention을 계산해 concatenate하는 방식은 별개의 Self-Attention 연산을 총 $$h$$회 수행해야 한다는 점에서 매우 비효율적이다. 따라서 실제로는 $$Q$$, $$K$$, $$V$$ 자체를 $$n \times d_k$$가 아닌, $$n \times d_{model}$$로 생성해내서 한 번의 Self-Attention 계산으로 $$n \times d_{model}$$의 output을 만들어내게 된다. 때문에 $$Q$$, $$K$$, $$V$$를 생성해내기 위한 $$d_{embed} \times d_k$$의 weight matrix를 갖는 FC layer를 $$3*h$$개 운용할 필요 없이 $$d_{embed} \times d_{model}$$의 weight matrix를 갖는 FC layer를 $$3$$개만 운용하면 된다.
 
- 여기서 우리가 알 수 있는 것은 여러 Attention을 반영한다는 Multi-Head Attention Layer의 개념적인 의미는 사실 단지 $$d_k$$의 크기를 $$d_{model}$$로 확장시키는 단순한 구현으로 끝나는 것이다. $$Q$$, $$K$$, $$V$$ vector에는 담을 수 있는 정보의 양이 $$d_k$$의 dimension으로는 작기 때문에 더 많은 정보(Attention)을 담아내기 위해 $$Q$$, $$K$$, $$V$$ vector의 dimension을 늘린 것으로 이해하면 된다.
+ 여기서 우리가 알 수 있는 것은 여러 Attention을 반영한다는 Multi-Head Attention Layer의 개념적인 의미는 사실 단지 $$d_k$$의 크기를 $$d_{model}$$로 확장시키는 단순한 구현으로 끝난다는 점이다. $$Q$$, $$K$$, $$V$$ vector에는 담을 수 있는 정보의 양이 $$d_k$$의 dimension으로는 작기 때문에 더 많은 정보(Attention)을 담아내기 위해 $$Q$$, $$K$$, $$V$$ vector의 dimension을 늘린 것으로 이해하면 된다.
 
  다시 본론으로 되돌아와서 최종적으로 생성해된 matrix를 FC layer에 넣어 multi-head attention의 input과 같은 shape($$n \times d_{embed}$$)의 matrix로 변환하는 과정이 필요하다. 따라서 마지막 FC layer의 input dimension은 $$d_{model}$$, output dimension은 $$d_{embed}$$가 된다. 이는 multi-head attention layer도 하나의 함수라고 생각했을 때, input의 shape와 output의 shape가 동일하게 하기 위함이다.
 
