@@ -335,7 +335,7 @@ def calculate_attention(self, query, key, value, mask):
 
  calculate_attention 함수를 사용해 attention을 계산하고 나면 그 shape는 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)이다. Multi-Head Attention Layer의 최종 output은 input의 것과 같은 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)여야만 하기 때문에 shape를 맞춰줘야 한다. 이를 위해 $$h$$와 $$\text{seq_len}$$의 순서를 뒤바꾸고(```.transpose(1, 2)```) 다시 $$h$$와 $$d_k$$를 $$d_{model}$$로 결합한다. 이후 FC Layer를 거쳐 $$d_{model}$$을 $$d_{embed}$$로 변환하게 된다.
 
- Encoder Layer로 다시 되돌아가보자. Encoder Layer에서는 Multi-Head Attention Layer의 forward 함수의 input이 1개일 것으로 가정하고 code를 작성했는데, 실제로는 query, key, value를 받아야 하므로 이를 수정해준다. 이에 더해 mask 역시 인자로 받게 될 것이다. mask는 Transformer model 외부에서(mini-batch 생성할 때) 생성되게 될 것이다.
+ Encoder Layer로 다시 되돌아가보자. pad mask는 Transformer model 외부에서(mini-batch 생성할 때) 생성되게 될 것이므로 EncoderLayer의 forward()에서 인자로 받는다. 따라서 forward()의 최종 인자는 ```x, mask```가 된다. 한편, 이전에는 Multi-Head Attention Layer의 forward()의 인자가 1개(```x```)일 것으로 가정하고 code를 작성했는데, 실제로는 query, key, value를 받아야 하므로 이를 수정해준다. 이에 더해 mask 역시 인자로 받게 될 것이다. 따라서 multi_head_attention_layer의 forward()의 인자는 최종적으로 ```x, x, x, mask```가 된다.
 
 ```python
 class EncoderLayer(nn.Module):
@@ -346,12 +346,12 @@ class EncoderLayer(nn.Module):
 		self.position_wise_feed_forward_layer = position_wise_feed_forward_layer
 
 	def forward(self, x, mask):
-		out = self.multi_head_attention_layer(x, x, x, mask)
+		out = self.multi_head_attention_layer(query=x, key=x, value=x, mask=mask)
 		out = self.position_wise_feed_forward_layer(out)
 		return out
 ```
 
-mask 인자를 받기 위해 Encoder 역시 수정이 가해진다.
+mask 인자를 받기 위해 Encoder 역시 수정이 가해진다. forward()의 인자에 ```mask```를 추가하고, 이를 sublayer의 forward()에 넘겨준다 (```out, mask```).
 
 ```python
 class Encoder(nn.Module):
@@ -369,7 +369,7 @@ class Encoder(nn.Module):
 		return out
 ```
 
-Transformer 역시 수정해야 한다.
+Transformer 역시 수정해야 한다. forward()의 인자에 ```mask```를 추가하고, encoder의 forward()에 넘겨준다(```src, mask```).
 
 ```python
 class Transformer(nn.Module):
@@ -431,7 +431,7 @@ class ResidualConnectionLayer(nn.Module):
 
 forward 함수에서 sub_layer까지 인자로 받는다.
 
-따라서 EncoderLayer의 코드가 아래와 같이 변경되게 된다.
+따라서 EncoderLayer의 코드가 아래와 같이 변경되게 된다. residual_connection_layers에 ResidualConnectionLayer를 2개 생성해 저장하고, 0번째는 multi_head_attention_layer를 감싸고, 1번째는 position_wise_feed_forward_layer를 감싸게 된다.
 
 ```python
 class EncoderLayer(nn.Module):
