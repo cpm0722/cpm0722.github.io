@@ -721,24 +721,24 @@ def make_model(
     h = 8, 
     d_ff = 2048):
 
-        cp = lambda x: copy.deepcopy(x)
+    cp = lambda x: copy.deepcopy(x)
 
-        # multi_head_attention_layer 생성한 뒤 copy해 사용
+    # multi_head_attention_layer 생성한 뒤 copy해 사용
     multi_head_attention_layer = MultiHeadAttentionLayer(
                                     d_model = d_model,
                                     h = h,
                                     qkv_fc_layer = nn.Linear(d_embed, d_model),
                                     fc_layer = nn.Linear(d_model, d_embed))
 
-        # position_wise_feed_forward_layer 생성한 뒤 copy해 사용    
+    # position_wise_feed_forward_layer 생성한 뒤 copy해 사용    
     position_wise_feed_forward_layer = PositionWiseFeedForwardLayer(
                                         first_fc_layer = nn.Linear(d_embed, d_ff),
                                         second_fc_layer = nn.Linear(d_ff, d_embed))
     
-        # norm_layer 생성한 뒤 copy해 사용
+    # norm_layer 생성한 뒤 copy해 사용
     norm_layer = nn.LayerNorm(d_embed, eps=1e-6)
 
-        # 실제 model 생성
+    # 실제 model 생성
     model = Transformer(
                 src_embed = TransformerEmbedding(    # SRC embedding 생성
                                 embedding = Embedding(
