@@ -234,7 +234,7 @@ def calculate_attention(self, query, key, value, mask):
 	return out
 ```
 
-함수의 인자로 query, key, value, mask를 받는다. mask는 pad masking matrix일 것이다. query, key, value는 서로 다른 FC Layer를 거쳐 $$\text{n_batch} \times \text{max_seq_len} \times d_k$$로 변형되었다.
+함수의 인자로 query, key, value, mask를 받는다. mask는 pad masking matrix일 것이다. pad masking은 Transformer 외부 (대개 Batch class)에서 생성되어 Transformer에 인자로 들어오게 된다. query, key, value는 서로 다른 FC Layer를 거쳐 $$\text{n_batch} \times \text{max_seq_len} \times d_k$$로 변형되었다.
 
 ### Multi-Head Attention Layer
 
@@ -415,7 +415,7 @@ class PositionWiseFeedForwardLayer(nn.Module):
 
 ![encoder_layer.png](/assets/images/2021-01-28-Transformer-in-pytorch/encoder_layer.png)
 
-Encoder Layer는 위에서 다뤘던 Multi-Head Attention Layer와 Feed-Forwad Layer로 구성된다. 그러나 사실은 Encoder Layer를 구성하는 두 layer는 Residual Connection으로 둘러싸여 있다. Residual Connection이라는 것은 정말 단순하다. $$y = f(x)$$를 $$y=f(x)+x$$로 변경하는 것이다. 즉, output을 그대로 사용하지 않고, 원래 input을 더해 사용하게 된다. 이로 인해 얻을 수 있는 이점은 명확하다. Back Propagation 도중 발생할 수 있는 Gradient Vanishing을 방지할 수 있다. 개념적으로는 이 것이 전부이다. 여기에 더해 논문에서 채택한 Layer Normalization까지 추가한다. 간단하게 코드로 구현해보자.
+Encoder Layer는 위에서 다뤘던 Multi-Head Attention Layer와 Feed-Forwad Layer로 구성된다. 그러나 사실은 Encoder Layer를 구성하는 두 layer는 Residual Connection으로 둘러싸여 있다. Residual Connection이라는 것은 정말 단순하다. $$y = f(x)$$를 $$y=f(x)+x$$로 변경하는 것이다. 즉, output을 그대로 사용하지 않고, output에 input을 추가적으로 더한 값을 사용하게 된다. 이로 인해 얻을 수 있는 이점은 명확하다. Back Propagation 도중 발생할 수 있는 Gradient Vanishing을 방지할 수 있다. 개념적으로는 이 것이 전부이다. 여기에 더해 논문에서 채택한 Layer Normalization까지 추가한다. 간단하게 코드로 구현해보자.
 
 ```python
 class ResidualConnectionLayer(nn.Module):
@@ -464,7 +464,7 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 #### Context
 
- 위에서 언급했듯이, Decoder의 input으로는 Context와 sentence가 있다. Context는 Encoder에서 생성된 것이다. Encoder 내부에서 Multi-Head Attention Layer나 Position-wise Feed-Forward Layer 모두 input의 shape를 보존했음을 주목하자. 때문에 Encoder Layer 자체도 input의 shape를 보존할 것이고, Encoder Layer가 쌓인 Encoder 전체도 input의 shape를 보존한다. 따라서 Encoder의 output인 Context는 Encoder의 input인 sentence embedding과 동일한 shape를 갖는다. 이 점만 기억하고 넘어가면, 이후 Decoder에서 Context를 사용할 때 이해가 훨씬 수월하다. 이제 Decoder input 중 Context가 아닌 sentence에 대해서 알아보자.
+ 위에서 언급했듯이, Decoder의 input으로는 Context와 sentence가 있다. Context는 Encoder에서 생성된 것이다. Encoder 내부에서 Multi-Head Attention Layer나 Position-wise Feed-Forward Layer 모두 input의 shape를 보존했음을 주목하자. 때문에 Encoder Layer 자체도 input의 shape를 보존할 것이고, Encoder Layer가 쌓인 Encoder 전체도 input의 shape를 보존한다. 따라서 Encoder의 output인 Context는 Encoder의 input인 sentence embedding과 동일한 shape를 갖는다. 이 점만 기억하고 넘어가면, 이후 Decoder에서 Context를 사용할 때 이해가 훨씬 수월하다. 이제 Decoder input 중 Context가 아닌 추가적인 sentence에 대해서 알아보자.
 
 #### Teacher Forcing
 
@@ -488,7 +488,7 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 #### Teacher Forcing in Transformer (Subsequent Masking)
 
- Teacher Forcing 개념을 이해하고 나면 Transformer Decoder에 input으로 들어오는 sentence가 어떤 것인지 이해할 수 있다. ground truth[:-1]의 sentence embedding일 것이다. 하지만 이러한 방식으로 Teacher Forcing이 Transformer에 그대로 적용될 수 있을까? 결론부터 말하자면 그래서는 안된다. 위에서 Teacher Forcing에서 예시를 든 RNN Model은 이전 cell의 output을 이후 cell에서 사용할 수 있었다. 앞에서부터 순선대로 RNN cell이 실행되기 때문에 이러한 방식이 가능했다. 하지만 Transformer가 RNN에 비해 갖는 가장 큰 장점은 병렬 연산이 가능하다는 것이었다. ground truth의 embedding을 matrix로 만들어 input으로 그대로 사용하게 되면, Decoder에서 Self-Attention 연산을 수행하게 될 때 현재 출력해내야 하는 token의 정답까지 알고 있는 상황이 발생한다. 따라서 masking을 적용해야 한다. $$i$$번째 token이라고 한다면, $$1 \thicksim i-1$$의 token은 보이지 않도록 처리를 해야 하는 것이다. 이러한 masking 기법을 subsequent masking이라고 한다. pytorch code로 구현해보자.
+ Teacher Forcing 개념을 이해하고 나면 Transformer Decoder에 input으로 들어오는 sentence가 어떤 것인지 이해할 수 있다. ground truth[:-1]의 sentence embedding일 것이다. 하지만 이러한 방식으로 Teacher Forcing이 Transformer에 그대로 적용될 수 있을까? 결론부터 말하자면 그래서는 안된다. 위에서 Teacher Forcing에서 예시를 든 RNN Model은 이전 cell의 output을 이후 cell에서 사용할 수 있었다. 앞에서부터 순서대로 RNN cell이 실행되기 때문에 이러한 방식이 가능했다. 하지만 Transformer가 RNN에 비해 갖는 가장 큰 장점은 병렬 연산이 가능하다는 것이었다. 병렬 연산을 위해 ground truth의 embedding을 matrix로 만들어 input으로 그대로 사용하게 되면, Decoder에서 Self-Attention 연산을 수행하게 될 때 현재 출력해내야 하는 token의 정답까지 알고 있는 상황이 발생한다. 따라서 masking을 적용해야 한다. $$i$$번째 token을 생성해낼 때, $$1 \thicksim i-1$$의 token은 보이지 않도록 처리를 해야 하는 것이다. 이러한 masking 기법을 subsequent masking이라고 한다. pytorch code로 구현해보자.
 
 ```python
 def subsequent_mask(size):
@@ -503,7 +503,7 @@ def make_std_mask(tgt, pad):
 	return tgt_mask
 ```
 
- make_std_mask함수는 subsequent_mask 함수를 호출해 subsequent masking을 생성하고, 이를 pad masking과 결합한다. 위의 code는 Transformer 내부가 아닌 Batch class 내에서 실행되는 것이 바람직할 것이다. Transformer 내부 작동이 아닌 전처리 과정이기 때문이다. 따라서 Encoder에 적용되는 pad masking도 동일하게 Batch class 내에서 생성될 것이다. 이는 결국 Transformer 외부에서 넘어와야 하기 때문에 Transformer code를 다음과 같이 수정한다.
+ make_std_mask()는 subsequent_mask()를 호출해 subsequent masking을 생성하고, 이를 pad masking과 결합한다. 위의 code는 Transformer 내부가 아닌 Batch class 내에서 실행되는 것이 바람직할 것이다. masking 생성은 Transformer 내부 작업이 아닌 전처리 과정에 포함되기 때문이다. 따라서 Encoder에 적용되는 pad masking과 동일하게 Batch class 내에서 생성될 것이다. 이는 결국 Transformer 외부에서 넘어와야 하기 때문에 Transformer code가 수정되어야 한다. 기존에는 Encoder에서 사용하는 pad mask(```src_mask```)만이 forward()의 인자로 들어왔다면, 이제는 Decoder에서 사용할 subsequent mask (```trg_mask```)도 함께 주어진다. 따라서 forward()의 최종 인자는 ```src, trg, src_mask, trg_mask```이다. 각각 Encoder의 input, Decoder의 input, Encoder의 mask, Decoder의 mask이다. forward() 내부에서 decoder의 forward()를 호출할 때 역시 변경되는데, ```trg_mask```가 추가적으로 인자로 넘어가게 된다.
 
 ```python
 class Transformer(nn.Module):
@@ -514,8 +514,8 @@ class Transformer(nn.Module):
 		self.decoder = decoder
 
 	def forward(self, src, trg, src_mask, trg_mask):
-		encoder_output = self.encoder(src, mask)
-		out = self.decoder(trg, encoder_output)
+		encoder_output = self.encoder(src, src_mask)
+		out = self.decoder(trg, trg_mask, encoder_output)
 		return out
 ```
 
@@ -570,7 +570,7 @@ class Decoder(nn.Module):
 		return out
 ```
 
- 주목해야 할 점은 encoder_mask (encoder에서 사용한 pad masking)는 decoder에서도 사용된다는 것이다. 결국 Decoder의 forward함수는 Decoder의 input sentence (x), Decoder의 subsequent mask(mask), encoder의 Context (encoder_output), encoder의 mask (encoder_mask)를 모두 인자로 받아야 한다.
+ 주목해야 할 점은 encoder_mask (encoder에서 사용한 pad masking)는 decoder에서도 사용된다는 것이다. 결국 Decoder의 forward함수는 Decoder의 input sentence (```x```), Decoder의 subsequent mask(```mask```), encoder의 Context (```encoder_output```), encoder의 mask (```encoder_mask```)를 모두 인자로 받아야 한다.
 
 ```python
 class DecoderLayer(nn.Module):
@@ -587,9 +587,9 @@ class DecoderLayer(nn.Module):
 		return out
 ```
 
- DecoderLayer에서 masked_multi_head_attention_layer에서는 query, key, value를 모두 decoder의 input sentence (x)로 사용한다. 반면 multi_head_attention_layer에서는 query는 masked_multi_head_attention_layer에서의 결과(output)를, key, value는 Context(encoder_output)으로 사용한다. 이 때 mask는 subsequent_mask가 아닌 일반 pad mask(encoder_mask)를 넘겨준다.
+ DecoderLayer에서 masked_multi_head_attention_layer에서는 query, key, value를 모두 decoder의 input sentence (```x```)로 사용한다. 반면 multi_head_attention_layer에서는 query는 masked_multi_head_attention_layer에서의 결과(```out```)를, key, value는 Context(```encoder_output```)으로 사용한다. 이 때 mask는 subsequent_mask가 아닌 일반 pad mask(```encoder_mask```)를 넘겨준다.
 
-Transformer도 다음과 같이 수정된다.
+Transformer도 다음과 같이 수정된다. forward() 내부에서 Decoder의 forward()를 호출할 때에 encoder의 mask까지 함께 넘겨준다. 따라서 Decoder forward()의 최종 인자는 ```trg, trg_mask, encoder_output, src_mask```이다. 
 
 ```python
 class Transformer(nn.Module):
@@ -607,7 +607,7 @@ class Transformer(nn.Module):
 
 ## Transformer's Input (Positional Encoding)
 
-지금까지 Encoder와 Decoder의 내부 구조가 어떻게 이루어져 있는지 분석하고 code로 구현까지 마쳤다. 이번에는 Encoder와 Decoder의 input으로는 sentence는 어떤 형태인지 알아보자. Transformer의 input은 단순한 sentence embedding에 더해 Positional Encoding이 추가되게 된다. 전체 TransformerEmbedding은 단순 Embedding과 PositionalEncoding의 sequential이다. code는 단순하다.
+지금까지 Encoder와 Decoder의 내부 구조가 어떻게 이루어져 있는지 분석하고 code로 구현까지 마쳤다. 이번에는 Encoder와 Decoder의 input으로 들어오는 sentence는 어떤 형태인지 알아보자. Transformer의 input은 단순한 sentence embedding에 더해 Positional Encoding이 추가되게 된다. 전체 TransformerEmbedding은 단순 Embedding과 PositionalEncoding의 sequential이다. code는 단순하다.
 
 ```python
 class TransformerEmbedding(nn.Module):
@@ -658,9 +658,9 @@ class PositionalEncoding(nn.Module):
 
 code가 난해한데, 직관적으로 작동 원리만 이해하고 넘어가도 충분하다. PositionalEncoding의 목적은 positional정보(대표적으로 token의 순서, 즉 index number)를 정규화시키기 위한 것이다. 단순하게 index number를 positionalEncoding으로 사용하게 될 경우, 만약 training data에서는 최대 문장의 길이가 30이었는데 test data에서 길이 50인 문장이 나오게 된다면 30~49의 index는 model이 학습한 적이 없는 정보가 된다. 이는 제대로 된 성능을 기대하기 어려우므로, positonal 정보를 일정한 범위 안의 실수로 제약해두는 것이다. 여기서 $$sin$$함수와 $$cos$$함수를 사용하는데, 짝수 index에는 $$sin$$함수를, 홀수 index에는 $$cos$$함수를 사용하게 된다. 이를 사용할 경우 항상 -1에서 1 사이의 값만이 positional 정보로 사용되게 된다.
 
-구현 상에서 주의할 점은 forward 함수 내에서 생성하는 Variable이 학습이 되지 않도록 requires_grad=False 옵션을 부여해야 한다는 것이다. PositionalEncoding은 학습되는 parameter가 아니기 때문이다.
+구현 상에서 주의할 점은 forward() 내에서 생성하는 ```Variable```이 학습이 되지 않도록 ```requires_grad=False``` 옵션을 부여해야 한다는 것이다. PositionalEncoding은 학습되는 parameter가 아니기 때문이다.
 
-이렇게 생성해낸 embedding을 Transformer에 추가해주자. code를 수정한다.
+이렇게 생성해낸 embedding을 Transformer에 추가해주자. code를 수정한다. ```src_embed```와 ```trg_embed```를 Transformer의 생성자 인자로 추가한다. forward() 내부에서 Encoder와 Decoder의 forward()를 호출할 때 각각 ```src_embed(src)```, ```trg_embed(trg)```와 같이 input을 TransformerEmbedding으로 감싸 변환해준다.
 
 ```python
 class Transformer(nn.Module):
@@ -682,7 +682,7 @@ class Transformer(nn.Module):
 
 Decoder의 output이 그대로 Transformer의 최종 output이 되는 것은 아니다. 추가적인 layer를 거쳐간다. 이 layer들을 generator라고 부른다.
 
-우리가 결국 해내고자 하는 목표는 Decoder의 output이 sentence, 즉 token의 sequence가 되는 것이다. 그런데 Decoder의 output은 그저 ($$\text{n_batch} \times \text{seq_len} \times \text{d_model}$$)의 shape를 갖는 matrix일 뿐이다. 이를 vocabulary를 사용해 실제 token으로 변환할 수 있도록 차원을 수정해야 한다. 따라서 FC Layer를 거쳐 마지막 dimension $$\text{d_model}$$을 $$\text{len(vocab)}$$으로 변경한다. 그래야 실제 vocabulary 내 token에 대응시킬 수 있는 값이 되기 때문이다. 이후 softmax 함수를 사용해 각 vocabulary에 대한 확률값으로 변환하게 되는데, 이 때 log_softmax를 사용해 성능을 향상시킨다.
+우리가 결국 해내고자 하는 목표는 Decoder의 output이 sentence, 즉 token의 sequence가 되는 것이다. 그런데 Decoder의 output은 그저 ($$\text{n_batch} \times \text{seq_len} \times \text{d_model}$$)의 shape를 갖는 matrix일 뿐이다. 이를 vocabulary를 사용해 실제 token으로 변환할 수 있도록 차원을 수정해야 한다. 따라서 FC Layer를 거쳐 마지막 dimension을 $$\text{d_model}$$에서 $$\text{len(vocab)}$$으로 변경한다. 그래야 실제 vocabulary 내 token에 대응시킬 수 있는 값이 되기 때문이다. 이후 softmax 함수를 사용해 각 vocabulary에 대한 확률값으로 변환하게 되는데, 이 때 log_softmax를 사용해 성능을 향상시킨다.
 
  Generator를 직접 Transformer code에 추가해보자.
 
@@ -705,11 +705,11 @@ class Transformer(nn.Module):
 		return out
 ```
 
-log_softmax에서는 dim=-1이 되는데, 마지막 dimension인 len(vocab)에 대한 확률값을 구해야 하기 때문이다.
+log_softmax에서는 ```dim=-1```이 되는데, 마지막 dimension인 len(vocab)에 대한 확률값을 구해야 하기 때문이다.
 
 ## Make Model
 
-Transformer를 생성하는 예제 함수는 다음과 같이 작성할 수 있다.
+Transformer를 생성하는 예제 함수는 다음과 같이 작성할 수 있다. 실제 논문 상에서는 $$d_{embed}$$와 $$d_{model}$$을 구분하지 않고 통합해서 $$d_{model}$$로 사용했지만, 이해를 돕기 위해 지금까지 분리해 사용했다.
 
 ```python
 def make_model(
@@ -770,6 +770,10 @@ def make_model(
     
     return model
 ```
+
+# After...
+
+이후 Batch 생성 및 Loss 계산, 실제 학습 과정 등은 다음 포스트에서 다룬다.
 
 # 전체 구현 Code
 
