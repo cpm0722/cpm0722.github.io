@@ -312,9 +312,9 @@ class MultiHeadAttentionLayer(nn.Module):
 		return out
 ```
 
- 인자로 받은 query, key, value는 실제 $$Q$$, $$K$$, $$V$$ matrix가 아니다. $$Q$$, $$K$$, $$V$$ 계산을 위해서는 각각 FC Layer 에 input으로 sentence(실제로는 mini-batch이므로 다수의 sentence)를 넣어줘야 하는데, 이 sentence를 의미하는 것이다. Self-Attention이기에 당연히 $$Q$$, $$K$$, $$V$$는 같은 sentence embedding에서 나오게 되는데 왜 별개의 인자로 받는지 의문일 수 있다. 이는 Decoder의 작동 원리를 알고 나면 이해할 것이다. 인자로 받은 query, key, value는 sentence이므로 shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이다. masking은 기본적으로 한 문장에 대해 ($$\text{seq_len} \times \text{seq_len}$$)의 shape를 갖는데, mini-batch이므로 ($$\text{n_batch} \times \text{seq_len} \times \text{seq_len}$$)의 shape를 갖는다.
+ 인자로 받은 query, key, value는 실제 $$Q$$, $$K$$, $$V$$ matrix가 아니다. $$Q$$, $$K$$, $$V$$ 계산을 위해서는 각각 FC Layer 에 input으로 sentence(실제로는 mini-batch이므로 다수의 sentence)를 넣어줘야 하는데, 이 sentence를 의미하는 것이다. Self-Attention이기에 당연히 $$Q$$, $$K$$, $$V$$는 같은 sentence embedding에서 나오게 되는데 왜 별개의 인자로 받는지 의문일 수 있다. 이는 Decoder의 작동 원리를 알고 나면 이해할 수 있을 것이다. 인자로 받은 query, key, value는 sentence이므로 shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이다. masking은 기본적으로 한 문장에 대해 ($$\text{seq_len} \times \text{seq_len}$$)의 shape를 갖는데, mini-batch이므로 ($$\text{n_batch} \times \text{seq_len} \times \text{seq_len}$$)의 shape를 갖는다.
 
- transform은 $$Q$$, $$K$$, $$V$$를 구해주는 함수이다. 따라서 input shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이고, output shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{model}$$)이어야 한다. 하지만 실제로는 단순히 FC Layer만 거쳐가는 것이 아닌 추가적인 변형이 일어난다. 우선 $$d_{model}$$을 $$h$$와 $$d_k$$로 분리하고, 각각을 하나의 dimension으로 분리한다. 따라서 shape는 ($$\text{n_batch} \times \text{seq_len} \times h \times d_k$$)가 된다. 이후 이를 transpose해 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)로 변환한다. 이러한 작업을 수행하는 이유는 위에서 작성했던 calculate_attention 함수가 input으로 받고자 하는 shape가 ($$\text{n_batch} \times ... \times \text{seq_len} \times d_k$$)이기 때문이다. 아래에서 calculate_attention의 code를 다시 살펴보자.
+ transform은 $$Q$$, $$K$$, $$V$$를 구해주는 함수이다. 따라서 input shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)이고, output shape는 ($$\text{n_batch} \times \text{seq_len} \times d_{model}$$)이어야 한다. 하지만 실제로는 단순히 FC Layer만 거쳐가는 것이 아닌 추가적인 변형이 일어난다. 우선 $$d_{model}$$을 $$h$$와 $$d_k$$로 분리하고, 각각을 하나의 dimension으로 분리한다(```transform()```). 따라서 shape는 ($$\text{n_batch} \times \text{seq_len} \times h \times d_k$$)가 된다. 이후 이를 transpose해 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)로 변환한다. 이러한 작업을 수행하는 이유는 위에서 작성했던 calculate_attention 함수가 input으로 받고자 하는 shape가 ($$\text{n_batch} \times ... \times \text{seq_len} \times d_k$$)이기 때문이다. 아래에서 calculate_attention의 code를 다시 살펴보자.
 
 ```python
 def calculate_attention(self, query, key, value, mask):
@@ -329,11 +329,11 @@ def calculate_attention(self, query, key, value, mask):
 	return out
 ```
 
- 우선 $$d_k$$를 중심으로 $$Q$$와 $$K$$ 사이 행렬곱 연산을 수행하기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 dimension은 반드시 $$d_k$$여야만 한다. 또한 attention_score의 shape는 마지막 두 dimension이 반드시 ($$\text{seq_len} \times \text{seq_len}$$)이어야만 masking이 적용될 수 있기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 직전 dimension은 반드시 $$\text{seq_len}$$이어야만 한다.
+ 우선 $$d_k$$를 중심으로 $$Q$$와 $$K$$ 사이 행렬곱 연산을 수행하기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 dimension은 반드시 $$d_k$$여야만 한다. 또한 attention_score의 shape는 마지막 두 dimension이 반드시 ($$\text{seq_len} \times \text{seq_len}$$)이어야만 masking이 적용될 수 있기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 직전 dimension(```.shape[-2]```)은 반드시 $$\text{seq_len}$$이어야만 한다.
 
  다시 forward 함수로 되돌아와서, transform 함수를 사용해 query, key, value를 구하고 나면 mask 역시 변형을 가해야 한다. ($$\text{n_batch} \times \text{seq_len} \times \text{seq_len}$$) 형태를 ($$\text{n_batch} \times 1 \times \text{seq_len} \times \text{seq_len}$$)로 변경하게 된다. 이는 calculate_attention 함수 내에서 masking을 수행할 때 broadcasting이 제대로 수행되게 하기 위함이다.
 
- calculate_attention 함수를 사용해 attention을 계산하고 나면 그 shape는 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)이다. Multi-Head Attention Layer의 최종 output은 input의 것과 같은 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)여야만 하기 때문에 shape를 맞춰줘야 한다. 이를 위해 $$h$$와 $$\text{seq_len}$$의 순서를 뒤바꾸고 다시 $$h$$와 $$d_k$$를 $$d_{model}$$로 결합한다. 이후 FC Layer를 거쳐 $$d_{model}$$을 $$d_{embed}$$로 변환하게 된다.
+ calculate_attention 함수를 사용해 attention을 계산하고 나면 그 shape는 ($$\text{n_batch} \times h \times \text{seq_len} \times d_k$$)이다. Multi-Head Attention Layer의 최종 output은 input의 것과 같은 ($$\text{n_batch} \times \text{seq_len} \times d_{embed}$$)여야만 하기 때문에 shape를 맞춰줘야 한다. 이를 위해 $$h$$와 $$\text{seq_len}$$의 순서를 뒤바꾸고(```.transpose(1, 2)```) 다시 $$h$$와 $$d_k$$를 $$d_{model}$$로 결합한다. 이후 FC Layer를 거쳐 $$d_{model}$$을 $$d_{embed}$$로 변환하게 된다.
 
  Encoder Layer로 다시 되돌아가보자. Encoder Layer에서는 Multi-Head Attention Layer의 forward 함수의 input이 1개일 것으로 가정하고 code를 작성했는데, 실제로는 query, key, value를 받아야 하므로 이를 수정해준다. 이에 더해 mask 역시 인자로 받게 될 것이다. mask는 Transformer model 외부에서(mini-batch 생성할 때) 생성되게 될 것이다.
 
