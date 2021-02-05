@@ -467,11 +467,11 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 #### Teacher Forcing
 
- Decoder의 input에 추가적으로 들어오는 sentence를 이해하기 위해서는 Teacher Forcing라는 개념에 대해 알고 있어야 한다. RNN 계열이든, Transformer 계얼이든 번역 model이 있다고 생각해보자. 결국에는 새로운 sentence를 생성해내야만 한다. 힘들게 만들어낸 model이 초창기 학습을 진행하는 상황이다. random하게 초기화된 parameter들의 값 때문에 엉터리 결과가 나올 것이다. RNN으로 생각을 해봤을 때, 첫번째 token을 생성해내고 이를 다음 token을 생성할 때의 input으로 활용하게 된다. 즉, 현재 token을 생성할 때 이전 token들을 활용하는 것이다. 그런데 model의 학습 초반 성능은 말그대로 엉터리 결과일 것이기 떄문에, model이 도출해낸 엉터리 token을 이후 학습에 사용하게 되면 점점 결과물은 미궁으로 빠질 것이다. 엉터리 token으로 유추해낸 다음 token, 또 그들을 사용해 다음 token을 만들어내면 학습이 불가능하다. 이를 위해서 Teacher Forcing을 사용하게 된다. Teacher Forcing이란, Supervised Learning에서 label data를 input으로 활용하는 것이다. RNN으로 번역 model을 만든다고 할 때, 학습 과정에서 model이 생성해낸 token을 다음 token 생성 때 사용하는 것이 아닌, 실제 label data의 token을 사용하게 되는 것이다. 우선 정확도 100%를 달성하는 이상적인 model이라고 생각해보자.
+ Decoder의 input에 추가적으로 들어오는 sentence를 이해하기 위해서는 Teacher Forcing라는 개념에 대해 알고 있어야 한다. RNN 계열이든, Transformer 계얼이든 번역 model이 있다고 생각해보자. 결국에는 새로운 sentence를 생성해내야만 한다. 힘들게 만들어낸 model이 초창기 학습을 진행하는 상황이다. random하게 초기화된 parameter들의 값 때문에 엉터리 결과가 나올 것이다. RNN으로 생각을 해봤을 때, 첫번째 token을 생성해내고 이를 다음 token을 생성할 때의 input으로 활용하게 된다. 즉, 현재 token을 생성할 때 이전에 생성한 token들을 활용하는 것이다. 그런데 model의 학습 초반 성능은 말그대로 엉터리 결과일 것이기 떄문에, model이 도출해낸 엉터리 token을 이후 학습에 사용하게 되면 점점 결과물은 미궁으로 빠질 것이다. 이러한 현상을 방지하기 위해서 Teacher Forcing을 사용하게 된다. Teacher Forcing이란, Supervised Learning에서 label data를 input으로 활용하는 것이다. RNN으로 번역 model을 만든다고 할 때, 학습 과정에서 model이 생성해낸 token을 다음 token 생성 때 사용하는 것이 아닌, 실제 label data의 token을 사용하게 되는 것이다. 우선 정확도 100%를 달성하는 이상적인 model의 경우를 생각해보자.
 
 ![teacher_forcing_ideal.png](/assets/images/2021-01-28-Transformer-in-pytorch/teacher_forcing_ideal.png)
 
-우리의 일반적인 생각대로 RNN 이전 cell의 output을 활용해 다음 cell에서 token을 생성해낼 수 있다. 그런데 이런 model을 실존하지 않는다.
+우리의 예상대로 RNN 이전 cell의 output을 활용해 다음 cell에서 token을 정상적으로 생성해낼 수 있다. 그런데 이런 100%의 성능을 갖는 model은 실존하지 않는다.
 
 ![teacher_forcing_incorrect.png](/assets/images/2021-01-28-Transformer-in-pytorch/teacher_forcing_incorrect.png)
 
@@ -479,7 +479,7 @@ $$y=\text{Decoder}(c,z)\\y,\ z\text{ : sentence}\\c\text{ : context}$$
 
 ![teacher_forcing_correct.png](/assets/images/2021-01-28-Transformer-in-pytorch/teacher_forcing_correct.png)
 
-실제 labeled data(Ground Truth)를 RNN cell의 input으로 사용하는 것이다. 정확히는 Ground Truth의 [:-1]로 slicing을 한 것이다(마지막 token인 <EOS>를 제외하는 것이다). 이를 통해서 model이 잘못된 token을 생성해내더라도 이후 제대로 된 token을 생성해내도록 유도할 수 있다.
+Teacher Forcing은 실제 labeled data(Ground Truth)를 RNN cell의 input으로 사용하는 것이다. 정확히는 Ground Truth의 [:-1]로 slicing을 한 것이다(마지막 token인 EOS token을 제외하는 것이다). 이를 통해서 model이 잘못된 token을 생성해내더라도 이후 제대로 된 token을 생성해내도록 유도할 수 있다.
 
 하지만 이는 model 학습 과정에서 Ground Truth를 포함한 dataset을 갖고 있을 때에나 가능한 것이기에 Test나 실제로 Real-World에 Deliever될 때에는 model이 생성해낸 이전 token을 사용하게 된다.
 
