@@ -73,7 +73,7 @@ original BERT와 동일한 corpus를 사용해 학습했다. 16GB V100 GPU 8개�
 
 IMDb와 SQuAD를 사용해 downstream task에서의 성능을 비교했다. DistilBERT는 두 task 모두에서 BERT-base에 거의 근접한 accuracy와 F1 Score를 달성했다. 특히 SQuAD에 대해서는 fine-tuning 단계에서도 fine-tuning된 BERT-base model을 teacher model로 해 추가적으로 knowledge distillation을 수행했는데 추가적인 성능 향상이 발생했다.
 
-실제로 inference time을 비교했는데 batch size=1인 상황에서 DistilBERT는 BERT-base보다 60% 빠른 성능을 보였다. on-device에서의 성능도 비교했는데, iPhone 7 Plus에서 실험을 진행한 결과 tokenization을 제외한 시간을 DistilBERT가 71% 더 빨랐다. 전체 model의 size는 총 207MB로 mobile device의 memory에 올리기 충분했다.
+실제로 inference time을 비교했는데 batch size=1인 상황에서 DistilBERT는 BERT-base보다 60% 빠른 성능을 보였다. on-device에서의 성능도 비교했는데, iPhone 7 Plus에서 실험을 진행한 결과 tokenization을 제외한 시간이 DistilBERT가 71% 더 빨랐다. 전체 model의 size는 총 207MB로 mobile device의 memory에 올리기 충분했다.
 
 ## Ablation study
 
