@@ -1,6 +1,6 @@
 ---
 
-title: "MobileBERT - a Compact Task-Agnostic BERT for Resource-Limited Devices"
+title: "[NLP 논문 리뷰] MobileBERT - a Compact Task-Agnostic BERT for Resource-Limited Devices"
 subtitle: MobileBERT
 categories: [Machine Learning, Paper Review]
 tags: [NLP, Distillation]
