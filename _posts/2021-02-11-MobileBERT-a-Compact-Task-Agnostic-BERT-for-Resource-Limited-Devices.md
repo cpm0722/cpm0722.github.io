@@ -72,7 +72,7 @@ transfer 과정에서 student model의 각 layer는 그에 대응하는 teacher 
 
 BERT layer의 최종 output을 transfer하는 것이다. 단순히 mean squared error를 사용한다.
 
-$$L^l_{FMT}=\frac{1}{TN}\sum^T_{t=1}{\sum^N_{n=1}{{\left(H^{tr}_{t,l,n}-H^{st}_{t,l,n}\right)}^2}}$$
+$$L^l_{FMT}=\frac{1}{TN}\sum^T_{t=1}\sum^N_{n=1}\left(H^{tr}_{t,l,n}-H^{st}_{t,l,n}\right)^2$$
 
 $$l$$은 layer의 index이고, $$T$$는 sequence length, $$N$$은 feature map size이다. $$tr$$은 teacher model, $$st$$는 student model을 의미한다.
 
@@ -80,7 +80,7 @@ $$l$$은 layer의 index이고, $$T$$는 sequence length, $$N$$은 feature map si
 
 teacher model의 attention map을 transfer하게 된다. KL-divergence를 사용한다.
 
-$$L^l_{AT}=\frac{1}{TA}\sum^T_{t=1}{\sum^A_{a=1}{D_{KL}\left(a^{tr}_{t,l,a} \Vert a^{st}_{t,l,a}\right)}}$$
+$$L^l_{AT}=\frac{1}{TA}\sum^T_{t=1}\sum^A_{a=1}D_{KL}\left(a^{tr}_{t,l,a} \Vert a^{st}_{t,l,a}\right)$$
 
 $$A$$는 attention head의 개수를 의미한다.
 
@@ -116,7 +116,7 @@ JKT와 유사한데, knowledge transfer를 각 layer마다 순차적으로 수�
 
 ### Architecture Search for IB-BERT
 
-![04.jpg](04.jpg){: width="50%"}
+![04.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/04.jpg){: width="50%"}
 
 model의 parameter를 변경하며 SQuAD에 대한 F1 Score를 비교했다. $$h_{inter}$$는 $$d_{embed}$$를, $$h_{intra}$$는 $$d_{model}$$을 뜻한다. 모든 training은 batch size 2048로 125k step 수행했다.
 
@@ -126,7 +126,7 @@ model의 parameter를 변경하며 SQuAD에 대한 F1 Score를 비교했다. $$h
 
 ### Architecture Search for MobileBERT
 
-![05.jpg](05.jpg){: width="50%"}
+![05.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/05.jpg){: width="50%"}
 
 MobileBERT에서 MHA와 FFN 사이의 적절한 비율을 찾기 위한 실험을 진행했다. 그 결과 대체로 MHA의 #parameters와 FFN의 #parameters의 비율이 0.4~0.6인 구간에서 model의 성능이 가장 좋다는 것을 확인할 수 있었다. BERT Large model에서는 0.5를 채택했다. 따라서 $$h_{intra}=128$$, $$\text{\#FFN}=4$$를 채택했다. $$\text{\#Head}=4$$는 teacher model의 값을 그대로 가져온 것인데, 실험을 해본 결과 multi-head의 개수는 성능에 큰 영향을 미치지 않는다는 사실을 발견했다. 이는 Table 2에서 (c)와 (f)의 성능이 거의 차이를 보이지 않는다는 점을 통해 알 수 있다.
 
@@ -136,7 +136,7 @@ BERT와 공정한 비교를 위해 동일한 dataset과 같은 training 전략�
 
 ## Results on GLUE
 
-![06.jpg](06.jpg)
+![06.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/06.jpg)
 
 original BERT Base model과 ELMo, GPT 등의 SOTA model, DistilBERT, TinyBERT 등의 경량화 BERT model과 성능을 비교했다. MobileBERT_TINY는 MHA의 크기를 줄여 FFN을 stacking하지 않은 model이고, MobileBERT_w/o_OPT는 latency를 줄이기 위해 도입한 operational optimization을 제거한 model이다. 그 결과 MobileBERT는 BERT Base model의 4.3배 작은 크기로 0.6 낮은 GLUE Score를 달성했다. GPT, ELMo 등의 여타 SOTA model은 아예 능가하는 성능을 보였다. DistilBERT, TinyBERT보다도 대부분의 task에서 더 좋은 성능을 보였다. operational optimization을 제거한 경우에는 오히려 BERT Base model보다도 0.2 높은 수치를 달성했다.
 
@@ -144,13 +144,13 @@ inference time에서의 latency를 측정하기 위해 TensorFlow Lite를 사용
 
 ## Results on SQuAD
 
-![07.jpg](07.jpg){: width="50%"}
+![07.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/07.jpg){: width="50%"}
 
 SQuAD에서는 BERT Base model을 능가했으며, 다른 경량화 model보다도 훨씬 좋은 성능을 보였다.
 
 ## Quantization
 
-![08.jpg](08.jpg){: width="50%"}
+![08.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/08.jpg){: width="50%"}
 
 MobileBERT에 추가적으로 TensorFlow Lite에서 8-bit quantization을 수행했음에도 성능 하락이 발생하지 않았다. 이를 통해 여전히 더 경량화 가능한 지점이 많이 존재한다는 것을 알 수 있다.
 
@@ -158,19 +158,19 @@ MobileBERT에 추가적으로 TensorFlow Lite에서 8-bit quantization을 수행
 
 ### Operational Optimizations
 
-![09.jpg](09.jpg){: width="50%"}
+![09.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/09.jpg){: width="50%"}
 
 operational optimization에 대해 latency를 측정하는 실험을 진행했다. NoNorm과 relu를 사용한 경우에 가장 latency가 낮았다.
 
 ### Training Strategies
 
-![10.jpg](10.jpg){: width="50%"}
+![10.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/10.jpg){: width="50%"}
 
 AKT, JKT, PKT의 tranining strategy를 비교하는 실험을 진행했다. 그 결과 PKT가 가장 좋은 성능을 보였으나 JKT와는 큰 차이가 없었다. AKT만이 유독 더 낮은 성능을 보였는데 teacher model의 layer-wise knowledge가 student model에게 optimal하지 않아 추가적인 knowledge distillation이 필요하다고 추측해 볼 수 있다.
 
 ### Training Objectives
 
-![11.jpg](11.jpg){: width="50%"}
+![11.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/11.jpg){: width="50%"}
 
 objective function을 수정하며 각각의 영향을 비교하는 실험을 진행했다. 그 결과 FMT(Feature Map Transfer)가 가장 큰 영향을 끼친다는 사실을 확인했다.
 
