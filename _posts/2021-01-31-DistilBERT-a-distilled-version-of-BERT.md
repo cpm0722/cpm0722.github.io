@@ -3,7 +3,7 @@
 title: "[NLP 논문 리뷰] DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter"
 subtitle: DistilBERT
 categories: [Machine Learning, Paper Review]
-tags: [NLP]
+tags: [NLP, Distillation]
 permalink: /paper-review/distilbert-a-distilled-version-of-bert-smaller-faster-cheaper-and-lighter
 date: 2021-01-31 00:00:00 +0000
 last_modified_at: 2021-01-31 00:00:00 +0000
