@@ -20,7 +20,7 @@ Submit Date: Apr 06, 2020
 
 # Introduction
 
-최근의 NLP model은 성능은 뛰어나지만 매우 model의 크기가 커 mobile device에서는 latency가 높아 사용이 어렵다는 단점이 있다. 본 논문에서 제시하는 MobileBERT는 knowledge transfer를 사용한 MobileBERT를 제안한다. 이 때 teacher model은 BERT large model에 bottleneck structure를 추가하고 multi-head attention layer와 feed-forward layer에 수정을 가한 inverted-bottleneck incorporated BERT (IB-BERT)이다. 이렇게 학습된 student model 역시 유사한 구조를 갖는다. 그 결과 최종적인 MobileBERT는 BERT base  model에 비해 4.3배 작으며 5.5배 빠르면서 유사한 성능을 달성했다.
+최근의 NLP model은 성능은 뛰어나지만 매우 model의 크기가 커 mobile device에서는 latency가 높아 사용이 어렵다는 단점이 있다. 본 논문에서 제시하는 MobileBERT는 knowledge transfer를 사용한 MobileBERT를 제안한다. 이 때 teacher model은 BERT large model에 bottleneck structure를 추가하고 multi-head attention layer와 feed-forward layer에 수정을 가한 inverted-bottleneck incorporated BERT (IB-BERT)이다. student model 역시 유사한 구조를 갖는다. 그 결과 최종적인 MobileBERT는 BERT base  model에 비해 4.3배 작으며 5.5배 빠르면서 유사한 성능을 달성했다.
 
 # Related Work
 
