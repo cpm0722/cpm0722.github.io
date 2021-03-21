@@ -128,7 +128,7 @@ model의 parameter를 변경하며 SQuAD에 대한 F1 Score를 비교했다. $$h
 
 ![05.jpg](/assets/images/2021-02-11-MobileBERT-a-Compact-Task-Agnostic-BERT-for-Resource-Limited-Devices/05.jpg){: width="50%"}
 
-MobileBERT에서 MHA와 FFN 사이의 적절한 비율을 찾기 위한 실험을 진행했다. 그 결과 대체로 MHA의 #parameters와 FFN의 #parameters의 비율이 0.4~0.6인 구간에서 model의 성능이 가장 좋다는 것을 확인할 수 있었다. BERT Large model에서는 0.5를 채택했다. 따라서 $$h_{intra}=128$$, $$\text{\#FFN}=4$$를 채택했다. $$\text{\#Head}=4$$는 teacher model의 값을 그대로 가져온 것인데, 실험을 해본 결과 multi-head의 개수는 성능에 큰 영향을 미치지 않는다는 사실을 발견했다. 이는 Table 2에서 (c)와 (f)의 성능이 거의 차이를 보이지 않는다는 점을 통해 알 수 있다.
+MobileBERT에서 MHA와 FFN 사이의 적절한 비율을 찾기 위한 실험을 진행했다. 그 결과 대체로 MHA의 #parameters와 FFN의 #parameters의 비율이 0.4~0.6인 구간에서 model의 성능이 가장 좋다는 것을 확인할 수 있었다. BERT Large model에서는 0.5를 채택했다. 따라서 $$h_{intra}=128$$, $$\text{#FFN}=4$$를 채택했다. $$\text{#Head}=4$$는 teacher model의 값을 그대로 가져온 것인데, 실험을 해본 결과 multi-head의 개수는 성능에 큰 영향을 미치지 않는다는 사실을 발견했다. 이는 Table 2에서 (c)와 (f)의 성능이 거의 차이를 보이지 않는다는 점을 통해 알 수 있다.
 
 ## Implementation Details
 
