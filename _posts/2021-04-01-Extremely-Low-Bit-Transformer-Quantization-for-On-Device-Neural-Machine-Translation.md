@@ -34,7 +34,7 @@ Transformer는 크게 encoder, decoder, embedding으로 구분되는데 #paramet
 
 uniform quantization은 full precision parameters를 $$2^q$$로 표현할 수 있는 unsigned 값 (0 ~ $$2^q - 1$$)으로 mapping하는 것이다. 이 때 $$q$$는 quantization bit의 개수, 즉 precision을 의미한다. precision이 낮을수록 곱셈, 덧셈 등의 연산에서 cost가 감소하지만, 이는 연산에 사용되는 모든 값들이 quantized되었을 때에만 유효하다. 또한 과도한 outlier 값이 포함된 경우에는 quantization error가 매우 높아진다는 한계점도 존재한다.
 
-non-uniform quantization는 크게 codebook-based와 binary-code based로 구분되는데, 본 논문에서는 binary-code based를 채택했다. binary-code based quantization은 full precision vector $$w\in \reals^p$$를 $$\sum^q_{i=1}\alpha_i b_i$$로 mapping시키는 것이다. 이 때 $$\alpha_i \in \reals$$는 scailing factor, $$b_i \in \{-1,+1\}^p$$는 binary vector이다. $$p$$는 vector $$w$$의 길이를, $$q$$는 quantization bits의 개수를 의미한다. scailing vector와 binary vector는 모두 아래와 같은 argmin 수식을 통해 구해진다.
+non-uniform quantization는 크게 codebook-based와 binary-code based로 구분되는데, 본 논문에서는 binary-code based를 채택했다. binary-code based quantization은 full precision vector $$w\in R^p$$를 $$\sum^q_{i=1}\alpha_i b_i$$로 mapping시키는 것이다. 이 때 $$\alpha_i \in R$$는 scailing factor, $$b_i \in \{-1,+1\}^p$$는 binary vector이다. $$p$$는 vector $$w$$의 길이를, $$q$$는 quantization bits의 개수를 의미한다. scailing vector와 binary vector는 모두 아래와 같은 argmin 수식을 통해 구해진다.
 
 $$argmin_{a_i, b_i}\left\lVert w - \sum^q_{i=1}\alpha_i b_i \right\rVert^2$$
 
