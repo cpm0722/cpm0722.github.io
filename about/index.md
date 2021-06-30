@@ -2,7 +2,7 @@
 layout: page
 title: "About Me"
 tags: [about]
-date: 2021-01-30
+date: 2021-06-30
 comments: false
 ---
     
@@ -35,6 +35,14 @@ comments: false
 
 ### 숭실대학교 IT대학 머신러닝 소모임 SSUML
 
+### Kakao Brain
+
+---
+
+## 경력
+
+### Kakao Brain Internship (2021.07.01 ~ 2021.08.31) [Ongoing]
+
 ---
 
 ## Development Environment
@@ -57,11 +65,9 @@ Vim editor 8.2
 
 ## Interested in
 
-여행 다니는 것을 좋아합니다.
+여행/패션/운동을 좋아합니다.
 
-패션/운동에 관심이 많습니다.
+IU, BTS의 팬입니다.
 
-IU, BTS를 좋아합니다.
-
-IT 기기에 관심이 많습니다.
+IT 기기 수집을 좋아합니다.
 
