@@ -2,7 +2,7 @@
 layout: page
 title: "About Me"
 tags: [about]
-date: 2021-06-30
+date: 2021-07-13
 comments: false
 ---
     
@@ -29,19 +29,19 @@ comments: false
 
 ## 소속
 
+### Kakao Brain Large-Scale TF
+
 ### 숭실대학교 컴퓨터학부
 
 ### 숭실대학교 커뮤니티 어플리케이션 개발 동아리 YourSSU 리서치팀
 
 ### 숭실대학교 IT대학 머신러닝 소모임 SSUML
 
-### Kakao Brain
-
 ---
 
 ## 경력
 
-### Kakao Brain Internship (2021.07.01 ~ 2021.08.31) [Ongoing]
+### Kakao Brain Internship: Large-Scale TF (2021.07.01 ~ 2021.08.31)
 
 ---
 
@@ -53,7 +53,9 @@ Ubuntu 20.04 LTS (SSH)
 
 Windows 10 (RDP)
 
-MacBook Air 13, 2020 (Apple Silicon M1)
+MacBook Air 13, 2020 (Apple Silicon M1,  8GB, 256GB)
+
+MacBook Pro 13, 2020 (Apple Silicon M1, 16GB, 512GB)
 
 LG 27UL850 4K
 
