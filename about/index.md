@@ -29,8 +29,6 @@ comments: false
 
 ## 소속
 
-### Kakao Brain Large-Scale TF
-
 ### 숭실대학교 컴퓨터학부
 
 ### 숭실대학교 커뮤니티 어플리케이션 개발 동아리 YourSSU 리서치팀
