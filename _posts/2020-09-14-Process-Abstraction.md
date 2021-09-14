@@ -24,7 +24,7 @@ process는 위에서 언급했듯이 Memory에 위치한다. 구체적으로 Sta
 
 ## Process 생성
 
-fork()와 같은 system call을 사용해 process를 생성할 수 있다. 위에서 설명했듯이 process를 생성한다는 것은 program를 memory로 load하는 작업이다. 더 정확히는 process 자신의 가상 주소 공간 안으로 load한다. disk와의 I/O는 시간이 많이 걸리는 작업이기 때문에, 한꺼번에 전부를 load하지는 않고 가장 먼저 필요한 일부분을 우선 load한 뒤 실행 도중 나머지 code와 data를 page 단위로 나눠 load한다. stack 내에 지역변수, 함수 parameter, return address 등이 저장되며, heap에서 malloc(), free() 등의 동적 할당 작업을 수행하고, 그 사이 OS는 I/O setup (표준 fd 할당) 등의 여타 초기화 작업을 진행한다. process 시작 시에는 진입점 main()을 찾게 되면 os에서 process로 cpu 제어권이 넘어온다.
+fork()와 같은 system call을 사용해 process를 생성할 수 있다. 위에서 설명했듯이 process를 생성한다는 것은 program를 memory로 load하는 작업이다. 더 정확히는 process 자신의 가상 주소 공간 안으로 load한다. disk와의 I/O는 시간이 많이 걸리는 작업이기 때문에, 한꺼번에 전부를 load하지는 않고 가장 먼저 필요한 일부분을 우선 load한 뒤 실행 도중 나머지 code와 data를 page 단위로 나눠 load한다. stack 내에 지역변수, 함수 parameter, return address 등이 저장되며, heap에서 `malloc()`, `free()` 등의 동적 할당 작업을 수행하고, 그 사이 OS는 I/O setup (표준 fd 할당) 등의 여타 초기화 작업을 진행한다. process 시작 시에는 진입점 `main()`을 찾게 되면 os에서 process로 cpu 제어권이 넘어온다.
 
 ## Process Status
 
@@ -52,11 +52,11 @@ not Running 상태를 Ready / Blocked 상태로 나눌 수 있다. Ready 상태�
 
 ![04.png](/assets/images/2020-09-14-Process-Abstraction/04.png)
 
-많은 상태가 추가됐는데, 우선 생성 상태에서부터 따라가보자. process 생성 시 memory의 여유가 충분할 경우에는 바로 Ready 상태로 갈 수 있겠지만, 만약 그렇지 않다면 Suspend 상태로 가게 된다. program file이 memory가 아닌 disk 내의 swap 공간으로 이동된 경우를 뜻한다. Suspend 상태에서 할 수 있는 작업은 Swap In(memory로 이동해 Ready 상태가 되는 것)밖에 없다. Ready 상태에서는 Kernel mode로 가거나 User mode로 갈 수 있다. User mode로 가는 방법은 2가지가 있는데, Kernel mode를 거쳐가거나, preemption을 해 거쳐가는 것이다. preemption이란 '선점'으로 번역되고는 하는데, 직관적으로 와닿지 않는 번역이다. 본 뜻은 다른 process가 차지하고 있던 CPU를 빼앗는 것이다. User mode에서는 I/O를 시작하거나 System Call 호출, Interrput 등이 발생하게 되면 Kernel mode로 이동하게 된다. Kernel Mode에서 수행이 끝나면 다시 preemption을 통해 User Mode로 돌아가거나 Memory Blocked 상태로 넘어갈 수 있다. Memory Blocked 상태에서 memory에 여유가 사라지면 해당 process는 Suspend상태로 넘어갈 수 있다. 한편, Kernel Mdoe에서는 exit()을 호출해 종료를 위해 Zombie 상태가 될 수도 있다.
+많은 상태가 추가됐는데, 우선 생성 상태에서부터 따라가보자. process 생성 시 memory의 여유가 충분할 경우에는 바로 Ready 상태로 갈 수 있겠지만, 만약 그렇지 않다면 Suspend 상태로 가게 된다. program file이 memory가 아닌 disk 내의 swap 공간으로 이동된 경우를 뜻한다. Suspend 상태에서 할 수 있는 작업은 Swap In(memory로 이동해 Ready 상태가 되는 것)밖에 없다. Ready 상태에서는 Kernel mode로 가거나 User mode로 갈 수 있다. User mode로 가는 방법은 2가지가 있는데, Kernel mode를 거쳐가거나, preemption을 해 거쳐가는 것이다. preemption이란 '선점'으로 번역되고는 하는데, 직관적으로 와닿지 않는 번역이다. 본 뜻은 다른 process가 차지하고 있던 CPU를 빼앗는 것이다. User mode에서는 I/O를 시작하거나 System Call 호출, Interrput 등이 발생하게 되면 Kernel mode로 이동하게 된다. Kernel Mode에서 수행이 끝나면 다시 preemption을 통해 User Mode로 돌아가거나 Memory Blocked 상태로 넘어갈 수 있다. Memory Blocked 상태에서 memory에 여유가 사라지면 해당 process는 Suspend상태로 넘어갈 수 있다. 한편, Kernel Mdoe에서는 `exit()`을 호출해 종료를 위해 Zombie 상태가 될 수도 있다.
 
 ## Process 실행
 
-os가 process를 실행하는 과정을 살펴보자. 우선 process list에 새로운 항목을 생성해야 한다. 이후 memory page를 할당하고, disk에 있는 program executable file을 memory page에 load한다. 마지막으로 진입점(main 함수)로 포인터를 이동시킨다.  더 세부적인 과정은 아래와 같다.
+os가 process를 실행하는 과정을 살펴보자. 우선 process list에 새로운 항목을 생성해야 한다. 이후 memory page를 할당하고, disk에 있는 program executable file을 memory page에 load한다. 마지막으로 진입점(`main()`)으로 포인터를 이동시킨다.  더 세부적인 과정은 아래와 같다.
 
 ![05.png](/assets/images/2020-09-14-Process-Abstraction/05.png)
 
@@ -72,7 +72,7 @@ interrupt란 process가 User mode에서 Kernel mode로 변경되도록 하는 �
 
 ## HW Interrupt / Trap 처리 과정
 
-비동기 interrupt (HW Interrupt, Trap)의 처리 과정에 대해 알아보자. 비동기는 언제든지 발생할 수 있다는 의미이다. Programmable Interrupt Controller가 여러 HW에서 interrupt 정보를 수집하고, interrupt가 발생했을 경우 CPU에 신호를 전달한다. CPU는 Kernel의 Interrupt Descriptor(Vector) Table에서 해당 interrupt의 entry pointer 값을 찾는다. 이 때 mode가 User mode에서 Kernel mode로 전환되게 된다. 찾은 pointer 값은 interrupt handler 내부의 특정 함수를 가리키게 되는데, 이를 이용해 실제 interrupt 처리가 수행되게 된다.
+비동기 interrupt (HW Interrupt, Trap)의 처리 과정에 대해 알아보자. Programmable Interrupt Controller가 여러 HW에서 interrupt 정보를 수집하고, interrupt가 발생했을 경우 CPU에 신호를 전달한다. CPU는 Kernel의 Interrupt Descriptor(Vector) Table에서 해당 interrupt의 entry pointer 값을 찾는다. 이 때 mode가 User mode에서 Kernel mode로 전환되게 된다. 찾은 pointer 값은 interrupt handler 내부의 특정 함수를 가리키게 되는데, 이를 이용해 실제 interrupt 처리가 수행되게 된다.
 
 ![07.png](/assets/images/2020-09-14-Process-Abstraction/07.png)
 
@@ -80,18 +80,18 @@ interrupt란 process가 User mode에서 Kernel mode로 변경되도록 하는 �
 
 ### System Call 처리 과정
 
-fork()를 호출하는 예시를 따라가며 system call 처리 과정을 이해해보자. system call도 결국 interrupt이기 때문에 위에서 살펴본 interrupt 처리 과정과 유사하다. c source code에서의 fork() 명령은 assembly code에서는 movl과 int의 두 명령어로 변환된다. 이 중 int 명령어는 interrupt 명령어이다. 이를 통해 IDT를 찾아가게 된다. system call은 결국 interrupt의 한 종류이기 때문에 IDT에서 한 공간을 system call의 entry가 차지하고 있다. 이 pointer값을 이용해 찾아간 interrupt handler는 system call들에 대한 주소들을 저장하는 table sys_call_table을 갖고 있는데, 해당 table 내부에서 sys_fork()에 대한 주소를 찾은 뒤 system call handler가 sys_fork() 명령을 실행하도록 명령한다.
+`fork()`를 호출하는 예시를 따라가며 system call 처리 과정을 이해해보자. system call도 결국 interrupt이기 때문에 위에서 살펴본 interrupt 처리 과정과 유사하다. c source code에서의 `fork()` 함수는 assembly code에서 `MOVL`과 `INT`의 두 명령어로 변환된다. 이 중 `INT` 명령어는 interrupt 명령어이다. 이를 통해 IDT를 찾아가게 된다. system call은 결국 interrupt의 한 종류이기 때문에 IDT에서 한 공간을 system call의 entry가 차지하고 있다. 이 pointer값을 이용해 찾아간 interrupt handler는 system call들에 대한 주소들을 저장하는 table sys_call_table을 갖고 있는데, 해당 table 내부에서 `sys_fork()`에 대한 주소를 찾은 뒤 system call handler가 `sys_fork()`명령을 실행하도록 명령한다.
 
 ![08.png](/assets/images/2020-09-14-Process-Abstraction/08.png)
 
 ### System Call 추가
 
-sys_call_table은 실제로 어디에 위치하고 있을까? 운영체제마다 세부 위치는 다르지만, /usr/src/[os kernel version]/arch 밑에 위치한다는 사실은 공통적이다. 만약 OS에 새로운 System Call을 추가하고 싶다면 해당 sys_call_table 파일을 열어 새로운 번호를 추가하는 것이 먼저이다. 이후 실제 해당 함수에 대한 원형을 선언해야 하는데, system call의 원형을 저장하는 header file은 /usr/src/[os kerner version]/arch/.../include/syscalls.h에 위치한다. 실제 함수 body를 정의한 뒤 이를 object file로 compile하면, 해당 object file을 /usr/src/[os kernel version]에 위치시키면 작업이 완료된다. 정리하자면 다음의 4단계를 거친다.
+sys_call_table은 실제로 어디에 위치하고 있을까? 운영체제마다 세부 위치는 다르지만, `/usr/src/[os kernel version]/arch` 밑에 위치한다는 사실은 공통적이다. 만약 OS에 새로운 System Call을 추가하고 싶다면 해당 sys_call_table 파일을 열어 새로운 번호를 추가하는 것이 먼저이다. 이후 실제 해당 함수에 대한 원형을 선언해야 하는데, system call의 원형을 저장하는 header file은 `/usr/src/[os kerner version]/arch/.../include/syscalls.h`에 위치한다. 실제 함수 body를 정의한 뒤 이를 object file로 compile하면, 해당 object file을 `/usr/src/[os kernel version]`에 위치시키면 작업이 완료된다. 정리하자면 다음의 4단계를 거친다.
 
 1. syscall table에 새로운 함수 등록
-2. 함수 header syscalls.h에 추가
-3. 함수 body .c file 작성
-4. 함수 body 작성한 .c file 컴파일 해 .o file 생성 후 kernel 경로에 저장
+2. 함수 header `syscalls.h`에 추가
+3. 함수 body가 작성된 C source code file 작성
+4. C source code file을  컴파일 해 Object file(`.o`) 생성 후 kernel 경로에 저장
 
 ## Context (문맥)
 
@@ -112,9 +112,9 @@ schedule() 함수는 다음 실행할 process의 PCB를 return하는 함수이�
 
 위에서 정리한 9단계 State를 참고하면, 아래의 경우에 대해 각각의 process 전환 이후의 상태를 특정할 수 있다.
 
-1. exit() → schedule() → switch() : zombie 상태
-2. I /O → schedule() → switch() : block 상태
-3. clock interrupt → schedule() → switch() : runnable (또는 memory가 부족할 경우 suspend) 상태
+1. `exit()` → `schedule()` → `switch()` : zombie 상태
+2. I/O → `schedule()` → `switch()` : block 상태
+3. clock interrupt → `schedule()` → `switch()` : runnable (또는 memory가 부족할 경우 suspend) 상태
 
 ### Mode Switch vs Process Switch
 

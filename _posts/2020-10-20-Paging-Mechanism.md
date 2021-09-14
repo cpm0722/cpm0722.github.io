@@ -20,7 +20,7 @@ paging 기법에 대해 자세히 알아보자. 위에서 살펴본 고정 분�
 
 ![01.png](/assets/images/2020-10-20-Paging-Mechanism/01.png)
 
-paging이란 memory 가상화에서 가상 주소와 물리 주소를 mapping시킬 때에 page frame을 단위로 하는 방식이다. page table에는 가상 주소, 물리 주소 뿐만 아니라 P, M, U bit 등의 control bit도 담겨져 있다. P(present) bit는 해당 page가 memory에 위치하는가에 대한 bit로, 1일 경우 가리키는 물리 주소가 물리 memory 영역이라는 의미이고 0일 경우에는 가리키는 물리 주소가 memory가 아닌 disk의 swap 영역이라는 뜻이다. 즉, P bit가 0일 경우에는 swap 영역에 있는 page를 memory로 불러와야 한다. 이러한 과정을 **page fault**라고 한다. page fault는 결국 disk I/O를 호출하는 것이기에 schedule() 함수를 호출한다. 한편 M(modify) bit는 해당 page가 수정된 적이 있는지에 대한 bit이고, W(write) bit, D(dirty) bit라고도 불린다. U(used) bit는 해당 page를 read한 적이 있는지에 대한 bit로, R(read) bit라고도 불린다. page table은 OS가 각각의 process에게 개별적으로 부여하게 되며,  task_struct와 같은 PCB들은 멤버 변수로 page table을 가리키는 포인터 값을 저장한다. 한편, 대부분의 가상 memory 기법은 page table을 실제 memory가 아닌 가상 memory에 저장하게 된다. process가 running 상태라면, 최소한 해당 process의 page table 중 일부분은 memory에 존재해야 하고, 전체 page table이 memory에 존재하는 것이 가장 바람직할 것이다.
+paging이란 memory 가상화에서 가상 주소와 물리 주소를 mapping시킬 때에 page frame을 단위로 하는 방식이다. page table에는 가상 주소, 물리 주`소 뿐만 아니라 P, M, U bit 등의 control bit도 담겨져 있다. P(present) bit는 해당 page가 memory에 위치하는가에 대한 bit로, 1일 경우 가리키는 물리 주소가 물리 memory 영역이라는 의미이고 0일 경우에는 가리키는 물리 주소가 memory가 아닌 disk의 swap 영역이라는 뜻이다. 즉, P bit가 0일 경우에는 swap 영역에 있는 page를 memory로 불러와야 한다. 이러한 과정을 **page fault**라고 한다. page fault는 결국 disk I/O를 호출하는 것이기에 `schedule()` 함수를 호출한다. 한편 M(modify) bit는 해당 page가 수정된 적이 있는지에 대한 bit이고, W(write) bit, D(dirty) bit라고도 불린다. U(used) bit는 해당 page를 read한 적이 있는지에 대한 bit로, R(read) bit라고도 불린다. page table은 OS가 각각의 process에게 개별적으로 부여하게 되며,  task_struct와 같은 PCB들은 멤버 변수로 page table을 가리키는 포인터 값을 저장한다. 한편, 대부분의 가상 memory 기법은 page table을 실제 memory가 아닌 가상 memory에 저장하게 된다. process가 running 상태라면, 최소한 해당 process의 page table 중 일부분은 memory에 존재해야 하고, 전체 page table이 memory에 존재하는 것이 가장 바람직할 것이다.
 
 # Virtual Address
 
@@ -28,7 +28,7 @@ paging이란 memory 가상화에서 가상 주소와 물리 주소를 mapping시
 
 page table을 통해 사용되는 가상 주소와 물리 주소는 모두 number + offset의 구조를 갖는다. page number를 통해 page table의 몇 번째 row에 접근할 지를 파악하고, register에 저장된 page table의 포인터 값과 page number를 더해 해당 page table의 row에 접근한다. 이후 얻은 frame number를 통해 실제 물리 memory에 접근하게 된다. 하지만 frame number는 결국 물리 memory에서의 시작 주소를 뜻하는 값이기 때문에 얼마나 data를 읽어들일지에 대한 정보는 알지 못한다. 이 때 사용하는 것이 offset이다. 가상 주소에서의 offset을 그대로 물리 주소에서 사용하게 된다. 이러한 모든 작업은 대개 HW(CPU의 Memory Management Unit)가 수행하게 된다. 과거에는 OS에서 SW를 통해 구현해 사용하기도 했으나 속도가 HW를 이용하는 것에 비해 많이 느리다.
 
-가상 주소의 bit 사용량을 통해 역으로 OS의 각종 변수 값을 유추할 수도 있다. 가상 주소에서 offset이 차지하는 bit수가 $o$라면, 해당 OS의 page frame size는 $2^o$가 된다. 한편, 가상 주소에서 page number가 사용하는 bit 수가 $p$라면, 해당 OS의 page table의 최대 크기(가질 수 있는 최대 항목 수)는 $2^p$가 된다.
+가상 주소의 bit 사용량을 통해 역으로 OS의 각종 변수 값을 유추할 수도 있다. 가상 주소에서 offset이 차지하는 bit수가 $$o$$라면, 해당 OS의 page frame size는 $$2^o$$가 된다. 한편, 가상 주소에서 page number가 사용하는 bit 수가 $$p$$라면, 해당 OS의 page table의 최대 크기(가질 수 있는 최대 항목 수)는 $$2^p$$가 된다.
 
 ![03.png](/assets/images/2020-10-20-Paging-Mechanism/03.png)
 
@@ -36,13 +36,13 @@ page table을 통해 사용되는 가상 주소와 물리 주소는 모두 numbe
 
 ## 계층 구조 Page Table 사용
 
-page table의 크기는 page table entry의 size * page table가 가질 수 있는 최대 항목 수로 계산할 수 있다. 즉, page table이 가질 수 있는 최대 항목 수가 클 수록 page table의 크기도 커진다는 것이다. 너무 큰 page table을 운용하게 되면 memory 낭비가 심해진다. 각 process마다 page table 운용을 위해 여러 page frame을 사용하지만 그 중 실제로 page table의 극히 일부만 사용하는 상황이 대표적인 예시이다. 이를 해결하기 위한 대표적인 방법이 계층 구조 page table이다. 주로 2단계 계층 구조, 3단계 계층 구조 등이 있다. 우선 page directory가 있어 각각의 항목이 page table을 가리키도록 한다. page directory가 가리키는 page table이 꽉 찼을 경우에만 page directory의 다음 항목에서 새로운 page table을 가리키도록 동적으로 운용하는 방식이다. 아래는 2단계 계층 구조 page table의 예시이다.
+page table의 크기는 page table entry의 size * page table가 가질 수 있는 최대 항목 수로 계산할 수 있다. 즉, page table이 가질 수 있는 최대 항목 수가 클 수록 page table의 크기도 커진다는 것이다. 너무 큰 page table을 운용하게 되면 memory 낭비가 심해진다. 각 process마다 page table 운용을 위해 여러 page frame을 사용하지만 그 중 실제로 page table의 극히 일부만 사용하는 상황을 생각해보면 이해가 될 것이다. 이를 해결하기 위한 대표적인 방법이 계층 구조 page table이다. 주로 2단계 계층 구조, 3단계 계층 구조 등이 있다. 우선 page directory가 있어 각각의 항목이 page table을 가리키도록 한다. page directory가 가리키는 page table이 꽉 찼을 경우에만 page directory의 다음 항목에서 새로운 page table을 가리키도록 동적으로 운용하는 방식이다. 아래는 2단계 계층 구조 page table의 예시이다.
 
 ![04.png](/assets/images/2020-10-20-Paging-Mechanism/04.png)
 
 ## Inverted Page Table 사용
 
-Page Number를 그대로 사용하지 않고 hash function을 이용해 얻은 hash value로 사용하게 된다. hash value는 hash table에서의 인덱스이다. hash table의 항목 수는 물리 memory의 page frame의 개수와 동일하다. 즉, hash table은 모든 process가 공용으로 사용하는 것이다. 따라서 hash table entry에는 page number뿐만 아니라 pid까지 함께 담겨져 있다. hash table에서의 collision을 해결하기 위해 linked list로 다음 entry를 연결하게 된다. 이렇게 찾은 hash table entry의 hash table에서의 인덱스를 이용해 page frame을 찾아가게 된다. hash table에서의 인덱스가 $i$라면, mapping된 page frame도 실제 물리 memory에서 $i$번째 page frame이 된다.
+Page Number를 그대로 사용하지 않고 hash function을 이용해 얻은 hash value로 사용하게 된다. hash value는 hash table에서의 인덱스이다. hash table의 항목 수는 물리 memory의 page frame의 개수와 동일하다. 즉, hash table은 모든 process가 공용으로 사용하는 것이다. 따라서 hash table entry에는 page number뿐만 아니라 pid까지 함께 담겨져 있다. hash table에서의 collision을 해결하기 위해 linked list로 다음 entry를 연결하게 된다. 이렇게 찾은 hash table entry의 hash table에서의 인덱스를 이용해 page frame을 찾아가게 된다. hash table에서의 인덱스가 $$i$$라면, mapping된 page frame도 실제 물리 memory에서 $$i$$번째 page frame이 된다.
 
 ![05.png](/assets/images/2020-10-20-Paging-Mechanism/05.png)
 
@@ -68,7 +68,7 @@ Memory의 모든 page frame이 사용 중인 상황에서 swap에 위치한 page
 
 ![07.png](/assets/images/2020-10-20-Paging-Mechanism/07.png)
 
-5 time에서 page 5가 삽입되는데, 이전 time 기준으로 main memory에 존재하는 page 2, 3, 1는 각각 1 time, 4 time, $\infin$ time 후에 다시 참조된다. 따라서 이후 참조되기까지의 시간이 가장 많이 남은 page 1이 교체되게 된다.
+5 time에서 page 5가 삽입되는데, 이전 time 기준으로 main memory에 존재하는 page 2, 3, 1는 각각 1 time, 4 time, $$\infin$$ time 후에 다시 참조된다. 따라서 이후 참조되기까지의 시간이 가장 많이 남은 page 1이 교체되게 된다.
 
 ## FIFO (First Input First Out)
 
@@ -110,7 +110,7 @@ Clock 정책은 현대 OS에서 채택하고 있는 page replacement 정책이�
 
 ![12.png](/assets/images/2020-10-20-Paging-Mechanism/12.png)
 
-새로운 symbol이 추가되는데, $\rightarrow$는 memory를 가리키는 pointer이다. clock 정책에서 다음에 삽입할 page가 어디인지를 가리킨다. * symbol은 참조 여부이다. *가 있을 경우 참조된 frame (R bit = 1), *가 없을 경우 참조되지 않은 frame (R bit = 0)이다.
+새로운 symbol이 추가되는데, $$\rightarrow$$는 memory를 가리키는 pointer이다. clock 정책에서 다음에 삽입할 page가 어디인지를 가리킨다. * symbol은 참조 여부이다. *가 있을 경우 참조된 frame (R bit = 1), *가 없을 경우 참조되지 않은 frame (R bit = 0)이다.
 
 5 time에서 page 5가 삽입되는데, 현재 pointer가 가리키는 page frame은 2이다. page 2는 이미 참조가 된 상태이므로 우선 순위 1에 해당되지 않는다. 따라서 우선 순위 2를 찾아 나선다. 그 과정에서 page 2, 3, 1의 R bit를 0으로 수정한다. 우선 순위 2를 찾기 실패했기 때문에 처음으로 되돌아온다. page 2가 R bit=0이 되었기 때문에 우선 순위 1에 해당한다. 따라서 page 2를 교체한다.
 

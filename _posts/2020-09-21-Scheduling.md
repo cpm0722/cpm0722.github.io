@@ -20,7 +20,7 @@ Scheduling에는 여러 종류가 있다. 장기(long-term) scheduling은 proces
 
 # Scheduling
 
-여러가지 Scheduling 기법에 대해 알아보자. 하지만 여기서 다루는 기법들은 어디까지나 Ideial한 가정 하에 성립하는 것으로 현실에 그대로 적용되기는 불가능에 가깝다. 앞으로 다루는 Scheduling들은 다음의 가정을 따른다.
+여러가지 Scheduling 기법에 대해 알아보자. 하지만 여기서 다루는 기법들은 어디까지나 Ideal한 가정 하에 성립하는 것으로 현실에 그대로 적용되기는 불가능에 가깝다. 앞으로 다루는 Scheduling들은 다음의 가정을 따른다.
 
 1. 모든 task는 동일한 시간 동안에 실행된다.
 2. 모든 task는 동일한 시간에 도착한다.
@@ -264,5 +264,5 @@ I/O를 고려하는 scheduling이다. I/O 수행 중에는 CPU를 사용하지 �
 |SJF/SPN|min[s]|non-preemption|연산 적을수록 짧음|커질 수 있음|짧은 process|O|
 |STCF/SRT|min[s-e]|preemption|짧음|커질 수 있음|연산 적은 process|O|
 |HRRN|max((w+s)/s)|non-preemption|짧음|커질 수 있음|다소 공정|X|
-|RR|상수|preemption|연산 적을수록 짧음|최소|모두에게 공정|X|
+|RR|상수|preemption|연산 적을수록 짧음|최대|모두에게 공정|X|
 

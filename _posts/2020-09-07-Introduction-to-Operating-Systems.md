@@ -47,13 +47,13 @@ Context Switch(문맥 교환)이란 아주 빠른 속도(대개 10ms)로 하나�
 2. exit()
 3. DISK I/O
 
-위의 경우가 오게 되면 switchto() 함수를 호출해 문맥 교환을 수행하게 된다. 인자로는 두 task_struct를 받는다.
+위의 경우가 오게 되면 `switchto()` 함수를 호출해 문맥 교환을 수행하게 된다. 인자로는 두 `task_struct`를 받는다.
 
 ```c
-switchto([현재 수행중인 process의 task_struct], [다음 수행할 process의 task_struct])
+switchto([task_struct of running process], [task_struct of next process])
 ```
 
-다음 수행할 process의 task_struct는 schedule() 함수의 return으로 얻을 수 있다.
+다음 수행할 process의 `task_struct`는 `schedule()` 함수의 return으로 얻을 수 있다.
 
 문맥 교환은 여러 process들을 번갈아가며 수행하는데, 이 때 전환되는 process의 순서는 일정하지 않을 수 있다. 예를 들어 process가 A → B → C → D 순으로 문맥 교환이 발생했다고 하더라도, 다음에도 같은 순서로 process가 실행된다고 보장할 수 없다.
 
@@ -63,4 +63,4 @@ switchto([현재 수행중인 process의 task_struct], [다음 수행할 process
 
 # Concurrency (동시 실행)
 
-process 간 전환이 일어날 때, 항상 원자적(atomic)으로 실행되지는 않는다. 따라서 같은 조건에서 같은 횟수로 process를 실행했다고 하더라도 따라서 카운터의 값이 항상 같지는 않다. memory → register load와 ++, register→memory save의 과정이 원자적으로 일어나지 않기 때문이다.
+process 간 전환이 일어날 때, 항상 원자적(atomic)으로 실행되지는 않는다. 따라서 같은 조건에서 같은 횟수로 process를 실행했다고 하더라도 따라서 카운터의 값이 항상 같지는 않다. load(memory→register)와 ++ 연산, save(register→memory)의 과정이 원자적으로 일어나지 않기 때문이다.

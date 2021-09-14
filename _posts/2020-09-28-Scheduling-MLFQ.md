@@ -44,7 +44,7 @@ MLFQ가 작동하는 규칙에 대해 자세하게 살펴보자. 다음과 같�
 
 2. 시간에 따라 process의 특성이 변하더라도 한 번 내려간 우선순위 조정 불가
 
-    I/O Bound(CPU보다 I/O 위주)인 task는 상단 Queue에 위치한다. 반면 CPU Bound인 task는 하단 Queue에 위치한다. 하지만 CPU Bound에서 I/O Bound로 process의 특성이 변경될 경우, 한 번 내려간 우선순위는 다시 올라가지 않는다. 따라서 해당 process는 제대로 실행되지 못한다.
+    I/O Bound(CPU 연산보다 I/O 위주)인 task는 상단 Queue에 위치한다. 반면 CPU Bound인 task는 하단 Queue에 위치한다. 하지만 CPU Bound에서 I/O Bound로 process의 특성이 변경될 경우, 한 번 내려간 우선순위는 다시 올라가지 않는다. 따라서 해당 process는 제대로 실행되지 못한다.
 
 3. 무의미한 I/O를 빈번히 발생시켜 우선순위를 강제로 유지 (gaming)
 
@@ -54,9 +54,9 @@ MLFQ가 작동하는 규칙에 대해 자세하게 살펴보자. 다음과 같�
 
 위의 한계들을 극복하기 위해 새로운 rule을 도입할 수 있다.
 
-1. 일정 시간 $S$가 지나면, 모든 task들의 우선순위를 초기화한다(모든 task들을 최상위 Queue에 push한다).
+1. 일정 시간 $$S$$가 지나면, 모든 task들의 우선순위를 초기화한다(모든 task들을 최상위 Queue에 push한다).
 
-    이러한 작업을 Boosting이라고 부른다. MLFQ의 1, 2번 문제를 해결할 수 있다. $S$는 hyperparameter로, heuristic하게 결정해야 하는 값이다. $S$를 너무 큰 값으로 지정하게 되면 Starvation이 여전히 발생하게 되고, 너무 작은 값으로 지정하게 되면 짧은 task(I/O Bound 또는 대화형 task)가 불리해진다.
+    이러한 작업을 Boosting이라고 부른다. MLFQ의 1, 2번 문제를 해결할 수 있다. $$S$$는 hyperparameter로, heuristic하게 결정해야 하는 값이다. $$S$$를 너무 큰 값으로 지정하게 되면 Starvation이 여전히 발생하게 되고, 너무 작은 값으로 지정하게 되면 짧은 task(I/O Bound 또는 대화형 task)가 불리해진다.
 
 2. CPU 사용 시간의 합이 TQ에 다다를 경우 우선순위를 낮춘다(아래의 Queue에 push한다).
 
@@ -64,4 +64,4 @@ MLFQ가 작동하는 규칙에 대해 자세하게 살펴보자. 다음과 같�
 
 ## MLFQ Tuning
 
-MLFQ에는 여러 hyperparameter들이 있다. 가장 대표적으로 Queue의 개수, 각 Queue의 Time Quantum, boosting에서의 $S$등이 있다. 이러한 값들은 모두 heuristic하게 결정해야 한다.
+MLFQ에는 여러 hyperparameter들이 있다. 가장 대표적으로 Queue의 개수, 각 Queue의 Time Quantum, boosting에서의 $$S$$등이 있다. 이러한 값들은 모두 heuristic하게 결정해야 한다.

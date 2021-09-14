@@ -18,7 +18,7 @@ last_modified_at: 2020-11-17 00:00:00 +0000
 
 ## Process
 
-OS에서 process는 역할을 정리해보자. 우선 process는 자원 소유의 단위이다. 자원이라는 것은 main memory, I/O device, file system 등을 의미한다. 대표적인 예시로 process별로 main memory에 서로 다른 공간을 할당하는 것이 있다. 두번째로 process는 scheduling의 단위이다. context switching은 process 사이에 발생하면서 다음 실행될 process를 선택한다. 이러한 process의 2가지 역할은 서로 독립적이다. 따라서 os는 두 가지 역할을 모두 process라는 하나의 개념으로 수행하지 않고, 별개의 단위를 만들어냈다. 우선 자원 관리 역할은 process가 그대로 수행한다. 이 때의 process를 task라고 명명하기도 한다. 반면 scheduling의 단위는 thread 또는 경량(lightweight) process라고 새로 정의한다.
+OS에서 process의 역할을 정리해보자. 우선 process는 자원 소유의 단위이다. 자원이라는 것은 main memory, I/O device, file system 등을 의미한다. 대표적인 예시로 process별로 main memory에 서로 다른 공간을 할당하는 것이 있다. 두번째로 process는 scheduling의 단위이다. context switching은 process 사이에 발생하면서 다음 실행될 process를 선택한다. 이러한 process의 2가지 역할은 서로 독립적이다. 따라서 os는 두 가지 역할을 모두 process라는 하나의 개념으로 수행하지 않고, 별개의 단위를 만들어냈다. 우선 자원 관리 역할은 process가 그대로 수행한다. 이 때의 process를 task라고 명명하기도 한다. 반면 scheduling의 단위는 thread 또는 경량(lightweight) process라고 새로 정의한다.
 
 ## Multi-thread
 
