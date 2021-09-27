@@ -495,7 +495,7 @@ void philosopher(int i)
 	return;
 }
 
-int main(void)a
+int main(void)
 {
 	for(int i = 0; i < N; i++)  //semaphore 모두 로 초기화
 		semInit(fork[i], 1);

@@ -24,7 +24,7 @@ process는 위에서 언급했듯이 Memory에 위치한다. 구체적으로 Sta
 
 ## Process 생성
 
-fork()와 같은 system call을 사용해 process를 생성할 수 있다. 위에서 설명했듯이 process를 생성한다는 것은 program를 memory로 load하는 작업이다. 더 정확히는 process 자신의 가상 주소 공간 안으로 load한다. disk와의 I/O는 시간이 많이 걸리는 작업이기 때문에, 한꺼번에 전부를 load하지는 않고 가장 먼저 필요한 일부분을 우선 load한 뒤 실행 도중 나머지 code와 data를 page 단위로 나눠 load한다. stack 내에 지역변수, 함수 parameter, return address 등이 저장되며, heap에서 `malloc()`, `free()` 등의 동적 할당 작업을 수행하고, 그 사이 OS는 I/O setup (표준 fd 할당) 등의 여타 초기화 작업을 진행한다. process 시작 시에는 진입점 `main()`을 찾게 되면 os에서 process로 cpu 제어권이 넘어온다.
+`fork()`와 같은 system call을 사용해 process를 생성할 수 있다. 위에서 설명했듯이 process를 생성한다는 것은 program를 memory로 load하는 작업이다. 더 정확히는 process 자신의 가상 주소 공간 안으로 load한다. disk와의 I/O는 시간이 많이 걸리는 작업이기 때문에, 한꺼번에 전부를 load하지는 않고 가장 먼저 필요한 일부분을 우선 load한 뒤 실행 도중 나머지 code와 data를 page 단위로 나눠 load한다. stack 내에 지역변수, 함수 parameter, return address 등이 저장되며, heap에서 `malloc()`, `free()` 등의 동적 할당 작업을 수행하고, 그 사이 OS는 I/O setup (표준 fd 할당) 등의 여타 초기화 작업을 진행한다. process 시작 시에는 진입점 `main()`을 찾게 되면 os에서 process로 cpu 제어권이 넘어온다.
 
 ## Process Status
 
@@ -95,13 +95,13 @@ sys_call_table은 실제로 어디에 위치하고 있을까? 운영체제마다
 
 ## Context (문맥)
 
-문맥은 크게 3가지로 구분될 수 있다. HW (register) 문맥, system 문맥, memory 문맥이 그 예이다. 실제 task_struct 구조체에서도 struct mm struct *mm으로 memory 문맥을, struct threadstruct로 HW 문맥을 구현했다.
+문맥은 크게 3가지로 구분될 수 있다. HW (register) 문맥, system 문맥, memory 문맥이 그 예이다. 실제 `task_struct` 구조체에서도 `struct mm struct *mm`으로 memory 문맥을, `struct threadstruct`로 HW 문맥을 구현했다.
 
 ## Process 전환
 
 ### Process 전환
 
-schedule() 함수는 다음 실행할 process의 PCB를 return하는 함수이다. PCB란 Process Control Block으로 os가 process를 추상화한 것이다. linux에서는 PCB가 task_struct type이다. 이렇게 얻어낸 다음 process의 PCB와 현재 실행 중이던 process의 PCB를 switch()함수에 인자로 넣으면(switch(현재 PCB, 다음 PCB)) 문맥 교환이 수행된다. 자세한 단계는 아래와 같이 진행된다.
+`schedule()` 함수는 다음 실행할 process의 PCB를 return하는 함수이다. PCB란 Process Control Block으로 os가 process를 추상화한 것이다. linux에서는 PCB가 task_struct type이다. 이렇게 얻어낸 다음 process의 PCB와 현재 실행 중이던 process의 PCB를 `switch()` 함수에 인자로 넣으면(`switch(prev PCB, next PCB)`) 문맥 교환이 수행된다. 자세한 단계는 아래와 같이 진행된다.
 
 1. 현재 실행 중이던 process의 context를 저장
 2. 현재  실행 중이던 process의 PCB를 갱신 (상태를 Ready, Block, Sleep, Zombie 등으로 변경)
