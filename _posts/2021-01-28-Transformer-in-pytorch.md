@@ -565,7 +565,7 @@ class Decoder(nn.Module):
 	def forward(self, x, mask, encoder_output, encoder_mask):
 		out = x
 		for layer in self.layers:
-			out = layer(x, mask, encoder_output, encoder_mask)
+			out = layer(out, mask, encoder_output, encoder_mask)
 		return out
 ```
 
