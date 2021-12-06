@@ -29,7 +29,7 @@ comments: false
 
 ## 소속
 
-### LINE Plus
+<!-- ### LINE Plus -->
 
 ### 숭실대학교 컴퓨터학부
 
@@ -39,7 +39,7 @@ comments: false
 
 ## 경력
 
-### LINE Plus (2021.12.06 ~ )
+<!-- ### LINE Plus (2021.12.06 ~ ) -->
 
 ### Kakao Brain Internship: Large-Scale TF (2021.07.01 ~ 2021.08.31)
 
