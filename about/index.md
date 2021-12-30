@@ -29,7 +29,7 @@ comments: false
 
 ## 소속
 
-<!-- ### LINE Plus -->
+### Naver Corp.
 
 ### 숭실대학교 컴퓨터학부
 
@@ -40,8 +40,9 @@ comments: false
 ## 경력
 
 <!-- ### LINE Plus (2021.12.06 ~ ) -->
+### Naver Corp: (2021.12.29 ~ )
 
-### Kakao Brain Internship: Large-Scale TF (2021.07.01 ~ 2021.08.31)
+### Kakao Brain: Large-Scale TF (2021.07.01 ~ 2021.08.31)
 
 ---
 
@@ -53,7 +54,9 @@ Ubuntu 20.04 LTS (SSH)
 
 Windows 10 (RDP)
 
-MacBook Air 13, 2020 (Apple Silicon M1,  8GB, 256GB)
+MacBook Pro 14, 2021 (Apple Silicon M1X, 32GB, 512GB)
+
+MacBook Air 13, 2020 (Apple Silicon M1, 8GB, 256GB)
 
 LG 27UL850 4K
 
