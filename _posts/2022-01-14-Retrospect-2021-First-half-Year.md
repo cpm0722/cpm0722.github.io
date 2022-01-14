@@ -14,8 +14,8 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 2021년 상반기는 여러 일이 있었지만, 학부 생활을 제외하고는 크게 2가지 카테고리로 정리할 수 있다.
 
-1. CLOVA AI Rush 2021
-2. 카카오브레인(Kakaobrain) 인턴십
+1. [CLOVA AI Rush 2021](#clova-ai-rush-2021)
+2. [카카오브레인(Kakaobrain) 인턴십](#kakaobrain-internship)
 
 2022년이 넘어와서 상반기 회고를 하는게 웃기기는 하지만..😅 원래 2021년 회고를 한번에 하려 했는데, 막상 쓰다보니 너무 내용이 길어져 분리하기로 했다!!
 
@@ -60,7 +60,9 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 ## Kakaobrain Internship
 
-![05. kakaobrain_logo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/05. kakaobrain_logo.jpg){: width="50%"}
+| ![05. kakaobrain_logo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/05. kakaobrain_logo.jpg){: width="50%"} |
+| :--: |
+| *[KakaoBrain](https://kakaobrain.com)* |
 
 
 ### 지원 과정
