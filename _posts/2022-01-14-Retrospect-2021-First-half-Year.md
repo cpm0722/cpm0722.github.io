@@ -4,7 +4,7 @@ title: "2021년 상반기 회고 (Clova AI Rush / 카카오브레인 인턴십 �
 subtitle: 2021-1
 categories: [Retrospect]
 tags: [Retrospect]
-permalink: /Retrospect/2021-1
+permalink: /retrospect/2021-1
 date: 2022-01-14 00:00:00 +0000
 last_modified_at: 2022-01-14 00:00:00 +0000
 
