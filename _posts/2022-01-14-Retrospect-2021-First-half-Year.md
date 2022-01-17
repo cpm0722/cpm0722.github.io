@@ -1,6 +1,6 @@
 ---
 
-title: "2021년 상반기 회고 (Clova AI Rush / 카카오브레인 인턴십)"
+title: "2021년 상반기 회고 (Clova AI Rush / 카카오브레인 인턴십 후기)"
 subtitle: 2021-1
 categories: [Retrospect]
 tags: [Retrospect]
@@ -9,8 +9,6 @@ date: 2022-01-14 00:00:00 +0000
 last_modified_at: 2022-01-14 00:00:00 +0000
 
 ---
-
-# 2021년 상반기 회고 (Clova AI Rush / 카카오브레인 인턴십)
 
 2021년 상반기는 여러 일이 있었지만, 학부 생활을 제외하고는 크게 2가지 카테고리로 정리할 수 있다.
 
