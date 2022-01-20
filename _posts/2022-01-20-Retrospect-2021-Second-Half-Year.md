@@ -96,7 +96,7 @@ OS 질문을 계속 주고 받다보니 면접 시간은 1시간을 10분 정도
 
 합격 후 HR에서 축하 전화를 주셨고, 입사 일정을 조율하는 과정을 거쳤다. 이후 축하 선물(꽃다발 + 샴페인)을 보내주셨는데, 이는 훌륭한 인재를 키워주신 부모님께 보내드리는 감사의 선물이라고 했다. 부모님이 받고 정말정말 좋아하셔서 나도 많이 뿌듯했다😊
 
-| ![04. line_gift.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/04. line_gift.jpg){: height="50%"} |
+| ![04. line_gift.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/04. line_gift.jpg){: height="75%"} |
 | :--: |
 | *라인 플러스 입사 축하 꽃다발 & 샴페인* |
 
