@@ -30,17 +30,19 @@ last_modified_at: 2022-01-20 00:00:00 +0000
 
 사실 나는 공채로 취업을 할 생각이 전혀 없었기에 이에 대한 대비(PS, CS 등)를 전혀 하지 않았었다. 때문에 바로 취직을 할 것이라는 기대를 스스로 하지 않았고, 우선은 모두 지원을 하며 취준 경험을 쌓아보고자 했다. 보통 처음 기준치는 높게 잡아서 차근차근 내려간다고 하기에 흔히들 가장 좋은 IT 서비스 기업이라 말하는 네카라에 지원을 하기로 마음먹었다.
 
-## LINE PLUS
+# LINE PLUS
 
-![01. line.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/01. line.jpg)
-
-* [채용 공고](https://www.careers-2021-liner.com)
+| ![01. line.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/01. line.jpg) |
+| :--: |
+| **[2021년 하반기 라인플러스 신입 공개 채용 공고](https://www.careers-2021-liner.com)** |
 
 ### 서류
 
 라인플러스는 기본적으로 기술력이 엄청 좋은 회사라는 평을 듣고 있었다. 코로나 이후에도 완전 전면 재택 근무를 채택했다는 점에서 이끌리기도 했다(현 거주지에서 판교 근방까지 출퇴근이 꽤 오래 걸린다). 무엇보다 모집 직무에서 JD 중 “Big Data, ML, Cloud Platform에 대한 이해 및 관심”을 요구하는 직무가 있었기에 ML 관련 engineering을 해 볼 수 있겠다는 생각이 들어 지원을 결심했다.
 
-![02. line_job_description.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/02. line_job_description.jpg)
+| ![02. line_job_description.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/02. line_job_description.jpg) |
+| :--: |
+| *내가 지원했던 포지션의 job description* |
 
 - 서류 문항
     - 본인이 끝까지 파고들어 본 가장 의미있었던 개발 경험 또는 개발 활동에 대해 얘기해 주세요.
@@ -86,23 +88,29 @@ OS 질문을 계속 주고 받다보니 면접 시간은 1시간을 10분 정도
 
 ### 합격
 
-![03. line_pass_mail.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/03. line_pass_mail.jpg)
+| ![03. line_pass_mail.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/03. line_pass_mail.jpg) |
+| :--: |
+| *라인 플러스 최종 합격 메일* |
 
 최종 합격 발표는 2차 면접 기간 후 약 일주일 뒤에 메일로 받았다. 일반적으로 오후에 메일을 보내는 것과 달리 이번에는 오전에 메일이 발송되었다! 첫 합격 발표였기에 정말 기뻐했었고, 실감이 안나기도 했다. 사실 지원 당시에는 경험을 해보자는 마인드였고, 최종 합격까지는 기대도 하지 않았었는데 좋은 결과를 받게 되어 놀라웠다. 이후에는 면접이든 결과 발표 대기든 맘 편히 지낼 수 있었던 것 같다. 붙어놓은 곳이 있고, 붙은 곳이 또 라인이니까!
 
 합격 후 HR에서 축하 전화를 주셨고, 입사 일정을 조율하는 과정을 거쳤다. 이후 축하 선물(꽃다발 + 샴페인)을 보내주셨는데, 이는 훌륭한 인재를 키워주신 부모님께 보내드리는 감사의 선물이라고 했다. 부모님이 받고 정말정말 좋아하셔서 나도 많이 뿌듯했다😊
 
-![04. line_gift.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/04. line_gift.jpg)
+| ![04. line_gift.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/04. line_gift.jpg) |
+| :--: |
+| *라인 플러스 입사 축하 꽃다발 & 샴페인* |
 
 이후 사용할 업무 기기 및 여러 기념품들을 보내주셨는데, 디자인이 정말 이뻤다. 특히 이름표나 티셔츠가 좋았다. 라인의 고유 색상인 초록색이 정말 디자인적으로 이쁘다는 생각이 들었다.
 
-![05. line_goods.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/05. line_goods.jpg)
+| ![05. line_goods.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/05. line_goods.jpg) |
+| :--: |
+| *라인 플러스 굿즈* |
 
-## Kakao
+# Kakao
 
-![06. kakao.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/06. kakao.jpg)
-
-* [채용 공고](https://careers.kakao.com/2022-developer)
+| ![06. kakao.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/06. kakao.jpg) |
+| :--: |
+| **[2021년 하반기 카카오 신입 공개 채용 공고](https://careers.kakao.com/2022-developer)** |
 
 카카오는 블라인드 채용으로 유명하다. 어떠한 서류 작성도 받지 않고 바로 코딩테스트를 응시할 수 있어 간편 지원이 가능했다. 카카오 공동체 내 여러 회사에서 모집을 했는데, 모집 회사는 1지망 / 2지망을 선택할 수 있었다. 사실 코딩테스트 경험 삼아 지원을 한 것이기 때문에 별 고민을 하지 않고 카카오 본사 / 카카오 엔터프라이즈 를 선택했다. 본사를 고른 것은 대단한 이유가 있어서가 아니고, 그저 안에서 ML을 사용하는 어느 팀이라도 있지 않을까? 하는 안일한 생각으로, 엔터프라이즈는 AI 연구 및 기술 개발을 활발히 하는 회사이므로 이를 지원했다.
 
@@ -134,7 +142,7 @@ OS 질문을 계속 주고 받다보니 면접 시간은 1시간을 10분 정도
     - 졸업(예정) 시기 & 입사 가능 시기
     - 개발과 관련하여 관심있게 들었던 전공과목 혹은 외부강의를 기재해주세요.
     - 자신의 열정과 기술적인 전문성을 나타낼 수 있는 경험/이력/생각을 자유롭게 기술해주세요.
-    - 자신이 다뤄본 경험이 있는 플랫폼이나 프로그래밍 언어에 대해 1~4 단계로 표현해주세요.
+    - 자신이 다뤄본 경험이 있는 플랫폼이나 프로그래밍 언어에 대해 1~4 단계로 표현해주세요.  
     (예 : iOS - 1 / 안드로이드 - 4 / Java, Spring - 3)
 
 서류 작성 마감 후 약 3일 뒤에 면접 일정이 안내되었다. 면접은 코딩테스트 결과 발표 후  약 2주 뒤부터 4일 간 진행되었다.
@@ -157,15 +165,17 @@ OS 질문을 계속 주고 받다보니 면접 시간은 1시간을 10분 정도
 
 ### 합격
 
-![07. kakao_pass_mail.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/07. kakao_pass_mail.jpg)
+| ![07. kakao_pass_mail.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/07. kakao_pass_mail.jpg) |
+| :--: |
+| *카카오 최종 합격 메일* |
 
 라인 공채 합격 발표 후 바로 다음날 카카오 합격 발표를 받았는데, 두 회사 사이에서 고민을 많이 했었다. 정말 감사하게도 입사 고민을 하니 각 회사에서 내가 배치될 팀의 리더 분들께서 전화를 주셨고, 맡을 업무에 대해서 설명도 주셨다. 둘 다 내가 원하던 업무에 가까웠기에 정말 많은 고민을 했는데, 라인의 완전 재택 근무가 큰 영향을 끼쳐 라인을 선택했다.
 
-## Naver
+# Naver
 
-![08. naver.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/08. naver.jpg)
-
-* [채용 공고](https://www.naver-recruit.com)
+| ![08. naver.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/08. naver.jpg) |
+| :--: |
+| **[2021년 하반기 네이버 신입 공개 채용 공고](https://www.naver-recruit.com)** |
 
 네이버는 공채 모집이 세 회사 중 가장 늦었다. 따라서 이후 모든 전형도 늦게 진행되었다. 대신 코딩테스트 1회 이후 바로 면접으로 진행된다는 점이 차이가 있다. 즉, 다른 회사 대비 전형이 1단계 짧다.
 
@@ -220,7 +230,9 @@ OS 질문을 계속 주고 받다보니 면접 시간은 1시간을 10분 정도
 
 ### 합격
 
-![09. naver_pass_mail.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/09. naver_pass_mail.jpg)
+| ![09. naver_pass_mail.jpg](/assets/images/2022-01-20-Retrospect-2021-Second-Half-Year/09. naver_pass_mail.jpg) |
+| :--: |
+| *네이버 최종 합격 메일* |
 
 네이버는 부서 및 직무 배치가 결정되지 않은 상태에서 우선 입사시킨 후, 내부에서 지원을 받고 배치하는 과정을 거친다고 한다. 즉, 부서 배정에 대한 리스크가 있는 선택이었다. 그래서 사실 입사를 하지 않는 쪽으로 기울었었는데, 네이버 HR팀에서 많은 설득을 해주신 덕분에 네이버로 최종 결정을 하게 되었다.
 
