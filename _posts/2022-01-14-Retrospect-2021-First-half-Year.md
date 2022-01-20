@@ -19,7 +19,7 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 ## CLOVA AI Rush 2021
 
-![01. ai_rush_logo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/01. ai_rush_logo.jpg){: width="50%"}
+![01. ai_rush_logo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/01. ai_rush_logo.jpg){: width="50%"}
 
 
 * [CLOVA AI RUSH 2021 공고](https://campaign.naver.com/clova_airush/)
@@ -38,7 +38,7 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 종료 일주일 전까지 순위가 내가 꽤 높았었는데, 막판이 되니 다들 더 열심히 달리셨다. 덕분에 탈락 순위까지 추락했고, 나도 부랴부랴 개선을 했다. 결국에는 정말 무식한 방식으로 input text를 속성에 따라 3개로 분류해 각각 별도의 transformer에 넣고, 최종 embedding을 concat 후 FC layer에 넣는 model을 사용했다. 그런데, 이게 솔직히 textCNN에 비해 연산량이 비교할 수 없을만큼 많음에도 불구하고 성능 향상은 0.1% 미만이었다. 일반적인 service에서라면 당연히 textCNN을 사용하는 것이 맞는데, competetion은 score가 높으면 장땡이니까.. 학습만 20시간 가까이 걸리는 정말 큰 model에 대해 hyperparameter search를 하는데, 이게 정말 고역이었다. 새벽에 알람 맞추고 일어나서 새로 학습 돌리고, 엑셀에 parameter와 score 기록하고 하다보니 MLOps의 필요성을 정말 뼈져리게 느꼈다. 좀 더 스마트한 방식을 사용해보면 좋았겠지만, 그 당시에는 학교 생활(시험 기간이었다..)에 AI Rush에, 아르바이트까지 하면서 그걸 고민할 여유조차 없더라.
 
-| ![02. 1round_final_score.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/02. 1round_final_score.jpg) |
+| ![02. 1round_final_score.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/02. 1round_final_score.jpg) |
 | :--: |
 | *말그대로 문 닫고 2round 진출* |
 
@@ -50,15 +50,15 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 ### goods
 
-![03. ai_rush_goods_box.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/03. ai_rush_goods_box.jpg)
+![03. ai_rush_goods_box.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/03. ai_rush_goods_box.jpg)
 
-| ![04. ai_rush_goods.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/04. ai_rush_goods.jpg) |
+| ![04. ai_rush_goods.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/04. ai_rush_goods.jpg) |
 | :--: |
 | *텀블러와 티셔츠가 정말 이쁘다.* |
 
 ## Kakaobrain Internship
 
-| ![05. kakaobrain_logo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/05. kakaobrain_logo.jpg){: width="50%"} |
+| ![05. kakaobrain_logo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/05. kakaobrain_logo.jpg){: width="50%"} |
 | :--: |
 | *[KakaoBrain](https://kakaobrain.com)* |
 
@@ -76,7 +76,7 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 2차 코딩테스트인 과제를 정말 주먹구구식으로 수행했고, 내가 접근한 방법이 맞는지에 대한 판단 조차도 되지 않아서 당연히 탈락할 것이라고 생각했었다. 그래서 합격 메일을 받고 정말 놀랐었다. 동시에 면접에서 관련 내용 질문이 정말 많이 들어올텐데, 이걸 어떻게 답변하지 싶었다. 그래서 논문이나 한 번 더 읽고 따로 준비를 안했었다.
 면접은 2:1로 1시간동안 진행되었는데, 정말 편안한 분위기에서 진행되었고, 다들 진심으로 좋으신 분들이었다. 한 면접관 분은 내가 무슨 이야기를 하더라도 웃으며 받아주셨고(주니어 우쭈쭈 받는 느낌), 한 분은 완전 포커페이스이셨다. 내가 생각했던 것과 면접이 좀 다르게 진행되었는데, 과제에 대한 질문이 있기도 했지만 비중이 크게 높지 않았다(나중에 듣고 보니 내가 잘 모른다는 것을 진작에 파악하시고 더 깊게 안물어보셨더라). 기초 CS 질문도 들어오고, 상황 가정이 주어지며 그에 대한 해결책 제시와 반론을 주고받는 형태였다. 정말 내가 알던 분야에 대한 질문이 아니어서 최대한 알고 있는 지식을 영끌해가며 헛소리를 나열했던 것으로 기억한다. 면접관 분께서 나의 해결책에 대해 납득이 가는 반론을 계속 해주셨었기에, 당연히 나는 광탈이겠구나 생각했다. 그래서 주변에 무조건 탈락이다, 좋은 경험이었고 많은 부족함을 느꼈다는 후기를 이야기하고 다녔고, 실제로 여름에 제주도 놀러가는 비행기까지 끊어놨었다! 절대 합격할 일이 없겠다 생각했기 때문에.
 
-| ![06. internship_mail.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/06. internship_mail.jpg) |
+| ![06. internship_mail.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/06. internship_mail.jpg) |
 | :--: |
 | *전산 오류?* |
 
@@ -84,23 +84,23 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 ### 카카오브레인?
 
-| ![07. kakaobrain_pass.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/07. kakaobrain_pass.jpg){: width="50%"} |
+| ![07. kakaobrain_pass.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/07. kakaobrain_pass.jpg){: width="50%"} |
 | :--: |
 | *닉네임은 wilson.bear 였다* |
 
-| ![08. equipment.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/08. equipment.jpg) |
+| ![08. equipment.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/08. equipment.jpg) |
 | :--: |
 | *M1 13인치 Pro CTO. 그 당시 최고급 모델을 받았다.* |
 
 첫 날 온보딩이 끝난 뒤, 배치된 팀인 Large-Scale TF에 가게 되었다. 팀원분들은 모두 다 재택근무 중이셔서 얼굴을 볼 수 없었고, 팀 리더님만 출근하셨다. 면접 때 내가 무슨 이야기를 하더라도 웃으며 받아주시던 면접관이셨다! 이후 인턴십 기간 동안 다른 분들은 거의 뵙지 못했고, 리더님이 인턴십 멘토까지 겸하셨기에 정말 자주 소통했던 것 같다. 맛있는 밥도 많이 사주셨다!!😊
 
-| ![09. pork_cutlet.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/09. pork_cutlet.jpg) |
+| ![09. pork_cutlet.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/09. pork_cutlet.jpg) |
 | :--: |
 | *판교 최고 맛집 서호돈가스.* |
 
 간략하게 **카카오브레인** 이라는 회사에 대해 소개하자면, “카카오 공동체의 AI 스타트업” 이라고 정리해 볼 수 있을 것 같다. 내 멋대로 정의이기도 하지만, CEO이신 curtis를 포함해 많은 사내 크루 분들이 카카오브레인은 스타트업의 특성을 갖는다고 말씀하신다. 스타트업은 어느정도 리스크가 있기는 한데, 카카오브레인의 경우 카카오라는 든든한 뒷배가 있다는 점이 차이가 있을 듯! 사실 입사 전에 알고 있던 **카카오브레인**의 이미지는 `“신비주의 엘리트 연구 조직”`이었다. 실제로 내가 지원하던 당시에도 AI업계 종사자가 아니라면 존재 조차도 모를 정도로 크게 알려지지 않았는데, 요새는 공격적으로 브랜딩을 하고 있는 것 같다. 회사 규모는 정말 소규모로, 매우 뛰어난 분들이 동료로 계셨다. 엘리트 느낌은 확실히 많이 났다! 그래서인지 내가 있을 곳이 아닌가..? 하는 생각을 인턴십 내내 갖고 있었다. 사실 연구조직이라는 표현은 반은 맞고 반은 틀린 이야기인데, 이전까지는 주로 연구자 분들이 많은 비중을 차지하고 있었지만, 최근 뛰어난 AI 기술력을 활용해 다양한 서비스를 개발하고 이를 출시하는 방향으로 회사의 방향이 바뀌었다는 점에서 연구만 하는 회사는 절대 아니다.
 
-| ![10. ryan.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/10. ryan.jpg) |
+| ![10. ryan.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/10. ryan.jpg) |
 | :--: |
 | *H스퀘어의 명물인 마스크 쓴 라이언* |
 
@@ -119,7 +119,7 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 * [Demo Page](http://clip.cpm9662.me/)
 
-| ![11. clip_demo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/11. clip_demo.jpg) |
+| ![11. clip_demo.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/11. clip_demo.jpg) |
 | :--: |
 | *한국어에 대해서도 잘 검색해준다.* |
 
@@ -127,7 +127,7 @@ last_modified_at: 2022-01-14 00:00:00 +0000
 
 위의 간략한 프로젝트 소개를 보고 의문이 드는 사람도 꽤 많을 것 같다. 10억건에 가까운 billon scale이 말이 쉽지, 정말 어마어마한 볼륨인데, 도대체 이걸 어떻게 개발했다는 것인지? 사내에 이정도 규모의 서비스를 개발할 환경이 되기는 하는가? 결론부터 말하자면, 카카오브레인은 가능하다. 밖에서 일반적인 기업(톱 IT 서비스 기업들 포함)해 이정도의 Infra가 구축된 곳은 손에 꼽을 것 같다. 더군다나 이를 고작 인턴에게 모두 사용하도록 공개하는 경우는 내 주변에서는 들어보지를 못했다. 내부에서 개발한 머신 러닝 학습 플랫폼인 BrainCloud가 있는데, GPU가 상상도 할 수 없을 만큼 많이 달려 있고, 이를 자유롭게 사용 가능하다. 일반적으로 ML 학습에 많이 사용한다는 GPU인 V100은 BrainCloud에서는 남아도는 자원이다. 그보다 훨씬 값비싸고 좋은 GPU인 A100을 사용하면 되니까. 나의 경우에는 image dataset에 대해 CLIP embedding을 추출할 때 A100이 8대 달린 instance 4대를 동시에 사용했다. 그러니까, A100 GPU를 32개 동시에 사용한 거다.
 
-| ![12. gpu_price.jpg](/assets/images/2022-01-14-Retrospect-2021-First-half-Year/12. gpu_price.jpg) |
+| ![12. gpu_price.jpg](/assets/images/2022-01-14-Retrospect-2021-First-Half-Year/12. gpu_price.jpg) |
 | :--: |
 | *상상을 초월하는 GPU 가격..* |
 
