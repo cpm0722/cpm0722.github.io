@@ -1,6 +1,6 @@
 ---
-layout: machine-learning
+layout: post-list
 title: "Machine Learning"
-excerpt: "Machine Learning"
+category: "Machine Learning"
 comments: false
 ---

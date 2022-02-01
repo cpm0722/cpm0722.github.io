@@ -1,8 +1,9 @@
 ---
-layout: page
+layout: post
 title: "About Me"
 tags: [about]
 date: 2021-11-19
+about: true
 comments: false
 ---
     

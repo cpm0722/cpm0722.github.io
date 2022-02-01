@@ -1,6 +1,6 @@
 ---
-layout: retrospect
-title: "Retrospect"
-excerpt: "Retrospect"
+layout: post-list
+title: "retrospect"
+category: "Retrospect"
 comments: false
 ---

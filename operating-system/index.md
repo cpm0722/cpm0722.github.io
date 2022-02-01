@@ -1,6 +1,6 @@
 ---
-layout: operating-system
+layout: post-list
 title: "Operating System Lecture Note"
-excerpt: "Operating System Lecture Note"
+category: "Operating System"
 comments: false
 ---

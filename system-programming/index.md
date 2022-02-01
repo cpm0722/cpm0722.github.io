@@ -1,6 +1,6 @@
 ---
-layout: system-programming
+layout: post-list
 title: "System Programming"
-excerpt: "System Programming"
+category: "System Programming"
 comments: false
 ---

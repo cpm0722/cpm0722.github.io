@@ -1,6 +1,6 @@
 ---
-layout: project-list
+layout: post-list
 title: "Project Archive"
-excerpt: "Project Archive"
+category: "Project"
 comments: false
 ---
