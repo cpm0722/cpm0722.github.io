@@ -1,10 +1,10 @@
 # Site navigation links
 
 - title: "Machine Learning"
-  url: /pages/machine-learning.md
+  url: /machine-learning
 
 - title: "Operating System"
-  url: /pages/operating-system.md
+  url: /operating-system
 
 - title: "System Programming"
-  url: /pages/system-programming.md
+  url: /system-programming
