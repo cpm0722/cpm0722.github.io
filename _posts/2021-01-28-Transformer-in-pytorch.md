@@ -122,16 +122,16 @@ Encoder Block은 크게 Multi-Head Attention Layer, Position-wise Feed-Forward L
 ```python
 class EncoderBlock(nn.Module):
 
-	def __init__(self, multi_head_attention_layer, position_wise_feed_forward_layer):
+	def __init__(self, self_attention, position_ff):
 		super(EncoderBlock, self).__init__()
-		self.multi_head_attention_layer = multi_head_attention_layer
-		self.position_wise_feed_forward_layer = position_wise_feed_forward_layer
+		self.self_attention = self_attention 
+		self.position_ff = position_ff
 
 
 	def forward(self, x):
 		out = x
-		out = self.multi_head_attention_layer(out)
-		out = self.position_wise_feed_forward_layer(out)
+		out = self.self_attention(out)
+		out = self.position_ff(out)
 		return out
 ```
 
@@ -218,7 +218,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
  $$Q$$, $$K$$, $$V$$를 구하는 FC layer에 대해 자세히 살펴보자. Self-Attention 개념 이전에 설명했듯이, 각각 서로 다른 FC layer에 의해 구해진다. FC layer의 input은 word embedding vector들이고, output은 각각 $$Q$$, $$K$$, $$V$$이다. word embedding의 dimension이 $$d_{embed}$$라고 한다면, input의 shape는 $$n \times d_{embed}$$이고, output의 shape는 $$n \times d_k$$이다. 각각의 FC layer는 서로 다른 weight matrix ($$d_{embed} \times d_k$$)를 갖고 있기 때문에 output의 shape는 모두 동일할지라도, $$Q$$, $$K$$, $$V$$의 실제 값들은 모두 다르다.
 
-![qkv_fc_layer.png](/assets/images/2021-01-28-Transformer-in-pytorch/qkv_fc_layer.png)
+![qkv_fc.png](/assets/images/2021-01-28-Transformer-in-pytorch/qkv_fc.png)
 
 #### Pad Masking
 
@@ -281,19 +281,19 @@ def calculate_attention(query, key, value, mask):
 ```python
 class MultiHeadAttentionLayer(nn.Module):
 
-    def __init__(self, d_model, h, qkv_fc_layer, fc_layer):
+    def __init__(self, d_model, h, qkv_fc, out_fc):
         super(MultiHeadAttentionLayer, self).__init__()
         self.d_model = d_model
         self.h = h
-        self.query_fc_layer = copy.deepcopy(qkv_fc_layer) # (d_embed, d_model)
-        self.key_fc_layer = copy.deepcopy(qkv_fc_layer)   # (d_embed, d_model)
-        self.value_fc_layer = copy.deepcopy(qkv_fc_layer) # (d_embed, d_model)
-        self.fc_layer= fc_layer # (d_model, d_embed)
+        self.q_fc = copy.deepcopy(qkv_fc) # (d_embed, d_model)
+        self.k_fc = copy.deepcopy(qkv_fc) # (d_embed, d_model)
+        self.v_fc = copy.deepcopy(qkv_fc) # (d_embed, d_model)
+        self.out_fc = out_fc              # (d_model, d_embed)
 
 		...
 ```
 
-우선 생성자를 살펴보자. `qkv_fc_layer` 인자로 $$d_{embed} \times d_{model}$$의 weight matrix를 갖는 FC Layer를 받아 멤버 변수로 $$Q$$, $$K$$, $$V$$에 대해 각각 `copy.deepcopy`를 호출해 저장한다. `deepcopy`를 호출하는 이유는 실제로는 서로 다른 weight를 갖고 별개로 운용되게 하기 위함이다. copy 없이 하나의 FC Layer로 $$Q$$, $$K$$, $$V$$를 모두 구하게 되면 항상 $$Q$$, $$K$$, $$V$$가 모두 같은 값일 것이다. fc_layer는 attention 계산 이후 거쳐가는 FC Layer로, $$d_{model} \times d_{embed}$$의 weight matrix를 갖는다.
+우선 생성자를 살펴보자. `qkv_fc` 인자로 $$d_{embed} \times d_{model}$$의 weight matrix를 갖는 FC Layer를 받아 멤버 변수로 $$Q$$, $$K$$, $$V$$에 대해 각각 `copy.deepcopy`를 호출해 저장한다. `deepcopy`를 호출하는 이유는 실제로는 서로 다른 weight를 갖고 별개로 운용되게 하기 위함이다. copy 없이 하나의 FC Layer로 $$Q$$, $$K$$, $$V$$를 모두 구하게 되면 항상 $$Q$$, $$K$$, $$V$$가 모두 같은 값일 것이다. `out_fc`는 attention 계산 이후 거쳐가는 FC Layer로, $$d_{model} \times d_{embed}$$의 weight matrix를 갖는다.
 
 가장 중요한 `forward()`이다. Transformer 구현에서 가장 핵심적인 부분이므로 반드시 이해하고 넘어가자.
 
@@ -308,20 +308,20 @@ class MultiHeadAttentionLayer(nn.Module):
         # return value: (n_batch, h, seq_len, d_k)
         n_batch = query.size(0)
 
-        def transform(x, fc_layer): # (n_batch, seq_len, d_embed)
-            out = fc_layer(x)  # (n_batch, seq_len, d_model)
+        def transform(x, fc):  # (n_batch, seq_len, d_embed)
+            out = fc(x)        # (n_batch, seq_len, d_model)
             out = out.view(n_batch, -1, self.h, self.d_model//self.h) # (n_batch, seq_len, h, d_k)
             out = out.transpose(1, 2) # (n_batch, h, seq_len, d_k)
             return out
 
-        query = transform(query, self.query_fc_layer) # (n_batch, h, seq_len, d_k)
-        key = transform(key, self.key_fc_layer)       # (n_batch, h, seq_len, d_k)
-        value = transform(value, self.value_fc_layer) # (n_batch, h, seq_len, d_k)
+        query = transform(query, self.q_fc) # (n_batch, h, seq_len, d_k)
+        key = transform(key, self.k_fc)     # (n_batch, h, seq_len, d_k)
+        value = transform(value, self.v_fc) # (n_batch, h, seq_len, d_k)
 
         out = self.calculate_attention(query, key, value, mask) # (n_batch, h, seq_len, d_k)
         out = out.transpose(1, 2) # (n_batch, seq_len, h, d_k)
         out = out.contiguous().view(n_batch, -1, self.d_model) # (n_batch, seq_len, d_model)
-        out = self.fc_layer(out) # (n_batch, seq_len, d_embed)
+        out = self.out_fc(out) # (n_batch, seq_len, d_embed)
         return out
 ```
 
@@ -352,16 +352,16 @@ def calculate_attention(self, query, key, value, mask):
 ```python
 class EncoderBlock(nn.Module):
 
-    def __init__(self, multi_head_attention_layer, position_wise_feed_forward_layer):
+    def __init__(self, self_attention, position_ff):
         super(EncoderBlock, self).__init__()
-        self.multi_head_attention_layer = multi_head_attention_layer
-        self.position_wise_feed_forward_layer = position_wise_feed_forward_layer
+        self.self_attention = self_attention
+        self.position_ff = position_ff
 
 
     def forward(self, src, src_mask):
         out = src
-        out = self.multi_head_attention_layer(query=out, key=out, value=out, mask=src_mask)
-        out = self.position_wise_feed_forward_layer(out)
+        out = self.self_attention(query=out, key=out, value=out, mask=src_mask)
+        out = self.position_ff(out)
         return out
 
 ```
@@ -447,18 +447,18 @@ code로 구현하면 다음과 같다.
 ```python
 class PositionWiseFeedForwardLayer(nn.Module):
 
-    def __init__(self, first_fc_layer, second_fc_layer):
+    def __init__(self, fc1, fc2):
         super(PositionWiseFeedForwardLayer, self).__init__()
-        self.first_fc_layer = first_fc_layer   # (d_embed, d_ff)
+        self.fc1 = fc1   # (d_embed, d_ff)
         self.relu = nn.ReLU()
-        self.second_fc_layer = second_fc_layer # (d_ff, d_embed)
+        self.fc2 = fc2 # (d_ff, d_embed)
 
 
     def forward(self, x):
 		out = x
-        out = self.first_fc_layer(out)
+        out = self.fc1(out)
         out = self.relu(out)
-        out = self.second_fc_layer(out)
+        out = self.fc2(out)
         return out
 
 ```
@@ -489,22 +489,22 @@ class ResidualConnectionLayer(nn.Module):
 
 `forward()`에서 `sub_layer`까지 인자로 받는 구조이다.
 
-따라서 Encoder Block의 code가 아래와 같이 변경되게 된다. `residual_connection_layers`에 Residual Connection Layer를 2개 생성한다. `forward()`에서 `residual_connection_layers[0]`은 `multi_head_attention_layer`를 감싸고, `residual_connection_layers[1]`은 `position_wise_feed_forward_layer`를 감싸게 된다.
+따라서 Encoder Block의 code가 아래와 같이 변경되게 된다. `residuals`에 Residual Connection Layer를 2개 생성한다. `forward()`에서 `residuals[0]`은 `multi_head_attention_layer`를 감싸고, `residuals[1]`은 `position_ff`를 감싸게 된다.
 
 ```python
 class EncoderBlock(nn.Module):
 
-    def __init__(self, multi_head_attention_layer, position_wise_feed_forward_layer):
+    def __init__(self, self_attention, position_ff):
         super(EncoderBlock, self).__init__()
-        self.multi_head_attention_layer = multi_head_attention_layer
-        self.position_wise_feed_forward_layer = position_wise_feed_forward_layer
-        self.residual_connection_layers = [ResidualConnectionLayer() for _ in range(2)]
+        self.self_attention = self_attention
+        self.position_ff = position_ff
+        self.residuals = [ResidualConnectionLayer() for _ in range(2)]
 
 
     def forward(self, src, src_mask):
         out = src
-        out = self.residual_connection_layers[0](out, lambda out: self.multi_head_attention_layer(query=out, key=out, value=out, mask=src_mask))
-        out = self.residual_connection_layers[1](out, self.position_wise_feed_forward_layer)
+        out = self.residuals[0](out, lambda out: self.self_attention(query=out, key=out, value=out, mask=src_mask))
+        out = self.residuals[1](out, self.position_ff)
         return out
 ```
 
@@ -681,24 +681,24 @@ def make_pad_mask(self, query, key):
 
 ```
 
-Decoder Block은 Encoder Block과 큰 차이가 없다. `forward()`에서 `self_multi_head_attention_layer`와 달리 `cross_multi_head_attention_layer`의 `key`, `value`는 `encoder_out`이라는 것, 각각 `mask`가 `tgt_mask`, `src_tgt_mask`라는 것만 주의하면 된다.
+Decoder Block은 Encoder Block과 큰 차이가 없다. `forward()`에서 `self_attention`와 달리 `cross_attention`의 `key`, `value`는 `encoder_out`이라는 것, 각각 `mask`가 `tgt_mask`, `src_tgt_mask`라는 것만 주의하면 된다.
 
 ```python
 class DecoderBlock(nn.Module):
 
-    def __init__(self, self_multi_head_attention_layer, cross_multi_head_attention_layer, position_wise_feed_forward_layer):
+    def __init__(self, self_attention, cross_attention, position_ff):
         super(DecoderBlock, self).__init__()
-        self.self_multi_head_attention_layer = self_multi_head_attention_layer
-        self.cross_multi_head_attention_layer = cross_multi_head_attention_layer
-        self.position_wise_feed_forward_layer = position_wise_feed_forward_layer
-        self.residual_connection_layers = [ResidualConnectionLayer() for _ in range(3)]
+        self.self_attention = self_attention
+        self.cross_attention = cross_attention
+        self.position_ff = position_ff
+        self.residuals = [ResidualConnectionLayer() for _ in range(3)]
 
 
     def forward(self, tgt, encoder_out, tgt_mask, src_tgt_mask):
         out = tgt
-        out = self.residual_connection_layers[0](out, lambda out: self.self_multi_head_attention_layer(query=out, key=out, value=out, mask=tgt_mask))
-        out = self.residual_connection_layers[1](out, lambda out: self.cross_multi_head_attention_layer(query=out, key=encoder_out, value=encoder_out, mask=src_tgt_mask))
-        out = self.residual_connection_layers[2](out, self.position_wise_feed_forward_layer)
+        out = self.residuals[0](out, lambda out: self.self_attention(query=out, key=out, value=out, mask=tgt_mask))
+        out = self.residuals[1](out, lambda out: self.cross_attention(query=out, key=encoder_out, value=encoder_out, mask=src_tgt_mask))
+        out = self.residuals[2](out, self.position_ff)
         return out
 
 ```
@@ -733,9 +733,9 @@ class Transformer(nn.Module):
 ```python
 class TransformerEmbedding(nn.Module):
 
-    def __init__(self, token_embedding, positional_encoding):
+    def __init__(self, token_embed, pos_embed):
         super(TransformerEmbedding, self).__init__()
-        self.embedding = nn.Sequential(token_embedding, positional_encoding)
+        self.embedding = nn.Sequential(token_embed, pos_embed)
 
 
     def forward(self, x):
@@ -853,49 +853,40 @@ class Transformer(nn.Module):
 Transformer를 생성하는 `build_model()`은 다음과 같이 작성할 수 있다. 각 module의 submodule을 생성자 내부에서 생성하지 않고, 외부에서 인자로 받는 이유는 더 자유롭게 모델을 변경해 응용할 수 있게 하기 위함이다.
 
 ```python
-def build_model(src_vocab_size, tgt_vocab_size, device=torch.device("cpu"), max_len=256, d_embed=512, n_layer=6, d_model=512, h=8, d_ff=2048, dropout_rate=0.1, norm_epsilon=1e-5):
+def build_model(src_vocab_size, tgt_vocab_size, device=torch.device("cpu"), max_len=256, d_embed=512, n_layer=6, d_model=512, h=8, d_ff=2048):
     import copy
     copy = copy.deepcopy
 
-    src_token_embedding = TokenEmbedding(d_embed = d_embed, vocab_size = src_vocab_size)
-    tgt_token_embedding = TokenEmbedding(d_embed = d_embed, vocab_size = tgt_vocab_size)
-    positional_encoding = PositionalEncoding(d_embed = d_embed, max_len = max_len, device = device)
+    src_token_embed = TokenEmbedding(d_embed = d_embed, vocab_size = src_vocab_size)
+    tgt_token_embed = TokenEmbedding(d_embed = d_embed, vocab_size = tgt_vocab_size)
+    pos_embed = PositionalEncoding(d_embed = d_embed, max_len = max_len, device = device)
 
     src_embed = TransformerEmbedding(
-                    token_embedding = src_token_embedding,
-                    positional_encoding = copy(positional_encoding),
-                    dropout_rate = dropout_rate)
+                    token_embed = src_token_embed,
+                    pos_embed = copy(pos_embed))
     tgt_embed = TransformerEmbedding(
-                    token_embedding = tgt_token_embedding,
-                    positional_encoding = copy(positional_encoding),
-                    dropout_rate = dropout_rate)
+                    token_embed = tgt_token_embed,
+                    pos_embed = copy(pos_embed))
 
-    multi_head_attention_layer = MultiHeadAttentionLayer(
+    attention = MultiHeadAttentionLayer(
                                     d_model = d_model,
                                     h = h,
-                                    qkv_fc_layer = nn.Linear(d_embed, d_model),
-                                    fc_layer = nn.Linear(d_model, d_embed),
-                                    dropout_rate = dropout_rate)
-    position_wise_feed_forward_layer = PositionWiseFeedForwardLayer(
-                                        first_fc_layer = nn.Linear(d_embed, d_ff),
-                                        second_fc_layer = nn.Linear(d_ff, d_embed),
-                                        dropout_rate = dropout_rate)
-    norm_layer = nn.LayerNorm(d_embed, eps = norm_epsilon)
+                                    qkv_fc = nn.Linear(d_embed, d_model),
+                                    out_fc = nn.Linear(d_model, d_embed))
+    position_ff = PositionWiseFeedForwardLayer(
+                                        fc1 = nn.Linear(d_embed, d_ff),
+                                        fc2 = nn.Linear(d_ff, d_embed))
 
     encoder_block = EncoderBlock(
-                        multi_head_attention_layer = copy(multi_head_attention_layer),
-                        position_wise_feed_forward_layer = copy(position_wise_feed_forward_layer),
-                        norm_layer = copy(norm_layer),
-                        dropout_rate = dropout_rate)
+                        self_attention = copy(attention),
+                        position_ff = copy(position_ff))
     decoder_block = DecoderBlock(
-                        self_multi_head_attention_layer = copy(multi_head_attention_layer),
-                        cross_head_attention_layer = copy(multi_head_attention_layer),
-                        position_wise_feed_forward_layer = copy(position_wise_feed_forward_layer),
-                        norm_layer = copy(norm_layer),
-                        dropout_rate = dropout_rate)
+                        self_attention = copy(attention),
+                        cross_attention = copy(attention),
+                        position_ff = copy(position_ff))
 
-    encoder = Encoder(encoder_block = encoder_block, n_layer = n_layer, norm_layer = copy(norm_layer))
-    decoder = Decoder(decoder_block = decoder_block, n_layer = n_layer, norm_layer = copy(norm_layer))
+    encoder = Encoder(encoder_block = encoder_block, n_layer = n_layer)
+    decoder = Decoder(decoder_block = decoder_block, n_layer = n_layer)
     generator = nn.Linear(d_model, tgt_vocab_size)
 
     model = Transformer(
@@ -907,6 +898,7 @@ def build_model(src_vocab_size, tgt_vocab_size, device=torch.device("cpu"), max_
     model.device = device
 
     return model
+
 ```
 
 # Detail
