@@ -60,26 +60,26 @@ Encoder와 Decoder에 모두 context vector가 등장하는데, Encoder는 conte
 ```python
 class Transformer(nn.Module):
 
-	def __init__(self, encoder, decoder):
-		super(Transformer, self).__init__()
-		self.encoder = encoder
-		self.decoder = decoder
+    def __init__(self, encoder, decoder):
+        super(Transformer, self).__init__()
+        self.encoder = encoder
+        self.decoder = decoder
 
 
-	def encode(self, x):
-		out = self.encoder(x)
-		return out
+    def encode(self, x):
+        out = self.encoder(x)
+        return out
 
 
-	def decode(self, z, c):
-		out = self.decode(z, c)
-		return out
+    def decode(self, z, c):
+        out = self.decode(z, c)
+        return out
 
 
-	def forward(self, x, z):
-		c = self.encode(x)
-		y = self.decode(z, c)
-		return y
+    def forward(self, x, z):
+        c = self.encode(x)
+        y = self.decode(z, c)
+        return y
 ```
 
 ## Encoder
@@ -97,18 +97,18 @@ class Transformer(nn.Module):
 ```python
 class Encoder(nn.Module):
 
-	def __init__(self, encoder_block, n_layer):  # n_layer: Encoder Block의 개수
-		super(Encoder, self).__init__()
-		self.layers = []
-		for i in range(n_layer):
-			self.layers.append(copy.deepcopy(encoder_block))
+    def __init__(self, encoder_block, n_layer):  # n_layer: Encoder Block의 개수
+        super(Encoder, self).__init__()
+        self.layers = []
+        for i in range(n_layer):
+            self.layers.append(copy.deepcopy(encoder_block))
 
 
-	def forward(self, x):
-		out = x
-		for layer in self.layers:
-			out = layer(out)
-		return out
+    def forward(self, x):
+        out = x
+        for layer in self.layers:
+            out = layer(out)
+        return out
 ```
 
 `forward()`를 주목해보자. Encoder Block들을 순서대로 실행하면서, 이전 block의 output을 이후 block의 input으로 넣는다. 첫 block의 input은 Encoder 전체의 input인 `x`가 된다. 이후 가장 마지막 block의 output, 즉 context를 return한다.
@@ -122,17 +122,17 @@ Encoder Block은 크게 Multi-Head Attention Layer, Position-wise Feed-Forward L
 ```python
 class EncoderBlock(nn.Module):
 
-	def __init__(self, self_attention, position_ff):
-		super(EncoderBlock, self).__init__()
-		self.self_attention = self_attention 
-		self.position_ff = position_ff
+    def __init__(self, self_attention, position_ff):
+        super(EncoderBlock, self).__init__()
+        self.self_attention = self_attention 
+        self.position_ff = position_ff
 
 
-	def forward(self, x):
-		out = x
-		out = self.self_attention(out)
-		out = self.position_ff(out)
-		return out
+    def forward(self, x):
+        out = x
+        out = self.self_attention(out)
+        out = self.position_ff(out)
+        return out
 ```
 
 ### What is Attention?
@@ -240,16 +240,16 @@ pad는 무엇을 의미하는 것일까? 예시 문장을 다시 가져와보자
 
 ```python
 def calculate_attention(query, key, value, mask):
-	# query, key, value: (n_batch, seq_len, d_k)
-	# mask: (n_batch, seq_len, seq_len)
-	d_k = key.shape[-1]
-	attention_score = torch.matmul(query, key.transpose(-2, -1)) # Q x K^T, (n_batch, seq_len, seq_len)
-	attention_score = attention_score / math.sqrt(d_k)
-	if mask is not None:
-		attention_score = attention_score.masked_fill(mask==0, -1e9)
-	attention_prob = F.softmax(attention_score, dim=-1) # (n_batch, seq_len, seq_len)
-	out = torch.matmul(attention_prob, value) # (n_batch, seq_len, d_k)
-	return out
+    # query, key, value: (n_batch, seq_len, d_k)
+    # mask: (n_batch, seq_len, seq_len)
+    d_k = key.shape[-1]
+    attention_score = torch.matmul(query, key.transpose(-2, -1)) # Q x K^T, (n_batch, seq_len, seq_len)
+    attention_score = attention_score / math.sqrt(d_k)
+    if mask is not None:
+        attention_score = attention_score.masked_fill(mask==0, -1e9)
+    attention_prob = F.softmax(attention_score, dim=-1) # (n_batch, seq_len, seq_len)
+    out = torch.matmul(attention_prob, value) # (n_batch, seq_len, d_k)
+    return out
 ```
 
 ### Multi-Head Attention Layer
@@ -290,7 +290,7 @@ class MultiHeadAttentionLayer(nn.Module):
         self.v_fc = copy.deepcopy(qkv_fc) # (d_embed, d_model)
         self.out_fc = out_fc              # (d_model, d_embed)
 
-		...
+        ...
 ```
 
 우선 생성자를 살펴보자. `qkv_fc` 인자로 $$d_{embed} \times d_{model}$$의 weight matrix를 갖는 FC Layer를 받아 멤버 변수로 $$Q$$, $$K$$, $$V$$에 대해 각각 `copy.deepcopy`를 호출해 저장한다. `deepcopy`를 호출하는 이유는 실제로는 서로 다른 weight를 갖고 별개로 운용되게 하기 위함이다. copy 없이 하나의 FC Layer로 $$Q$$, $$K$$, $$V$$를 모두 구하게 되면 항상 $$Q$$, $$K$$, $$V$$가 모두 같은 값일 것이다. `out_fc`는 attention 계산 이후 거쳐가는 FC Layer로, $$d_{model} \times d_{embed}$$의 weight matrix를 갖는다.
@@ -300,7 +300,7 @@ class MultiHeadAttentionLayer(nn.Module):
 ```python
  class MultiHeadAttentionLayer(nn.Module):
 
-		...
+        ...
 
     def forward(self, *args, query, key, value, mask=None):
         # query, key, value: (n_batch, seq_len, d_embed)
@@ -331,16 +331,16 @@ class MultiHeadAttentionLayer(nn.Module):
 
 ```python
 def calculate_attention(self, query, key, value, mask):
-	# query, key, value: (n_batch, h, seq_len, d_k)
-	# mask: (n_batch, 1, seq_len, seq_len)
-	d_k = key.shape[-1]
-	attention_score = torch.matmul(query, key.transpose(-2, -1)) # Q x K^T, (n_batch, h, seq_len, seq_len)
-	attention_score = attention_score / math.sqrt(d_k)
-	if mask is not None:
-		attention_score = attention_score.masked_fill(mask==0, -1e9)
-	attention_prob = F.softmax(attention_score, dim=-1) # (n_batch, h, seq_len, seq_len)
-	out = torch.matmul(attention_prob, value) # (n_batch, h, seq_len, d_k)
-	return out
+    # query, key, value: (n_batch, h, seq_len, d_k)
+    # mask: (n_batch, 1, seq_len, seq_len)
+    d_k = key.shape[-1]
+    attention_score = torch.matmul(query, key.transpose(-2, -1)) # Q x K^T, (n_batch, h, seq_len, seq_len)
+    attention_score = attention_score / math.sqrt(d_k)
+    if mask is not None:
+        attention_score = attention_score.masked_fill(mask==0, -1e9)
+    attention_prob = F.softmax(attention_score, dim=-1) # (n_batch, h, seq_len, seq_len)
+    out = torch.matmul(attention_prob, value) # (n_batch, h, seq_len, d_k)
+    return out
 ```
 
  우선 $$d_k$$를 중심으로 $$Q$$와 $$K$$ 사이 행렬곱 연산을 수행하기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 dimension은 반드시 $$d_k$$여야만 한다. 또한 attention_score의 shape는 마지막 두 dimension이 반드시 ($$\text{seq_len} \times \text{seq_len}$$)이어야만 masking이 적용될 수 있기 때문에 $$Q$$, $$K$$, $$V$$의 마지막 직전 dimension(`.shape[-2]`)는 반드시 $$\text{seq_len}$$이어야만 한다.
@@ -371,18 +371,18 @@ class EncoderBlock(nn.Module):
 ```python
 class Encoder(nn.Module):
 
-	def __init__(self, encoder_layer, n_layer):  # n_layer: Encoder Layer의 개수
-		super(Encoder, self).__init__()
-		self.layers = []
-		for i in range(n_layer):
-			self.layers.append(copy.deepcopy(encoder_layer))
+    def __init__(self, encoder_layer, n_layer):  # n_layer: Encoder Layer의 개수
+        super(Encoder, self).__init__()
+        self.layers = []
+        for i in range(n_layer):
+            self.layers.append(copy.deepcopy(encoder_layer))
 
-			 
-	def forward(self, src, src_mask):
-		out = src
-		for layer in self.layers:
-			out = layer(out, src_mask)
-		return out
+             
+    def forward(self, src, src_mask):
+        out = src
+        for layer in self.layers:
+            out = layer(out, src_mask)
+        return out
 ```
 
 Transformer 역시 수정해야 한다. `forward()`의 인자에 `src_mask`를 추가하고, `encoder`의 `forward()`에 넘겨준다.
@@ -390,19 +390,19 @@ Transformer 역시 수정해야 한다. `forward()`의 인자에 `src_mask`를 �
 ```python
 class Transformer(nn.Module):
 
-	...
+    ...
 
-	def encode(self, src, src_mask):
-		out = self.encoder(src, src_mask)
-		return out
+    def encode(self, src, src_mask):
+        out = self.encoder(src, src_mask)
+        return out
 
 
-	def forward(self, src, tgt, src_mask):
-		encoder_out = self.encode(src, src_mask)
-		y = self.decode(tgt, encoder_out)
-		return y
+    def forward(self, src, tgt, src_mask):
+        encoder_out = self.encode(src, src_mask)
+        y = self.decode(tgt, encoder_out)
+        return y
 
-	...
+    ...
 ```
 
 #### Pad Mask Code in Pytorch
@@ -411,27 +411,27 @@ class Transformer(nn.Module):
 
 ```python
 def make_pad_mask(self query, key, pad_idx=1):
-	# query: (n_batch, query_seq_len)
-	# key: (n_batch, key_seq_len)
-	query_seq_len, key_seq_len = query.size(1), key.size(1)
+    # query: (n_batch, query_seq_len)
+    # key: (n_batch, key_seq_len)
+    query_seq_len, key_seq_len = query.size(1), key.size(1)
 
-	key_mask = key.ne(pad_idx).unsqueeze(1).unsqueeze(2)  # (n_batch, 1, 1, key_seq_len)
-	key_mask = key_mask.repeat(1, 1, query_seq_len, 1)    # (n_batch, 1, query_seq_len, key_seq_len)
+    key_mask = key.ne(pad_idx).unsqueeze(1).unsqueeze(2)  # (n_batch, 1, 1, key_seq_len)
+    key_mask = key_mask.repeat(1, 1, query_seq_len, 1)    # (n_batch, 1, query_seq_len, key_seq_len)
 
-	query_mask = query.ne(pad_idx).unsqueeze(1).unsqueeze(3)  # (n_batch, 1, query_seq_len, 1)
-	query_mask = query_mask.repeat(1, 1, 1, key_seq_len)  # (n_batch, 1, query_seq_len, key_seq_len)
+    query_mask = query.ne(pad_idx).unsqueeze(1).unsqueeze(3)  # (n_batch, 1, query_seq_len, 1)
+    query_mask = query_mask.repeat(1, 1, 1, key_seq_len)  # (n_batch, 1, query_seq_len, key_seq_len)
 
-	mask = key_mask & query_mask
-	mask.requires_grad = False
-	return mask
+    mask = key_mask & query_mask
+    mask.requires_grad = False
+    return mask
 ```
 
 지금까지 Encoder에서 다뤘던 pad masking은 모두 동일한 문장 내에서 이뤄지는 Self-Attention이었다. 이러한 Self-Attention의 경우에는 `make_pad_mask()`의 인자로 들어오는 `query`와 `key`가 동일할 것이다. 반면, 서로 다른 문장(예를 들면 `source`, `target`) 사이 이뤄지는 Cross-Attention의 경우, `query`는 `source`, `key`는 `target`과 같이 서로 다른 값이 들어올 수 있다.
 
 ```python
 def make_src_mask(self, src):
-	pad_mask = self.make_pad_mask(src, src)
-	return pad_mask
+    pad_mask = self.make_pad_mask(src, src)
+    return pad_mask
 ```
 
 pad mask는 개념적으로 Encoder 내부에서 생성하는 것은 아니기 때문에, `Transformer`의 method로 위치시킨다.
@@ -455,7 +455,7 @@ class PositionWiseFeedForwardLayer(nn.Module):
 
 
     def forward(self, x):
-		out = x
+        out = x
         out = self.fc1(out)
         out = self.relu(out)
         out = self.fc2(out)
@@ -481,7 +481,7 @@ class ResidualConnectionLayer(nn.Module):
 
 
     def forward(self, x, sub_layer):
-		out = x
+        out = x
         out = sub_layer(out)
         out = out + x
         return out
@@ -552,13 +552,13 @@ Teacher Forcing은 실제 labeled data(Ground Truth)를 RNN cell의 input으로 
 
 ```python
 def make_subsequent_mask(query, key):
-	# query: (n_batch, query_seq_len)
-	# key: (n_batch, key_seq_len)
-	query_seq_len, key_seq_len = query.size(1), key.size(1)
+    # query: (n_batch, query_seq_len)
+    # key: (n_batch, key_seq_len)
+    query_seq_len, key_seq_len = query.size(1), key.size(1)
 
-	tril = np.tril(np.ones((query_seq_len, key_seq_len)), k=0).astype('uint8') # lower triangle without diagonal
-	mask = torch.tensor(tril, dtype=torch.bool, requires_grad=False, device=query.device)
-	return mask
+    tril = np.tril(np.ones((query_seq_len, key_seq_len)), k=0).astype('uint8') # lower triangle without diagonal
+    mask = torch.tensor(tril, dtype=torch.bool, requires_grad=False, device=query.device)
+    return mask
 ```
 
 `make_subsequent_mask()`는 `np.tril()`을 사용해 lower traiangle을 생성한다. 아래는 `query_seq_len`과 `key_seq_len`이 모두 10일 때, `np.tril()`의 결과이다.
@@ -578,10 +578,10 @@ def make_subsequent_mask(query, key):
 이렇듯, Decoder의 mask는 subsequent masking이 적용되어야 한다. 그런데, 동시에 Encoder와 마찬가지로 pad masking역시 적용되어야 한다. 따라서, `make_tgt_mask()`는 다음과 같다. `make_subsequent_mask()`와 `make_tgt_mask()`는 `make_src_mask()`와 같이 `Transformer`에 method로 작성한다.
 ```python
 def make_tgt_mask(self, tgt):
-	pad_mask = self.make_pad_mask(tgt, tgt)
-	seq_mask = self.make_subsequent_mask(tgt, tgt)
-	mask = pad_mask & seq_mask
-	return pad_mask & seq_mask
+    pad_mask = self.make_pad_mask(tgt, tgt)
+    seq_mask = self.make_subsequent_mask(tgt, tgt)
+    mask = pad_mask & seq_mask
+    return pad_mask & seq_mask
 ```
 
 Transformer로 다시 돌아가보자. 기존에는 Encoder에서 사용하는 pad mask(`src_mask`)만이 `forward()`을 구해야 했다면, 이제는 Decoder에서 사용할 subsequent + pad mask (`tgt_mask`)도 구해야 한다. `forward()` 내부에서 Decoder의 `forward()`를 호출할 때 역시 변경되는데, `tgt_mask`가 추가적으로 인자로 넘어가게 된다.
@@ -589,30 +589,30 @@ Transformer로 다시 돌아가보자. 기존에는 Encoder에서 사용하는 p
 ```python
 class Transformer(nn.Module):
 
-	def __init__(self, encoder, decoder):
-		super(Transformer, self).__init__()
-		self.encoder = encoder
-		self.decoder = decoder
+    def __init__(self, encoder, decoder):
+        super(Transformer, self).__init__()
+        self.encoder = encoder
+        self.decoder = decoder
 
 
-	def encode(self, src, src_mask):
-		out = self.encoder(src, src_mask)
-		return out
+    def encode(self, src, src_mask):
+        out = self.encoder(src, src_mask)
+        return out
 
 
-	def decode(self, tgt, encoder_out, tgt_mask):
-		out = self.decode(tgt, encoder_out, tgt_mask)
-		return out
+    def decode(self, tgt, encoder_out, tgt_mask):
+        out = self.decode(tgt, encoder_out, tgt_mask)
+        return out
 
 
-	def forward(self, src, tgt):
+    def forward(self, src, tgt):
         src_mask = self.make_src_mask(src)
         tgt_mask = self.make_tgt_mask(tgt)
-		encoder_out = self.encode(src, src_mask)
-		y = self.decode(tgt, encoder_out, tgt_mask)
-		return y
+        encoder_out = self.encode(src, src_mask)
+        y = self.decode(tgt, encoder_out, tgt_mask)
+        return y
 
-	...
+    ...
 ```
 
 ### Decoder Block
@@ -640,11 +640,11 @@ class Transformer(nn.Module):
 ```python
  class MultiHeadAttentionLayer(nn.Module):
 
-		...
+        ...
 
-	def forward(self, query, key, value, mask=None):
-		
-		...
+    def forward(self, query, key, value, mask=None):
+        
+        ...
 ```
 
 ### Decoder Code in Pytorch
@@ -672,12 +672,12 @@ class Decoder(nn.Module):
 두 번째로 주목할 부분은 인자로 주어지는 두 mask인 `tgt_mask`, `src_tgt_mask`이다. `tgt_mask`는 Decoder의 input으로 주어지는 target sentence의 pad masking과 subsequent masking이다. 즉, 위에서 작성했던 `make_tgt_mask()`로 생성된 mask이다. 이는 Self-Multi-Head Attention Layer에서 사용된다. 반면, `src_tgt_mask`는 Self-Multi-Head Attention Layer에서 넘어온 `query`, Encoder에서 넘어온 `key`, `value` 사이의 pad masking이다. 이를 구하는 `make_src_tgt_mask()`를 작성한다. 이 때를 위해 `make_pad_mask()`를 `query`와 `key`를 분리해서 인자로 받도록 한 것이다.
 ```python
 def make_src_tgt_mask(self, src, tgt):
-	pad_mask = self.make_pad_mask(tgt, src)
-	return pad_mask
+    pad_mask = self.make_pad_mask(tgt, src)
+    return pad_mask
 
 def make_pad_mask(self, query, key):
 
-	...
+    ...
 
 ```
 
@@ -708,22 +708,22 @@ Transformer도 다음과 같이 수정된다. `src_tgt_mask`를 포함해 다음
 ```python
 class Transformer(nn.Module):
 
-	...
+    ...
 
-	def decode(self, tgt, encoder_out, tgt_mask, src_tgt_mask):
-		out = self.decode(tgt, encoder_out, tgt_mask, src_tgt_mask)
-		return out
+    def decode(self, tgt, encoder_out, tgt_mask, src_tgt_mask):
+        out = self.decode(tgt, encoder_out, tgt_mask, src_tgt_mask)
+        return out
 
 
-	def forward(self, src, tgt):
+    def forward(self, src, tgt):
         src_mask = self.make_src_mask(src)
         tgt_mask = self.make_tgt_mask(tgt)
-		src_tgt_mask = self.make_src_tgt_mask(src, tgt)
-		encoder_out = self.encode(src, src_mask)
-		y = self.decode(tgt, encoder_out, tgt_mask, src_tgt_mask)
-		return y
+        src_tgt_mask = self.make_src_tgt_mask(src, tgt)
+        encoder_out = self.encode(src, src_mask)
+        y = self.decode(tgt, encoder_out, tgt_mask, src_tgt_mask)
+        return y
 
-	...
+    ...
 ```
 
 ## Transformer's Input (Positional Encoding)
@@ -806,7 +806,7 @@ class Transformer(nn.Module):
     def decode(self, tgt, encoder_out, tgt_mask, src_tgt_mask):
         return self.decoder(self.tgt_embed(tgt), encoder_out, tgt_mask, src_tgt_mask)
 
-	...
+    ...
 
 ```
 
@@ -830,7 +830,7 @@ class Transformer(nn.Module):
         self.decoder = decoder
         self.generator = generator
 
-	...
+    ...
 
     def forward(self, src, tgt):
         src_mask = self.make_src_mask(src)
@@ -842,7 +842,7 @@ class Transformer(nn.Module):
         out = F.log_softmax(out, dim=-1)
         return out, decoder_out
 
-	...
+    ...
 
 ```
 
@@ -857,44 +857,55 @@ def build_model(src_vocab_size, tgt_vocab_size, device=torch.device("cpu"), max_
     import copy
     copy = copy.deepcopy
 
-    src_token_embed = TokenEmbedding(d_embed = d_embed, vocab_size = src_vocab_size)
-    tgt_token_embed = TokenEmbedding(d_embed = d_embed, vocab_size = tgt_vocab_size)
-    pos_embed = PositionalEncoding(d_embed = d_embed, max_len = max_len, device = device)
+    src_token_embed = TokenEmbedding(
+                                     d_embed = d_embed,
+                                     vocab_size = src_vocab_size)
+    tgt_token_embed = TokenEmbedding(
+                                     d_embed = d_embed,
+                                     vocab_size = tgt_vocab_size)
+    pos_embed = PositionalEncoding(
+                                   d_embed = d_embed,
+                                   max_len = max_len,
+                                   device = device)
 
     src_embed = TransformerEmbedding(
-                    token_embed = src_token_embed,
-                    pos_embed = copy(pos_embed))
+                                     token_embed = src_token_embed,
+                                     pos_embed = copy(pos_embed))
     tgt_embed = TransformerEmbedding(
-                    token_embed = tgt_token_embed,
-                    pos_embed = copy(pos_embed))
+                                     token_embed = tgt_token_embed,
+                                     pos_embed = copy(pos_embed))
 
     attention = MultiHeadAttentionLayer(
-                                    d_model = d_model,
-                                    h = h,
-                                    qkv_fc = nn.Linear(d_embed, d_model),
-                                    out_fc = nn.Linear(d_model, d_embed))
+                                        d_model = d_model,
+                                        h = h,
+                                        qkv_fc = nn.Linear(d_embed, d_model),
+                                        out_fc = nn.Linear(d_model, d_embed))
     position_ff = PositionWiseFeedForwardLayer(
-                                        fc1 = nn.Linear(d_embed, d_ff),
-                                        fc2 = nn.Linear(d_ff, d_embed))
+                                               fc1 = nn.Linear(d_embed, d_ff),
+                                               fc2 = nn.Linear(d_ff, d_embed))
 
     encoder_block = EncoderBlock(
-                        self_attention = copy(attention),
-                        position_ff = copy(position_ff))
+                                 self_attention = copy(attention),
+                                 position_ff = copy(position_ff))
     decoder_block = DecoderBlock(
-                        self_attention = copy(attention),
-                        cross_attention = copy(attention),
-                        position_ff = copy(position_ff))
+                                 self_attention = copy(attention),
+                                 cross_attention = copy(attention),
+                                 position_ff = copy(position_ff))
 
-    encoder = Encoder(encoder_block = encoder_block, n_layer = n_layer)
-    decoder = Decoder(decoder_block = decoder_block, n_layer = n_layer)
+    encoder = Encoder(
+                      encoder_block = encoder_block,
+                      n_layer = n_layer)
+    decoder = Decoder(
+                      decoder_block = decoder_block,
+                      n_layer = n_layer)
     generator = nn.Linear(d_model, tgt_vocab_size)
 
     model = Transformer(
-                src_embed = src_embed,
-                tgt_embed = tgt_embed,
-                encoder = encoder,
-                decoder = decoder,
-                generator = generator).to(device)
+                        src_embed = src_embed,
+                        tgt_embed = tgt_embed,
+                        encoder = encoder,
+                        decoder = decoder,
+                        generator = generator).to(device)
     model.device = device
 
     return model
@@ -911,7 +922,7 @@ def build_model(src_vocab_size, tgt_vocab_size, device=torch.device("cpu"), max_
 
 아래의 GitHub Repository에서 전체 code를 제공한다. [Multi30k Dataset](https://github.com/multi30k/dataset)에 대한 training code도 포함되어 있다. 추후 jupyter notebook도 제공할 예정이다.
 
-- #### [GitHub Repository](https://github.com/cpm0722/NLP/tree/main/transformer)
+- #### [GitHub Repository](https://github.com/cpm0722/transformer_pytorch)
 
 # Reference
 
