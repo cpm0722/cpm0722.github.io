@@ -813,7 +813,7 @@ class Transformer(nn.Module):
 
 ## After Decoder (Generator)
 
-Decoder의 output이 그대로 Transformer의 최종 output이 되는 것은 아니다. Decoder의 output shape는 $$$\text{n_batch} \times \text{seq_len} \times d_{embed}$$$인데, 우리가 원하는 output은 target sentence인 $$\text{n_batch} \times \text{seq_len}$$이기 때문이다. 즉, Embedding이 아닌 실제 target vocab에서의 token sequence를 원하는 것이다. 이를 위해 추가적인 FC layer를 거쳐간다. 이 layer를 대개 Generator라고 부른다.
+Decoder의 output이 그대로 Transformer의 최종 output이 되는 것은 아니다. Decoder의 output shape는 $$\text{n_batch} \times \text{seq_len} \times d_{embed}$$인데, 우리가 원하는 output은 target sentence인 $$\text{n_batch} \times \text{seq_len}$$이기 때문이다. 즉, Embedding이 아닌 실제 target vocab에서의 token sequence를 원하는 것이다. 이를 위해 추가적인 FC layer를 거쳐간다. 이 layer를 대개 Generator라고 부른다.
 
  Generator가 하는 일은 Decoder output의 마지막 dimension을  $$d_{embed}$$에서 `len(vocab)`으로 변경하는 것이다. 이를 통해 실제 vocabulary 내 token에 대응시킬 수 있는 shape가 된다. 이후 `softmax()`를 사용해 각 vocabulary에 대한 확률값으로 변환하게 되는데, 이 때 `log_softmax()`를 사용해 성능을 향상시킨다.
 
