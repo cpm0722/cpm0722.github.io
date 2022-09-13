@@ -218,7 +218,7 @@ $$\text{Query's Attention}\left( Q, K, V \right) = \text{softmax}\left( \frac{QK
 
  $$Q$$, $$K$$, $$V$$를 구하는 FC layer에 대해 자세히 살펴보자. Self-Attention 개념 이전에 설명했듯이, 각각 서로 다른 FC layer에 의해 구해진다. FC layer의 input은 word embedding vector들이고, output은 각각 $$Q$$, $$K$$, $$V$$이다. word embedding의 dimension이 $$d_{embed}$$라고 한다면, input의 shape는 $$n \times d_{embed}$$이고, output의 shape는 $$n \times d_k$$이다. 각각의 FC layer는 서로 다른 weight matrix ($$d_{embed} \times d_k$$)를 갖고 있기 때문에 output의 shape는 모두 동일할지라도, $$Q$$, $$K$$, $$V$$의 실제 값들은 모두 다르다.
 
-![qkv_fc.png](/assets/images/2021-01-28-Transformer-in-pytorch/qkv_fc.png)
+![qkv_fc_layer.png](/assets/images/2021-01-28-Transformer-in-pytorch/qkv_fc_layer.png)
 
 #### Pad Masking
 
