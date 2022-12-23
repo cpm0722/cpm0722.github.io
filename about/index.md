@@ -9,28 +9,33 @@ comments: false
     
 ![who_am_i.jpg](/assets/images/about-me/who_am_i.jpg)
 
-머신러닝, 특히 NLP 분야에 관심이 많은 개발자입니다.
-
-프로그래밍에 흥미를 느껴 인문 계열에서 교차 지원을 통해 컴퓨터학부에 입학했습니다.
-
-새로운 분야를 접하고 개발하는 것에 큰 즐거움을 느낍니다.
-
 ---
 
-## Skills
+### Skills
 
 - Python
-- Pytorch
 - C
+- Pytorch
 - Unix / Linux
+- CUDA
+- Hadoop MapReduce
 - Bash
 - Docker
+
+### Interest Fields
+
+- MLOps
+- Model Optimizing (Inference)
+- Distributed Training (Multi-Node/Multi-GPU)
+- Large-scale (Model/Dataset)
+- Linux System Programming
+- Automation Everything
 
 ---
 
 ## 소속
 
-### Naver Corp.
+### Naver Search Langauage-and-Vision
 
 ### 숭실대학교 컴퓨터학부
 
@@ -41,7 +46,7 @@ comments: false
 ## 경력
 
 <!-- ### LINE Plus (2021.12.06 ~ ) -->
-### Naver Corp: (2021.12.29 ~ )
+### Naver: Search / Language-and-Vision (2021.12.29 ~ )
 
 ### Kakao Brain: Large-Scale TF (2021.07.01 ~ 2021.08.31)
 
@@ -49,7 +54,7 @@ comments: false
 
 ## Development Environment
 
-macOS Big Sur 11.3.1 (Local)
+macOS Monterey 12.2 (Local)
 
 Ubuntu 20.04 LTS (SSH)
 
@@ -57,21 +62,10 @@ Windows 10 (RDP)
 
 MacBook Pro 14, 2021 (Apple Silicon M1X, 32GB, 512GB)
 
-MacBook Air 13, 2020 (Apple Silicon M1, 8GB, 256GB)
+Dell UltraSharp U2723QE x 2
 
-LG 27UL850 4K
+HHKB Professional HYBRID Type-S PD-KB800WS
 
-HHKB-BT (PD-KB600WNS)
+HHKD Professional BT PD-KB600WN
 
-Vim editor 8.2
-
----
-
-## Interested in
-
-여행/패션/운동을 좋아합니다.
-
-IU, BTS의 팬입니다.
-
-IT 기기 수집을 좋아합니다.
-
+VIM - Vi IMproved 8.1
