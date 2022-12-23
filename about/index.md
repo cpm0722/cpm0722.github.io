@@ -11,7 +11,7 @@ comments: false
 
 ---
 
-### Skills
+## Skills
 
 - Python
 - C
@@ -22,7 +22,7 @@ comments: false
 - Bash
 - Docker
 
-### Interest Fields
+## Interest Fields
 
 - MLOps
 - Model Optimizing (Inference)
@@ -35,7 +35,7 @@ comments: false
 
 ## 소속
 
-### Naver Search Langauage-and-Vision
+### NAVER Search Langauage-and-Vision
 
 ### 숭실대학교 컴퓨터학부
 
@@ -46,26 +46,19 @@ comments: false
 ## 경력
 
 <!-- ### LINE Plus (2021.12.06 ~ ) -->
-### Naver: Search / Language-and-Vision (2021.12.29 ~ )
+### NAVER        : Search / Language-and-Vision (2021.12.29 ~ )
 
-### Kakao Brain: Large-Scale TF (2021.07.01 ~ 2021.08.31)
+### Kakao Brain  : Large-Scale TF (2021.07.01 ~ 2021.08.31)
 
 ---
 
 ## Development Environment
 
-macOS Monterey 12.2 (Local)
-
-Ubuntu 20.04 LTS (SSH)
-
-Windows 10 (RDP)
-
-MacBook Pro 14, 2021 (Apple Silicon M1X, 32GB, 512GB)
-
-Dell UltraSharp U2723QE x 2
-
-HHKB Professional HYBRID Type-S PD-KB800WS
-
-HHKD Professional BT PD-KB600WN
-
-VIM - Vi IMproved 8.1
+- macOS Monterey 12.2 (Local)
+- Ubuntu 20.04 LTS (SSH)
+- Windows 10 (RDP)
+- VIM - Vi IMproved 8.1
+- MacBook Pro 14, 2021 (Apple Silicon M1X, 32GB, 512GB)
+- Dell UltraSharp U2723QE x 2
+- HHKB Professional HYBRID Type-S PD-KB800WS
+- HHKD Professional BT PD-KB600WN
