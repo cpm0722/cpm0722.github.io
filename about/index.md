@@ -2,7 +2,7 @@
 layout: post
 title: "About Me"
 tags: [about]
-date: 2021-11-19
+date: 2024-02-15
 about: true
 comments: false
 ---
@@ -14,20 +14,26 @@ comments: false
 ## Skills
 
 - Python
-- C
+- C / C++
 - Pytorch
 - Unix / Linux
-- CUDA
-- Hadoop MapReduce
 - Bash
 - Docker
+- CUDA
+- FasterTransformer
+- Triton Inference Server
+- TensorRT / TensorRT-LLM
+- vLLM
+- kubeflow
+- Hadoop MapReduce
 
 ## Interest Fields
 
-- MLOps
-- Model Optimizing (Inference)
-- Distributed Training (Multi-Node/Multi-GPU)
-- Large-scale (Model/Dataset)
+- LLM / sLLM
+- Model Optimiziation
+- Model Inference
+- MLOps (Kubeflow)
+- Multimodal Data Pipeline
 - Linux System Programming
 - Automation Everything
 
@@ -35,7 +41,7 @@ comments: false
 
 ## 소속
 
-### NAVER Search Langauage-and-Vision
+### NAVER Search / LLM Solution
 
 ### 숭실대학교 컴퓨터학부
 
@@ -46,7 +52,7 @@ comments: false
 ## 경력
 
 <!-- ### LINE Plus (2021.12.06 ~ ) -->
-### NAVER        : Search / Language-and-Vision (2021.12.29 ~ )
+### NAVER        : Search / LLM Solution (2021.12.29 ~ )
 
 ### Kakao Brain  : Large-Scale TF (2021.07.01 ~ 2021.08.31)
 
@@ -54,11 +60,16 @@ comments: false
 
 ## Development Environment
 
-- macOS Monterey 12.2 (Local)
-- Ubuntu 20.04 LTS (SSH)
-- Windows 10 (RDP)
-- VIM - Vi IMproved 8.1
-- MacBook Pro 14, 2021 (Apple Silicon M1X, 32GB, 512GB)
+### Software
+- macOS Ventura 13.4
+- Ubuntu 22.04 LTS (SSH)
+- Windows 11 (RDP)
+- VIM - Vi IMproved 9.1
+
+### Hardware
+- Mac Studio (Apple Silicon M1 Max, 64GB, 1TB)
 - Dell UltraSharp U2723QE x 2
 - HHKB Professional HYBRID Type-S PD-KB800WS
-- HHKD Professional BT PD-KB600WN
+- Logitech MX Mechanical Mini
+- Logitech MX Master 3
+- SteelSeries Arctis Nova Pro Wireless
