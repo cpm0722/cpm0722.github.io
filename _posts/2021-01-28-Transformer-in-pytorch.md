@@ -548,7 +548,7 @@ Teacher Forcing은 실제 labeled data(Ground Truth)를 RNN cell의 input으로 
 
 #### Teacher Forcing in Transformer (Subsequent Masking)
 
- Teacher Forcing 개념을 이해하고 나면 Transformer Decoder에 input으로 들어오는 sentence가 어떤 것인지 이해할 수 있다. ground truth[:-1]의 sentence일 것이다. 하지만 이러한 방식으로 Teacher Forcing이 Transformer에 그대로 적용될 수 있을까? 결론부터 말하자면 그래서는 안된다. 위에서 Teacher Forcing에서 예시를 든 RNN Model은 이전 cell의 output을 이후 cell에서 사용할 수 있었다. 앞에서부터 순서대로 RNN cell이 실행되기 때문에 이러한 방식이 가능했다. 하지만 Transformer가 RNN에 비해 갖는 가장 큰 장점은 병렬 연산이 가능하다는 것이었다. 병렬 연산을 위해 ground truth의 embedding을 matrix로 만들어 input으로 그대로 사용하게 되면, Decoder에서 Self-Attention 연산을 수행하게 될 때 현재 출력해내야 하는 token의 정답까지 알고 있는 상황이 발생한다. 따라서 masking을 적용해야 한다. $$i$$번째 token을 생성해낼 때, $$1 \thicksim i-1$$의 token은 보이지 않도록 처리를 해야 하는 것이다. 이러한 masking 기법을 subsequent masking이라고 한다. pytorch code로 구현해보자.
+ Teacher Forcing 개념을 이해하고 나면 Transformer Decoder에 input으로 들어오는 sentence가 어떤 것인지 이해할 수 있다. ground truth[:-1]의 sentence일 것이다. 하지만 이러한 방식으로 Teacher Forcing이 Transformer에 그대로 적용될 수 있을까? 결론부터 말하자면 그래서는 안된다. 위에서 Teacher Forcing에서 예시를 든 RNN Model은 이전 cell의 output을 이후 cell에서 사용할 수 있었다. 앞에서부터 순서대로 RNN cell이 실행되기 때문에 이러한 방식이 가능했다. 하지만 Transformer가 RNN에 비해 갖는 가장 큰 장점은 병렬 연산이 가능하다는 것이었다. 병렬 연산을 위해 ground truth의 embedding을 matrix로 만들어 input으로 그대로 사용하게 되면, Decoder에서 Self-Attention 연산을 수행하게 될 때 현재 출력해내야 하는 token의 정답까지 알고 있는 상황이 발생한다. 따라서 masking을 적용해야 한다. $$i$$번째 token을 생성해낼 때, $$1 \thicksim i-1$$의 token만 보이고, $$i+1 \thicksim $$의 token은 보이지 않도록 처리를 해야 하는 것이다. 이러한 masking 기법을 subsequent masking이라고 한다. pytorch code로 구현해보자.
 
 ```python
 def make_subsequent_mask(query, key):
@@ -574,7 +574,7 @@ def make_subsequent_mask(query, key):
  [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 ```
-0번쨰 token은 자기 자신밖에 보지 못하고, 1~n번쨰 token은 0으로 가려져 있으며, 1번째 token은 0~1번째 token밖에 보지 못하고, 2~n번째 token은 모두 0으로 가려져 있다. 최종적으로 n번쨰 token은 모든 token을 볼 수 있다.
+0번째 token은 자기 자신밖에 보지 못하고, 1~n번째 token은 0으로 가려져 있으며, 1번째 token은 0~1번째 token밖에 보지 못하고, 2~n번째 token은 모두 0으로 가려져 있다. 최종적으로 n번째 token은 모든 token을 볼 수 있다.
 이렇듯, Decoder의 mask는 subsequent masking이 적용되어야 한다. 그런데, 동시에 Encoder와 마찬가지로 pad masking역시 적용되어야 한다. 따라서, `make_tgt_mask()`는 다음과 같다. `make_subsequent_mask()`와 `make_tgt_mask()`는 `make_src_mask()`와 같이 `Transformer`에 method로 작성한다.
 ```python
 def make_tgt_mask(self, tgt):
